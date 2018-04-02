@@ -1,0 +1,136 @@
+//
+//  {{ module_info.name }}{{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import UIKit
+import RxSwift
+
+class {{ module_info.name }}ViewController: UIViewController {
+
+	var viewModel = {{ module_info.name }}ViewModel()
+	
+	@IBOutlet weak var tableView: UITableView!
+
+	fileprivate let sectionHeight: CGFloat = 65.0
+
+	// MARK: Life cycle
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
+		registerCellsForTableView()
+
+		viewModel.shouldReloadTable.asObservable().distinctUntilChanged().filter({ (shouldReloadTable) -> Bool in
+			return shouldReloadTable
+		}).subscribe(onCompleted: { [weak self] (shouldReloadTable) in
+			DispatchQueue.main.async(execute: {
+				self?.tableView.reloadData()
+				self?.tableView.setNeedsLayout()
+				self?.tableView.layoutIfNeeded()
+			})
+		})
+	}
+}
+
+//MARK: - UITableViewDelegate, UITableViewDataSource
+
+extension {{ module_info.name }}ViewController: UITableViewDelegate, UITableViewDataSource {
+
+	func registerCellsForTableView() {
+		self.tableView.register(ATLTableHeaderView.self, forHeaderFooterViewReuseIdentifier: UserHeaderReuseIdentifier.MainHeader)
+	}
+
+	func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+		return 300
+	}
+
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		return UITableViewAutomaticDimension
+	}
+
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 0.1
+	}
+
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		let sectionItem = viewModel.tableSectionItem(section)
+		if sectionItem?.isHidden ?? false {
+			return 0.1
+		}
+		return sectionHeight
+	}
+
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return viewModel.numberOfCells(inSection: section)
+	}
+
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return viewModel.numberOfSections()
+	}
+
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard let cellItem = viewModel.cellItemAtIndexPath(indexPath) else {
+			assert(true)
+			return UITableViewCell()
+		}
+
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellItem.cellReuseIdentifier) as? BaseCell else {
+			assert(true)
+			return UITableViewCell()
+		}
+
+		cell.cellItem = cellItem
+		cell.delegate = self
+
+		return cell
+	}
+
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		guard let sectionItem = viewModel.tableSectionItem(section) else {
+			return nil
+		}
+		guard let sectionHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: UserHeaderReuseIdentifier.MainHeader) as? ATLTableHeaderView else {
+			return nil
+		}
+		guard viewModel.numberOfSections() > section else {
+			return nil
+		}
+		if sectionItem.isHidden == true {
+			return nil
+		}
+		sectionHeaderView.headerItem = sectionItem
+		sectionHeaderView.contentView.backgroundColor = .white
+		return sectionHeaderView
+	}
+
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if let cell = tableView.cellForRow(at: indexPath) as? BaseCell {
+			didSelectRow(cell.cellItem)
+		}
+	}
+
+
+	fileprivate func didSelectRow(_ item : BaseCellItem?) {
+		guard item != nil else {
+			return
+		}
+		//Do smth
+	}
+}
+
+
+//MARK: - BaseCellDelegate
+
+extension {{ module_info.name }}ViewController: BaseCellDelegate {
+	func tapOnButton(_ sender: AnyObject?, item : BaseCellItem?, completion : CompletionBlock?) {
+
+	}
+
+	func didTapOnSecondButton(_ sender: AnyObject?, item: BaseCellItem?, completion: CompletionBlock?) {
+
+	}
+}
+

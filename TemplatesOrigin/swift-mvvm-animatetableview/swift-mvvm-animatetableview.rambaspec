@@ -1,0 +1,27 @@
+# Template information section
+name: swift-mvvm-animatetableview
+summary: Module on swift with mvvm
+author: Liliya Fedotova
+version: 1.0.0
+license:
+
+# The declarations for code files
+code_files:
+# Router
+- {name: Router/}
+# View
+- {name: View/}
+# ViewController
+- {name: ViewController/ViewController.swift, path: Code/ViewController/viewcontroller.swift.liquid}
+# ViewModel
+- {name: ViewModel/ViewModel.swift, path: Code/ViewModel/viewmodel.swift.liquid}
+# Storyboard
+- {name: .storyboard, path: Code/storyboard.storyboard.liquid}
+
+
+# The declarations for test files
+test_files:
+#- {name: Service/ServiceTests.m, path: Tests/Service/service_tests.m.liquid}
+
+# Template dependencies
+dependencies:

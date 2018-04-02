@@ -1,0 +1,37 @@
+### Headers settings
+company: Minter
+
+### Xcode project settings
+project_name: MinterWallet
+xcodeproj_path: MinterWallet.xcodeproj
+prefix:
+
+### Code generation settings section
+# The main project target name
+project_target: MinterWallet
+
+# The file path for new modules
+project_file_path: MinterWallet/Classes/
+
+# The Xcode group path to new modules
+project_group_path: MinterWallet
+
+### Tests generation settings section
+# The tests target name
+test_target: MinterWalletTests
+
+# The file path for new tests
+test_file_path: MinterWalletTests
+
+# The Xcode group path to new tests
+test_group_path: MinterWalletTests
+
+### Dependencies settings section
+podfile_path: Podfile
+
+### Templates
+templates:
+- {name: rviper_controller}
+- {name: mvvm_controller}
+- {name: swifty_viper}
+- {name: swift-mvvm, local: 'TemplatesOrigin/swift-mvvm/'}

@@ -1,0 +1,80 @@
+//
+//  {{ module_info.name }}{{ module_info.file_name }}
+//  {{ module_info.project_name }}
+//
+//  Created by {{ developer.name }} on {{ date }}.
+//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+//
+
+import RxSwift
+
+class {{ module_info.name }}ViewModel: BaseViewModel, TableViewAnimationDataSourceDelegate {
+
+    var title: String {
+      get {
+        return "{{ module_info.name }}".localized()
+        }
+    }
+
+    var shouldReloadTable = Variable<Bool>(false)
+
+    var dataSource: TableViewAnimationDataSourceProtocol = DefaultTableViewAnimationDataSource()
+
+    fileprivate var _sections: [BaseTableSection] = []
+
+    override init() {
+		  super.init()
+
+    }
+
+    fileprivate func createSections() {
+		  var sectionsNew = [BaseTableSection]()
+
+      //CREATE ITEMS
+
+      _sections = sectionsNew
+
+      let adapter = BaseTableSectionsAdapter(sections: _sections)
+		  dataSource.parse(tableAnimationItemsDictionary: adapter.transformSectionsToTableAnimationItemsDictionary())
+    }
+}
+
+//MARK: - BaseTableViewModelProtocol
+
+extension {{ module_info.name }}ViewModel: BaseTableViewModelProtocol {
+
+  func numberOfSections() -> Int {
+    return _sections.count
+  }
+
+  func numberOfCells(inSection section: Int) -> Int {
+    let itemsArray = _sections[safe: section]?.cellItems
+    return itemsArray?.count ?? 0
+	}
+
+  func cellItemAtIndexPath(_ indexPath: IndexPath) -> BaseCellItem? {
+    guard let itemsArray = _sections[safe: indexPath.section]?.cellItems else {
+      return nil
+    }
+    let item = itemsArray[safe: indexPath.row]
+    return item
+  }
+
+	func tableSectionItem(_ section: Int) -> BaseTableHeaderViewItem? {
+		let section = _sections[safe: section]
+		return section?.headerItem
+	}
+}
+
+//MARK: - TableViewAnimationDataSourceDelegate
+
+extension {{ module_info.name }}ViewModel {
+
+	func numberOfCellsAfterAnimation(inSection section: Int) -> Int {
+		return numberOfCells(inSection: section)
+	}
+
+	func numberOfSectionsAfterAnimation() -> Int {
+		return numberOfSections()
+	}
+}
