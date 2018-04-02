@@ -15,7 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-		// Override point for customization after application launch.
+		
+		if let loginVC = LoginRouter.viewController(path: ["login"], param: [:]), let rootViewController = UIApplication.shared.windows.first?.rootViewController as? BaseViewController {
+			rootViewController.showViewControllerWith(loginVC, usingAnimation: .left, completion: {
+				
+			})
+		}
+
 		return true
 	}
 

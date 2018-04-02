@@ -20,6 +20,22 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Ubuntu-M</string>
+		<string>Ubuntu-L</string>
+		<string>UbuntuMono-BI</string>
+		<string>Ubuntu-BI</string>
+		<string>Ubuntu-MI</string>
+		<string>Ubuntu-R</string>
+		<string>Ubuntu-LI</string>
+		<string>Ubuntu-B</string>
+		<string>Ubuntu-C</string>
+		<string>UbuntuMono-RI</string>
+		<string>UbuntuMono-R</string>
+		<string>Ubuntu-RI</string>
+		<string>UbuntuMono-B</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
