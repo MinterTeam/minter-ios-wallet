@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vEU-Z3-OAW">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Create Wallet View Controller-->
+        <scene sceneID="3t8-vD-wz0">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="vEU-Z3-OAW" customClass="CreateWalletViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="40f-KL-TsO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKL-JU-mOv" customClass="TPKeyboardAvoidingTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="vEU-Z3-OAW" id="3c2-NH-tK5"/>
+                                    <outlet property="delegate" destination="vEU-Z3-OAW" id="9N6-Zt-aae"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="zbH-cd-7GA" firstAttribute="trailing" secondItem="iKL-JU-mOv" secondAttribute="trailing" id="E4o-xl-Ikd"/>
+                            <constraint firstItem="zbH-cd-7GA" firstAttribute="top" secondItem="iKL-JU-mOv" secondAttribute="top" constant="20" id="PZd-1W-8jO"/>
+                            <constraint firstItem="zbH-cd-7GA" firstAttribute="bottom" secondItem="iKL-JU-mOv" secondAttribute="bottom" id="PsY-oc-yJg"/>
+                            <constraint firstItem="iKL-JU-mOv" firstAttribute="leading" secondItem="zbH-cd-7GA" secondAttribute="leading" id="ptd-nk-ea0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="zbH-cd-7GA"/>
+                    </view>
+                    <connections>
+                        <outlet property="footerView" destination="B6M-a8-ZL4" id="zQj-VR-qb0"/>
+                        <outlet property="tableView" destination="iKL-JU-mOv" id="bad-JJ-4aq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sjj-L0-ft0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="B6M-a8-ZL4">
+                    <rect key="frame" x="0.0" y="0.0" width="373" height="186"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwd-NG-cw5" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
+                            <rect key="frame" x="10" y="20" width="353" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="4Y2-tl-ave"/>
+                            </constraints>
+                            <state key="normal" title="CREATE WALLET"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="createWalletDidTap:" destination="vEU-Z3-OAW" eventType="touchUpInside" id="DOv-2Z-6Pb"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L28-8g-xMD">
+                            <rect key="frame" x="20" y="90" width="333" height="66"/>
+                            <attributedString key="attributedText">
+                                <fragment>
+                                    <string key="content">*	Email and Mobile Number are optional  	but can be very handy if you forget 	your password.</string>
+                                    <attributes>
+                                        <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <font key="NSFont" size="14" name="Ubuntu"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                            <tabStops>
+                                                <textTab alignment="left" location="28">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="56">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="84">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="112">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="140">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="168">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="196">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="224">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="252">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="280">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="308">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="336">
+                                                    <options/>
+                                                </textTab>
+                                            </tabStops>
+                                        </paragraphStyle>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="ezH-C8-Cpk" firstAttribute="trailing" secondItem="L28-8g-xMD" secondAttribute="trailing" constant="20" id="4GY-IY-9vx"/>
+                        <constraint firstItem="L28-8g-xMD" firstAttribute="leading" secondItem="ezH-C8-Cpk" secondAttribute="leading" constant="20" id="5eB-DL-NY0"/>
+                        <constraint firstItem="ezH-C8-Cpk" firstAttribute="bottom" secondItem="L28-8g-xMD" secondAttribute="bottom" constant="30" id="N2u-IC-QoE"/>
+                        <constraint firstItem="Xwd-NG-cw5" firstAttribute="leading" secondItem="ezH-C8-Cpk" secondAttribute="leading" constant="10" id="Nw7-Ma-mq9"/>
+                        <constraint firstItem="L28-8g-xMD" firstAttribute="top" secondItem="Xwd-NG-cw5" secondAttribute="bottom" constant="20" id="O4y-Ne-4jp"/>
+                        <constraint firstItem="ezH-C8-Cpk" firstAttribute="trailing" secondItem="Xwd-NG-cw5" secondAttribute="trailing" constant="10" id="OoD-K3-G6D"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="ezH-C8-Cpk"/>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="80.799999999999997" y="181.25937031484258"/>
+        </scene>
+    </scenes>
+</document>
