@@ -9,11 +9,11 @@
 import UIKit
 
 
-let defaultFontNameRegular = "Ubuntu-R"
-let defaultFontNameMedium = "Ubuntu-M"
-let defaultFontNameBold = "Ubuntu-B"
-let defaultFontNameCoursive = "Ubuntu-C"
-let defaultFontNameLight = "Ubuntu-L"
+let defaultFontNameRegular = "Ubuntu"
+let defaultFontNameMedium = "Ubuntu-Medium"
+let defaultFontNameBold = "Ubuntu-Bold"
+//let defaultFontNameCoursive = "Ubuntu-C"
+let defaultFontNameLight = "Ubuntu-Light"
 
 
 extension UIFont {
@@ -34,8 +34,8 @@ extension UIFont {
 		return UIFont(name: defaultFontNameLight, size: size)!
 	}
 	
-	static func coursiveFont(of size: CGFloat) -> UIFont {
-		return UIFont(name: defaultFontNameCoursive, size: size)!
-	}
+//	static func coursiveFont(of size: CGFloat) -> UIFont {
+//		return UIFont(name: defaultFontNameCoursive, size: size)!
+//	}
 
 }

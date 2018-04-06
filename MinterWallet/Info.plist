@@ -22,28 +22,30 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Ubuntu-M</string>
-		<string>Ubuntu-L</string>
-		<string>UbuntuMono-BI</string>
-		<string>Ubuntu-BI</string>
-		<string>Ubuntu-MI</string>
-		<string>Ubuntu-R</string>
-		<string>Ubuntu-LI</string>
-		<string>Ubuntu-B</string>
-		<string>Ubuntu-C</string>
-		<string>UbuntuMono-RI</string>
-		<string>UbuntuMono-R</string>
-		<string>Ubuntu-RI</string>
-		<string>UbuntuMono-B</string>
+		<string>Ubuntu-M.ttf</string>
+		<string>Ubuntu-L.ttf</string>
+		<string>UbuntuMono-BI.ttf</string>
+		<string>Ubuntu-BI.ttf</string>
+		<string>Ubuntu-MI.ttf</string>
+		<string>Ubuntu-R.ttf</string>
+		<string>Ubuntu-LI.ttf</string>
+		<string>Ubuntu-B.ttf</string>
+		<string>Ubuntu-C.ttf</string>
+		<string>UbuntuMono-RI.ttf</string>
+		<string>UbuntuMono-R.ttf</string>
+		<string>Ubuntu-RI.ttf</string>
+		<string>UbuntuMono-B.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
+	<string>Root</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>UIStatusBarTintParameters</key>
 	<dict>
 		<key>UINavigationBar</key>
@@ -67,5 +69,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 </dict>
 </plist>

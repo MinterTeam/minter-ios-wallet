@@ -15,7 +15,7 @@ class LoginRouter : BaseRouter {
 	}
 
 	static func viewController(path: [String], param: [String : Any]) -> UIViewController? {
-		let vc = Storyboards.Login.instantiateViewController(withIdentifier: "LoginViewController")
+		let vc = Storyboards.Login.instantiateInitialViewController()
 		return vc
 	}
 

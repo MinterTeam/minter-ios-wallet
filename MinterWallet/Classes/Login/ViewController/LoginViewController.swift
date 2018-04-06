@@ -10,12 +10,28 @@ import UIKit
 
 class LoginViewController: BaseViewController {
 
-    var viewModel = LoginViewModel()
+	var viewModel = LoginViewModel()
 
-    // MARK: Life cycle
+	//MARK: Life cycle
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+	}
 	
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		self.navigationController?.setNavigationBarHidden(true, animated: animated)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		
+		self.navigationController?.setNavigationBarHidden(false, animated: animated)
+	}
+	
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		return .default
+	}
 
 }

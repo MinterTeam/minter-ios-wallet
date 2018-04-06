@@ -15,13 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-		
-		if let loginVC = LoginRouter.viewController(path: ["login"], param: [:]), let rootViewController = UIApplication.shared.windows.first?.rootViewController as? BaseViewController {
-			rootViewController.showViewControllerWith(loginVC, usingAnimation: .left, completion: {
-				
-			})
-		}
 
+		appearance()
+		
 		return true
 	}
 
@@ -45,6 +41,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+	}
+	
+	//MARK: -
+	
+	func appearance() {
+		UINavigationBar.appearance().tintColor = .white
+		UINavigationBar.appearance().barTintColor = UIColor(hex: 0x502EC2)
+		UINavigationBar.appearance().titleTextAttributes = [
+			NSAttributedStringKey.foregroundColor : UIColor.white,
+			NSAttributedStringKey.font : UIFont.boldFont(of: 18.0)
+		]
+		UIBarButtonItem.appearance().setTitleTextAttributes([
+				NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
+				NSAttributedStringKey.foregroundColor: UIColor.white
+			], for: .normal
+		)
+		UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "BackIcon")
+		UINavigationBar.appearance().backIndicatorImage = UIImage(named: "BackIcon")
+		UINavigationBar.appearance().isTranslucent = false
 	}
 
 

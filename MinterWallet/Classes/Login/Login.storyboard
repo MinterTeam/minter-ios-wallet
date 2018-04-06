@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QJx-xv-bsg">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,17 +7,14 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
         <scene sceneID="ln5-Bj-u7S">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="M8D-CJ-y5f" customClass="LoginViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="N4Y-p4-ukN"/>
-                        <viewControllerLayoutGuide type="bottom" id="RmH-fb-Jas"/>
-                    </layoutGuides>
+                <viewController storyboardIdentifier="LoginViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="M8D-CJ-y5f" customClass="LoginViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="q9E-BZ-fFk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -29,12 +26,15 @@
                                     <constraint firstAttribute="height" constant="113" id="ue2-EN-tN3"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xZM-8Z-bGe" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="10" y="593" width="167" height="50"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xZM-8Z-bGe" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
+                                <rect key="frame" x="10" y="597" width="172.5" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="xKo-RV-fxR"/>
                                 </constraints>
                                 <state key="normal" title="RESTORE"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="transparent"/>
+                                </userDefinedRuntimeAttributes>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fcS-ck-472" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
                                 <rect key="frame" x="192.5" y="597" width="172.5" height="50"/>
@@ -43,6 +43,9 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="eao-Bf-3RI"/>
                                 </constraints>
                                 <state key="normal" title="HELP"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="transparent"/>
+                                </userDefinedRuntimeAttributes>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7rY-BB-aru" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
                                 <rect key="frame" x="10" y="537" width="355" height="50"/>
@@ -50,6 +53,9 @@
                                     <constraint firstAttribute="height" constant="50" id="YkR-sv-Bjc"/>
                                 </constraints>
                                 <state key="normal" title="ADVANCED MODE"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="transparent"/>
+                                </userDefinedRuntimeAttributes>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iOM-tb-IdR" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
                                 <rect key="frame" x="10" y="477" width="355" height="50"/>
@@ -57,9 +63,12 @@
                                     <constraint firstAttribute="height" constant="50" id="ZxD-EM-A5S"/>
                                 </constraints>
                                 <state key="normal" title="CREATE WALLET"/>
+                                <connections>
+                                    <segue destination="QUp-i0-ZCp" kind="show" id="xye-zV-DHi"/>
+                                </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.31372549019607843" green="0.1803921568627451" blue="0.76078431372549016" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.31372549019607843" green="0.1803921568627451" blue="0.76078431372549016" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstItem="iOM-tb-IdR" firstAttribute="leading" secondItem="7rY-BB-aru" secondAttribute="leading" id="4V0-fI-7oF"/>
                             <constraint firstItem="7rY-BB-aru" firstAttribute="leading" secondItem="xZM-8Z-bGe" secondAttribute="leading" id="EFh-Vf-c7a"/>
@@ -68,20 +77,48 @@
                             <constraint firstItem="7rY-BB-aru" firstAttribute="top" secondItem="iOM-tb-IdR" secondAttribute="bottom" constant="10" id="HPI-m7-bsV"/>
                             <constraint firstItem="fcS-ck-472" firstAttribute="centerY" secondItem="xZM-8Z-bGe" secondAttribute="centerY" id="HT7-ds-3qi"/>
                             <constraint firstItem="fcS-ck-472" firstAttribute="leading" secondItem="xZM-8Z-bGe" secondAttribute="trailing" constant="10" id="N83-Q5-i2J"/>
-                            <constraint firstItem="krd-eP-hp4" firstAttribute="centerX" secondItem="q9E-BZ-fFk" secondAttribute="centerX" id="VuM-wF-CW1"/>
-                            <constraint firstItem="xZM-8Z-bGe" firstAttribute="trailing" secondItem="q9E-BZ-fFk" secondAttribute="centerX" constant="-5" id="cM8-Q6-yyG"/>
+                            <constraint firstItem="krd-eP-hp4" firstAttribute="centerX" secondItem="HFS-Nl-chi" secondAttribute="centerX" id="VuM-wF-CW1"/>
+                            <constraint firstItem="xZM-8Z-bGe" firstAttribute="trailing" secondItem="HFS-Nl-chi" secondAttribute="centerX" constant="-5" id="cM8-Q6-yyG"/>
                             <constraint firstItem="krd-eP-hp4" firstAttribute="centerY" secondItem="q9E-BZ-fFk" secondAttribute="centerY" priority="999" id="hY4-c1-zEn"/>
                             <constraint firstItem="7rY-BB-aru" firstAttribute="trailing" secondItem="fcS-ck-472" secondAttribute="trailing" id="mbp-NT-oui"/>
-                            <constraint firstItem="xZM-8Z-bGe" firstAttribute="leading" secondItem="q9E-BZ-fFk" secondAttribute="leading" constant="10" id="qXn-8W-ZT4"/>
-                            <constraint firstItem="RmH-fb-Jas" firstAttribute="top" secondItem="xZM-8Z-bGe" secondAttribute="bottom" constant="20" id="rsJ-Ef-eSP"/>
+                            <constraint firstItem="xZM-8Z-bGe" firstAttribute="leading" secondItem="HFS-Nl-chi" secondAttribute="leading" constant="10" id="qXn-8W-ZT4"/>
+                            <constraint firstItem="HFS-Nl-chi" firstAttribute="bottom" secondItem="xZM-8Z-bGe" secondAttribute="bottom" constant="20" id="rsJ-Ef-eSP"/>
                             <constraint firstItem="iOM-tb-IdR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="krd-eP-hp4" secondAttribute="bottom" constant="125" id="ryT-LW-Ys3"/>
-                            <constraint firstAttribute="trailing" secondItem="fcS-ck-472" secondAttribute="trailing" constant="10" id="weA-NL-ul8"/>
+                            <constraint firstItem="HFS-Nl-chi" firstAttribute="trailing" secondItem="fcS-ck-472" secondAttribute="trailing" constant="10" id="weA-NL-ul8"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="HFS-Nl-chi"/>
                     </view>
+                    <navigationItem key="navigationItem" id="LCo-EC-6KZ"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ded-03-Hic" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="96.799999999999997" y="169.56521739130437"/>
+            <point key="canvasLocation" x="436" y="169.56521739130437"/>
+        </scene>
+        <!--CreateWallet-->
+        <scene sceneID="OCH-IH-XYx">
+            <objects>
+                <viewControllerPlaceholder storyboardName="CreateWallet" id="QUp-i0-ZCp" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SAP-KZ-4QI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1356.8" y="168.21589205397302"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eRr-Co-7K6">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QJx-xv-bsg" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6nF-EN-bZg">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="M8D-CJ-y5f" kind="relationship" relationship="rootViewController" id="wmW-VF-niy"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wAR-Zq-MGa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-916" y="170"/>
         </scene>
     </scenes>
     <resources>

@@ -24,12 +24,83 @@ protocol Storyboard {
 
 struct Storyboards {
 
+    struct CreateWallet: Storyboard {
+
+        static let identifier = "CreateWallet"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> CreateWalletViewController {
+            return self.storyboard.instantiateInitialViewController() as! CreateWalletViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
+    struct Coins: Storyboard {
+
+        static let identifier = "Coins"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> UINavigationController {
+            return self.storyboard.instantiateInitialViewController() as! UINavigationController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+
+        static func instantiateCoinsViewController() -> CoinsViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "CoinsViewController") as! CoinsViewController
+        }
+    }
+
+    struct Root: Storyboard {
+
+        static let identifier = "Root"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> RootViewController {
+            return self.storyboard.instantiateInitialViewController() as! RootViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct Login: Storyboard {
 
         static let identifier = "Login"
 
         static var storyboard: UIStoryboard {
             return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> UINavigationController {
+            return self.storyboard.instantiateInitialViewController() as! UINavigationController
         }
 
         static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
@@ -74,8 +145,8 @@ struct Storyboards {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
 
-        static func instantiateInitialViewController() -> UITabBarController {
-            return self.storyboard.instantiateInitialViewController() as! UITabBarController
+        static func instantiateInitialViewController() -> TabBarController {
+            return self.storyboard.instantiateInitialViewController() as! TabBarController
         }
 
         static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
@@ -244,6 +315,20 @@ extension UITableView {
     }
 }
 
+// MARK: - CreateWalletViewController
+
+// MARK: - CoinsViewController
+protocol CoinsViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension CoinsViewController: CoinsViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: CoinsViewController {
+    var storyboardIdentifier: String? { return "CoinsViewController" }
+    static var storyboardIdentifier: String? { return "CoinsViewController" }
+}
+
+// MARK: - RootViewController
+
 // MARK: - LoginViewController
 protocol LoginViewControllerIdentifiableProtocol: IdentifiableProtocol { }
 
@@ -253,4 +338,6 @@ extension IdentifiableProtocol where Self: LoginViewController {
     var storyboardIdentifier: String? { return "LoginViewController" }
     static var storyboardIdentifier: String? { return "LoginViewController" }
 }
+
+// MARK: - TabBarController
 
