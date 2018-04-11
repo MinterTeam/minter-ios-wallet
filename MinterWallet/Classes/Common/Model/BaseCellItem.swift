@@ -8,4 +8,15 @@
 
 import Foundation
 
-class BaseCellItem {}
+class BaseCellItem {
+
+	let reuseIdentifier: String
+	
+	let identifier: String
+
+	init(reuseIdentifier: String, identifier: String) {
+		self.reuseIdentifier = reuseIdentifier
+		self.identifier = identifier
+	}
+
+}

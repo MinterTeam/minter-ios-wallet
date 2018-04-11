@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="71" id="KGk-i7-Jjw" customClass="ButtonTableViewCell" customModule="MinterWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="389" height="71"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="389" height="70.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GV3-xv-TcD" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
+                        <rect key="frame" x="10" y="10" width="369" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="LCe-wt-Q4D"/>
+                        </constraints>
+                        <state key="normal" title="ALL TRANSACTIONS"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                        </userDefinedRuntimeAttributes>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="GV3-xv-TcD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="b3w-v1-6Hq"/>
+                    <constraint firstAttribute="trailing" secondItem="GV3-xv-TcD" secondAttribute="trailing" constant="10" id="icn-zA-bcK"/>
+                    <constraint firstAttribute="bottom" secondItem="GV3-xv-TcD" secondAttribute="bottom" priority="999" constant="10" id="pvf-98-Nv2"/>
+                    <constraint firstItem="GV3-xv-TcD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="tY8-aP-qYT"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="button" destination="GV3-xv-TcD" id="teB-DL-9FJ"/>
+            </connections>
+            <point key="canvasLocation" x="-44.5" y="-110"/>
+        </tableViewCell>
+    </objects>
+</document>

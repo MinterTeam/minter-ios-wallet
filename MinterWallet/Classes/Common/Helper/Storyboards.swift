@@ -70,6 +70,27 @@ struct Storyboards {
         }
     }
 
+    struct Transactions: Storyboard {
+
+        static let identifier = "Transactions"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> TransactionsViewController {
+            return self.storyboard.instantiateInitialViewController() as! TransactionsViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct Root: Storyboard {
 
         static let identifier = "Root"
@@ -318,6 +339,14 @@ extension UITableView {
 // MARK: - CreateWalletViewController
 
 // MARK: - CoinsViewController
+extension UIStoryboardSegue {
+    func selection() -> CoinsViewController.Segue? {
+        if let identifier = self.identifier {
+            return CoinsViewController.Segue(rawValue: identifier)
+        }
+        return nil
+    }
+}
 protocol CoinsViewControllerIdentifiableProtocol: IdentifiableProtocol { }
 
 extension CoinsViewController: CoinsViewControllerIdentifiableProtocol { }
@@ -326,6 +355,33 @@ extension IdentifiableProtocol where Self: CoinsViewController {
     var storyboardIdentifier: String? { return "CoinsViewController" }
     static var storyboardIdentifier: String? { return "CoinsViewController" }
 }
+extension CoinsViewController {
+
+    enum Segue: String, CustomStringConvertible, SegueProtocol {
+        case showTransactions = "showTransactions"
+
+        var kind: SegueKind? {
+            switch self {
+            case .showTransactions:
+                return SegueKind(rawValue: "show")
+            }
+        }
+
+        var destination: UIViewController.Type? {
+            switch self {
+            default:
+                assertionFailure("Unknown destination")
+                return nil
+            }
+        }
+
+        var identifier: String? { return self.rawValue }
+        var description: String { return "\(self.rawValue)" }
+    }
+
+}
+
+// MARK: - TransactionsViewController
 
 // MARK: - RootViewController
 

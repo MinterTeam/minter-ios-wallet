@@ -35,22 +35,22 @@ class CreateWalletViewModel: BaseViewModel {
 	override init() {
 		super.init()
 		
-		let username = TextFieldTableViewCellItem()
+		let username = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Username")
 		username.title = "CHOOSE @USERNAME".localized()
 		username.prefix = "@"
 		
-		let password = TextFieldTableViewCellItem()
+		let password = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Password")
 		password.title = "CHOOSE PASSWORD".localized()
 		password.isSecure = true
 
-		let confirmPassword = TextFieldTableViewCellItem()
+		let confirmPassword = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_PasswordConfirm")
 		confirmPassword.title = "CONFIRM PASSWORD".localized()
 		confirmPassword.isSecure = true
 		
-		let email = TextFieldTableViewCellItem()
+		let email = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Email")
 		email.title = "EMAIL (OPTIONAL *)".localized()
 
-		let mobileNumber = TextFieldTableViewCellItem()
+		let mobileNumber = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Mobile")
 		mobileNumber.title = "MOBILE NUMBER (OPTIONAL *)".localized()
 		
 		let section = FormSectionItem()

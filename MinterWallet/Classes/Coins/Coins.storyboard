@@ -8,20 +8,88 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Ubuntu-B.ttf">
+            <string>Ubuntu-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Coins View Controller-->
         <scene sceneID="SLF-TT-5iC">
             <objects>
-                <viewController storyboardIdentifier="CoinsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LGV-lH-Fcj" customClass="CoinsViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CoinsViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LGV-lH-Fcj" customClass="CoinsViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="VOn-4f-hTe"/>
                         <viewControllerLayoutGuide type="bottom" id="NgQ-hK-ptl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gec-Hg-cGs">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="-1" estimatedRowHeight="54" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="WIo-BM-mO4" customClass="ExpandableTableView" customModule="ExpandableCell">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="separatorColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="LGV-lH-Fcj" id="Yhh-5c-bg0"/>
+                                    <outlet property="delegate" destination="LGV-lH-Fcj" id="ddf-m0-Ft5"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1OM-Ql-2PQ" customClass="ScreenHeader" customModule="MinterWallet" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7g-aO-BzU">
+                                        <rect key="frame" x="20" y="10" width="339" height="17"/>
+                                        <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="15"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIV-Gf-6Jf">
+                                        <rect key="frame" x="16" y="27" width="228.5" height="31.5"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="120 912">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <font key="NSFont" size="28" name="Ubuntu-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content=".98230221 bips">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <font key="NSFont" size="18" name="Ubuntu-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.25882352941176467" green="0.14509803921568626" blue="0.64313725490196072" alpha="1" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="1Tf-ya-4PI"/>
+                                    <constraint firstItem="RIV-Gf-6Jf" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="27" id="PMt-ql-XFh"/>
+                                    <constraint firstAttribute="trailing" secondItem="b7g-aO-BzU" secondAttribute="trailing" constant="16" id="dgu-16-Ocz"/>
+                                    <constraint firstItem="RIV-Gf-6Jf" firstAttribute="leading" secondItem="1OM-Ql-2PQ" secondAttribute="leading" constant="16" id="pJq-CB-152"/>
+                                    <constraint firstItem="b7g-aO-BzU" firstAttribute="leading" secondItem="1OM-Ql-2PQ" secondAttribute="leading" constant="20" id="qaZ-1H-VRK"/>
+                                    <constraint firstItem="b7g-aO-BzU" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="10" id="v3A-Rl-OwY"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="WIo-BM-mO4" firstAttribute="leading" secondItem="gec-Hg-cGs" secondAttribute="leading" id="62a-Kh-ZlQ"/>
+                            <constraint firstItem="NgQ-hK-ptl" firstAttribute="top" secondItem="WIo-BM-mO4" secondAttribute="bottom" id="KGJ-LL-zRS"/>
+                            <constraint firstItem="1OM-Ql-2PQ" firstAttribute="top" secondItem="gec-Hg-cGs" secondAttribute="top" id="N7n-hV-Obi"/>
+                            <constraint firstItem="WIo-BM-mO4" firstAttribute="top" secondItem="gec-Hg-cGs" secondAttribute="top" id="dI4-Mk-wlD"/>
+                            <constraint firstAttribute="trailing" secondItem="WIo-BM-mO4" secondAttribute="trailing" id="lPP-od-5BK"/>
+                            <constraint firstAttribute="trailing" secondItem="1OM-Ql-2PQ" secondAttribute="trailing" id="tNm-nR-f1z"/>
+                            <constraint firstItem="1OM-Ql-2PQ" firstAttribute="leading" secondItem="gec-Hg-cGs" secondAttribute="leading" id="tR8-27-SPF"/>
+                        </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="wwT-lq-D3q">
                         <barButtonItem key="leftBarButtonItem" enabled="NO" title="Item" image="BipLogoSmall" id="2PJ-5X-ytA">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -37,13 +105,25 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="headerView" destination="1OM-Ql-2PQ" id="nj2-Q6-cqJ"/>
+                        <outlet property="tableHeaderTopConstraint" destination="N7n-hV-Obi" id="d8n-Dj-aiQ"/>
+                        <outlet property="tableView" destination="WIo-BM-mO4" id="oaN-vR-FLU"/>
                         <outlet property="usernameBarItem" destination="g3m-BI-pjZ" id="CuA-ZV-yzl"/>
                         <outlet property="usernameButton" destination="SHf-II-J3V" id="85G-xm-tCU"/>
+                        <segue destination="EEO-nY-xhf" kind="show" identifier="showTransactions" id="yuR-5V-wmd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zcm-H8-vEm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1008.8" y="184.85757121439281"/>
+        </scene>
+        <!--Transactions-->
+        <scene sceneID="MET-BI-cpk">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Transactions" id="EEO-nY-xhf" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="clf-9F-tRN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1865" y="184"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6HV-PS-vXh">

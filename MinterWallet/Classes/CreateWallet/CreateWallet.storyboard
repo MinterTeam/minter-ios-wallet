@@ -67,46 +67,7 @@
                                     <attributes>
                                         <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <font key="NSFont" size="14" name="Ubuntu"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                            <tabStops>
-                                                <textTab alignment="left" location="28">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="56">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="84">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="112">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="140">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="168">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="196">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="224">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="252">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="280">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="308">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="336">
-                                                    <options/>
-                                                </textTab>
-                                            </tabStops>
-                                        </paragraphStyle>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                     </attributes>
                                 </fragment>
                             </attributedString>

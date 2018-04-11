@@ -20,7 +20,13 @@ class DefaultButton: UIButton {
 	}
 	
 	func updateAppearance() {
-		if pattern == "transparent" {
+		if pattern == "blank" {
+			self.backgroundColor = .clear
+			self.layer.borderWidth = 2.0
+			self.layer.borderColor = UIColor(hex: 0x502EC2)?.cgColor
+			self.setTitleColor(UIColor(hex: 0x502EC2), for: .normal)
+		}
+		else if pattern == "transparent" {
 			self.backgroundColor = .clear
 			self.layer.borderWidth = 2.0
 			self.layer.borderColor = UIColor.white.cgColor

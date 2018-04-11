@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02A6A0A6DB602A40AB4A4C29 /* Transactions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95B1FA5B097979AF8769F441 /* Transactions.storyboard */; };
+		1091290DC26B4D7128B4DA92 /* TransactionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163841D5463C4C049F735C69 /* TransactionsViewModel.swift */; };
 		15A1B86305F7B488825D223C /* CreateWallet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFE872DC58134EE5C5D3F7CA /* CreateWallet.storyboard */; };
 		2177DA1D3DFAC5A28E961357 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E293D08418165A0E63D7D /* LoginViewController.swift */; };
 		2B4873CFE9E2F66FBBAADC30 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1BDF87BDE21BBFB5B4968A /* CreateWalletViewController.swift */; };
@@ -14,12 +16,15 @@
 		35C28F738CF2110198FBDD3C /* CreateWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088EC129B1FBF3EE83B23AE0 /* CreateWalletViewModel.swift */; };
 		666A714F2D6D65435B13130A /* Pods_MinterWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B370097C074218EF14E46E22 /* Pods_MinterWallet.framework */; };
 		6C405281D86D42CB85997A3F /* Root.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F0861B418A65F5CA32B8596 /* Root.storyboard */; };
+		833CF747F604B61E37401C11 /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDB7932EC0D262280803AA /* TransactionsViewController.swift */; };
 		8FF7BCCC97FAB66AA4688C1B /* Coins.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73982ED5A99C92B1AC2B4148 /* Coins.storyboard */; };
 		94B58309D085DACB65260018 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CBBA0275DD9F23803817F0 /* RootViewModel.swift */; };
 		A08CF6C1636FE9E554D1A14B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25784C6ACDA695190875E917 /* Login.storyboard */; };
 		BF9CD1287559A6F7E3AAD242 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6719CF909F82E3872F3A93D9 /* LoginViewModel.swift */; };
 		D08EF152AB24CD864B6F2E40 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A971869C2A1BA233AE2C2A3 /* RootViewController.swift */; };
 		D1CAF56CB50CFF293A1D7F1A /* CoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE933B2B31E592FF04BA244B /* CoinsViewModel.swift */; };
+		FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA557E55207BA7490095459B /* DefaultHeader.swift */; };
+		FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA557E57207BA7560095459B /* DefaultHeader.xib */; };
 		FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */; };
 		FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */; };
 		FA669B69207239F200AD110A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B68207239F200AD110A /* AppDelegate.swift */; };
@@ -53,8 +58,15 @@
 		FA669BDD207269E700AD110A /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669BDC207269E700AD110A /* LoginRouter.swift */; };
 		FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669BDE207275DF00AD110A /* UIViewController+ShowViewController.swift */; };
 		FA669BE120727CB300AD110A /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669BE020727CB300AD110A /* TabBarController.swift */; };
+		FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */; };
+		FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */; };
 		FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */; };
+		FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */; };
+		FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */; };
+		FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */; };
+		FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */; };
 		FA835CCC207630A100BFC35A /* ValidatableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA835CCB207630A100BFC35A /* ValidatableTextField.swift */; };
+		FA835CCE2077BC9200BFC35A /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */; };
 		FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */; };
 		FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C62074C4A20083333F /* BaseCellItem.swift */; };
 		FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C82074CEC90083333F /* Sugar.swift */; };
@@ -80,12 +92,15 @@
 
 /* Begin PBXFileReference section */
 		088EC129B1FBF3EE83B23AE0 /* CreateWalletViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewModel.swift; sourceTree = "<group>"; };
+		163841D5463C4C049F735C69 /* TransactionsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsViewModel.swift; sourceTree = "<group>"; };
 		25784C6ACDA695190875E917 /* Login.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		3F0861B418A65F5CA32B8596 /* Root.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Root.storyboard; sourceTree = "<group>"; };
 		3F1BDF87BDE21BBFB5B4968A /* CreateWalletViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
+		53FDB7932EC0D262280803AA /* TransactionsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
 		6719CF909F82E3872F3A93D9 /* LoginViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		73982ED5A99C92B1AC2B4148 /* Coins.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Coins.storyboard; sourceTree = "<group>"; };
 		7A971869C2A1BA233AE2C2A3 /* RootViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		95B1FA5B097979AF8769F441 /* Transactions.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Transactions.storyboard; sourceTree = "<group>"; };
 		9F4435C23EB81E845B852C59 /* Pods-MinterWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MinterWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MinterWallet/Pods-MinterWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		AFE872DC58134EE5C5D3F7CA /* CreateWallet.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = CreateWallet.storyboard; sourceTree = "<group>"; };
 		B370097C074218EF14E46E22 /* Pods_MinterWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MinterWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +108,8 @@
 		C50E293D08418165A0E63D7D /* LoginViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D3A13B58DCBBFF6DC3A2EC4B /* CoinsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoinsViewController.swift; sourceTree = "<group>"; };
 		E3CBBA0275DD9F23803817F0 /* RootViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
+		FA557E55207BA7490095459B /* DefaultHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeader.swift; sourceTree = "<group>"; };
+		FA557E57207BA7560095459B /* DefaultHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultHeader.xib; sourceTree = "<group>"; };
 		FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldTableViewCell.xib; sourceTree = "<group>"; };
 		FA669B65207239F200AD110A /* MinterWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinterWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,8 +149,15 @@
 		FA669BDC207269E700AD110A /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
 		FA669BDE207275DF00AD110A /* UIViewController+ShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIViewController+ShowViewController.swift"; path = "MinterWallet/Classes/Common/Helper/UIViewController+ShowViewController.swift"; sourceTree = SOURCE_ROOT; };
 		FA669BE020727CB300AD110A /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
+		FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopMost.swift"; sourceTree = "<group>"; };
+		FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
+		FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonTableViewCell.xib; sourceTree = "<group>"; };
+		FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionExpandedTableViewCell.swift; sourceTree = "<group>"; };
+		FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionExpandedTableViewCell.xib; sourceTree = "<group>"; };
 		FA835CCB207630A100BFC35A /* ValidatableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatableTextField.swift; sourceTree = "<group>"; };
+		FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenHeader.swift; sourceTree = "<group>"; };
 		FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableSectionItem.swift; sourceTree = "<group>"; };
 		FAC1E1C62074C4A20083333F /* BaseCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellItem.swift; sourceTree = "<group>"; };
 		FAC1E1C82074CEC90083333F /* Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sugar.swift; sourceTree = "<group>"; };
@@ -190,6 +214,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		1FE84BAB2E3E711777A5E33B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				163841D5463C4C049F735C69 /* TransactionsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		32F3EFD7F6AC32D1CE8F9B79 /* Root */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,6 +263,13 @@
 			path = MinterWallet/Classes/Login;
 			sourceTree = SOURCE_ROOT;
 		};
+		4A6A26FC444FD574816BCA8B /* Router */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
 		4E1C11849D754BC32960CF62 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -246,6 +285,19 @@
 			);
 			path = ViewController;
 			sourceTree = "<group>";
+		};
+		53327975CAB349D09A8E6A0F /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				4A6A26FC444FD574816BCA8B /* Router */,
+				812C96F2B106A66032ABF84E /* View */,
+				902654B525E124A4433AB0E2 /* ViewController */,
+				1FE84BAB2E3E711777A5E33B /* ViewModel */,
+				95B1FA5B097979AF8769F441 /* Transactions.storyboard */,
+			);
+			name = Transactions;
+			path = MinterWallet/Classes/Transactions;
+			sourceTree = SOURCE_ROOT;
 		};
 		554983DC18543BEC2AB64E81 /* ViewController */ = {
 			isa = PBXGroup;
@@ -276,6 +328,13 @@
 			path = Router;
 			sourceTree = "<group>";
 		};
+		812C96F2B106A66032ABF84E /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		86BD82A415E14AAF85BFE7AF /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,6 +348,14 @@
 			children = (
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		902654B525E124A4433AB0E2 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				53FDB7932EC0D262280803AA /* TransactionsViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		94E10726A5655ADF5DB732C7 /* CreateWallet */ = {
@@ -357,12 +424,27 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		FA557E52207BA6ED0095459B /* HeaderFooter */ = {
+			isa = PBXGroup;
+			children = (
+				FA557E55207BA7490095459B /* DefaultHeader.swift */,
+				FA557E57207BA7560095459B /* DefaultHeader.xib */,
+			);
+			path = HeaderFooter;
+			sourceTree = "<group>";
+		};
 		FA5B9CC62073B63D00DC06F0 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */,
 				FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */,
 				FAC1E1CA2074D9840083333F /* BaseCell.swift */,
+				FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */,
+				FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */,
+				FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */,
+				FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */,
+				FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */,
+				FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -403,6 +485,7 @@
 				634C2BC9CCA0D92B7EDB196E /* Coins */,
 				94E10726A5655ADF5DB732C7 /* CreateWallet */,
 				32F3EFD7F6AC32D1CE8F9B79 /* Root */,
+				53327975CAB349D09A8E6A0F /* Transactions */,
 			);
 			path = MinterWallet;
 			sourceTree = "<group>";
@@ -474,9 +557,11 @@
 		FA669BA32072476300AD110A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FA557E52207BA6ED0095459B /* HeaderFooter */,
 				FA5B9CC62073B63D00DC06F0 /* Cells */,
 				FA669BCE207249D300AD110A /* DefaultButton.swift */,
 				FA835CCB207630A100BFC35A /* ValidatableTextField.swift */,
+				FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -643,6 +728,7 @@
 				FA669B75207239F200AD110A /* LaunchScreen.storyboard in Resources */,
 				FA669BC72072483100AD110A /* Ubuntu-B.ttf in Resources */,
 				FA669BCC2072483100AD110A /* Ubuntu-RI.ttf in Resources */,
+				FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */,
 				FA669BC42072483100AD110A /* Ubuntu-MI.ttf in Resources */,
 				FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */,
 				FA669B72207239F200AD110A /* Assets.xcassets in Resources */,
@@ -650,6 +736,8 @@
 				FA669BC52072483100AD110A /* Ubuntu-R.ttf in Resources */,
 				FA669BC82072483100AD110A /* Ubuntu-C.ttf in Resources */,
 				FA669BBF2072483100AD110A /* Ubuntu-L.ttf in Resources */,
+				FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */,
+				FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */,
 				A08CF6C1636FE9E554D1A14B /* Login.storyboard in Resources */,
 				FA669BC02072483100AD110A /* UbuntuMono-BI.ttf in Resources */,
 				FA669BC62072483100AD110A /* Ubuntu-LI.ttf in Resources */,
@@ -658,6 +746,8 @@
 				8FF7BCCC97FAB66AA4688C1B /* Coins.storyboard in Resources */,
 				15A1B86305F7B488825D223C /* CreateWallet.storyboard in Resources */,
 				6C405281D86D42CB85997A3F /* Root.storyboard in Resources */,
+				02A6A0A6DB602A40AB4A4C29 /* Transactions.storyboard in Resources */,
+				FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -706,6 +796,8 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/ExpandableCell/ExpandableCell.framework",
+				"${BUILT_PRODUCTS_DIR}/ExpyTableView/ExpyTableView.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterCore/MinterCore.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
@@ -719,6 +811,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableCell.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpyTableView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
@@ -769,10 +863,12 @@
 			files = (
 				FA669BD6207265D800AD110A /* Storyboards.swift in Sources */,
 				FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */,
+				FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */,
 				FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */,
 				FA669B69207239F200AD110A /* AppDelegate.swift in Sources */,
 				FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */,
 				FA669BA12072461700AD110A /* String+Localized.swift in Sources */,
+				FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */,
 				FA669BD32072601300AD110A /* UIColor+HEX.swift in Sources */,
 				FA669BD120724A1200AD110A /* UIFont+Default.swift in Sources */,
 				FA669BD9207267DA00AD110A /* BaseRouter.swift in Sources */,
@@ -784,17 +880,22 @@
 				BF9CD1287559A6F7E3AAD242 /* LoginViewModel.swift in Sources */,
 				FA835CCC207630A100BFC35A /* ValidatableTextField.swift in Sources */,
 				FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */,
+				FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */,
 				FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */,
 				FA669BDB2072687C00AD110A /* URL+Params.swift in Sources */,
 				FA669B9E207244FF00AD110A /* BaseViewController.swift in Sources */,
 				FA669B9C207244E300AD110A /* BaseViewModel.swift in Sources */,
 				332EB812C95C0592C6924E65 /* CoinsViewController.swift in Sources */,
+				FA835CCE2077BC9200BFC35A /* ScreenHeader.swift in Sources */,
 				D1CAF56CB50CFF293A1D7F1A /* CoinsViewModel.swift in Sources */,
 				2B4873CFE9E2F66FBBAADC30 /* CreateWalletViewController.swift in Sources */,
 				35C28F738CF2110198FBDD3C /* CreateWalletViewModel.swift in Sources */,
 				FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */,
 				D08EF152AB24CD864B6F2E40 /* RootViewController.swift in Sources */,
 				94B58309D085DACB65260018 /* RootViewModel.swift in Sources */,
+				FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */,
+				833CF747F604B61E37401C11 /* TransactionsViewController.swift in Sources */,
+				1091290DC26B4D7128B4DA92 /* TransactionsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
