@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="qNr-PD-H9p">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Title-->
+        <scene sceneID="bUu-aR-4Cp">
+            <objects>
+                <viewController id="qNr-PD-H9p" customClass="AddressViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0zS-uc-o1g"/>
+                        <viewControllerLayoutGuide type="bottom" id="JUD-Ay-MVT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="H5d-7O-wHL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="l7Q-eZ-ez1">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="qNr-PD-H9p" id="b8I-Ea-Wpv"/>
+                                    <outlet property="delegate" destination="qNr-PD-H9p" id="1JT-Fn-xFg"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="l7Q-eZ-ez1" secondAttribute="trailing" id="KHB-J1-bbK"/>
+                            <constraint firstItem="l7Q-eZ-ez1" firstAttribute="leading" secondItem="H5d-7O-wHL" secondAttribute="leading" id="m7b-i7-LTr"/>
+                            <constraint firstItem="JUD-Ay-MVT" firstAttribute="top" secondItem="l7Q-eZ-ez1" secondAttribute="bottom" id="pDo-X9-T9N"/>
+                            <constraint firstItem="l7Q-eZ-ez1" firstAttribute="top" secondItem="H5d-7O-wHL" secondAttribute="top" id="rSB-1n-MZa"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="6hI-Ok-PIx">
+                        <barButtonItem key="rightBarButtonItem" title="Add New" id="U8v-Kn-bPh" customClass="ActionBarButtonItem" customModule="MinterWallet" customModuleProvider="target"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="headerView" destination="zuQ-cu-38d" id="tBj-sm-NfM"/>
+                        <outlet property="tableView" destination="l7Q-eZ-ez1" id="DI9-PA-EfX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fea-8I-qGe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="zuQ-cu-38d">
+                    <rect key="frame" x="0.0" y="0.0" width="372" height="151"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25L-8b-FTq">
+                            <rect key="frame" x="20" y="20" width="332" height="131"/>
+                            <attributedString key="attributedText">
+                                <fragment>
+                                    <string key="content">Addresses are similar to bank accounts except for being operated only by you. 
+All funds are received and sent from Main Address which is linked to your profile data —@username, email, or mobile number.</string>
+                                    <attributes>
+                                        <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <font key="NSFont" size="14" name="Ubuntu"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                            <tabStops>
+                                                <textTab alignment="left" location="28">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="56">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="84">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="112">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="140">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="168">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="196">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="224">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="252">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="280">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="308">
+                                                    <options/>
+                                                </textTab>
+                                                <textTab alignment="left" location="336">
+                                                    <options/>
+                                                </textTab>
+                                            </tabStops>
+                                        </paragraphStyle>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="25L-8b-FTq" secondAttribute="bottom" id="2Lw-fi-w2L"/>
+                        <constraint firstAttribute="trailing" secondItem="25L-8b-FTq" secondAttribute="trailing" constant="20" id="Axl-k3-Nz3"/>
+                        <constraint firstItem="25L-8b-FTq" firstAttribute="leading" secondItem="zuQ-cu-38d" secondAttribute="leading" constant="20" id="Qby-gT-jGE"/>
+                        <constraint firstItem="25L-8b-FTq" firstAttribute="top" secondItem="zuQ-cu-38d" secondAttribute="top" constant="20" id="ote-MJ-bue"/>
+                    </constraints>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="189.59999999999999" y="164.16791604197903"/>
+        </scene>
+    </scenes>
+</document>
