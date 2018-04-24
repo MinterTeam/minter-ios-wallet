@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="qYw-04-4Gc">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Settings View Controller-->
+        <scene sceneID="YBr-Jz-oHy">
+            <objects>
+                <viewController id="rFi-rP-fAT" customClass="SettingsViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MXt-aO-Qad"/>
+                        <viewControllerLayoutGuide type="bottom" id="TZo-4b-pTs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fby-RK-oiJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2eP-vt-FlI">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="deviceRGB"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SettingsAvatarTableViewCell" rowHeight="90" id="DdU-dk-zr1" customClass="SettingsAvatarTableViewCell" customModule="MinterWallet" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DdU-dk-zr1" id="85M-T3-y6l">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AvatarPlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="SPb-JB-hBQ">
+                                                    <rect key="frame" x="20" y="20" width="50" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="3rY-rA-KsT"/>
+                                                        <constraint firstAttribute="height" constant="50" id="HsA-RE-nbv"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="01D-QP-fpg" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
+                                                    <rect key="frame" x="90" y="20" width="265" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="50" id="1M2-mM-qUG"/>
+                                                    </constraints>
+                                                    <state key="normal" title="CHANGE USERPIC"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="SPb-JB-hBQ" secondAttribute="bottom" constant="20" id="4Ai-QD-rEt"/>
+                                                <constraint firstAttribute="trailing" secondItem="01D-QP-fpg" secondAttribute="trailing" constant="20" id="D5d-X4-Msd"/>
+                                                <constraint firstItem="01D-QP-fpg" firstAttribute="leading" secondItem="SPb-JB-hBQ" secondAttribute="trailing" constant="20" id="DSw-Uv-l7p"/>
+                                                <constraint firstItem="01D-QP-fpg" firstAttribute="centerY" secondItem="SPb-JB-hBQ" secondAttribute="centerY" id="HIu-AP-qfC"/>
+                                                <constraint firstItem="SPb-JB-hBQ" firstAttribute="top" secondItem="85M-T3-y6l" secondAttribute="top" constant="20" id="MtX-Ly-ITc"/>
+                                                <constraint firstItem="SPb-JB-hBQ" firstAttribute="leading" secondItem="85M-T3-y6l" secondAttribute="leading" constant="20" id="k4p-vF-wYb"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="avatarImageView" destination="SPb-JB-hBQ" id="nkh-mO-RXC"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="rFi-rP-fAT" id="C4y-vN-Rpj"/>
+                                    <outlet property="delegate" destination="rFi-rP-fAT" id="ZR6-GQ-8aX"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="2eP-vt-FlI" firstAttribute="top" secondItem="fby-RK-oiJ" secondAttribute="top" id="9TP-lI-iWa"/>
+                            <constraint firstAttribute="trailing" secondItem="2eP-vt-FlI" secondAttribute="trailing" id="Au9-86-kpd"/>
+                            <constraint firstItem="2eP-vt-FlI" firstAttribute="leading" secondItem="fby-RK-oiJ" secondAttribute="leading" id="Kyn-zD-DpN"/>
+                            <constraint firstAttribute="bottom" secondItem="2eP-vt-FlI" secondAttribute="bottom" id="tpQ-4f-Crq"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="gqC-vx-zHX">
+                        <barButtonItem key="rightBarButtonItem" title="Log out" id="SCP-nx-g3D" customClass="ActionBarButtonItem" customModule="MinterWallet" customModuleProvider="target"/>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="tableView" destination="2eP-vt-FlI" id="ZXP-o1-QmM"/>
+                        <segue destination="bKa-GG-0Vs" kind="show" identifier="showAddress" id="jRI-ge-VRH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bNW-24-diw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1096.8" y="169.56521739130437"/>
+        </scene>
+        <!--Address-->
+        <scene sceneID="ZQb-c7-qm1">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Address" id="bKa-GG-0Vs" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Wn-pj-dxW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1862" y="169"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="w2E-De-aY9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qYw-04-4Gc" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Settings" image="tabbarSettingsIcon" id="zCA-O5-LLj"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="L0M-9m-dTx">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rFi-rP-fAT" kind="relationship" relationship="rootViewController" id="4zx-CN-2Xw"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f5P-pr-YrG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="157.59999999999999" y="169.56521739130437"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="AvatarPlaceholderImage" width="26" height="26"/>
+        <image name="tabbarSettingsIcon" width="20" height="20"/>
+    </resources>
+</document>

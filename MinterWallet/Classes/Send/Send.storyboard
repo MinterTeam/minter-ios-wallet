@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="tau-9U-uAc">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Send Coins-->
+        <scene sceneID="ut7-iY-7fL">
+            <objects>
+                <viewController id="G7S-Ax-D3H" customClass="SendViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="psE-mh-9l1"/>
+                        <viewControllerLayoutGuide type="bottom" id="xgc-eM-9AQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jXi-bZ-VS3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qe3-CG-9gR" customClass="TPKeyboardAvoidingTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="G7S-Ax-D3H" id="d1O-dn-5j9"/>
+                                    <outlet property="delegate" destination="G7S-Ax-D3H" id="L2m-jF-YJ8"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Qe3-CG-9gR" secondAttribute="bottom" id="ATn-3x-Ohc"/>
+                            <constraint firstAttribute="trailing" secondItem="Qe3-CG-9gR" secondAttribute="trailing" id="TtJ-rx-fpP"/>
+                            <constraint firstItem="Qe3-CG-9gR" firstAttribute="top" secondItem="jXi-bZ-VS3" secondAttribute="top" id="VvH-3D-Ntr"/>
+                            <constraint firstItem="Qe3-CG-9gR" firstAttribute="leading" secondItem="jXi-bZ-VS3" secondAttribute="leading" id="ht2-9o-QRl"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Send Coins" id="SdJ-9i-Q6W"/>
+                    <connections>
+                        <outlet property="tableView" destination="Qe3-CG-9gR" id="JSL-Zf-Coq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3R6-Et-dSc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1119.2" y="178.56071964017991"/>
+        </scene>
+        <!--Send-->
+        <scene sceneID="12l-BS-xai">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tau-9U-uAc" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Send" image="tabbarSendIcon" id="anr-ip-BZY">
+                        <color key="badgeColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                    </tabBarItem>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="WkR-Dp-Ufc">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="G7S-Ax-D3H" kind="relationship" relationship="rootViewController" id="sS0-BS-ToJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YZe-Kq-vTV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="180" y="178.56071964017991"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="tabbarSendIcon" width="30" height="26"/>
+    </resources>
+</document>
