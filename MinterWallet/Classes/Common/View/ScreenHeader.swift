@@ -33,17 +33,17 @@ class ScreenHeader: UIView {
 		}
 		
 		//если скролим вверх, то оставляем хедер неподвижным
-		if contentOffset.y <= -self.bounds.height - CGFloat(tableHeaderTopPadding) + topConstraintAdditionPadding {
-			delegate?.tableHeaderTopConstraint?.constant = -CGFloat(tableHeaderTopPadding)
+		let staticPosition = -self.bounds.height - CGFloat(tableHeaderTopPadding) + topConstraintAdditionPadding
+		if contentOffset.y <= staticPosition {
+			delegate?.tableHeaderTopConstraint?.constant = staticPosition
 		}
 		//если скролим хедер вниз
 		else {
 			//значение констрейнта при оффсете меньше чем высота хедера
-			let halfWayConstraint = -contentOffset.y - self.bounds.height - CGFloat(2.0*tableHeaderTopPadding) + topConstraintAdditionPadding
+			let halfWayConstraint = -contentOffset.y - self.bounds.height - CGFloat(tableHeaderTopPadding) + topConstraintAdditionPadding
 			//если скролим очень далеко, то скролим не дальше чем на высоту хедера + паддинга + высоты статус бара
 			let farAwayConstant = -self.bounds.height - CGFloat(tableHeaderTopPadding) + minHeight
-			let newConstant = max(halfWayConstraint, farAwayConstant)
-			
+			let newConstant = min(halfWayConstraint, farAwayConstant)
 			let oldConstant = delegate?.tableHeaderTopConstraint!.constant
 			if newConstant != oldConstant {
 				delegate?.tableHeaderTopConstraint?.constant = newConstant

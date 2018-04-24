@@ -9,17 +9,33 @@
 import UIKit
 
 
+protocol ButtonTableViewCellDelegate: class {
+	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell)
+}
+
+
 class ButtonTableViewCellItem : BaseCellItem {
 
 	var title: String?
+	
+	var buttonPattern: String?
 
 }
-
 
 
 class ButtonTableViewCell: BaseCell {
 
 	@IBOutlet weak var button: DefaultButton!
+	
+	//MARK: - IBActions
+	
+	@IBAction func buttonDidTap(_ sender: Any) {
+		delegate?.ButtonTableViewCellDidTap(self)
+	}
+	
+	//MARK: -
+	
+	weak var delegate: ButtonTableViewCellDelegate?
 	
 	//MARK: -
 	
@@ -36,6 +52,7 @@ class ButtonTableViewCell: BaseCell {
 	override func configure(item: BaseCellItem) {
 		if let buttonItem = item as? ButtonTableViewCellItem {
 			button?.setTitle(buttonItem.title, for: .normal)
+			button?.pattern = buttonItem.buttonPattern
 		}
 	}
     

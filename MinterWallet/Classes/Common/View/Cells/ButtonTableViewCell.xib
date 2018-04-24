@@ -28,6 +28,9 @@
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
                         </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="buttonDidTap:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="LOV-pB-3PT"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

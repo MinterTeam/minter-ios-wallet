@@ -16,11 +16,15 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="barTintColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="deviceRGB"/>
                         <color key="selectedImageTintColor" red="0.31372549019607843" green="0.1803921568627451" blue="0.76078431372549016" alpha="1" colorSpace="deviceRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="yzP-gV-dwW" kind="relationship" relationship="viewControllers" id="TMN-Ep-Nj4"/>
+                        <segue destination="pUy-hZ-nIc" kind="relationship" relationship="viewControllers" id="XiR-Ne-zNU"/>
+                        <segue destination="F0e-q6-om8" kind="relationship" relationship="viewControllers" id="2Kj-Ot-AdK"/>
+                        <segue destination="iVz-ys-Yo5" kind="relationship" relationship="viewControllers" id="Jnj-Z0-C86"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -31,11 +35,43 @@
         <scene sceneID="oCA-N1-mY8">
             <objects>
                 <viewControllerPlaceholder storyboardName="Coins" id="yzP-gV-dwW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Coins" image="circle" id="WTM-Ig-1sh"/>
+                    <tabBarItem key="tabBarItem" title="Coins" image="circle" badgeValue="1" selectedImage="circle" id="WTM-Ig-1sh">
+                        <color key="badgeColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                    </tabBarItem>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I1Z-iw-0kF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="761" y="-255"/>
+            <point key="canvasLocation" x="1014" y="-1"/>
+        </scene>
+        <!--Send-->
+        <scene sceneID="ebX-Wz-3rQ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Send" id="pUy-hZ-nIc" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Send" id="lIh-NI-xP1"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DwP-Ge-RXj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1010" y="48"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="Tzp-I0-poH">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" id="iVz-ys-Yo5" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="f7Q-Gj-JW5"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Rm-c4-dHW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1026" y="159"/>
+        </scene>
+        <!--Receive-->
+        <scene sceneID="qXN-DG-VR4">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Receive" id="F0e-q6-om8" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="JEV-Ig-uNN"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qmP-pP-kVM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1023" y="110"/>
         </scene>
     </scenes>
     <resources>

@@ -6,7 +6,10 @@ target 'MinterWallet' do
 		pod 'RxSwift'
 		pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
 		pod 'TPKeyboardAvoiding'
-		pod 'ExpandableCell', '1.2.0'
+		pod 'ExpandableCell', :path => '../ExpandableCell'
 		pod 'ExpyTableView'
+		pod 'AEAccordion'
+		pod 'McPicker'
+		pod 'ImagePicker'
 end
 

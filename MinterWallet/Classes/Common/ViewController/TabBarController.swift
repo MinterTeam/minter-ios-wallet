@@ -23,7 +23,17 @@ class TabBarController: UITabBarController {
 	//MARK: -
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
-		return .default
+		return .lightContent
+	}
+	
+	override var childViewControllerForStatusBarStyle: UIViewController? {
+		let vc = self.viewControllers?[safe: self.selectedIndex]
+		let navVC = vc as? UINavigationController
+		guard nil == navVC else {
+			return navVC?.visibleViewController
+		}
+		
+		return vc
 	}
 
 }

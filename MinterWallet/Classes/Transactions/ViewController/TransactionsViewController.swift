@@ -11,16 +11,7 @@ import ExpandableCell
 
 
 
-class TransactionsViewController: UIViewController, ExpandableDelegate {
-	
-	//MARK: -
-	
-	@IBOutlet weak var tableView: ExpandableTableView! {
-		didSet {
-			tableView.expandableDelegate = self
-			tableView.animation = .middle
-		}
-	}
+class TransactionsViewController: BaseTableViewController, UITableViewDataSource {
 	
 	//MARK: -
 	
@@ -33,76 +24,50 @@ class TransactionsViewController: UIViewController, ExpandableDelegate {
 		
 		self.title = viewModel.title
 		
+		self.tableView.tableFooterView = UIView()
+		
 		registerViews()
 	}
 	
 	func registerViews() {
+		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
-		tableView.register(UINib(nibName: "TransactionExpandedTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionExpandedTableViewCell")
+//		tableView.register(UINib(nibName: "TransactionExpandedTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionExpandedTableViewCell")
 	}
-	
-	//MARK: -
-	
-//	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//		return viewModel.rowsCount(for: section)
-//	}
-//
-//	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionTableViewCell") as? BaseCell else {
-//			return UITableViewCell()
-//		}
-//
-//		cell.configure(item: item)
-//		return cell
-//	}
-//
-//	func numberOfSections(in tableView: UITableView) -> Int {
-//		return viewModel.sectionsCount()
-//	}
 	
 	//MARK: - Expandable
 	
-	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionTableViewCell") as? BaseCell else {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		
+		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
 			return UITableViewCell()
 		}
 		
 		cell.configure(item: item)
+		
 		return cell
 	}
 	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return viewModel.rowsCount(for: section)
 	}
 	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return 54
-	}
-	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, expandedCellsForRowAt indexPath: IndexPath) -> [UITableViewCell]? {
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionExpandedTableViewCell") as? BaseCell else {
-			return []
+		if (viewModel.cellItem(section: indexPath.section, row: indexPath.row) as? SeparatorTableViewCellItem) != nil {
+			return 1
 		}
 		
-		cell.configure(item: item)
+		return expandedIndexPaths.contains(indexPath) ? 314 : 54
+	}
+	
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
-		return [cell]
-	}
-	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, heightsForExpandedRowAt indexPath: IndexPath) -> [CGFloat]? {
-		return [260]
-	}
-	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, didSelectRowAt indexPath: IndexPath) {
-		print("didSelectRow:\(indexPath)")
-//		tableView.open(at: indexPath)
-	}
-	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, didSelectExpandedRowAt indexPath: IndexPath) {
-		print("didSelectExpandedRowAt:\(indexPath)")
+		super.tableView(tableView, didSelectRowAt: indexPath)
+		
+		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+			return
+		}
 	}
 	
 

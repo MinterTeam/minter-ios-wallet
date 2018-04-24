@@ -24,6 +24,48 @@ protocol Storyboard {
 
 struct Storyboards {
 
+    struct Settings: Storyboard {
+
+        static let identifier = "Settings"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> UINavigationController {
+            return self.storyboard.instantiateInitialViewController() as! UINavigationController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
+    struct Popup: Storyboard {
+
+        static let identifier = "Popup"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> SendPopupViewController {
+            return self.storyboard.instantiateInitialViewController() as! SendPopupViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct CreateWallet: Storyboard {
 
         static let identifier = "CreateWallet"
@@ -70,6 +112,27 @@ struct Storyboards {
         }
     }
 
+    struct Receive: Storyboard {
+
+        static let identifier = "Receive"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> UIViewController {
+            return self.storyboard.instantiateInitialViewController()!
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct Transactions: Storyboard {
 
         static let identifier = "Transactions"
@@ -91,6 +154,27 @@ struct Storyboards {
         }
     }
 
+    struct Address: Storyboard {
+
+        static let identifier = "Address"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> AddressViewController {
+            return self.storyboard.instantiateInitialViewController() as! AddressViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct Root: Storyboard {
 
         static let identifier = "Root"
@@ -101,6 +185,27 @@ struct Storyboards {
 
         static func instantiateInitialViewController() -> RootViewController {
             return self.storyboard.instantiateInitialViewController() as! RootViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
+    struct Send: Storyboard {
+
+        static let identifier = "Send"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> UINavigationController {
+            return self.storyboard.instantiateInitialViewController() as! UINavigationController
         }
 
         static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
@@ -336,6 +441,69 @@ extension UITableView {
     }
 }
 
+// MARK: - SettingsViewController
+extension UIStoryboardSegue {
+    func selection() -> SettingsViewController.Segue? {
+        if let identifier = self.identifier {
+            return SettingsViewController.Segue(rawValue: identifier)
+        }
+        return nil
+    }
+}
+extension SettingsViewController {
+
+    enum Segue: String, CustomStringConvertible, SegueProtocol {
+        case showAddress = "showAddress"
+
+        var kind: SegueKind? {
+            switch self {
+            case .showAddress:
+                return SegueKind(rawValue: "show")
+            }
+        }
+
+        var destination: UIViewController.Type? {
+            switch self {
+            default:
+                assertionFailure("Unknown destination")
+                return nil
+            }
+        }
+
+        var identifier: String? { return self.rawValue }
+        var description: String { return "\(self.rawValue)" }
+    }
+
+}
+extension SettingsViewController {
+
+    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
+        case SettingsAvatarTableViewCell_ = "SettingsAvatarTableViewCell"
+
+        var kind: ReusableKind? {
+            switch self {
+            case .SettingsAvatarTableViewCell_:
+                return ReusableKind(rawValue: "tableViewCell")
+            }
+        }
+
+        var viewType: UIView.Type? {
+            switch self {
+            case .SettingsAvatarTableViewCell_:
+                return SettingsAvatarTableViewCell.self
+            }
+        }
+
+        var storyboardIdentifier: String? { return self.description }
+        var description: String { return self.rawValue }
+    }
+
+}
+
+// MARK: - SendPopupViewController
+
+// MARK: - CountdownPopupViewController
+
 // MARK: - CreateWalletViewController
 
 // MARK: - CoinsViewController
@@ -383,7 +551,11 @@ extension CoinsViewController {
 
 // MARK: - TransactionsViewController
 
+// MARK: - AddressViewController
+
 // MARK: - RootViewController
+
+// MARK: - SendViewController
 
 // MARK: - LoginViewController
 protocol LoginViewControllerIdentifiableProtocol: IdentifiableProtocol { }

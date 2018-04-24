@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Ubuntu-M.ttf">
+            <string>Ubuntu-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="91" id="KGk-i7-Jjw" customClass="PickerTableViewCell" customModule="MinterWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="401" height="91"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="401" height="90.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="35M-QI-6Qg">
+                        <rect key="frame" x="20" y="2" width="28" height="14"/>
+                        <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ehk-G2-9A7" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
+                        <rect key="frame" x="10" y="24.5" width="381" height="46"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="46" id="aHA-uS-T56"/>
+                        </constraints>
+                        <nil key="textColor"/>
+                        <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
+                        <textInputTraits key="textInputTraits"/>
+                        <connections>
+                            <outlet property="delegate" destination="KGk-i7-Jjw" id="q3P-yo-PqM"/>
+                        </connections>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Ehk-G2-9A7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="3kj-zE-MBa"/>
+                    <constraint firstAttribute="bottom" secondItem="Ehk-G2-9A7" secondAttribute="bottom" priority="999" constant="20" id="IDQ-2O-9nR"/>
+                    <constraint firstItem="35M-QI-6Qg" firstAttribute="leading" secondItem="Ehk-G2-9A7" secondAttribute="leading" constant="10" id="Jxk-rP-BOA"/>
+                    <constraint firstItem="Ehk-G2-9A7" firstAttribute="top" secondItem="35M-QI-6Qg" secondAttribute="bottom" constant="8" id="WLl-w4-jB7"/>
+                    <constraint firstAttribute="trailing" secondItem="Ehk-G2-9A7" secondAttribute="trailing" constant="10" id="fuf-u6-zSU"/>
+                    <constraint firstItem="35M-QI-6Qg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="jr1-R3-cAs"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="label" destination="35M-QI-6Qg" id="VlN-It-ge5"/>
+                <outlet property="selectField" destination="Ehk-G2-9A7" id="gun-xe-hxX"/>
+            </connections>
+            <point key="canvasLocation" x="-21.5" y="-102.5"/>
+        </tableViewCell>
+    </objects>
+</document>

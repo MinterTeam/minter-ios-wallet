@@ -41,7 +41,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLB-wf-Mef">
-                        <rect key="frame" x="20" y="96" width="26.5" height="14"/>
+                        <rect key="frame" x="20" y="96" width="25.5" height="14"/>
                         <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -96,13 +96,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MCD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mCa-hV-c6b">
-                        <rect key="frame" x="20" y="153.5" width="27" height="14"/>
+                        <rect key="frame" x="20" y="153.5" width="28" height="14"/>
                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehb-Me-OpA">
-                        <rect key="frame" x="190" y="139.5" width="44" height="14"/>
+                        <rect key="frame" x="190" y="139.5" width="42.5" height="14"/>
                         <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>

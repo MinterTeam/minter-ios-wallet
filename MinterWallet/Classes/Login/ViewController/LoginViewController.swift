@@ -31,7 +31,7 @@ class LoginViewController: BaseViewController {
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
-		return .default
+		return .lightContent
 	}
 
 }

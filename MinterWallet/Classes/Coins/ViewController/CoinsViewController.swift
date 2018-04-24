@@ -7,9 +7,13 @@
 //
 
 import UIKit
-import ExpandableCell
+//import ExpandableCell
+//import AEAccordion
 
-class CoinsViewController: BaseViewController, ScreenHeaderProtocol, ExpandableDelegate, UIScrollViewDelegate {
+
+
+class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITableViewDataSource {
+	
 
 	//MARK: -
 	
@@ -23,18 +27,19 @@ class CoinsViewController: BaseViewController, ScreenHeaderProtocol, ExpandableD
 		}
 	}
 	
-	@IBOutlet weak var tableView: ExpandableTableView! {
+	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
 			tableView.contentInset = UIEdgeInsetsMake(70, 0, 0, 0)
-			tableView.expandableDelegate = self
-			tableView.animation = .middle
+//			tableView.expandableDelegate = self
+//			tableView.animation = .middle
+//			tableView.scrollViewDelegate = self
 		}
 	}
 	
 	@IBOutlet var tableHeaderTopConstraint: NSLayoutConstraint?
 	
 	var tableHeaderTopPadding: Double {
-		return 0
+		return -70
 	}
 	
 	//MARK: -
@@ -48,123 +53,120 @@ class CoinsViewController: BaseViewController, ScreenHeaderProtocol, ExpandableD
 
 		self.usernameButton.titleLabel?.font = UIFont.boldFont(of: 14.0)
 		self.usernameButton.setTitleColor(.white, for: .normal)
+		
+		registerCells()
+		
+		shouldAnimateCellToggle = true
+		
+	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		//HACK: making the button's image to be at right
+		(self.navigationItem.rightBarButtonItem?.customView as? UIButton)?.semanticContentAttribute = .forceRightToLeft
+	}
+	
+	func registerCells() {
+		
 		tableView.register(UINib(nibName: "DefaultHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "DefaultHeader")
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
-		tableView.register(UINib(nibName: "TransactionExpandedTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionExpandedTableViewCell")
+		tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil), forCellReuseIdentifier: "CoinTableViewCell")
+		
 	}
 	
 	//MARK: -
 	
-//	func numberOfSections(in tableView: UITableView) -> Int {
-//		return viewModel.sectionsCount()
-//	}
-	
-//	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//		return viewModel.rowsCount(for: section)
-//	}
-	
-//	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
-//			return UITableViewCell()
-//		}
-//
-//		cell.configure(item: item)
-//		return cell
-//	}
-	
-	func numberOfSections(in expandableTableView: ExpandableTableView) -> Int {
+	func numberOfSections(in tableView: UITableView) -> Int {
 		return viewModel.sectionsCount()
 	}
 	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return viewModel.rowsCount(for: section)
 	}
 	
-	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		
-		guard let section = viewModel.section(index: section) else {
-			return UIView()
-		}
-		
-		let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DefaultHeader")
-		if let defaultHeader = header as? DefaultHeader {
-			defaultHeader.titleLabel.text = section.title
-		}
-		
-		return header
-	}
-	
-	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 52
-	}
-	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
-			return
-		}
-		
-		if item.identifier == "ButtonTableViewCell_Transactions" {
-			performSegue(withIdentifier: "showTransactions", sender: nil)
-		}
-	}
-	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
 			return UITableViewCell()
 		}
 		
 		cell.configure(item: item)
+		
+		if let buttonCell = cell as? ButtonTableViewCell {
+			buttonCell.delegate = self
+		}
+		
 		return cell
 	}
 	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return UITableViewAutomaticDimension
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+		guard let section = viewModel.section(index: section) else {
+			return UIView()
+		}
+
+		let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DefaultHeader")
+		if let defaultHeader = header as? DefaultHeader {
+			defaultHeader.titleLabel.text = section.title
+		}
+
+		return header
+	}
+
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return 52
+	}
+
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+		super.tableView(tableView, didSelectRowAt: indexPath)
+		
+		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+			return
+		}
+
+		if item.identifier == "ButtonTableViewCell_Transactions" {
+			//Move to router?
+			performSegue(withIdentifier: "showTransactions", sender: nil)
+		}
 	}
 	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, expandedCellsForRowAt indexPath: IndexPath) -> [UITableViewCell]? {
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionExpandedTableViewCell") as? BaseCell else {
-			return []
+		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+			if item.identifier == "ButtonTableViewCell_Transactions" {
+				return 70.0
+			}
 		}
 		
-		cell.configure(item: item)
-		
-		return [cell]
-	}
-	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, heightsForExpandedRowAt indexPath: IndexPath) -> [CGFloat]? {
-		return [260]
-	}
-	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, didSelectRowAt indexPath: IndexPath) {
-//		print("didSelectRow:\(indexPath)")
-		//		tableView.open(at: indexPath)
-	}
-	
-	func expandableTableView(_ expandableTableView: ExpandableTableView, didSelectExpandedRowAt indexPath: IndexPath) {
-//		print("didSelectExpandedRowAt:\(indexPath)")
+		return expandedIndexPaths.contains(indexPath) ? 314 : 54
 	}
 	
 	//MARK: - ScreenHeaderProtocol
-	
-//	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//		headerView?.updateHeaderViewFromScrollEvent(scrollView)
-//	}
 	
 	func additionalUpdateHeaderViewFromScrollEvent(_ scrollView: UIScrollView) {
 		
 	}
 
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		headerView?.updateHeaderViewFromScrollEvent(scrollView)
+	}
+
 }
 
-extension ExpandableTableView : UIScrollViewDelegate {
-	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		print(scrollView.contentOffset)
+extension CoinsViewController : ButtonTableViewCellDelegate {
+	
+	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		
+		guard let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else { return }
+		
+		if item.identifier == "ButtonTableViewCell_Transactions" {
+			performSegue(withIdentifier: "showTransactions", sender: nil)
+		}
+		
 	}
+	
 }
 

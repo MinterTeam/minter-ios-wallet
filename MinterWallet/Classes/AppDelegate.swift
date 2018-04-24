@@ -57,9 +57,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				NSAttributedStringKey.foregroundColor: UIColor.white
 			], for: .normal
 		)
+		UIBarButtonItem.appearance().setTitleTextAttributes([
+			NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
+			NSAttributedStringKey.foregroundColor: UIColor.white
+			], for: .highlighted
+		)
 		UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "BackIcon")
 		UINavigationBar.appearance().backIndicatorImage = UIImage(named: "BackIcon")
 		UINavigationBar.appearance().isTranslucent = false
+		
+		UITabBarItem.appearance().setTitleTextAttributes([
+			NSAttributedStringKey.foregroundColor : UIColor(hex: 0x8A8A8F)!,
+			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
+		], for: .normal)
+		UITabBarItem.appearance().setTitleTextAttributes([
+			NSAttributedStringKey.foregroundColor : UIColor(hex: 0x502EC2)!,
+			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
+		], for: .selected)
+		
+		
 	}
 
 

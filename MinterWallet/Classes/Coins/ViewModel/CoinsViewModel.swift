@@ -65,40 +65,37 @@ class CoinsViewModel: BaseViewModel {
 		
 		section.cells = [transaction1, transaction2, transaction3, button]
 		
+		
 		let section1 = BaseTableSectionItem()
 		section1.title = "MY COINS".localized()
 		
-		let transaction11 = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_11")
-		transaction11.title = "Starbucks"
-		transaction11.image = UIImage(named: "AvatarPlaceholderImage")
-		transaction11.date = Date()
-		transaction11.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction11.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction11.coin = "MCD"
-		transaction11.amount = 1000000
 		
-		let transaction12 = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_12")
-		transaction12.title = "Starbucks"
-		transaction12.image = UIImage(named: "AvatarPlaceholderImage")
-		transaction12.date = Date()
-		transaction12.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction12.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction12.coin = "MCD"
-		transaction12.amount = 100000
 		
-		let transaction13 = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_13")
-		transaction13.title = "McDonalds"
-		transaction13.image = UIImage(named: "AvatarPlaceholderImage")
-		transaction13.date = Date()
-		transaction13.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction13.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction13.coin = "MCD"
-		transaction13.amount = 10000
+		let coin1 = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_11")
+		coin1.title = "Starbucks"
+		coin1.image = UIImage(named: "AvatarPlaceholderImage")
+		coin1.date = Date()
+		coin1.coin = "MCD"
+		coin1.amount = 1
+		
+		let coin2 = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_12")
+		coin2.title = "Tesla"
+		coin2.image = UIImage(named: "AvatarPlaceholderImage")
+		coin2.date = Date()
+		coin2.coin = "TSL"
+		coin2.amount = 0.245654
+		
+		let coin3 = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_13")
+		coin3.title = "McDonalds"
+		coin3.image = UIImage(named: "AvatarPlaceholderImage")
+		coin3.date = Date()
+		coin3.coin = "MCD"
+		coin3.amount = 22.2234
 		
 		let button1 = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Convert")
 		button1.title = "CONVERT".localized()
 		
-		section1.cells = [transaction11, transaction12, transaction13, button1]
+		section1.cells = [coin1, coin2, coin3, button1]
 		
 		self.sections.append(section)
 		self.sections.append(section1)

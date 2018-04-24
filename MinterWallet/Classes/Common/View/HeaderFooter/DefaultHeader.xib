@@ -28,7 +28,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="VBJ-OA-h4b" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="LFC-hp-93t"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="VBJ-OA-h4b" secondAttribute="trailing" constant="10" id="QQN-KZ-BWI"/>

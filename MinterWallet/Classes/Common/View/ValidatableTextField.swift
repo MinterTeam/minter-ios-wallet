@@ -43,7 +43,7 @@ class ValidatableTextField: UITextField {
 	}
 
 	//MARK: -
-	
+
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		
@@ -67,6 +67,8 @@ class ValidatableTextField: UITextField {
 		super.awakeFromNib()
 	}
 	
+	//MARK: -
+	
 	override func editingRect(forBounds bounds: CGRect) -> CGRect {
 		let newLeftPadding = leftPadding + CGFloat(prefixView?.bounds.width ?? 0)
 		
@@ -86,14 +88,12 @@ class ValidatableTextField: UITextField {
 	override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
 		return CGRect(x: leftPadding, y: 0, width: prefixView?.bounds.width ?? 0, height: bounds.height)
 	}
-	
+
 }
 
 extension ValidatableTextField : UITextFieldDelegate {
 	
 	//MARK: - UITextField Delegate
-	
-
 	
 }
 

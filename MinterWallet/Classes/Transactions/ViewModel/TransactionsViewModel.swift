@@ -15,7 +15,7 @@ class TransactionsViewModel: BaseViewModel {
 	
 	var title: String {
 		get {
-			return "Transactions".localized()
+			return "All Transactions".localized()
 		}
 	}
 
@@ -26,6 +26,8 @@ class TransactionsViewModel: BaseViewModel {
 	}
 	
 	func createSections() {
+		
+		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
 		
 		let transaction = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell")
 		transaction.amount = 10
@@ -39,7 +41,7 @@ class TransactionsViewModel: BaseViewModel {
 		let section = BaseTableSectionItem()
 		section.title = "TODAY"
 		
-		section.cells = [transaction, transaction, transaction, transaction, transaction, transaction, transaction]
+		section.cells = [transaction, separator, transaction, separator, transaction, separator, transaction, separator, transaction, separator, transaction, separator, transaction, separator]
 		
 		sections.append(section)
 	}

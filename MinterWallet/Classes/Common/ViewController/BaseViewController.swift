@@ -17,3 +17,11 @@ class BaseViewController : UIViewController {
 	}
 
 }
+
+class BaseTableViewController : AccordionTableViewController {
+	
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		return .lightContent
+	}
+	
+}
