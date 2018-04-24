@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Ubuntu-B.ttf">
+            <string>Ubuntu-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="50" id="KGk-i7-Jjw" customClass="SwitchTableViewCell" customModule="MinterWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="426" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="426" height="49.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rKj-Xp-Dac">
+                        <rect key="frame" x="20" y="12" width="329" height="18"/>
+                        <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mUR-e5-nVq">
+                        <rect key="frame" x="359" y="5.5" width="53" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="51" id="wfM-lO-TJ7"/>
+                        </constraints>
+                        <color key="tintColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="onTintColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                    </switch>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="mUR-e5-nVq" firstAttribute="centerY" secondItem="rKj-Xp-Dac" secondAttribute="centerY" id="Dbo-cg-cft"/>
+                    <constraint firstItem="rKj-Xp-Dac" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="KVf-4z-82o"/>
+                    <constraint firstItem="mUR-e5-nVq" firstAttribute="leading" secondItem="rKj-Xp-Dac" secondAttribute="trailing" constant="10" id="USO-zp-Io9"/>
+                    <constraint firstItem="rKj-Xp-Dac" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="ih4-Qn-dAc"/>
+                    <constraint firstAttribute="bottom" secondItem="rKj-Xp-Dac" secondAttribute="bottom" priority="999" constant="20" id="qVM-pT-DdW"/>
+                    <constraint firstAttribute="trailing" secondItem="mUR-e5-nVq" secondAttribute="trailing" constant="16" id="vK4-7l-LH7"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="label" destination="rKj-Xp-Dac" id="H6R-Va-ZOm"/>
+                <outlet property="switch" destination="mUR-e5-nVq" id="QhV-AW-hJJ"/>
+            </connections>
+            <point key="canvasLocation" x="87" y="57"/>
+        </tableViewCell>
+    </objects>
+</document>
