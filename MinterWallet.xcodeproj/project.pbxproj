@@ -21,12 +21,15 @@
 		419C54AF2049C56F7120C6B2 /* Popup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C09A4EE7A2D51CB839CAABFF /* Popup.storyboard */; };
 		4CAD2C40F3ECF43BAE855D20 /* PopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A840EEC1F5676CEE8EB564 /* PopupViewModel.swift */; };
 		550C26104C6471B011F52123 /* AddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C3BD4FBAA0053E22D2D700 /* AddressViewController.swift */; };
+		65174A2CD47A619B9407EE4A /* AdvancedModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1939F242DE0C1FE08F95338D /* AdvancedModeViewModel.swift */; };
 		666A714F2D6D65435B13130A /* Pods_MinterWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B370097C074218EF14E46E22 /* Pods_MinterWallet.framework */; };
 		6C405281D86D42CB85997A3F /* Root.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F0861B418A65F5CA32B8596 /* Root.storyboard */; };
 		7E3C7A1AC5554EB64E0510A3 /* Address.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4109631C8E25BC33A2D147E /* Address.storyboard */; };
 		833CF747F604B61E37401C11 /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDB7932EC0D262280803AA /* TransactionsViewController.swift */; };
+		87C18150AF076473B806044A /* AdvancedMode.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62D86D306D7FE9C5ECAB1914 /* AdvancedMode.storyboard */; };
 		886A872ED336AA40162E4C11 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1EA41241735BB83566B6A /* PopupViewController.swift */; };
 		8FF7BCCC97FAB66AA4688C1B /* Coins.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73982ED5A99C92B1AC2B4148 /* Coins.storyboard */; };
+		932D4DBEAAA04834E8868AAF /* AdvancedModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EE8F71D02B1FC7F5DA60D5 /* AdvancedModeViewController.swift */; };
 		94B58309D085DACB65260018 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CBBA0275DD9F23803817F0 /* RootViewModel.swift */; };
 		9C6DD4F4A99B7274AF32C13A /* Receive.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFF737099C44B3ECC2135151 /* Receive.storyboard */; };
 		A08CF6C1636FE9E554D1A14B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25784C6ACDA695190875E917 /* Login.storyboard */; };
@@ -135,6 +138,7 @@
 /* Begin PBXFileReference section */
 		088EC129B1FBF3EE83B23AE0 /* CreateWalletViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewModel.swift; sourceTree = "<group>"; };
 		163841D5463C4C049F735C69 /* TransactionsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsViewModel.swift; sourceTree = "<group>"; };
+		1939F242DE0C1FE08F95338D /* AdvancedModeViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AdvancedModeViewModel.swift; sourceTree = "<group>"; };
 		25784C6ACDA695190875E917 /* Login.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		3BA1EA41241735BB83566B6A /* PopupViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		3F0861B418A65F5CA32B8596 /* Root.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Root.storyboard; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 		4C98D3564335955BF4ED896A /* AddressViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddressViewModel.swift; sourceTree = "<group>"; };
 		53FDB7932EC0D262280803AA /* TransactionsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
 		62C5BA76C2EA3B06D9F7D6F7 /* SettingsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		62D86D306D7FE9C5ECAB1914 /* AdvancedMode.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; path = AdvancedMode.storyboard; sourceTree = "<group>"; };
 		6719CF909F82E3872F3A93D9 /* LoginViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		73982ED5A99C92B1AC2B4148 /* Coins.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Coins.storyboard; sourceTree = "<group>"; };
 		7A971869C2A1BA233AE2C2A3 /* RootViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -157,6 +162,7 @@
 		B3CD518694233BEED9B6EE2B /* SendViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SendViewModel.swift; sourceTree = "<group>"; };
 		BFF737099C44B3ECC2135151 /* Receive.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Receive.storyboard; sourceTree = "<group>"; };
 		C09A4EE7A2D51CB839CAABFF /* Popup.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Popup.storyboard; sourceTree = "<group>"; };
+		C2EE8F71D02B1FC7F5DA60D5 /* AdvancedModeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AdvancedModeViewController.swift; sourceTree = "<group>"; };
 		C3CE2393C7B587A245B9687B /* Pods-MinterWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MinterWallet.release.xcconfig"; path = "Pods/Target Support Files/Pods-MinterWallet/Pods-MinterWallet.release.xcconfig"; sourceTree = "<group>"; };
 		C50E293D08418165A0E63D7D /* LoginViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C649F6A6F89A011B5F4521AD /* ReceiveViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReceiveViewModel.swift; sourceTree = "<group>"; };
@@ -314,6 +320,15 @@
 				163841D5463C4C049F735C69 /* TransactionsViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		204DE9B379334A8F0CF61A52 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C2EE8F71D02B1FC7F5DA60D5 /* AdvancedModeViewController.swift */,
+			);
+			name = ViewController;
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		205F02F7197774994EDD495C /* ViewModel */ = {
@@ -481,6 +496,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		791841CC54017333D3BD2E77 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			path = View;
+			sourceTree = "<group>";
+		};
 		7A2A3135D97A7398DEBC5B6E /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -509,6 +532,14 @@
 				D3A13B58DCBBFF6DC3A2EC4B /* CoinsViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		879B281C44B802447131EC34 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Router;
+			path = Router;
 			sourceTree = "<group>";
 		};
 		892D93705C4423CA41642FC7 /* View */ = {
@@ -656,6 +687,19 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		BF089A7BF5F3415FFF11CF4C /* AdvancedMode */ = {
+			isa = PBXGroup;
+			children = (
+				879B281C44B802447131EC34 /* Router */,
+				791841CC54017333D3BD2E77 /* View */,
+				204DE9B379334A8F0CF61A52 /* ViewController */,
+				F6D7438BCD06AA87383E8D8A /* ViewModel */,
+				62D86D306D7FE9C5ECAB1914 /* AdvancedMode.storyboard */,
+			);
+			name = AdvancedMode;
+			path = MinterWallet/Classes/AdvancedMode;
+			sourceTree = SOURCE_ROOT;
+		};
 		BF4B8A0892853419BDA2B9BC /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -707,6 +751,15 @@
 			children = (
 				FE933B2B31E592FF04BA244B /* CoinsViewModel.swift */,
 			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F6D7438BCD06AA87383E8D8A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1939F242DE0C1FE08F95338D /* AdvancedModeViewModel.swift */,
+			);
+			name = ViewModel;
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
@@ -804,6 +857,7 @@
 				F7385C5EE7CFAD97F88CD529 /* Receive */,
 				B05CA668FCAFDF33550C9139 /* Settings */,
 				94002D0AFFF4C5E044485CB9 /* Address */,
+				BF089A7BF5F3415FFF11CF4C /* AdvancedMode */,
 			);
 			path = MinterWallet;
 			sourceTree = "<group>";
@@ -1128,6 +1182,7 @@
 				9C6DD4F4A99B7274AF32C13A /* Receive.storyboard in Resources */,
 				DF95C2FD52E1D7EB13A9336F /* Settings.storyboard in Resources */,
 				7E3C7A1AC5554EB64E0510A3 /* Address.storyboard in Resources */,
+				87C18150AF076473B806044A /* AdvancedMode.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1310,6 +1365,8 @@
 				FAA26057208F7A55009FF3DE /* CountdownPopupViewModel.swift in Sources */,
 				1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */,
 				FAA26055208F7A37009FF3DE /* CountdownPopupViewController.swift in Sources */,
+				932D4DBEAAA04834E8868AAF /* AdvancedModeViewController.swift in Sources */,
+				65174A2CD47A619B9407EE4A /* AdvancedModeViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
