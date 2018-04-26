@@ -11,6 +11,17 @@ import UIKit
 @IBDesignable
 class DefaultButton: UIButton {
 	
+	@IBInspectable
+	dynamic open var animateButtonTouch: Bool = true {
+		didSet {
+			if animateButtonTouch {
+				self.addTarget(self, action: #selector(DefaultButton.animateButtonTouchDidTouchDown(_:)), for: UIControlEvents.touchDown)
+			} else {
+				self.removeTarget(self, action: #selector(DefaultButton.animateButtonTouchDidTouchDown(_:)), for: UIControlEvents.touchDown)
+			}
+		}
+	}
+	
 	//MARK: -
 	
 	@IBInspectable var pattern: String? {
@@ -45,9 +56,24 @@ class DefaultButton: UIButton {
 	//MARK: -
 
 	override func awakeFromNib() {
+		super.awakeFromNib()
+		
 		self.titleLabel?.font = UIFont.boldFont(of: 14.0)
 		self.layer.cornerRadius = 16.0
 		self.updateAppearance()
+		self.animateButtonTouch = true
+	}
+	
+	//MARK: -
+
+	@objc func animateButtonTouchDidTouchDown(_ sender: UIButton) {
+		UIView.animate(withDuration: 0.1, delay: 0.0, usingSpringWithDamping: 10, initialSpringVelocity: 1, options: [.allowUserInteraction], animations: { [weak self]() -> Void in
+			self?.transform = CGAffineTransform(scaleX: 1.01, y: 1.01)
+		}) { (result) -> Void in
+			UIView.animate(withDuration: 0.1, animations: { [weak self] () -> Void in
+				self?.transform = CGAffineTransform(scaleX: 1, y: 1)
+			})
+		}
 	}
 
 }

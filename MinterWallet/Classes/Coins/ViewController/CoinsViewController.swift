@@ -58,6 +58,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		
 		shouldAnimateCellToggle = true
 		
+		hidesBottomBarWhenPushed = false
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

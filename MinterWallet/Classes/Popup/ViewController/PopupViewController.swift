@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PopupViewController: BaseViewController {
+class PopupViewController: BaseViewController, CCMPlayNDropViewDelegate {
 
 	//MARK: - IBOutlets
 	
@@ -21,11 +21,7 @@ class PopupViewController: BaseViewController {
 		}
 	}
 	
-	@IBOutlet weak var popupView: UIView! {
-		didSet {
-			popupView.roundCorners([.allCorners], radius: 16.0)
-		}
-	}
+	@IBOutlet weak var popupView: DroppableView!
 	
 	//MARK: -
 	
@@ -35,6 +31,9 @@ class PopupViewController: BaseViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		popupView.delegate = self
+		
 	}
 	
 	//MARK: -
@@ -45,6 +44,12 @@ class PopupViewController: BaseViewController {
 	
 	override func viewWillLayoutSubviews() {
 		super.viewWillLayoutSubviews()
+	}
+	
+	//MARK: -
+	
+	func ccmPlayNDropViewDidFinishDismissAnimation(withDynamics view: CCMPlayNDropView!) {
+		self.dismiss(animated: true, completion: nil)
 	}
 
 }

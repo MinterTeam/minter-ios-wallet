@@ -10,6 +10,12 @@ import UIKit
 
 class AddressViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+		
+		self.hidesBottomBarWhenPushed = true
+	}
+	
 	//MARK: - IBOutlet
 	
 	@IBOutlet var headerView: UIView! {

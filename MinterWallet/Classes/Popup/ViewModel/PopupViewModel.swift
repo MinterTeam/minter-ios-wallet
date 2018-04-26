@@ -14,11 +14,7 @@ class PopupViewModel: BaseViewModel {
 	
 	var popupTitle: String?
 
-	var title: String {
-		get {
-			return "Popup".localized()
-		}
-	}
+	var title: String?
 	
 	//MARK: -
 

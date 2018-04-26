@@ -38,7 +38,6 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil), forCellReuseIdentifier: "SwitchTableViewCell")
 		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil), forCellReuseIdentifier: "TwoTitleTableViewCell")
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
-		tableView.register(UINib(nibName: "PickerTableViewCell", bundle: nil), forCellReuseIdentifier: "PickerTableViewCell")
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 	}
 	
@@ -96,17 +95,22 @@ extension SendViewController : ButtonTableViewCellDelegate {
 		sendVM.buttonTitle = "BIP!"
 		sendVM.cancelTitle = "CANCEL"
 		
+		let countdownVM = CountdownPopupViewModel()
+		countdownVM.popupTitle = "Please wait"
+		countdownVM.unit = (one: "second", two: "seconds", other: "seconds")
+		countdownVM.count = 20
+		countdownVM.desc1 = "Coins will be received in"
+		countdownVM.desc2 = "Too long? You can make a faster transaction for 0.00000001 BIP"
+		countdownVM.buttonTitle = "Express transaction"
+		
 		
 		let popup = Storyboards.Popup.instantiateInitialViewController()
 		popup.viewModel = sendVM
-		popup.modalPresentationStyle = .overCurrentContext
+		popup.modalPresentationStyle = .overFullScreen
 		popup.modalTransitionStyle = .crossDissolve
-		popup.hidesBottomBarWhenPushed = true
 		
+		self.tabBarController?.present(popup, animated: true, completion: nil)
 		
-		self.present(popup, animated: true) {
-			
-		}
 	}
 	
 }

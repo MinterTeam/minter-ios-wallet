@@ -6,7 +6,6 @@
 //  Copyright © 2018 Minter. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 
@@ -15,6 +14,10 @@ class BaseViewController : UIViewController {
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+	}
 
 }
 
@@ -22,6 +25,10 @@ class BaseTableViewController : AccordionTableViewController {
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
+	}
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
 	}
 	
 }

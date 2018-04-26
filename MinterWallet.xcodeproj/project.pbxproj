@@ -101,6 +101,8 @@
 		FAA26053208E30B9009FF3DE /* CoinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE7945B208E17BE0006CB0B /* CoinTableViewCell.swift */; };
 		FAA26055208F7A37009FF3DE /* CountdownPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA26054208F7A37009FF3DE /* CountdownPopupViewController.swift */; };
 		FAA26057208F7A55009FF3DE /* CountdownPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA26056208F7A55009FF3DE /* CountdownPopupViewModel.swift */; };
+		FAA2605C2092099B009FF3DE /* CCMPlayNDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA2605B20920999009FF3DE /* CCMPlayNDropView.m */; };
+		FAA2605E209209DE009FF3DE /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2605D209209DE009FF3DE /* DroppableView.swift */; };
 		FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */; };
 		FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C62074C4A20083333F /* BaseCellItem.swift */; };
 		FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C82074CEC90083333F /* Sugar.swift */; };
@@ -230,6 +232,10 @@
 		FAA234EE20872BF800F999DE /* SendPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPopupViewModel.swift; sourceTree = "<group>"; };
 		FAA26054208F7A37009FF3DE /* CountdownPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownPopupViewController.swift; sourceTree = "<group>"; };
 		FAA26056208F7A55009FF3DE /* CountdownPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownPopupViewModel.swift; sourceTree = "<group>"; };
+		FAA2605920920997009FF3DE /* MinterWallet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MinterWallet-Bridging-Header.h"; sourceTree = "<group>"; };
+		FAA2605A20920999009FF3DE /* CCMPlayNDropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMPlayNDropView.h; sourceTree = "<group>"; };
+		FAA2605B20920999009FF3DE /* CCMPlayNDropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMPlayNDropView.m; sourceTree = "<group>"; };
+		FAA2605D209209DE009FF3DE /* DroppableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppableView.swift; sourceTree = "<group>"; };
 		FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableSectionItem.swift; sourceTree = "<group>"; };
 		FAC1E1C62074C4A20083333F /* BaseCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellItem.swift; sourceTree = "<group>"; };
 		FAC1E1C82074CEC90083333F /* Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sugar.swift; sourceTree = "<group>"; };
@@ -788,6 +794,7 @@
 				FA669B71207239F200AD110A /* Assets.xcassets */,
 				FA669B73207239F200AD110A /* LaunchScreen.storyboard */,
 				FA669B76207239F200AD110A /* Info.plist */,
+				FAA2605920920997009FF3DE /* MinterWallet-Bridging-Header.h */,
 				634C2BC9CCA0D92B7EDB196E /* Coins */,
 				94E10726A5655ADF5DB732C7 /* CreateWallet */,
 				32F3EFD7F6AC32D1CE8F9B79 /* Root */,
@@ -877,6 +884,7 @@
 				FA7D98F7207E16B900193B8A /* SuperExpandableTableView.swift */,
 				FA89A79A20888D470019226D /* ShadowView.swift */,
 				FAE79459208DDC3F0006CB0B /* ActionBarButtonItem.swift */,
+				FAA2605D209209DE009FF3DE /* DroppableView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -927,6 +935,7 @@
 		FA7D98F9207F584700193B8A /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				FAA2605820920989009FF3DE /* PlayNDrop */,
 				FA7D98FB207F586F00193B8A /* AccordionTableView */,
 			);
 			path = "Third Party";
@@ -939,6 +948,15 @@
 				FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */,
 			);
 			path = AccordionTableView;
+			sourceTree = "<group>";
+		};
+		FAA2605820920989009FF3DE /* PlayNDrop */ = {
+			isa = PBXGroup;
+			children = (
+				FAA2605A20920999009FF3DE /* CCMPlayNDropView.h */,
+				FAA2605B20920999009FF3DE /* CCMPlayNDropView.m */,
+			);
+			path = PlayNDrop;
 			sourceTree = "<group>";
 		};
 		FAC1E1C32074C4650083333F /* Model */ = {
@@ -1032,6 +1050,7 @@
 				TargetAttributes = {
 					FA669B64207239F200AD110A = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 					};
 					FA669B7A207239F200AD110A = {
@@ -1232,6 +1251,7 @@
 				FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */,
 				FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */,
 				FAE794502088C38F0006CB0B /* DisclosureTableViewCell.swift in Sources */,
+				FAA2605E209209DE009FF3DE /* DroppableView.swift in Sources */,
 				FAE794522088DC010006CB0B /* SettingsAvatarTableViewCell.swift in Sources */,
 				FA669B69207239F200AD110A /* AppDelegate.swift in Sources */,
 				FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */,
@@ -1246,6 +1266,7 @@
 				FAA234EA2084A42A00F999DE /* PickerTableViewCell.swift in Sources */,
 				FA89A79B20888D470019226D /* ShadowView.swift in Sources */,
 				FA669BDD207269E700AD110A /* LoginRouter.swift in Sources */,
+				FAA2605C2092099B009FF3DE /* CCMPlayNDropView.m in Sources */,
 				FA669BCF207249D300AD110A /* DefaultButton.swift in Sources */,
 				FAA234ED20872BD000F999DE /* SendPopupViewController.swift in Sources */,
 				FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */,
@@ -1455,12 +1476,15 @@
 			baseConfigurationReference = 9F4435C23EB81E845B852C59 /* Pods-MinterWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65V4NDES7Y;
 				INFOPLIST_FILE = MinterWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.MinterWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MinterWallet/MinterWallet-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1471,12 +1495,14 @@
 			baseConfigurationReference = C3CE2393C7B587A245B9687B /* Pods-MinterWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65V4NDES7Y;
 				INFOPLIST_FILE = MinterWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.MinterWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MinterWallet/MinterWallet-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

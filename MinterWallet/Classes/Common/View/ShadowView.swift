@@ -10,9 +10,14 @@ import UIKit
 
 class ShadowView: UIView {
 	
+	//MARK: -
+	
 	var shadowLayer = CAShapeLayer()
 	
-	func dropShadow() {
+	//MARK: -
+	
+	private func dropShadow() {
+
 		shadowLayer.removeFromSuperlayer()
 		shadowLayer.frame = self.frame
 		shadowLayer.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: 16.0).cgPath
@@ -27,11 +32,12 @@ class ShadowView: UIView {
 		self.superview?.layer.insertSublayer(shadowLayer, at: 0)
 	}
 	
+	//MARK: -
+	
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
 		dropShadow()
 	}
 
-	
 }

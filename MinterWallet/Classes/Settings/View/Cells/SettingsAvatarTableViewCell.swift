@@ -10,11 +10,10 @@ import UIKit
 
 
 class SettingsAvatarTableViewCellItem : BaseCellItem {
-	
-	var avatar: UIImage?
-	
-}
 
+	var avatar: UIImage?
+
+}
 
 
 class SettingsAvatarTableViewCell: BaseCell {
@@ -23,11 +22,7 @@ class SettingsAvatarTableViewCell: BaseCell {
 
 	//MARK: -
 	
-	@IBOutlet weak var avatarImageView: UIImageView! {
-		didSet {
-			
-		}
-	}
+	@IBOutlet weak var avatarImageView: UIImageView!
 	
 	//MARK: -
 	

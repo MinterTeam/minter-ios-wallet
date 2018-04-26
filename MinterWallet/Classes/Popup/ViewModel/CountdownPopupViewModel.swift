@@ -15,7 +15,8 @@ class CountdownPopupViewModel : PopupViewModel {
 	
 	var unit: (one: String, two: String, other: String)?
 	
-	var desc: String?
+	var desc1: String?
+	var desc2: String?
 	
 	var buttonTitle: String?
 	

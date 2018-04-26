@@ -64,6 +64,10 @@ struct Storyboards {
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
         }
+
+        static func instantiateCountdownPopupViewController() -> CountdownPopupViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "CountdownPopupViewController") as! CountdownPopupViewController
+        }
     }
 
     struct CreateWallet: Storyboard {
@@ -503,6 +507,16 @@ extension SettingsViewController {
 // MARK: - SendPopupViewController
 
 // MARK: - CountdownPopupViewController
+protocol CountdownPopupViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension CountdownPopupViewController: CountdownPopupViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: CountdownPopupViewController {
+    var storyboardIdentifier: String? { return "CountdownPopupViewController" }
+    static var storyboardIdentifier: String? { return "CountdownPopupViewController" }
+}
+
+// MARK: - SendPopupViewController
 
 // MARK: - CreateWalletViewController
 

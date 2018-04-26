@@ -37,6 +37,8 @@ class SendPopupViewController: PopupViewController {
 	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
+		
+		hidesBottomBarWhenPushed = true
 	}
 	
 	//MARK: -

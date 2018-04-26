@@ -19,6 +19,12 @@ class TransactionsViewController: BaseTableViewController, UITableViewDataSource
 
 	// MARK: Life cycle
 	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+		
+		self.hidesBottomBarWhenPushed = true
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -32,7 +38,6 @@ class TransactionsViewController: BaseTableViewController, UITableViewDataSource
 	func registerViews() {
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
-//		tableView.register(UINib(nibName: "TransactionExpandedTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionExpandedTableViewCell")
 	}
 	
 	//MARK: - Expandable
