@@ -179,6 +179,27 @@ struct Storyboards {
         }
     }
 
+    struct AdvancedMode: Storyboard {
+
+        static let identifier = "AdvancedMode"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> AdvancedModeViewController {
+            return self.storyboard.instantiateInitialViewController() as! AdvancedModeViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct Root: Storyboard {
 
         static let identifier = "Root"
@@ -241,8 +262,8 @@ struct Storyboards {
             return self.storyboard.instantiateViewController(ofType: type)
         }
 
-        static func instantiateLoginViewController() -> LoginViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+        static func instantiateLoginViewController() -> HomeViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! HomeViewController
         }
     }
 
@@ -458,16 +479,36 @@ extension SettingsViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
         case showAddress = "showAddress"
+        case showUsername = "showUsername"
+        case showMobile = "showMobile"
+        case showEmail = "showEmail"
+        case showPassword = "showPassword"
 
         var kind: SegueKind? {
             switch self {
             case .showAddress:
+                return SegueKind(rawValue: "show")
+            case .showUsername:
+                return SegueKind(rawValue: "show")
+            case .showMobile:
+                return SegueKind(rawValue: "show")
+            case .showEmail:
+                return SegueKind(rawValue: "show")
+            case .showPassword:
                 return SegueKind(rawValue: "show")
             }
         }
 
         var destination: UIViewController.Type? {
             switch self {
+            case .showUsername:
+                return UsernameEditViewController.self
+            case .showMobile:
+                return MobileEditViewController.self
+            case .showEmail:
+                return EmailEditViewController.self
+            case .showPassword:
+                return PasswordEditViewController.self
             default:
                 assertionFailure("Unknown destination")
                 return nil
@@ -503,6 +544,14 @@ extension SettingsViewController {
     }
 
 }
+
+// MARK: - UsernameEditViewController
+
+// MARK: - MobileEditViewController
+
+// MARK: - EmailEditViewController
+
+// MARK: - PasswordEditViewController
 
 // MARK: - SendPopupViewController
 
@@ -566,20 +615,124 @@ extension CoinsViewController {
 // MARK: - TransactionsViewController
 
 // MARK: - AddressViewController
+extension UIStoryboardSegue {
+    func selection() -> AddressViewController.Segue? {
+        if let identifier = self.identifier {
+            return AddressViewController.Segue(rawValue: identifier)
+        }
+        return nil
+    }
+}
+extension AddressViewController {
+
+    enum Segue: String, CustomStringConvertible, SegueProtocol {
+        case showBalance = "showBalance"
+
+        var kind: SegueKind? {
+            switch self {
+            case .showBalance:
+                return SegueKind(rawValue: "show")
+            }
+        }
+
+        var destination: UIViewController.Type? {
+            switch self {
+            default:
+                assertionFailure("Unknown destination")
+                return nil
+            }
+        }
+
+        var identifier: String? { return self.rawValue }
+        var description: String { return "\(self.rawValue)" }
+    }
+
+}
+
+// MARK: - AdvancedModeViewController
+extension UIStoryboardSegue {
+    func selection() -> AdvancedModeViewController.Segue? {
+        if let identifier = self.identifier {
+            return AdvancedModeViewController.Segue(rawValue: identifier)
+        }
+        return nil
+    }
+}
+extension AdvancedModeViewController {
+
+    enum Segue: String, CustomStringConvertible, SegueProtocol {
+        case showGenerate = "showGenerate"
+
+        var kind: SegueKind? {
+            switch self {
+            case .showGenerate:
+                return SegueKind(rawValue: "show")
+            }
+        }
+
+        var destination: UIViewController.Type? {
+            switch self {
+            case .showGenerate:
+                return GenerateAddressViewController.self
+            }
+        }
+
+        var identifier: String? { return self.rawValue }
+        var description: String { return "\(self.rawValue)" }
+    }
+
+}
+
+// MARK: - GenerateAddressViewController
 
 // MARK: - RootViewController
 
 // MARK: - SendViewController
 
-// MARK: - LoginViewController
-protocol LoginViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+// MARK: - HomeViewController
+extension UIStoryboardSegue {
+    func selection() -> HomeViewController.Segue? {
+        if let identifier = self.identifier {
+            return HomeViewController.Segue(rawValue: identifier)
+        }
+        return nil
+    }
+}
+protocol HomeViewControllerIdentifiableProtocol: IdentifiableProtocol { }
 
-extension LoginViewController: LoginViewControllerIdentifiableProtocol { }
+extension HomeViewController: HomeViewControllerIdentifiableProtocol { }
 
-extension IdentifiableProtocol where Self: LoginViewController {
+extension IdentifiableProtocol where Self: HomeViewController {
     var storyboardIdentifier: String? { return "LoginViewController" }
     static var storyboardIdentifier: String? { return "LoginViewController" }
 }
+extension HomeViewController {
+
+    enum Segue: String, CustomStringConvertible, SegueProtocol {
+        case showAdvanced = "showAdvanced"
+
+        var kind: SegueKind? {
+            switch self {
+            case .showAdvanced:
+                return SegueKind(rawValue: "show")
+            }
+        }
+
+        var destination: UIViewController.Type? {
+            switch self {
+            default:
+                assertionFailure("Unknown destination")
+                return nil
+            }
+        }
+
+        var identifier: String? { return self.rawValue }
+        var description: String { return "\(self.rawValue)" }
+    }
+
+}
+
+// MARK: - LoginViewController
 
 // MARK: - TabBarController
 

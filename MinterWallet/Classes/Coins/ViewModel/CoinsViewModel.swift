@@ -33,23 +33,25 @@ class CoinsViewModel: BaseViewModel {
 		let section = BaseTableSectionItem()
 		section.title = "LATEST TRANSACTIONS".localized()
 		
+		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
+		
 		let transaction1 = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell")
 		transaction1.title = "Starbucks"
 		transaction1.image = UIImage(named: "AvatarPlaceholderImage")
 		transaction1.date = Date()
 		transaction1.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
 		transaction1.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction1.coin = "MCD"
-		transaction1.amount = 1000000
+		transaction1.coin = "STBCKS"
+		transaction1.amount = 10.01
 		
 		let transaction2 = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell")
-		transaction2.title = "Starbucks"
+		transaction2.title = "Tesla"
 		transaction2.image = UIImage(named: "AvatarPlaceholderImage")
 		transaction2.date = Date()
 		transaction2.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
 		transaction2.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction2.coin = "MCD"
-		transaction2.amount = 100000
+		transaction2.coin = "TSL"
+		transaction2.amount = 270000000000
 		
 		let transaction3 = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell")
 		transaction3.title = "McDonalds"
@@ -58,18 +60,16 @@ class CoinsViewModel: BaseViewModel {
 		transaction3.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
 		transaction3.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
 		transaction3.coin = "MCD"
-		transaction3.amount = 10000
+		transaction3.amount = -10000.42
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Transactions")
 		button.title = "ALL TRANSACTIONS".localized()
 		
-		section.cells = [transaction1, transaction2, transaction3, button]
+		section.cells = [transaction1, separator, transaction2, separator, transaction3, button]
 		
 		
 		let section1 = BaseTableSectionItem()
 		section1.title = "MY COINS".localized()
-		
-		
 		
 		let coin1 = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_11")
 		coin1.title = "Starbucks"
@@ -95,7 +95,7 @@ class CoinsViewModel: BaseViewModel {
 		let button1 = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Convert")
 		button1.title = "CONVERT".localized()
 		
-		section1.cells = [coin1, coin2, coin3, button1]
+		section1.cells = [coin1, separator, coin2, separator, coin3, button1]
 		
 		self.sections.append(section)
 		self.sections.append(section1)

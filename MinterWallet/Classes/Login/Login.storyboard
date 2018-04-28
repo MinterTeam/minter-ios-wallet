@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QJx-xv-bsg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QJx-xv-bsg">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Login View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="ln5-Bj-u7S">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="M8D-CJ-y5f" customClass="LoginViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="M8D-CJ-y5f" customClass="HomeViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="q9E-BZ-fFk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -31,10 +31,13 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="xKo-RV-fxR"/>
                                 </constraints>
-                                <state key="normal" title="RESTORE"/>
+                                <state key="normal" title="SIGN IN"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="transparent"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="6jw-cc-3y2" kind="show" id="AwD-D3-eKA"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fcS-ck-472" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
                                 <rect key="frame" x="192.5" y="597" width="172.5" height="50"/>
@@ -56,6 +59,9 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="transparent"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="r5L-Yw-Fq7" kind="show" identifier="showAdvanced" id="lId-Sb-edl"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iOM-tb-IdR" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
                                 <rect key="frame" x="10" y="477" width="355" height="50"/>
@@ -94,13 +100,55 @@
             </objects>
             <point key="canvasLocation" x="436" y="169.56521739130437"/>
         </scene>
+        <!--Login View Controller-->
+        <scene sceneID="Ccy-ju-q61">
+            <objects>
+                <viewController id="6jw-cc-3y2" customClass="LoginViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZhI-ti-ms2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="VPf-SI-Q1v">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="6jw-cc-3y2" id="8nf-Ly-CKd"/>
+                                    <outlet property="delegate" destination="6jw-cc-3y2" id="g0o-97-Lzc"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="VPf-SI-Q1v" firstAttribute="top" secondItem="ZhI-ti-ms2" secondAttribute="top" id="Jbi-nR-7Eu"/>
+                            <constraint firstAttribute="trailing" secondItem="VPf-SI-Q1v" secondAttribute="trailing" id="e0V-LV-aNh"/>
+                            <constraint firstAttribute="bottom" secondItem="VPf-SI-Q1v" secondAttribute="bottom" id="jQY-iq-R9s"/>
+                            <constraint firstItem="VPf-SI-Q1v" firstAttribute="leading" secondItem="ZhI-ti-ms2" secondAttribute="leading" id="pQv-Wm-GA1"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="JXk-4b-zJW"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="VPf-SI-Q1v" id="Cqz-oq-7uJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5es-v2-d4t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="436" y="984.55772113943033"/>
+        </scene>
         <!--CreateWallet-->
         <scene sceneID="OCH-IH-XYx">
             <objects>
                 <viewControllerPlaceholder storyboardName="CreateWallet" id="QUp-i0-ZCp" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SAP-KZ-4QI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1356.8" y="168.21589205397302"/>
+            <point key="canvasLocation" x="1387" y="146"/>
+        </scene>
+        <!--AdvancedMode-->
+        <scene sceneID="TmP-ZB-IBZ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="AdvancedMode" id="r5L-Yw-Fq7" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VlK-cN-lXd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1400" y="192"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="eRr-Co-7K6">

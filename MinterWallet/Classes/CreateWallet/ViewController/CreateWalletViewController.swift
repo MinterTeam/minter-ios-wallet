@@ -57,7 +57,7 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate, UITab
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: "TextFieldTableViewCell", for: indexPath) as? BaseCell else {
+		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
 			return UITableViewCell()
 		}
 		
@@ -76,5 +76,4 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate, UITab
 			}
 		}
 	}
-
 }

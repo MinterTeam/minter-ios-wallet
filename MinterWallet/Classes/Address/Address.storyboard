@@ -32,9 +32,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="l7Q-eZ-ez1" secondAttribute="bottom" id="3TC-td-FmE"/>
                             <constraint firstAttribute="trailing" secondItem="l7Q-eZ-ez1" secondAttribute="trailing" id="KHB-J1-bbK"/>
                             <constraint firstItem="l7Q-eZ-ez1" firstAttribute="leading" secondItem="H5d-7O-wHL" secondAttribute="leading" id="m7b-i7-LTr"/>
-                            <constraint firstItem="JUD-Ay-MVT" firstAttribute="top" secondItem="l7Q-eZ-ez1" secondAttribute="bottom" id="pDo-X9-T9N"/>
                             <constraint firstItem="l7Q-eZ-ez1" firstAttribute="top" secondItem="H5d-7O-wHL" secondAttribute="top" id="rSB-1n-MZa"/>
                         </constraints>
                     </view>
@@ -44,6 +44,7 @@
                     <connections>
                         <outlet property="headerView" destination="zuQ-cu-38d" id="tBj-sm-NfM"/>
                         <outlet property="tableView" destination="l7Q-eZ-ez1" id="DI9-PA-EfX"/>
+                        <segue destination="5RV-5V-HNQ" kind="show" identifier="showBalance" id="y8B-MW-yqr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fea-8I-qGe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -60,46 +61,7 @@ All funds are received and sent from Main Address which is linked to your profil
                                     <attributes>
                                         <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <font key="NSFont" size="14" name="Ubuntu"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                            <tabStops>
-                                                <textTab alignment="left" location="28">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="56">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="84">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="112">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="140">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="168">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="196">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="224">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="252">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="280">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="308">
-                                                    <options/>
-                                                </textTab>
-                                                <textTab alignment="left" location="336">
-                                                    <options/>
-                                                </textTab>
-                                            </tabStops>
-                                        </paragraphStyle>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                     </attributes>
                                 </fragment>
                             </attributedString>
@@ -116,6 +78,14 @@ All funds are received and sent from Main Address which is linked to your profil
                 </view>
             </objects>
             <point key="canvasLocation" x="189.59999999999999" y="164.16791604197903"/>
+        </scene>
+        <!--Transactions-->
+        <scene sceneID="Ioa-7T-woO">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Transactions" id="5RV-5V-HNQ" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dr2-l2-G6H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="894" y="164"/>
         </scene>
     </scenes>
 </document>

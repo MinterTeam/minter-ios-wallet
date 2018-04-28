@@ -50,6 +50,7 @@ class SendViewModel: BaseViewModel {
 		
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
 		
+		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: "BlankTableViewCell")
 		
 		let sendForFree = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell", identifier: "SwitchTableViewCell")
 		sendForFree.title = "Send for free!".localized()
@@ -60,19 +61,19 @@ class SendViewModel: BaseViewModel {
 		
 		
 		let section = FormSectionItem()
-		section.cells = [coin, username, amount, fee, separator, sendForFree, separator, button]
+		section.cells = [coin, username, amount, fee, separator, blank, sendForFree, separator, blank, button]
 		sections.append(section)
 	}
 
-//MARK: - Rows
+	//MARK: - Rows
 
-func rowsCount(for section: Int) -> Int {
-	return sections[safe: section]?.cells.count ?? 0
-}
+	func rowsCount(for section: Int) -> Int {
+		return sections[safe: section]?.cells.count ?? 0
+	}
 
-func cellItem(section: Int, row: Int) -> BaseCellItem? {
-	return sections[safe: section]?.cells[safe: row]
-}
+	func cellItem(section: Int, row: Int) -> BaseCellItem? {
+		return sections[safe: section]?.cells[safe: row]
+	}
 	
 	
 }

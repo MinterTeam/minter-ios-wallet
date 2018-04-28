@@ -106,6 +106,28 @@
 		FAA26057208F7A55009FF3DE /* CountdownPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA26056208F7A55009FF3DE /* CountdownPopupViewModel.swift */; };
 		FAA2605C2092099B009FF3DE /* CCMPlayNDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA2605B20920999009FF3DE /* CCMPlayNDropView.m */; };
 		FAA2605E209209DE009FF3DE /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2605D209209DE009FF3DE /* DroppableView.swift */; };
+		FAA2606120923634009FF3DE /* AddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2605F20923634009FF3DE /* AddressTableViewCell.swift */; };
+		FAA2606220923634009FF3DE /* AddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA2606020923634009FF3DE /* AddressTableViewCell.xib */; };
+		FAA2606420930B8A009FF3DE /* UsernameEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606320930B8A009FF3DE /* UsernameEditViewController.swift */; };
+		FAA2606620930C68009FF3DE /* UsernameEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606520930C68009FF3DE /* UsernameEditViewModel.swift */; };
+		FAA26068209311C2009FF3DE /* MobileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA26067209311C2009FF3DE /* MobileEditViewController.swift */; };
+		FAA2606A20931370009FF3DE /* MobileEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606920931370009FF3DE /* MobileEditViewModel.swift */; };
+		FAA2606C20931A56009FF3DE /* EmailEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606B20931A56009FF3DE /* EmailEditViewController.swift */; };
+		FAA2606E20931A89009FF3DE /* EmailEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606D20931A89009FF3DE /* EmailEditViewModel.swift */; };
+		FAA2607020931D2F009FF3DE /* PasswordEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606F20931D2F009FF3DE /* PasswordEditViewController.swift */; };
+		FAA2607220931D41009FF3DE /* PasswordEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2607120931D41009FF3DE /* PasswordEditViewModel.swift */; };
+		FAA2607520932641009FF3DE /* BlankTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2607320932641009FF3DE /* BlankTableViewCell.swift */; };
+		FAA2607620932641009FF3DE /* BlankTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA2607420932641009FF3DE /* BlankTableViewCell.xib */; };
+		FAA2607820933984009FF3DE /* GrowingDefaultTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2607720933984009FF3DE /* GrowingDefaultTextView.swift */; };
+		FAA2607A20935201009FF3DE /* GenerateAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2607920935201009FF3DE /* GenerateAddressViewController.swift */; };
+		FAA2607C209355BD009FF3DE /* GenerateAddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2607B209355BD009FF3DE /* GenerateAddressViewModel.swift */; };
+		FAA2607F20935C36009FF3DE /* GenerateAddressLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2607D20935C36009FF3DE /* GenerateAddressLabelTableViewCell.swift */; };
+		FAA2608020935C36009FF3DE /* GenerateAddressLabelTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA2607E20935C36009FF3DE /* GenerateAddressLabelTableViewCell.xib */; };
+		FAA2608320935E8B009FF3DE /* GenerateAddressSeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608120935E8B009FF3DE /* GenerateAddressSeedTableViewCell.swift */; };
+		FAA2608420935E8B009FF3DE /* GenerateAddressSeedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA2608220935E8B009FF3DE /* GenerateAddressSeedTableViewCell.xib */; };
+		FAA2608620946456009FF3DE /* UIViewController+HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608520946456009FF3DE /* UIViewController+HideKeyboard.swift */; };
+		FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */; };
+		FAA2608B2094ABA7009FF3DE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */; };
 		FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */; };
 		FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C62074C4A20083333F /* BaseCellItem.swift */; };
 		FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C82074CEC90083333F /* Sugar.swift */; };
@@ -147,7 +169,7 @@
 		4C98D3564335955BF4ED896A /* AddressViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddressViewModel.swift; sourceTree = "<group>"; };
 		53FDB7932EC0D262280803AA /* TransactionsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
 		62C5BA76C2EA3B06D9F7D6F7 /* SettingsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		62D86D306D7FE9C5ECAB1914 /* AdvancedMode.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; path = AdvancedMode.storyboard; sourceTree = "<group>"; };
+		62D86D306D7FE9C5ECAB1914 /* AdvancedMode.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = AdvancedMode.storyboard; sourceTree = "<group>"; };
 		6719CF909F82E3872F3A93D9 /* LoginViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		73982ED5A99C92B1AC2B4148 /* Coins.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Coins.storyboard; sourceTree = "<group>"; };
 		7A971869C2A1BA233AE2C2A3 /* RootViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -242,6 +264,28 @@
 		FAA2605A20920999009FF3DE /* CCMPlayNDropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMPlayNDropView.h; sourceTree = "<group>"; };
 		FAA2605B20920999009FF3DE /* CCMPlayNDropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMPlayNDropView.m; sourceTree = "<group>"; };
 		FAA2605D209209DE009FF3DE /* DroppableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppableView.swift; sourceTree = "<group>"; };
+		FAA2605F20923634009FF3DE /* AddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTableViewCell.swift; sourceTree = "<group>"; };
+		FAA2606020923634009FF3DE /* AddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTableViewCell.xib; sourceTree = "<group>"; };
+		FAA2606320930B8A009FF3DE /* UsernameEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameEditViewController.swift; sourceTree = "<group>"; };
+		FAA2606520930C68009FF3DE /* UsernameEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameEditViewModel.swift; sourceTree = "<group>"; };
+		FAA26067209311C2009FF3DE /* MobileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileEditViewController.swift; sourceTree = "<group>"; };
+		FAA2606920931370009FF3DE /* MobileEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileEditViewModel.swift; sourceTree = "<group>"; };
+		FAA2606B20931A56009FF3DE /* EmailEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailEditViewController.swift; sourceTree = "<group>"; };
+		FAA2606D20931A89009FF3DE /* EmailEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailEditViewModel.swift; sourceTree = "<group>"; };
+		FAA2606F20931D2F009FF3DE /* PasswordEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordEditViewController.swift; sourceTree = "<group>"; };
+		FAA2607120931D41009FF3DE /* PasswordEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordEditViewModel.swift; sourceTree = "<group>"; };
+		FAA2607320932641009FF3DE /* BlankTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankTableViewCell.swift; sourceTree = "<group>"; };
+		FAA2607420932641009FF3DE /* BlankTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlankTableViewCell.xib; sourceTree = "<group>"; };
+		FAA2607720933984009FF3DE /* GrowingDefaultTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingDefaultTextView.swift; sourceTree = "<group>"; };
+		FAA2607920935201009FF3DE /* GenerateAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateAddressViewController.swift; sourceTree = "<group>"; };
+		FAA2607B209355BD009FF3DE /* GenerateAddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateAddressViewModel.swift; sourceTree = "<group>"; };
+		FAA2607D20935C36009FF3DE /* GenerateAddressLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateAddressLabelTableViewCell.swift; sourceTree = "<group>"; };
+		FAA2607E20935C36009FF3DE /* GenerateAddressLabelTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenerateAddressLabelTableViewCell.xib; sourceTree = "<group>"; };
+		FAA2608120935E8B009FF3DE /* GenerateAddressSeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateAddressSeedTableViewCell.swift; sourceTree = "<group>"; };
+		FAA2608220935E8B009FF3DE /* GenerateAddressSeedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenerateAddressSeedTableViewCell.xib; sourceTree = "<group>"; };
+		FAA2608520946456009FF3DE /* UIViewController+HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+HideKeyboard.swift"; sourceTree = "<group>"; };
+		FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyNumberFormatter.swift; sourceTree = "<group>"; };
+		FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableSectionItem.swift; sourceTree = "<group>"; };
 		FAC1E1C62074C4A20083333F /* BaseCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellItem.swift; sourceTree = "<group>"; };
 		FAC1E1C82074CEC90083333F /* Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sugar.swift; sourceTree = "<group>"; };
@@ -326,8 +370,8 @@
 			isa = PBXGroup;
 			children = (
 				C2EE8F71D02B1FC7F5DA60D5 /* AdvancedModeViewController.swift */,
+				FAA2607920935201009FF3DE /* GenerateAddressViewController.swift */,
 			);
-			name = ViewController;
 			path = ViewController;
 			sourceTree = "<group>";
 		};
@@ -378,6 +422,10 @@
 			isa = PBXGroup;
 			children = (
 				990C3B74651449146698C1EC /* SettingsViewController.swift */,
+				FAA2606320930B8A009FF3DE /* UsernameEditViewController.swift */,
+				FAA26067209311C2009FF3DE /* MobileEditViewController.swift */,
+				FAA2606B20931A56009FF3DE /* EmailEditViewController.swift */,
+				FAA2606F20931D2F009FF3DE /* PasswordEditViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -401,6 +449,10 @@
 			isa = PBXGroup;
 			children = (
 				62C5BA76C2EA3B06D9F7D6F7 /* SettingsViewModel.swift */,
+				FAA2606520930C68009FF3DE /* UsernameEditViewModel.swift */,
+				FAA2606920931370009FF3DE /* MobileEditViewModel.swift */,
+				FAA2606D20931A89009FF3DE /* EmailEditViewModel.swift */,
+				FAA2607120931D41009FF3DE /* PasswordEditViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -436,6 +488,7 @@
 		5307A633844F5C837F0F3810 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */,
 				C50E293D08418165A0E63D7D /* LoginViewController.swift */,
 			);
 			path = ViewController;
@@ -492,6 +545,8 @@
 		6ECF423484D107ACC80D9994 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FAA2605F20923634009FF3DE /* AddressTableViewCell.swift */,
+				FAA2606020923634009FF3DE /* AddressTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -499,8 +554,11 @@
 		791841CC54017333D3BD2E77 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FAA2607D20935C36009FF3DE /* GenerateAddressLabelTableViewCell.swift */,
+				FAA2607E20935C36009FF3DE /* GenerateAddressLabelTableViewCell.xib */,
+				FAA2608120935E8B009FF3DE /* GenerateAddressSeedTableViewCell.swift */,
+				FAA2608220935E8B009FF3DE /* GenerateAddressSeedTableViewCell.xib */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -538,7 +596,6 @@
 			isa = PBXGroup;
 			children = (
 			);
-			name = Router;
 			path = Router;
 			sourceTree = "<group>";
 		};
@@ -758,8 +815,8 @@
 			isa = PBXGroup;
 			children = (
 				1939F242DE0C1FE08F95338D /* AdvancedModeViewModel.swift */,
+				FAA2607B209355BD009FF3DE /* GenerateAddressViewModel.swift */,
 			);
-			name = ViewModel;
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
@@ -809,6 +866,8 @@
 				FAA234E92084A42A00F999DE /* PickerTableViewCell.xib */,
 				FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */,
 				FAE794532089F5170006CB0B /* DisclosureTableViewCell.xib */,
+				FAA2607320932641009FF3DE /* BlankTableViewCell.swift */,
+				FAA2607420932641009FF3DE /* BlankTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -914,6 +973,7 @@
 		FA669B9F2072460700AD110A /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				FAA2608720946924009FF3DE /* Formatters */,
 				FA669BA02072461700AD110A /* String+Localized.swift */,
 				FA669BD020724A1200AD110A /* UIFont+Default.swift */,
 				FA669BD22072601300AD110A /* UIColor+HEX.swift */,
@@ -923,6 +983,7 @@
 				FAC1E1C82074CEC90083333F /* Sugar.swift */,
 				FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */,
 				FA89A79820873A280019226D /* UIView+Roundify.swift */,
+				FAA2608520946456009FF3DE /* UIViewController+HideKeyboard.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -939,6 +1000,7 @@
 				FA89A79A20888D470019226D /* ShadowView.swift */,
 				FAE79459208DDC3F0006CB0B /* ActionBarButtonItem.swift */,
 				FAA2605D209209DE009FF3DE /* DroppableView.swift */,
+				FAA2607720933984009FF3DE /* GrowingDefaultTextView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1011,6 +1073,14 @@
 				FAA2605B20920999009FF3DE /* CCMPlayNDropView.m */,
 			);
 			path = PlayNDrop;
+			sourceTree = "<group>";
+		};
+		FAA2608720946924009FF3DE /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */,
+			);
+			path = Formatters;
 			sourceTree = "<group>";
 		};
 		FAC1E1C32074C4650083333F /* Model */ = {
@@ -1145,6 +1215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA669BCB2072483100AD110A /* UbuntuMono-R.ttf in Resources */,
+				FAA2608420935E8B009FF3DE /* GenerateAddressSeedTableViewCell.xib in Resources */,
 				FA669BC12072483100AD110A /* Ubuntu-BI.ttf in Resources */,
 				FA669BBC2072483100AD110A /* Ubuntu-M.ttf in Resources */,
 				FAE79458208DC73A0006CB0B /* SettingsSwitchTableViewCell.xib in Resources */,
@@ -1155,6 +1226,7 @@
 				FA669BC42072483100AD110A /* Ubuntu-MI.ttf in Resources */,
 				FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */,
 				FAA234E72084A26900F999DE /* SeparatorTableViewCell.xib in Resources */,
+				FAA2607620932641009FF3DE /* BlankTableViewCell.xib in Resources */,
 				FA669B72207239F200AD110A /* Assets.xcassets in Resources */,
 				FA669B70207239F200AD110A /* Main.storyboard in Resources */,
 				FA669BC52072483100AD110A /* Ubuntu-R.ttf in Resources */,
@@ -1170,8 +1242,10 @@
 				FA669BC62072483100AD110A /* Ubuntu-LI.ttf in Resources */,
 				FA669BCA2072483100AD110A /* UbuntuMono-RI.ttf in Resources */,
 				FA669BCD2072483100AD110A /* UbuntuMono-B.ttf in Resources */,
+				FAA2606220923634009FF3DE /* AddressTableViewCell.xib in Resources */,
 				8FF7BCCC97FAB66AA4688C1B /* Coins.storyboard in Resources */,
 				15A1B86305F7B488825D223C /* CreateWallet.storyboard in Resources */,
+				FAA2608020935C36009FF3DE /* GenerateAddressLabelTableViewCell.xib in Resources */,
 				6C405281D86D42CB85997A3F /* Root.storyboard in Resources */,
 				02A6A0A6DB602A40AB4A4C29 /* Transactions.storyboard in Resources */,
 				FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */,
@@ -1234,10 +1308,13 @@
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ExpandableCell/ExpandableCell.framework",
 				"${BUILT_PRODUCTS_DIR}/ExpyTableView/ExpyTableView.framework",
+				"${BUILT_PRODUCTS_DIR}/GrowingTextView/GrowingTextView.framework",
+				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/McPicker/McPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterCore/MinterCore.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftValidator/SwiftValidator.framework",
 				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
@@ -1251,10 +1328,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpyTableView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GrowingTextView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/McPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftValidator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
@@ -1301,12 +1381,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA669BD6207265D800AD110A /* Storyboards.swift in Sources */,
+				FAA2606420930B8A009FF3DE /* UsernameEditViewController.swift in Sources */,
 				FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */,
 				FAE7945A208DDC3F0006CB0B /* ActionBarButtonItem.swift in Sources */,
 				FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */,
 				FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */,
+				FAA2606A20931370009FF3DE /* MobileEditViewModel.swift in Sources */,
 				FAE794502088C38F0006CB0B /* DisclosureTableViewCell.swift in Sources */,
 				FAA2605E209209DE009FF3DE /* DroppableView.swift in Sources */,
+				FAA2607A20935201009FF3DE /* GenerateAddressViewController.swift in Sources */,
 				FAE794522088DC010006CB0B /* SettingsAvatarTableViewCell.swift in Sources */,
 				FA669B69207239F200AD110A /* AppDelegate.swift in Sources */,
 				FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */,
@@ -1317,10 +1400,13 @@
 				FA669BD120724A1200AD110A /* UIFont+Default.swift in Sources */,
 				FA669BD9207267DA00AD110A /* BaseRouter.swift in Sources */,
 				FA669BE120727CB300AD110A /* TabBarController.swift in Sources */,
+				FAA2608B2094ABA7009FF3DE /* HomeViewController.swift in Sources */,
 				FAA26053208E30B9009FF3DE /* CoinTableViewCell.swift in Sources */,
 				FAA234EA2084A42A00F999DE /* PickerTableViewCell.swift in Sources */,
+				FAA2606E20931A89009FF3DE /* EmailEditViewModel.swift in Sources */,
 				FA89A79B20888D470019226D /* ShadowView.swift in Sources */,
 				FA669BDD207269E700AD110A /* LoginRouter.swift in Sources */,
+				FAA2607520932641009FF3DE /* BlankTableViewCell.swift in Sources */,
 				FAA2605C2092099B009FF3DE /* CCMPlayNDropView.m in Sources */,
 				FA669BCF207249D300AD110A /* DefaultButton.swift in Sources */,
 				FAA234ED20872BD000F999DE /* SendPopupViewController.swift in Sources */,
@@ -1330,13 +1416,17 @@
 				FA835CCC207630A100BFC35A /* ValidatableTextField.swift in Sources */,
 				FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */,
 				FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */,
+				FAA2607220931D41009FF3DE /* PasswordEditViewModel.swift in Sources */,
 				FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */,
+				FAA26068209311C2009FF3DE /* MobileEditViewController.swift in Sources */,
 				FA669BDB2072687C00AD110A /* URL+Params.swift in Sources */,
 				FAA234DE20848EC900F999DE /* SwitchTableViewCell.swift in Sources */,
 				FA669B9E207244FF00AD110A /* BaseViewController.swift in Sources */,
 				FAA234E62084A26900F999DE /* SeparatorTableViewCell.swift in Sources */,
 				FA669B9C207244E300AD110A /* BaseViewModel.swift in Sources */,
 				332EB812C95C0592C6924E65 /* CoinsViewController.swift in Sources */,
+				FAA2608620946456009FF3DE /* UIViewController+HideKeyboard.swift in Sources */,
+				FAA2607020931D2F009FF3DE /* PasswordEditViewController.swift in Sources */,
 				FA835CCE2077BC9200BFC35A /* ScreenHeader.swift in Sources */,
 				D1CAF56CB50CFF293A1D7F1A /* CoinsViewModel.swift in Sources */,
 				2B4873CFE9E2F66FBBAADC30 /* CreateWalletViewController.swift in Sources */,
@@ -1346,17 +1436,22 @@
 				D08EF152AB24CD864B6F2E40 /* RootViewController.swift in Sources */,
 				94B58309D085DACB65260018 /* RootViewModel.swift in Sources */,
 				FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */,
+				FAA2607C209355BD009FF3DE /* GenerateAddressViewModel.swift in Sources */,
 				FA7D98FF207F58BD00193B8A /* AccordionTableViewCell.swift in Sources */,
 				FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */,
 				833CF747F604B61E37401C11 /* TransactionsViewController.swift in Sources */,
+				FAA2608320935E8B009FF3DE /* GenerateAddressSeedTableViewCell.swift in Sources */,
 				1091290DC26B4D7128B4DA92 /* TransactionsViewModel.swift in Sources */,
+				FAA2607820933984009FF3DE /* GrowingDefaultTextView.swift in Sources */,
 				FA7D98F8207E16B900193B8A /* SuperExpandableTableView.swift in Sources */,
 				FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */,
 				D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */,
 				EFCE6415FD145CE2E62EF813 /* SendViewModel.swift in Sources */,
+				FAA2606C20931A56009FF3DE /* EmailEditViewController.swift in Sources */,
 				FAA234EF20872BF800F999DE /* SendPopupViewModel.swift in Sources */,
 				886A872ED336AA40162E4C11 /* PopupViewController.swift in Sources */,
 				4CAD2C40F3ECF43BAE855D20 /* PopupViewModel.swift in Sources */,
+				FAA2607F20935C36009FF3DE /* GenerateAddressLabelTableViewCell.swift in Sources */,
 				07B23B1F8A8E95A0459601A1 /* ReceiveViewController.swift in Sources */,
 				27FF799EFD5EE33465322922 /* ReceiveViewModel.swift in Sources */,
 				AF44D30C07B56ACF70021D25 /* SettingsViewController.swift in Sources */,
@@ -1365,7 +1460,10 @@
 				FAA26057208F7A55009FF3DE /* CountdownPopupViewModel.swift in Sources */,
 				1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */,
 				FAA26055208F7A37009FF3DE /* CountdownPopupViewController.swift in Sources */,
+				FAA2606620930C68009FF3DE /* UsernameEditViewModel.swift in Sources */,
+				FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */,
 				932D4DBEAAA04834E8868AAF /* AdvancedModeViewController.swift in Sources */,
+				FAA2606120923634009FF3DE /* AddressTableViewCell.swift in Sources */,
 				65174A2CD47A619B9407EE4A /* AdvancedModeViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

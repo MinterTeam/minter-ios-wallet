@@ -35,7 +35,7 @@
                         <color key="textColor" red="0.95693963766098022" green="0.23488524556159973" blue="0.21839424967765808" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gEW-Yp-p6t" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gEW-Yp-p6t" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
                         <rect key="frame" x="10" y="43.5" width="355" height="46"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="46" id="7hz-nI-E3F"/>

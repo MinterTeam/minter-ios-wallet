@@ -60,7 +60,6 @@ class ValidatableTextField: UITextField {
 		rightViewValid?.addSubview(validImageView)
 		rightViewValid?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[image(13)]", options: [], metrics: nil, views: ["image" : validImageView]))
 		rightViewValid?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-18-[image(10)]", options: [], metrics: nil, views: ["image" : validImageView]))
-		
 	}
 	
 	override func awakeFromNib() {

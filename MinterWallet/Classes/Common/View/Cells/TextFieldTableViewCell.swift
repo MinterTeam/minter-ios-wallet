@@ -15,6 +15,8 @@ class TextFieldTableViewCellItem : BaseCellItem {
 	var isSecure: Bool = false
 	var rules: [Rule] = []
 	var prefix: String?
+	var state: TextFieldTableViewCell.State?
+	var value: String?
 }
 
 
@@ -96,8 +98,10 @@ class TextFieldTableViewCell: BaseCell {
 			title.text = item.title
 			textField.isSecureTextEntry = item.isSecure
 			textField.prefixText = item.prefix
+			textField.text = item.value
+			state = item.state ?? .default
+			
 		}
-//		layoutIfNeeded()
 	}
 	
 	//MARK: -
@@ -124,5 +128,8 @@ class TextFieldTableViewCell: BaseCell {
 	
 	//MARK: -
 	
+	func startEditing() {
+		self.textField.becomeFirstResponder()
+	}
 	
 }

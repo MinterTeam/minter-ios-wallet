@@ -21,6 +21,10 @@ class CoinTableViewCellItem : BaseCellItem {
 
 class CoinTableViewCell: BaseCell {
 	
+	//MARK: -
+	
+	let formatter = CurrencyNumberFormatter.coinFormatter
+	
 	//MARK: - IBOutlets
 
 	@IBOutlet weak var title: UILabel!
@@ -30,7 +34,6 @@ class CoinTableViewCell: BaseCell {
 	@IBOutlet weak var amount: UILabel!
 	
 	@IBOutlet weak var coin: UILabel!
-	
 	//MARK: -
 	
 	var shadowLayer = CAShapeLayer()
@@ -55,7 +58,7 @@ class CoinTableViewCell: BaseCell {
 		if let transaction = item as? CoinTableViewCellItem {
 			title.text = transaction.title
 			coinImage.image = transaction.image
-			amount.text = String(transaction.amount ?? 0)
+			amount.text = formatter.string(from: (transaction.amount ?? 0) as NSNumber)
 			coin.text = transaction.coin
 		}
 	}

@@ -64,6 +64,18 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		updateUsernameButton()
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		updateUsernameButton()
+	}
+	
+	//MARK: -
+	
+	private func updateUsernameButton() {
 		//HACK: making the button's image to be at right
 		(self.navigationItem.rightBarButtonItem?.customView as? UIButton)?.semanticContentAttribute = .forceRightToLeft
 	}
@@ -74,7 +86,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 		tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil), forCellReuseIdentifier: "CoinTableViewCell")
-		
+		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 	}
 	
 	//MARK: -
@@ -137,8 +149,11 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		
 		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-			if item.identifier == "ButtonTableViewCell_Transactions" {
+			if item.reuseIdentifier == "ButtonTableViewCell" {
 				return 70.0
+			}
+			else if item.reuseIdentifier == "SeparatorTableViewCell" {
+				return 1.0
 			}
 		}
 		

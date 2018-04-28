@@ -24,6 +24,10 @@ class TransactionTableViewCellItem : BaseCellItem {
 
 class TransactionTableViewCell: ExpandableCell {
 	
+	//MARK: -
+	
+	let formatter = CurrencyNumberFormatter.transactionFormatter
+	
 	//MARK: - IBOutlets
 
 	@IBOutlet weak var title: UILabel!
@@ -58,10 +62,15 @@ class TransactionTableViewCell: ExpandableCell {
 		if let transaction = item as? TransactionTableViewCellItem {
 			title.text = transaction.title
 			coinImage.image = transaction.image
-			amount.text = String(transaction.amount ?? 0)
+			amount.text = amountText(amount: transaction.amount ?? 0)
+			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
 			coin.text = transaction.coin
 			expandable = transaction.expandable ?? false
 		}
+	}
+	
+	private func amountText(amount: Double) -> String {
+		return formatter.string(from: amount as NSNumber) ?? ""
 	}
 	
 	//MARK: -

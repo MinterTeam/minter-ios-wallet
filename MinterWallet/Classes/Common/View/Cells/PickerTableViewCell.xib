@@ -30,7 +30,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ehk-G2-9A7" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ehk-G2-9A7" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
                         <rect key="frame" x="10" y="24.5" width="381" height="46"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="46" id="aHA-uS-T56"/>

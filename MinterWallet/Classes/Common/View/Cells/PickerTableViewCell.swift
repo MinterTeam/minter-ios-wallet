@@ -81,7 +81,7 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 			return
 		}
 		
-		let data: [[String]] = [["BIP", "SOL", "COIN", "TestCoin"]]
+		let data: [[String]] = [["BIP (120,912.98)", "SOL (10.01)", "COIN (2.98)", "MINT (0.98)"]]
 		let picker = McPicker(data: data)
 		picker.toolbarButtonsColor = .white
 		picker.toolbarDoneButtonColor = .white

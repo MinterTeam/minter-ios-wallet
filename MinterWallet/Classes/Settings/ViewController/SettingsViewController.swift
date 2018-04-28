@@ -93,6 +93,20 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		if item.identifier == "DisclosureTableViewCell_Addresses" {
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showAddress.rawValue, sender: self)
 		}
+		else if item.identifier == "DisclosureTableViewCell_Username" {
+			self.performSegue(withIdentifier: SettingsViewController.Segue.showUsername.rawValue, sender: self)
+		}
+		else if item.identifier == "DisclosureTableViewCell_Mobile" {
+			self.performSegue(withIdentifier: SettingsViewController.Segue.showMobile.rawValue, sender: self)
+		}
+		else if item.identifier == "DisclosureTableViewCell_Email" {
+			self.performSegue(withIdentifier: SettingsViewController.Segue.showEmail.rawValue, sender: self)
+		}
+		else if item.identifier == "DisclosureTableViewCell_Password" {
+			self.performSegue(withIdentifier: SettingsViewController.Segue.showPassword.rawValue, sender: self)
+		}
+		
+		
 	}
 	
 	//MARK: - Segues

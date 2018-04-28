@@ -78,12 +78,12 @@ class SendPopupViewController: PopupViewController {
 		shadowLayer.shadowOpacity = 1.0
 		shadowLayer.shadowRadius = 18.0
 		shadowLayer.masksToBounds = false
-		shadowLayer.shadowColor = UIColor(hex: 0x000000, alpha: 1)?.cgColor
+		shadowLayer.shadowColor = UIColor(hex: 0x000000, alpha: 0.2)?.cgColor
 		shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-		shadowLayer.opacity = 0.2
+		shadowLayer.opacity = 1.0
 		shadowLayer.shouldRasterize = true
 		shadowLayer.rasterizationScale = UIScreen.main.scale
-		popupView.layer.insertSublayer(shadowLayer, at: 0)
+		avatarImage.superview?.layer.insertSublayer(shadowLayer, at: 0)
 	}
 	
 	override func viewDidLayoutSubviews() {

@@ -46,11 +46,22 @@ class DefaultButton: UIButton {
 		else if pattern == "purple" {
 			self.backgroundColor = UIColor(hex: 0x502EC2)
 			self.setTitleColor(.white, for: .normal)
+			addShadow()
 		}
 		else {
 			self.backgroundColor = .white
 			self.setTitleColor(UIColor(hex: 0x502EC2), for: .normal)
+			addShadow()
 		}
+	}
+	
+	func addShadow() {
+		self.layer.shadowColor = UIColor(hex: 0x502EC2, alpha: 0.3)?.cgColor
+		self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.layer.cornerRadius).cgPath
+		self.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
+		self.layer.shadowRadius = 2.0
+		self.layer.masksToBounds = false
+		self.layer.shadowOpacity = 1.0
 	}
 	
 	//MARK: -
@@ -62,6 +73,12 @@ class DefaultButton: UIButton {
 		self.layer.cornerRadius = 16.0
 		self.updateAppearance()
 		self.animateButtonTouch = true
+	}
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		updateAppearance()
 	}
 	
 	//MARK: -

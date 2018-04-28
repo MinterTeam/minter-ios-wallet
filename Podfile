@@ -11,5 +11,7 @@ target 'MinterWallet' do
 		pod 'AEAccordion'
 		pod 'McPicker'
 		pod 'ImagePicker'
+		pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
+		pod 'GrowingTextView', '~> 0.5.5'
 end
 

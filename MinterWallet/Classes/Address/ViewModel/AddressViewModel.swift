@@ -32,6 +32,10 @@ class AddressViewModel: BaseViewModel {
 		
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
 		
+		let address = AddressTableViewCellItem(reuseIdentifier: "AddressTableViewCell", identifier: "AddressTableViewCell")
+		address.address = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
+		address.buttonTitle = "Copy".localized()
+		
 		let balance = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Balance")
 		balance.title = "Balance".localized()
 		balance.value = "12.23213213"
@@ -41,6 +45,7 @@ class AddressViewModel: BaseViewModel {
 		secured.title = "Secured by".localized()
 		secured.value = "BIP Wallet".localized()
 		secured.placeholder = "Change".localized()
+		secured.showIndicator = false
 		
 		let setMain = SwitchTableViewCellItem(reuseIdentifier: "SettingsSwitchTableViewCell", identifier: "SettingsSwitchTableViewCell")
 		setMain.title = "Set as main".localized()
@@ -48,7 +53,7 @@ class AddressViewModel: BaseViewModel {
 		
 		let section = BaseTableSectionItem()
 		section.title = "MAIN ADDRESS".localized()
-		section.cells = [balance, separator, secured, separator, setMain, separator]
+		section.cells = [address, separator, balance, separator, secured, separator, setMain, separator]
 		
 		sections.append(section)
 	}

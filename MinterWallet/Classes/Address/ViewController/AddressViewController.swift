@@ -54,6 +54,8 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 	//MARK: -
 	
 	private func registerCells() {
+		
+		tableView.register(UINib(nibName: "AddressTableViewCell", bundle: nil), forCellReuseIdentifier: "AddressTableViewCell")
 		tableView.register(UINib(nibName: "SettingsSwitchTableViewCell", bundle: nil), forCellReuseIdentifier: "SettingsSwitchTableViewCell")
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "DisclosureTableViewCell", bundle: nil), forCellReuseIdentifier: "DisclosureTableViewCell")
@@ -103,6 +105,10 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 		
 		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
 			return
+		}
+		
+		if item.identifier == "DisclosureTableViewCell_Balance" {
+			self.performSegue(withIdentifier: AddressViewController.Segue.showBalance.rawValue, sender: self)
 		}
 
 	}

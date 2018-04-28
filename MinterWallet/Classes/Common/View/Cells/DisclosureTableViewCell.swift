@@ -17,6 +17,8 @@ class DisclosureTableViewCellItem : BaseCellItem {
 	
 	var value: String?
 	
+	var showIndicator: Bool? = true
+	
 }
 
 
@@ -28,6 +30,7 @@ class DisclosureTableViewCell: BaseCell {
 	
 	@IBOutlet weak var value: UILabel!
 	
+	@IBOutlet weak var indicatorImageView: UIImageView!
 	//MARK: -
 	
 	override func awakeFromNib() {
@@ -56,6 +59,10 @@ class DisclosureTableViewCell: BaseCell {
 			
 			title.text = disclosureItem.title ?? ""
 			
+			indicatorImageView.isHidden = true
+			if disclosureItem.showIndicator == true {
+				indicatorImageView.isHidden = false
+			}
 			
 		}
 	}

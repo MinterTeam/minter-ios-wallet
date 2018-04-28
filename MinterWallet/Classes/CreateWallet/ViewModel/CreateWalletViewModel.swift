@@ -38,6 +38,8 @@ class CreateWalletViewModel: BaseViewModel {
 		let username = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Username")
 		username.title = "CHOOSE @USERNAME".localized()
 		username.prefix = "@"
+		username.value = "ariil"
+		username.state = .valid
 		
 		let password = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Password")
 		password.title = "CHOOSE PASSWORD".localized()
@@ -52,6 +54,7 @@ class CreateWalletViewModel: BaseViewModel {
 
 		let mobileNumber = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Mobile")
 		mobileNumber.title = "MOBILE NUMBER (OPTIONAL *)".localized()
+		mobileNumber.state = .invalid
 		
 		let section = FormSectionItem()
 		section.cells = [username, password, confirmPassword, email, mobileNumber]

@@ -42,7 +42,6 @@ class DroppableView : CCMPlayNDropView {
 		shadowLayer.rasterizationScale = UIScreen.main.scale
 		
 		self.layer.insertSublayer(shadowLayer, at: 0)
-		
 	}
 	
 	//MARK: -

@@ -66,8 +66,8 @@ class SettingsViewModel: BaseViewModel {
 		
 		let language = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Language")
 		language.title = "Language".localized()
-		language.value = nil
-		language.placeholder = "English"
+		language.value = "English"
+		language.placeholder = "Change"
 
 		let addresses = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Addresses")
 		addresses.title = "My Addresses".localized()
