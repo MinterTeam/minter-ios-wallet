@@ -105,7 +105,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3V-Kc-kJQ">
-                                <rect key="frame" x="334.5" y="155.5" width="30.5" height="13.5"/>
+                                <rect key="frame" x="365" y="169" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                                 <color key="textColor" red="0.93333333333333335" green="0.13725490196078433" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>

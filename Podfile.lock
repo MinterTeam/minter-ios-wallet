@@ -13,13 +13,17 @@ PODS:
   - ImagePicker (3.0.0)
   - KeychainSwift (11.0.0)
   - McPicker (1.0.0)
-  - MinterCore (0.1.0):
+  - MinterCore (0.1.1):
     - Alamofire (~> 4.6)
     - BigInt
     - CKMnemonic
     - CryptoSwift
     - ObjectMapper (~> 3.1)
     - secp256k1.swift
+  - MinterExplorer (0.1.0):
+    - MinterCore
+  - MinterMy (0.1.2):
+    - MinterCore
   - ObjectMapper (3.1.0)
   - Realm (3.5.0):
     - Realm/Headers (= 3.5.0)
@@ -50,6 +54,8 @@ DEPENDENCIES:
   - KeychainSwift
   - McPicker
   - MinterCore (from `../MinterCore`)
+  - MinterExplorer (from `../MinterExplorer`)
+  - MinterMy (from `../MinterMy`)
   - RealmSwift
   - RxDataSources
   - RxSwift
@@ -85,6 +91,10 @@ EXTERNAL SOURCES:
     :path: "../ExpandableCell"
   MinterCore:
     :path: "../MinterCore"
+  MinterExplorer:
+    :path: "../MinterExplorer"
+  MinterMy:
+    :path: "../MinterMy"
   SVProgressHUD:
     :git: https://github.com/SVProgressHUD/SVProgressHUD.git
   SwiftValidator:
@@ -112,7 +122,9 @@ SPEC CHECKSUMS:
   ImagePicker: 973953c25960fe04729a7082a56194321c6762d2
   KeychainSwift: bea6bd9f98af7b8d7ca4aa79fe105c00fab532db
   McPicker: 130183cd3d22fc6933ea9e63c5a0d0d1becc0122
-  MinterCore: bf8df4f4c43e095cac642925d2d61e439df3d27f
+  MinterCore: 696e84a3e27a51dfed47564143789f8706139a6c
+  MinterExplorer: d5784ab4fb1636fde9e3bae29c81525b2092307f
+  MinterMy: a58b68a346872f7cee0524d879e31cd9214dc45b
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
   Realm: 0378021c424e4e2bd6a0e63b27881e929d9b9ad1
   RealmSwift: 3322562622fda2ad596985ead4d8d8be30cf838c
@@ -125,6 +137,6 @@ SPEC CHECKSUMS:
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
 
-PODFILE CHECKSUM: 4828ff66eb661c3a4b07c531e69551378cf2136d
+PODFILE CHECKSUM: 879a7ee0c7a32bf23bcb8d7e5eee59d5845d259b
 
 COCOAPODS: 1.5.0
