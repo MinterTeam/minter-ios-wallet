@@ -9,9 +9,20 @@
 import UIKit
 
 
+protocol AdvancedModeViewControllerDelegate : class {
+	func AdvancedModeViewControllerDidAddAccount()
+}
+
+
 class AdvancedModeViewController: BaseViewController {
 	
+	//MARK: -
+	
+	weak var delegate: AdvancedModeViewControllerDelegate?
+	
 	//MARK: - IBOutlet
+	
+	@IBOutlet weak var errorLabel: UILabel!
 	
 	@IBOutlet weak var textView: GrowingDefaultTextView! {
 		didSet {
@@ -24,13 +35,22 @@ class AdvancedModeViewController: BaseViewController {
 	}
 	
 	@IBAction func activateButtonDidTap(_ sender: Any) {
-		if let rootVC = UIViewController.stars_topMostController() as? RootViewController {
-			let vc = Storyboards.Main.instantiateInitialViewController()
+		errorLabel.text = ""
+		textView.setValid()
+		
+		let mnemonicText = textView.text.split(separator: " ")
+		
+		guard mnemonicText.count == 12 else {
 			
-			rootVC.showViewControllerWith(vc, usingAnimation: .up) {
-				
-			}
+			let err = type(of: viewModel).ValidationError.wrongMnemonic
+			textView.setInvalid()
+			errorLabel.text = viewModel.validationText(for: err)
+			return
 		}
+		
+		viewModel.saveAccount(mnemonic: mnemonicText.joined(separator: " "))
+		
+		delegate?.AdvancedModeViewControllerDidAddAccount()
 	}
 	
 	//MARK: -
@@ -44,5 +64,25 @@ class AdvancedModeViewController: BaseViewController {
 		
 		self.hideKeyboardWhenTappedAround()
 	}
+	
+	//MARK: -
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		super.prepare(for: segue, sender: sender)
+		
+		if segue.identifier == "showGenerate" {
+			if let generate = segue.destination as? GenerateAddressViewController {
+				generate.delegate = self
+			}
+		}
+		
+	}
+}
 
+extension AdvancedModeViewController : GenerateAddressViewControllerDelegate {
+	
+	func GenerateAddressViewControllerDelegateDidAddAccount() {
+		self.delegate?.AdvancedModeViewControllerDidAddAccount()
+	}
+	
 }

@@ -32,8 +32,7 @@ class UsernameEditViewModel : BaseViewModel {
 	
 	func createSection() {
 		
-		let section = BaseTableSectionItem()
-		section.title = "".localized()
+		var section = BaseTableSectionItem(header: "")
 		
 //		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
 		
@@ -41,7 +40,7 @@ class UsernameEditViewModel : BaseViewModel {
 		username.title = "CHOOSE @USERNAME".localized()
 		username.prefix = "@"
 		
-		section.cells = [username]
+		section.items = [username]
 		
 		sections.append(section)
 		
@@ -56,11 +55,11 @@ class UsernameEditViewModel : BaseViewModel {
 	}
 	
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections[safe: section]?.items[safe: row]
 	}
 	
 	//MARK: -

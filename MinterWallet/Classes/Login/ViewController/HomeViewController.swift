@@ -32,4 +32,30 @@ class HomeViewController: BaseViewController {
 		return .lightContent
 	}
 	
+	//MARK: -
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		super.prepare(for: segue, sender: sender)
+		
+		if segue.identifier == "showAdvanced" {
+			if let advanced = segue.destination as? AdvancedModeViewController {
+				advanced.delegate = self
+			}
+		}
+	}
+}
+
+
+extension HomeViewController : AdvancedModeViewControllerDelegate {
+	
+	func AdvancedModeViewControllerDidAddAccount() {
+		
+		if let rootVC = UIViewController.stars_topMostController() as? RootViewController {
+			let vc = Storyboards.Main.instantiateInitialViewController()
+			rootVC.showViewControllerWith(vc, usingAnimation: .up) {
+				
+			}
+		}
+	}
+	
 }

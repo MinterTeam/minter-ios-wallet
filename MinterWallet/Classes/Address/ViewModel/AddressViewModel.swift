@@ -7,6 +7,8 @@
 //
 
 import RxSwift
+import RxDataSources
+
 
 class AddressViewModel: BaseViewModel {
 
@@ -16,64 +18,165 @@ class AddressViewModel: BaseViewModel {
 		}
 	}
 	
+	private var disposableBag = DisposeBag()
+	private let accountManager = AccountManager()
+	
 	//MARK: -
 	
-	private var sections: [BaseTableSectionItem] = []
+	private var sections = Variable([BaseTableSectionItem]())
 
 	//MARK: -
 	
 	override init() {
 		super.init()
 		
+		Session.shared.accounts.asObservable().subscribe(onNext: { [weak self] (accounts) in
+			self?.createSections()
+		}).disposed(by: disposableBag)
+		
 		createSections()
 	}
 	
+	//MARK: -
+	
+	var accountObservable: Observable<[BaseTableSectionItem]> {
+		return self.sections.asObservable()
+	}
+	
+	//MARK: -
+	
 	private func createSections() {
 		
-		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
+		let accounts = Session.shared.accounts.value.sorted { (acc1, acc2) -> Bool in
+			return acc1.isMain && !acc2.isMain
+		}
 		
-		let address = AddressTableViewCellItem(reuseIdentifier: "AddressTableViewCell", identifier: "AddressTableViewCell")
-		address.address = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		address.buttonTitle = "Copy".localized()
+		var addressNum = 0
+		let sctns = accounts.map { (account) -> BaseTableSectionItem in
+			addressNum += 1
+			
+			let sectionId = account.address
+			
+			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_1\(sectionId)")
+			let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_2\(sectionId)")
+			let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_3\(sectionId)")
+			let separator3 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_4\(sectionId)")
+			
+			let address = AddressTableViewCellItem(reuseIdentifier: "AddressTableViewCell", identifier: "AddressTableViewCell_\(sectionId)")
+			address.address = account.address
+			address.buttonTitle = "Copy".localized()
+			
+			let balance = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Balance_1\(sectionId)")
+			balance.title = "Balance".localized()
+			balance.value = "12.23213213"
+			balance.placeholder = ""
+			
+			let secured = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Secured_2\(sectionId)")
+			secured.title = "Secured by".localized()
+			
+			switch account.encryptedBy {
+			case .bipWallet:
+				secured.value = "BIP Wallet".localized()
+				break
+				
+			case .me:
+				secured.value = "Me".localized()
+				break
+			}
+			secured.placeholder = "Change".localized()
+			secured.showIndicator = false
+			
+			let setMain = SwitchTableViewCellItem(reuseIdentifier: "SettingsSwitchTableViewCell", identifier: "SettingsSwitchTableViewCell_\(sectionId)")
+			setMain.isOn.value = account.isMain
+			setMain.title = "Set as main".localized()
+			
+			var headerTitle = "ADDRESS #\(addressNum)".localized()
+			if account.isMain == true {
+				headerTitle = "MAIN ADDRESS".localized()
+			}
+			var section = BaseTableSectionItem(header: headerTitle)
+			section.identifier = sectionId
+			
+			section.items = [address, separator, balance, separator1, secured, separator2]
+			if accounts.count > 1 {
+				section.items.append(setMain)
+				section.items.append(separator3)
+			}
+			
+			return section
+		}
 		
-		let balance = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Balance")
-		balance.title = "Balance".localized()
-		balance.value = "12.23213213"
-		balance.placeholder = ""
+		sections.value = sctns
+	}
+	
+	//MARK: -
+	
+	func setMainAccount(isMain: Bool, cellItem: BaseCellItem) {
+		
+		guard isMain == true && cellItem.identifier.hasPrefix("SettingsSwitchTableViewCell_") else {
+			return
+		}
+		
+		let accountAddress = cellItem.identifier.replacingOccurrences(of: "SettingsSwitchTableViewCell_", with: "")
+		
+//		sections.value.forEach { (sec) in
+//			sec.items.forEach({ (item) in
+//				if let item = item as? SwitchTableViewCellItem, cellItem.identifier != item.identifier {
+//					item.isOn.value = false
+//				}
+//			})
+//		}
+		
+		Session.shared.accounts.value = Session.shared.accounts.value.map({ (account) -> Account in
+			var acc = account
+			acc.isMain = false
+			
+			if account.address == accountAddress {
+				accountManager.setMain(isMain: true, account: &acc)
+			}
+			
+			return acc
+		})
+		
+		return
+		
+		
+		//Set all session main accounts to false
+		for var account in Session.shared.accounts.value {
+			account.isMain = false
+		}
+		//Find out which is the main now
+		let idx = Session.shared.accounts.value.index { (acc) -> Bool in
+			return acc.address == accountAddress
+		}
+		
+		//Set the main and make it first
+		var mainAccount = Session.shared.accounts.value[idx!]
+		mainAccount.isMain = true
+		
+//		Session.shared.accounts.value =
+		
+		
+		
 
-		let secured = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Secured")
-		secured.title = "Secured by".localized()
-		secured.value = "BIP Wallet".localized()
-		secured.placeholder = "Change".localized()
-		secured.showIndicator = false
-		
-		let setMain = SwitchTableViewCellItem(reuseIdentifier: "SettingsSwitchTableViewCell", identifier: "SettingsSwitchTableViewCell")
-		setMain.title = "Set as main".localized()
-		
-		
-		let section = BaseTableSectionItem()
-		section.title = "MAIN ADDRESS".localized()
-		section.cells = [address, separator, balance, separator, secured, separator, setMain, separator]
-		
-		sections.append(section)
 	}
 	
 	//MARK: - TableView
 	
 	func section(index: Int) -> BaseTableSectionItem? {
-		return sections[safe: index]
+		return sections.value[safe: index]
 	}
 	
 	func sectionsCount() -> Int {
-		return sections.count
+		return sections.value.count
 	}
 	
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections.value[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections.value[safe: section]?.items[safe: row]
 	}
 	
 }

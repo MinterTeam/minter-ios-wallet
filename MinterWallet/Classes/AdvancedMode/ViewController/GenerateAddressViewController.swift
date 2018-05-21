@@ -7,8 +7,15 @@
 //
 
 import UIKit
+import RxSwift
 
-class GenerateAddressViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, ButtonTableViewCellDelegate {
+
+protocol GenerateAddressViewControllerDelegate : class {
+	func GenerateAddressViewControllerDelegateDidAddAccount()
+}
+
+
+class GenerateAddressViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, ButtonTableViewCellDelegate, SwitchTableViewCellDelegate {
 	
 	//MARK: - IBOutlet
 	
@@ -23,6 +30,10 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 	
 	var viewModel = GenerateAddressViewModel()
 	
+	private var disposeBag = DisposeBag()
+	
+	weak var delegate: GenerateAddressViewControllerDelegate?
+	
 	//MARK: -
 
 	override func viewDidLoad() {
@@ -31,6 +42,13 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 		self.title = viewModel.title
 		
 		registerCells()
+		
+		viewModel.proceedAvailable.asObservable().subscribe(onNext: { [weak self] (val) in
+			if let cell = self?.tableView.cellForRow(at: IndexPath(row: 7, section: 0)) as? ButtonTableViewCell {
+				cell.button.isEnabled = val
+			}
+		}).disposed(by: disposeBag)
+
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -47,7 +65,6 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil), forCellReuseIdentifier: "BlankTableViewCell")
-		
 		
 	}
 
@@ -72,27 +89,12 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 		if let buttonCell = cell as? ButtonTableViewCell {
 			buttonCell.delegate = self
 		}
+		if let switchCell = cell as? SwitchTableViewCell {
+			switchCell.delegate = self
+		}
 		
 		return cell
 	}
-
-//	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//
-//		guard let section = viewModel.section(index: section) else {
-//			return UIView()
-//		}
-//
-//		let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DefaultHeader")
-//		if let defaultHeader = header as? DefaultHeader {
-//			defaultHeader.titleLabel.text = section.title
-//		}
-//
-//		return header
-//	}
-//
-//	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//		return 52
-//	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
@@ -105,13 +107,17 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 	//MARK: - ButtonTableViewCellDelegate
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-		if let rootVC = UIViewController.stars_topMostController() as? RootViewController {
-			let vc = Storyboards.Main.instantiateInitialViewController()
-			
-			rootVC.showViewControllerWith(vc, usingAnimation: .up) {
-				
-			}
-		}
+		
+		viewModel.activate()
+		
+		delegate?.GenerateAddressViewControllerDelegateDidAddAccount()
+		
+	}
+	
+	//MARK: - SwitchTableViewCellDelegate
+	
+	func didSwitch(isOn: Bool, cell: SwitchTableViewCell) {
+		viewModel.setMnemonicChecked(isChecked: isOn)
 	}
 
 }

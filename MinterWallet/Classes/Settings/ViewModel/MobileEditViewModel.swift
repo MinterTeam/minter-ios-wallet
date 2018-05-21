@@ -33,15 +33,14 @@ class MobileEditViewModel: BaseViewModel {
 	
 	func createSection() {
 		
-		let section = BaseTableSectionItem()
-		section.title = "".localized()
+		var section = BaseTableSectionItem(header: "")
 		
 //		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
 		
 		let mobileNumber = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Mobile")
 		mobileNumber.title = "MOBILE NUMBER (OPTIONAL *)".localized()
 		
-		section.cells = [mobileNumber]
+		section.items = [mobileNumber]
 		
 		sections.append(section)
 		
@@ -56,11 +55,11 @@ class MobileEditViewModel: BaseViewModel {
 	}
 	
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections[safe: section]?.items[safe: row]
 	}
 	
 	//MARK: -

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+
 
 class SettingsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -23,6 +25,8 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 	//MARK: -
 	
 	var viewModel = SettingsViewModel()
+	
+	private var disposeBag = DisposeBag()
 
 	// MARK: Life cycle
 	
@@ -32,6 +36,12 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		self.title = viewModel.title
 		
 		registerCells()
+		
+		if let rightView = self.navigationItem.rightBarButtonItem?.customView {
+			Session.shared.isLoggedIn.asObservable().map({ (val) -> Bool in
+				return !val
+			}).bind(to: rightView.rx.isHidden).disposed(by: disposeBag)
+		}
 	}
 	
 	private func registerCells() {
@@ -69,7 +79,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		
 		let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DefaultHeader")
 		if let defaultHeader = header as? DefaultHeader {
-			defaultHeader.titleLabel.text = section.title
+			defaultHeader.titleLabel.text = section.header
 		}
 		
 		return header
@@ -77,7 +87,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		
-		guard let section = viewModel.section(index: section), section.title != "" else {
+		guard let section = viewModel.section(index: section), section.header != "" else {
 			return 0.1
 		}
 		

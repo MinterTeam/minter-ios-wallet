@@ -40,8 +40,8 @@ class LoginViewModel: BaseViewModel {
 		button.title = "CONTINUE".localized()
 		button.buttonPattern = "purple"
 		
-		let section = FormSectionItem()
-		section.cells = [username, password, button]
+		var section = BaseTableSectionItem(header: "")
+		section.items = [username, password, button]
 		sections.append(section)
 
 	}
@@ -57,11 +57,11 @@ class LoginViewModel: BaseViewModel {
 	}
 	
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections[safe: section]?.items[safe: row]
 	}
 
 }

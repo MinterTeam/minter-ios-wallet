@@ -65,10 +65,9 @@ class TransactionsViewModel: BaseViewModel {
 		transaction3.coin = "MCD"
 		transaction3.amount = -10000.42
 		
-		let section = BaseTableSectionItem()
-		section.title = "TODAY"
+		var section = BaseTableSectionItem(header: "TODAY")
 		
-		section.cells = [transaction, separator, transaction2, separator, transaction3, separator, transaction1, separator, transaction3, separator, transaction1, separator, transaction2, separator]
+		section.items = [transaction, separator, transaction2, separator, transaction3, separator, transaction1, separator, transaction3, separator, transaction1, separator, transaction2, separator]
 		
 		sections.append(section)
 	}
@@ -84,11 +83,11 @@ class TransactionsViewModel: BaseViewModel {
 	}
 	
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections[safe: section]?.items[safe: row]
 	}
 	
 }

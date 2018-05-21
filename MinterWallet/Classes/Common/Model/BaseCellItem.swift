@@ -7,8 +7,11 @@
 //
 
 import Foundation
+import RxDataSources
 
-class BaseCellItem {
+
+
+class BaseCellItem : IdentifiableType, Equatable {
 
 	let reuseIdentifier: String
 	
@@ -17,6 +20,20 @@ class BaseCellItem {
 	init(reuseIdentifier: String, identifier: String) {
 		self.reuseIdentifier = reuseIdentifier
 		self.identifier = identifier
+	}
+	
+	//MARK: - IdentifiableType
+	
+	typealias Identity = String
+	
+	var identity : Identity {
+		return identifier
+	}
+	
+	//MARK: - Equatable
+	
+	static func == (lhs: BaseCellItem, rhs: BaseCellItem) -> Bool {
+		return lhs.identifier == rhs.identifier
 	}
 
 }

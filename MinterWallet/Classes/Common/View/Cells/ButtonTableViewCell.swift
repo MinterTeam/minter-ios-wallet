@@ -19,6 +19,8 @@ class ButtonTableViewCellItem : BaseCellItem {
 	var title: String?
 	
 	var buttonPattern: String?
+	
+	var isButtonEnabled: Bool = true
 
 }
 
@@ -53,6 +55,7 @@ class ButtonTableViewCell: BaseCell {
 		if let buttonItem = item as? ButtonTableViewCellItem {
 			button?.setTitle(buttonItem.title, for: .normal)
 			button?.pattern = buttonItem.buttonPattern
+			button?.isEnabled = buttonItem.isButtonEnabled
 		}
 	}
     

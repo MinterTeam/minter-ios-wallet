@@ -7,11 +7,18 @@
 //
 
 import UIKit
+import RxSwift
 
 class SwitchTableViewCellItem : BaseCellItem {
 	
 	var title: String = ""
 	
+	var isOn = Variable(false)
+	
+}
+
+protocol SwitchTableViewCellDelegate : class {
+	func didSwitch(isOn: Bool, cell: SwitchTableViewCell)
 }
 
 
@@ -22,6 +29,16 @@ class SwitchTableViewCell: BaseCell {
 	@IBOutlet weak var label: UILabel!
 	
 	@IBOutlet weak var `switch`: UISwitch!
+	
+	@IBAction func didSwitch(_ sender: UISwitch) {
+		delegate?.didSwitch(isOn: sender.isOn, cell: self)
+	}
+	
+	//MARK: -
+	
+	weak var delegate: SwitchTableViewCellDelegate?
+	
+	var disposeBag = DisposeBag()
 	
 	//MARK: -
 	
@@ -40,7 +57,15 @@ class SwitchTableViewCell: BaseCell {
 		
 		if let item = item as? SwitchTableViewCellItem {
 			self.label.text = item.title
+			self.switch.isOn = item.isOn.value
 		}
+	}
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		
+		self.label.text = ""
+		self.switch.isOn = false
 	}
 
 }

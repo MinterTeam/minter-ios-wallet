@@ -34,8 +34,7 @@ class PasswordEditViewModel: BaseViewModel {
 	
 	func createSection() {
 		
-		let section = BaseTableSectionItem()
-		section.title = "".localized()
+		var section = BaseTableSectionItem(header: "")
 		
 //		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
 		
@@ -47,7 +46,7 @@ class PasswordEditViewModel: BaseViewModel {
 		confirmPassword.title = "CONFIRM PASSWORD".localized()
 		confirmPassword.isSecure = true
 		
-		section.cells = [password, confirmPassword]
+		section.items = [password, confirmPassword]
 		
 		sections.append(section)
 		
@@ -62,11 +61,11 @@ class PasswordEditViewModel: BaseViewModel {
 	}
 	
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections[safe: section]?.items[safe: row]
 	}
 	
 	//MARK: -

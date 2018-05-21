@@ -43,7 +43,6 @@ class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewD
 	//MARK: - TableView
 	
 	func registerCells() {
-		
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
 	}
@@ -79,5 +78,6 @@ extension LoginViewController : ButtonTableViewCellDelegate {
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
 	}
-	
 }
+
+

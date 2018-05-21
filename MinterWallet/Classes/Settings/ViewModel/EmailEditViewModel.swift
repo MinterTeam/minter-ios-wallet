@@ -33,15 +33,14 @@ class EmailEditViewModel: BaseViewModel {
 	
 	func createSection() {
 		
-		let section = BaseTableSectionItem()
-		section.title = "".localized()
+		var section = BaseTableSectionItem(header: "", items: [])
 		
 //		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
 		
 		let email = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Email")
 		email.title = "EMAIL (OPTIONAL *)".localized()
 		
-		section.cells = [email]
+		section.items = [email]
 		
 		sections.append(section)
 		
@@ -56,11 +55,11 @@ class EmailEditViewModel: BaseViewModel {
 	}
 	
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections[safe: section]?.items[safe: row]
 	}
 	
 	//MARK: -

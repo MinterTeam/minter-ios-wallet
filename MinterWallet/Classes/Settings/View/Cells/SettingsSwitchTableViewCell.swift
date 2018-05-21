@@ -15,11 +15,14 @@ class SettingsSwitchTableViewCell: SwitchTableViewCell {
 		super.awakeFromNib()
 		
 		self.label.font = UIFont.defaultFont(of: 14.0)
-		
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
+	}
+	
+	override func configure(item: BaseCellItem) {
+		super.configure(item: item)
 	}
 
 }

@@ -7,12 +7,40 @@
 //
 
 import Foundation
+import RxDataSources
 
-class BaseTableSectionItem {
+struct BaseTableSectionItem : AnimatableSectionModelType, IdentifiableType, Equatable {
 	
-	var title: String = ""
+	static func == (lhs: BaseTableSectionItem, rhs: BaseTableSectionItem) -> Bool {
+		return lhs.identifier == rhs.identifier
+	}
 	
-	var cells: [BaseCellItem] = []
 	
+	var identifier = String.random(length: 20)
+	
+	var header: String = ""
+	
+	var items: [BaseCellItem]
+	
+	init(header: String, items: [BaseCellItem] = []) {
+		self.header = header
+		self.items = items
+	}
+	
+	//MARK: -
+	
+	var identity: String {
+		return identifier
+	}
+	
+	typealias Identity = String
+	
+	typealias Item = BaseCellItem
+	
+	init(original: BaseTableSectionItem, items: [Item]) {
+		self = original
+		
+		self.items = items
+	}
 	
 }

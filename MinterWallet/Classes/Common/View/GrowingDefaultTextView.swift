@@ -9,11 +9,27 @@
 import UIKit
 import GrowingTextView
 
-class GrowingDefaultTextView: GrowingTextView {
+class GrowingDefaultTextView: GrowingTextView, Validatable {
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
+		setDefaultAppearance()
+	}
+	
+	func setValid() {
+		setDefaultAppearance()
+	}
+	
+	func setInvalid() {
+		self.layer.cornerRadius = 8.0
+		self.layer.borderWidth = 2
+		self.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
+	}
+	
+	//MARK: -
+	
+	private func setDefaultAppearance() {
 		self.layer.cornerRadius = 8.0
 		self.layer.borderWidth = 2
 		self.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor

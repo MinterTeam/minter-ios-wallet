@@ -9,9 +9,9 @@
 import RxSwift
 
 
-class FormSectionItem : BaseTableSectionItem {
-	
-}
+//struct FormSectionItem : BaseTableSectionItem {
+//
+//}
 
 
 class CreateWalletViewModel: BaseViewModel {
@@ -22,7 +22,7 @@ class CreateWalletViewModel: BaseViewModel {
 	
 	//MARK: -
 	
-	private var sections: [FormSectionItem] = []
+	private var sections: [BaseTableSectionItem] = []
 
 	//MARK: -
 
@@ -56,19 +56,19 @@ class CreateWalletViewModel: BaseViewModel {
 		mobileNumber.title = "MOBILE NUMBER (OPTIONAL *)".localized()
 		mobileNumber.state = .invalid
 		
-		let section = FormSectionItem()
-		section.cells = [username, password, confirmPassword, email, mobileNumber]
+		var section = BaseTableSectionItem(header: "")
+		section.items = [username, password, confirmPassword, email, mobileNumber]
 		sections.append(section)
 	}
 	
 	//MARK: -
 
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections[safe: section]?.items[safe: row]
 	}
 
 }

@@ -41,10 +41,14 @@
 		DF1E9909F9D644AEBBBED0DF /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C5BA76C2EA3B06D9F7D6F7 /* SettingsViewModel.swift */; };
 		DF95C2FD52E1D7EB13A9336F /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D7E209968E071ABD4EA83FD /* Settings.storyboard */; };
 		EFCE6415FD145CE2E62EF813 /* SendViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD518694233BEED9B6EE2B /* SendViewModel.swift */; };
+		FA01601F20B2CF3700746B51 /* UIColor+Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01601E20B2CF3700746B51 /* UIColor+Sugar.swift */; };
+		FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */; };
 		FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA557E55207BA7490095459B /* DefaultHeader.swift */; };
 		FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA557E57207BA7560095459B /* DefaultHeader.xib */; };
 		FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */; };
 		FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */; };
+		FA61EF46209B003600A6FB62 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF45209B003600A6FB62 /* Account.swift */; };
+		FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF48209B037700A6FB62 /* AccountManager.swift */; };
 		FA669B69207239F200AD110A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B68207239F200AD110A /* AppDelegate.swift */; };
 		FA669B70207239F200AD110A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B6E207239F200AD110A /* Main.storyboard */; };
 		FA669B72207239F200AD110A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA669B71207239F200AD110A /* Assets.xcassets */; };
@@ -76,6 +80,7 @@
 		FA669BDD207269E700AD110A /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669BDC207269E700AD110A /* LoginRouter.swift */; };
 		FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669BDE207275DF00AD110A /* UIViewController+ShowViewController.swift */; };
 		FA669BE120727CB300AD110A /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669BE020727CB300AD110A /* TabBarController.swift */; };
+		FA6760AA20A9E90900F970E7 /* DatabaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6760A920A9E90900F970E7 /* DatabaseStorage.swift */; };
 		FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */; };
 		FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */; };
 		FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */; };
@@ -90,6 +95,10 @@
 		FA835CCE2077BC9200BFC35A /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */; };
 		FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA89A79820873A280019226D /* UIView+Roundify.swift */; };
 		FA89A79B20888D470019226D /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA89A79A20888D470019226D /* ShadowView.swift */; };
+		FA8AE85820AAD3E900F26E11 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85720AAD3E900F26E11 /* Session.swift */; };
+		FA8AE85B20AC196800F26E11 /* SessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85A20AC196800F26E11 /* SessionHelper.swift */; };
+		FA8AE85D20AC638900F26E11 /* String+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85C20AC638900F26E11 /* String+Random.swift */; };
+		FA9A6E51209B1D5D0012AC96 /* SHA3+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */; };
 		FAA234DE20848EC900F999DE /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */; };
 		FAA234DF20848EC900F999DE /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA234DD20848EC900F999DE /* SwitchTableViewCell.xib */; };
 		FAA234E2208495B900F999DE /* TwoTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234E0208495B900F999DE /* TwoTitleTableViewCell.swift */; };
@@ -132,6 +141,7 @@
 		FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C62074C4A20083333F /* BaseCellItem.swift */; };
 		FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C82074CEC90083333F /* Sugar.swift */; };
 		FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1CA2074D9840083333F /* BaseCell.swift */; };
+		FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB3E3B20A9C30000EB6CD7 /* Storage.swift */; };
 		FAE794502088C38F0006CB0B /* DisclosureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */; };
 		FAE794522088DC010006CB0B /* SettingsAvatarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE794512088DC010006CB0B /* SettingsAvatarTableViewCell.swift */; };
 		FAE794542089F5170006CB0B /* DisclosureTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE794532089F5170006CB0B /* DisclosureTableViewCell.xib */; };
@@ -193,10 +203,14 @@
 		D3C3BD4FBAA0053E22D2D700 /* AddressViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddressViewController.swift; sourceTree = "<group>"; };
 		E3CBBA0275DD9F23803817F0 /* RootViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		E4109631C8E25BC33A2D147E /* Address.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Address.storyboard; sourceTree = "<group>"; };
+		FA01601E20B2CF3700746B51 /* UIColor+Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Sugar.swift"; sourceTree = "<group>"; };
+		FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDataBaseModel.swift; sourceTree = "<group>"; };
 		FA557E55207BA7490095459B /* DefaultHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeader.swift; sourceTree = "<group>"; };
 		FA557E57207BA7560095459B /* DefaultHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultHeader.xib; sourceTree = "<group>"; };
 		FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldTableViewCell.xib; sourceTree = "<group>"; };
+		FA61EF45209B003600A6FB62 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		FA61EF48209B037700A6FB62 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		FA669B65207239F200AD110A /* MinterWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinterWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA669B68207239F200AD110A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Classes/AppDelegate.swift; sourceTree = "<group>"; };
 		FA669B6F207239F200AD110A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -234,6 +248,7 @@
 		FA669BDC207269E700AD110A /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
 		FA669BDE207275DF00AD110A /* UIViewController+ShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIViewController+ShowViewController.swift"; path = "MinterWallet/Classes/Common/Helper/UIViewController+ShowViewController.swift"; sourceTree = SOURCE_ROOT; };
 		FA669BE020727CB300AD110A /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		FA6760A920A9E90900F970E7 /* DatabaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStorage.swift; sourceTree = "<group>"; };
 		FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopMost.swift"; sourceTree = "<group>"; };
@@ -248,6 +263,10 @@
 		FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenHeader.swift; sourceTree = "<group>"; };
 		FA89A79820873A280019226D /* UIView+Roundify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Roundify.swift"; sourceTree = "<group>"; };
 		FA89A79A20888D470019226D /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		FA8AE85720AAD3E900F26E11 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		FA8AE85A20AC196800F26E11 /* SessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHelper.swift; sourceTree = "<group>"; };
+		FA8AE85C20AC638900F26E11 /* String+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Random.swift"; sourceTree = "<group>"; };
+		FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SHA3+String.swift"; sourceTree = "<group>"; };
 		FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		FAA234DD20848EC900F999DE /* SwitchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchTableViewCell.xib; sourceTree = "<group>"; };
 		FAA234E0208495B900F999DE /* TwoTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoTitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -290,6 +309,7 @@
 		FAC1E1C62074C4A20083333F /* BaseCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellItem.swift; sourceTree = "<group>"; };
 		FAC1E1C82074CEC90083333F /* Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sugar.swift; sourceTree = "<group>"; };
 		FAC1E1CA2074D9840083333F /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
+		FADB3E3B20A9C30000EB6CD7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureTableViewCell.swift; sourceTree = "<group>"; };
 		FAE794512088DC010006CB0B /* SettingsAvatarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAvatarTableViewCell.swift; sourceTree = "<group>"; };
 		FAE794532089F5170006CB0B /* DisclosureTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DisclosureTableViewCell.xib; sourceTree = "<group>"; };
@@ -833,6 +853,14 @@
 			path = MinterWallet/Classes/Receive;
 			sourceTree = SOURCE_ROOT;
 		};
+		FA319B8620AACB3D00751A48 /* Database Models */ = {
+			isa = PBXGroup;
+			children = (
+				FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */,
+			);
+			path = "Database Models";
+			sourceTree = "<group>";
+		};
 		FA557E52207BA6ED0095459B /* HeaderFooter */ = {
 			isa = PBXGroup;
 			children = (
@@ -870,6 +898,14 @@
 				FAA2607420932641009FF3DE /* BlankTableViewCell.xib */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		FA61EF47209B036900A6FB62 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				FA61EF48209B037700A6FB62 /* AccountManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		FA669B5C207239F100AD110A = {
@@ -942,6 +978,9 @@
 		FA669B982072448B00AD110A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FA8AE85620AAD3DC00F26E11 /* Session */,
+				FADB3E3A20A9C25C00EB6CD7 /* Storage */,
+				FA61EF47209B036900A6FB62 /* Manager */,
 				FAC1E1C32074C4650083333F /* Model */,
 				FA669BD72072675700AD110A /* Router */,
 				FA669BA32072476300AD110A /* View */,
@@ -984,6 +1023,9 @@
 				FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */,
 				FA89A79820873A280019226D /* UIView+Roundify.swift */,
 				FAA2608520946456009FF3DE /* UIViewController+HideKeyboard.swift */,
+				FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */,
+				FA8AE85C20AC638900F26E11 /* String+Random.swift */,
+				FA01601E20B2CF3700746B51 /* UIColor+Sugar.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1066,6 +1108,23 @@
 			path = AccordionTableView;
 			sourceTree = "<group>";
 		};
+		FA8AE85620AAD3DC00F26E11 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				FA8AE85920AC195B00F26E11 /* Helpers */,
+				FA8AE85720AAD3E900F26E11 /* Session.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		FA8AE85920AC195B00F26E11 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FA8AE85A20AC196800F26E11 /* SessionHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		FAA2605820920989009FF3DE /* PlayNDrop */ = {
 			isa = PBXGroup;
 			children = (
@@ -1086,10 +1145,21 @@
 		FAC1E1C32074C4650083333F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FA319B8620AACB3D00751A48 /* Database Models */,
 				FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */,
 				FAC1E1C62074C4A20083333F /* BaseCellItem.swift */,
+				FA61EF45209B003600A6FB62 /* Account.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		FADB3E3A20A9C25C00EB6CD7 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				FADB3E3B20A9C30000EB6CD7 /* Storage.swift */,
+				FA6760A920A9E90900F970E7 /* DatabaseStorage.swift */,
+			);
+			path = Storage;
 			sourceTree = "<group>";
 		};
 		FAE7944E2088C3000006CB0B /* Cells */ = {
@@ -1115,7 +1185,6 @@
 				FA669B62207239F200AD110A /* Frameworks */,
 				FA669B63207239F200AD110A /* Resources */,
 				6AE9AC3B6A90BD4349CF1CDF /* [CP] Embed Pods Frameworks */,
-				AADAC5FA82F6CA93AD907709 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1305,14 +1374,21 @@
 				"${BUILT_PRODUCTS_DIR}/AEAccordion/AEAccordion.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
+				"${BUILT_PRODUCTS_DIR}/CKMnemonic/CKMnemonic.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/ExpandableCell/ExpandableCell.framework",
 				"${BUILT_PRODUCTS_DIR}/ExpyTableView/ExpyTableView.framework",
 				"${BUILT_PRODUCTS_DIR}/GrowingTextView/GrowingTextView.framework",
 				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/McPicker/McPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterCore/MinterCore.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
@@ -1325,14 +1401,21 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AEAccordion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CKMnemonic.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpyTableView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GrowingTextView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/McPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
@@ -1343,21 +1426,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MinterWallet/Pods-MinterWallet-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AADAC5FA82F6CA93AD907709 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MinterWallet/Pods-MinterWallet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FA669BD4207265AB00AD110A /* ShellScript */ = {
@@ -1393,9 +1461,12 @@
 				FAE794522088DC010006CB0B /* SettingsAvatarTableViewCell.swift in Sources */,
 				FA669B69207239F200AD110A /* AppDelegate.swift in Sources */,
 				FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */,
+				FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */,
+				FA6760AA20A9E90900F970E7 /* DatabaseStorage.swift in Sources */,
 				FA669BA12072461700AD110A /* String+Localized.swift in Sources */,
 				FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */,
 				FA669BD32072601300AD110A /* UIColor+HEX.swift in Sources */,
+				FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */,
 				FA7D98FD207F588A00193B8A /* AccordionTableViewController.swift in Sources */,
 				FA669BD120724A1200AD110A /* UIFont+Default.swift in Sources */,
 				FA669BD9207267DA00AD110A /* BaseRouter.swift in Sources */,
@@ -1405,9 +1476,12 @@
 				FAA234EA2084A42A00F999DE /* PickerTableViewCell.swift in Sources */,
 				FAA2606E20931A89009FF3DE /* EmailEditViewModel.swift in Sources */,
 				FA89A79B20888D470019226D /* ShadowView.swift in Sources */,
+				FA61EF46209B003600A6FB62 /* Account.swift in Sources */,
 				FA669BDD207269E700AD110A /* LoginRouter.swift in Sources */,
 				FAA2607520932641009FF3DE /* BlankTableViewCell.swift in Sources */,
+				FA8AE85B20AC196800F26E11 /* SessionHelper.swift in Sources */,
 				FAA2605C2092099B009FF3DE /* CCMPlayNDropView.m in Sources */,
+				FA9A6E51209B1D5D0012AC96 /* SHA3+String.swift in Sources */,
 				FA669BCF207249D300AD110A /* DefaultButton.swift in Sources */,
 				FAA234ED20872BD000F999DE /* SendPopupViewController.swift in Sources */,
 				FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */,
@@ -1432,9 +1506,11 @@
 				2B4873CFE9E2F66FBBAADC30 /* CreateWalletViewController.swift in Sources */,
 				35C28F738CF2110198FBDD3C /* CreateWalletViewModel.swift in Sources */,
 				FAA234E2208495B900F999DE /* TwoTitleTableViewCell.swift in Sources */,
+				FA01601F20B2CF3700746B51 /* UIColor+Sugar.swift in Sources */,
 				FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */,
 				D08EF152AB24CD864B6F2E40 /* RootViewController.swift in Sources */,
 				94B58309D085DACB65260018 /* RootViewModel.swift in Sources */,
+				FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */,
 				FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */,
 				FAA2607C209355BD009FF3DE /* GenerateAddressViewModel.swift in Sources */,
 				FA7D98FF207F58BD00193B8A /* AccordionTableViewCell.swift in Sources */,
@@ -1456,12 +1532,14 @@
 				27FF799EFD5EE33465322922 /* ReceiveViewModel.swift in Sources */,
 				AF44D30C07B56ACF70021D25 /* SettingsViewController.swift in Sources */,
 				DF1E9909F9D644AEBBBED0DF /* SettingsViewModel.swift in Sources */,
+				FA8AE85D20AC638900F26E11 /* String+Random.swift in Sources */,
 				550C26104C6471B011F52123 /* AddressViewController.swift in Sources */,
 				FAA26057208F7A55009FF3DE /* CountdownPopupViewModel.swift in Sources */,
 				1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */,
 				FAA26055208F7A37009FF3DE /* CountdownPopupViewController.swift in Sources */,
 				FAA2606620930C68009FF3DE /* UsernameEditViewModel.swift in Sources */,
 				FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */,
+				FA8AE85820AAD3E900F26E11 /* Session.swift in Sources */,
 				932D4DBEAAA04834E8868AAF /* AdvancedModeViewController.swift in Sources */,
 				FAA2606120923634009FF3DE /* AddressTableViewCell.swift in Sources */,
 				65174A2CD47A619B9407EE4A /* AdvancedModeViewModel.swift in Sources */,

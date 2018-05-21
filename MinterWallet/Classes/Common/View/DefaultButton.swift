@@ -22,6 +22,12 @@ class DefaultButton: UIButton {
 		}
 	}
 	
+	override var isEnabled: Bool {
+		didSet {
+			
+		}
+	}
+	
 	//MARK: -
 	
 	@IBInspectable var pattern: String? {
@@ -36,6 +42,8 @@ class DefaultButton: UIButton {
 			self.layer.borderWidth = 2.0
 			self.layer.borderColor = UIColor(hex: 0x502EC2)?.cgColor
 			self.setTitleColor(UIColor(hex: 0x502EC2), for: .normal)
+			
+			
 		}
 		else if pattern == "transparent" {
 			self.backgroundColor = .clear
@@ -44,8 +52,10 @@ class DefaultButton: UIButton {
 			self.setTitleColor(.white, for: .normal)
 		}
 		else if pattern == "purple" {
-			self.backgroundColor = UIColor(hex: 0x502EC2)
+//			self.backgroundColor = UIColor(hex: 0x502EC2)
+			self.setBackgroundImage(UIImage(named: "button-purple-default"), for: .normal)
 			self.setTitleColor(.white, for: .normal)
+			
 			addShadow()
 		}
 		else {
@@ -73,6 +83,7 @@ class DefaultButton: UIButton {
 		self.layer.cornerRadius = 16.0
 		self.updateAppearance()
 		self.animateButtonTouch = true
+		self.setBackgroundImage(UIImage(named: "button-disabled"), for: .disabled)
 	}
 	
 	override func layoutSubviews() {

@@ -30,7 +30,7 @@ class AddressTableViewCell: BaseCell {
 	@IBAction func didTapActionButton(_ sender: Any) {
 		UIPasteboard.general.string = addressLabel.text
 		
-		SVProgressHUD.showSuccess(withStatus: "Copied")
+		SVProgressHUD.showSuccess(withStatus: "Copied".localized())
 	}
 	
 	//MARK: -
@@ -47,7 +47,7 @@ class AddressTableViewCell: BaseCell {
 	
 	override func configure(item: BaseCellItem) {
 		if let addressItem = item as? AddressTableViewCellItem {
-			addressLabel.text = addressItem.address
+			addressLabel.text = "Mx" + (addressItem.address ?? "")
 			
 			actionButton.setTitle(addressItem.buttonTitle, for: .normal)
 		}

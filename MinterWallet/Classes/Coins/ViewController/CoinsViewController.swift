@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 //import ExpandableCell
 //import AEAccordion
 
@@ -45,6 +46,8 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	//MARK: -
 	
 	var viewModel = CoinsViewModel()
+	
+	private var disposeBag = DisposeBag()
 
 	// MARK: Life cycle
 	
@@ -59,6 +62,13 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		shouldAnimateCellToggle = true
 		
 		hidesBottomBarWhenPushed = false
+		
+		if let rightView = self.navigationItem.rightBarButtonItem?.customView {
+			Session.shared.isLoggedIn.asObservable().map({ (val) -> Bool in
+				return !val
+			}).bind(to: rightView.rx.isHidden).disposed(by: disposeBag)
+		}
+
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -122,7 +132,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 
 		let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DefaultHeader")
 		if let defaultHeader = header as? DefaultHeader {
-			defaultHeader.titleLabel.text = section.title
+			defaultHeader.titleLabel.text = section.header
 		}
 
 		return header

@@ -27,10 +27,20 @@ class RootViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if let loginVC = LoginRouter.viewController(path: ["login"], param: [:]) {
-			self.showViewControllerWith(loginVC, usingAnimation: .right, completion: {
-				
-			})
+		if Session.shared.accounts.value.count > 0 {
+			//has local accounts, show wallet
+				let vc = Storyboards.Main.instantiateInitialViewController()
+
+				self.showViewControllerWith(vc, usingAnimation: .up) {
+
+				}
+		}
+		else {
+			if let loginVC = LoginRouter.viewController(path: ["login"], param: [:]) {
+				self.showViewControllerWith(loginVC, usingAnimation: .right, completion: {
+					
+				})
+			}
 		}
 	}
 

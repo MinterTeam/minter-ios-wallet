@@ -8,7 +8,14 @@
 
 import UIKit
 
-class ValidatableTextField: UITextField {
+
+protocol Validatable : class where Self : UIView {
+	func setValid()
+	func setInvalid()
+}
+
+
+class ValidatableTextField: UITextField, Validatable {
 
 	//MARK: -
 	
@@ -86,6 +93,23 @@ class ValidatableTextField: UITextField {
 	
 	override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
 		return CGRect(x: leftPadding, y: 0, width: prefixView?.bounds.width ?? 0, height: bounds.height)
+	}
+	
+	//MARK: -
+	
+	func setValid() {
+		self.layer.cornerRadius = 8.0
+		self.layer.borderWidth = 2
+		self.layer.borderColor = UIColor(hex: 0x4DAC4A)?.cgColor
+		self.rightViewMode = .always
+	}
+	
+	func setInvalid() {
+		self.layer.cornerRadius = 8.0
+		self.layer.borderWidth = 2
+		self.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
+//		self.rightView = self.rightViewInvalid
+		self.rightViewMode = .always
 	}
 
 }

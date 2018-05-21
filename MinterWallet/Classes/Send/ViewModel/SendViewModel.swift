@@ -60,19 +60,19 @@ class SendViewModel: BaseViewModel {
 		button.buttonPattern = "purple"
 		
 		
-		let section = FormSectionItem()
-		section.cells = [coin, username, amount, fee, separator, blank, sendForFree, separator, blank, button]
+		var section = BaseTableSectionItem(header: "")
+		section.items = [coin, username, amount, fee, separator, blank, sendForFree, separator, blank, button]
 		sections.append(section)
 	}
 
 	//MARK: - Rows
 
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections[safe: section]?.items.count ?? 0
 	}
 
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections[safe: section]?.items[safe: row]
 	}
 	
 	

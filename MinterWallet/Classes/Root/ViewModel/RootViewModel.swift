@@ -9,15 +9,18 @@
 import RxSwift
 
 class RootViewModel: BaseViewModel {
+	
+	private let session = Session.shared
 
-    var title: String {
-      get {
-        return "Root".localized()
-        }
-    }
+	var title: String {
+		get {
+			return "Root".localized()
+		}
+	}
 
-    override init() {
-	super.init()
-
-    }
+	override init() {
+		super.init()
+		
+		SessionHelper.reloadAccounts()
+	}
 }

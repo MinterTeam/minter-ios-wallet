@@ -30,8 +30,7 @@ class CoinsViewModel: BaseViewModel {
 	}
 	
 	func createSection() {
-		let section = BaseTableSectionItem()
-		section.title = "LATEST TRANSACTIONS".localized()
+		var section = BaseTableSectionItem(header: "LATEST TRANSACTIONS".localized())
 		
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
 		
@@ -65,11 +64,10 @@ class CoinsViewModel: BaseViewModel {
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Transactions")
 		button.title = "ALL TRANSACTIONS".localized()
 		
-		section.cells = [transaction1, separator, transaction2, separator, transaction3, button]
+		section.items = [transaction1, separator, transaction2, separator, transaction3, button]
 		
 		
-		let section1 = BaseTableSectionItem()
-		section1.title = "MY COINS".localized()
+		var section1 = BaseTableSectionItem(header: "MY COINS".localized())
 		
 		let coin1 = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_11")
 		coin1.title = "Starbucks"
@@ -95,7 +93,7 @@ class CoinsViewModel: BaseViewModel {
 		let button1 = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Convert")
 		button1.title = "CONVERT".localized()
 		
-		section1.cells = [coin1, separator, coin2, separator, coin3, button1]
+		section1.items = [coin1, separator, coin2, separator, coin3, button1]
 		
 		self.sections.append(section)
 		self.sections.append(section1)
@@ -112,11 +110,11 @@ class CoinsViewModel: BaseViewModel {
 	}
 	
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.cells.count ?? 0
+		return sections[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.cells[safe: row]
+		return sections[safe: section]?.items[safe: row]
 	}
 	
 }
