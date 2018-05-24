@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 @IBDesignable
 class DefaultButton: UIButton {
 	
@@ -42,8 +43,6 @@ class DefaultButton: UIButton {
 			self.layer.borderWidth = 2.0
 			self.layer.borderColor = UIColor(hex: 0x502EC2)?.cgColor
 			self.setTitleColor(UIColor(hex: 0x502EC2), for: .normal)
-			
-			
 		}
 		else if pattern == "transparent" {
 			self.backgroundColor = .clear
@@ -52,13 +51,17 @@ class DefaultButton: UIButton {
 			self.setTitleColor(.white, for: .normal)
 		}
 		else if pattern == "purple" {
-//			self.backgroundColor = UIColor(hex: 0x502EC2)
 			self.setBackgroundImage(UIImage(named: "button-purple-default"), for: .normal)
+			self.setBackgroundImage(UIImage(named: "button-disabled"), for: .disabled)
+			self.setBackgroundImage(UIImage(named: "button-purple-hover"), for: .highlighted)
+			
 			self.setTitleColor(.white, for: .normal)
+			self.layer.borderWidth = 0.0
 			
 			addShadow()
 		}
 		else {
+			self.layer.borderWidth = 0.0
 			self.backgroundColor = .white
 			self.setTitleColor(UIColor(hex: 0x502EC2), for: .normal)
 			addShadow()
@@ -83,7 +86,6 @@ class DefaultButton: UIButton {
 		self.layer.cornerRadius = 16.0
 		self.updateAppearance()
 		self.animateButtonTouch = true
-		self.setBackgroundImage(UIImage(named: "button-disabled"), for: .disabled)
 	}
 	
 	override func layoutSubviews() {

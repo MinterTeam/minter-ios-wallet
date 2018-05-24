@@ -22,4 +22,5 @@ target 'MinterWallet' do
 		pod 'CKMnemonic'
 		pod 'KeychainSwift'
 		pod 'RealmSwift'
+		pod 'AFDateHelper', '~> 4.2.2'
 end

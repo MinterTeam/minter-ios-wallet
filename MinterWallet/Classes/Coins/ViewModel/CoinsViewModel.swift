@@ -7,6 +7,7 @@
 //
 
 import RxSwift
+import MinterExplorer
 
 
 class CoinsViewModel: BaseViewModel {
@@ -19,55 +20,76 @@ class CoinsViewModel: BaseViewModel {
 		}
 	}
 	
-	private var sections: [BaseTableSectionItem] = []
+	private var disposeBag = DisposeBag()
+	
+	private var sections = Variable([BaseTableSectionItem]())
+	
+	var sectionsObservable: Observable<[BaseTableSectionItem]> {
+		return self.sections.asObservable()
+	}
 	
 	//MARK: -
 
 	override init() {
 		super.init()
 		
+		Session.shared.transactions.asObservable().subscribe(onNext: { [weak self] (transactions) in
+			self?.createSection()
+		}).disposed(by: disposeBag)
+		
 		createSection()
 	}
 	
 	func createSection() {
+		
+		var sctns = [BaseTableSectionItem]()
+		
 		var section = BaseTableSectionItem(header: "LATEST TRANSACTIONS".localized())
+		section.identifier = "BaseTableSectionItem_1"
 		
-		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
-		
-		let transaction1 = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell")
-		transaction1.title = "Starbucks"
-		transaction1.image = UIImage(named: "AvatarPlaceholderImage")
-		transaction1.date = Date()
-		transaction1.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction1.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction1.coin = "STBCKS"
-		transaction1.amount = 10.01
-		
-		let transaction2 = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell")
-		transaction2.title = "Tesla"
-		transaction2.image = UIImage(named: "AvatarPlaceholderImage")
-		transaction2.date = Date()
-		transaction2.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction2.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction2.coin = "TSL"
-		transaction2.amount = 270000000000
-		
-		let transaction3 = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell")
-		transaction3.title = "McDonalds"
-		transaction3.image = UIImage(named: "AvatarPlaceholderImage")
-		transaction3.date = Date()
-		transaction3.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction3.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-		transaction3.coin = "MCD"
-		transaction3.amount = -10000.42
+		Array(Session.shared.transactions.value[safe: 0..<5] ?? []).forEach { (transaction) in
+			
+			let sectionId = transaction.hash ?? String.random(length: 20)
+			
+			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(sectionId)")
+			
+			var title = ""
+			var signMultiplier = 1.0
+			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+				account.address == transaction.to
+			})
+			
+			if hasAddress {
+				title = transaction.from ?? ""
+				signMultiplier = -1.0
+			}
+			else {
+				title = transaction.to ?? ""
+			}
+			
+			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
+			transactionCellItem.txHash = transaction.hash
+			transactionCellItem.title = title
+			transactionCellItem.image = UIImage(named: "AvatarPlaceholderImage")
+			transactionCellItem.date = transaction.date
+			transactionCellItem.from = transaction.from
+			transactionCellItem.to = transaction.to
+			transactionCellItem.coin = transaction.coinSymbol
+			transactionCellItem.amount = (transaction.value ?? 0) * signMultiplier
+			
+			section.items.append(transactionCellItem)
+			section.items.append(separator)
+		}
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Transactions")
+		button.buttonPattern = "blank"
 		button.title = "ALL TRANSACTIONS".localized()
 		
-		section.items = [transaction1, separator, transaction2, separator, transaction3, button]
+		section.items.append(button)
 		
 		
 		var section1 = BaseTableSectionItem(header: "MY COINS".localized())
+		section1.identifier = "BaseTableSectionItem_2"
 		
 		let coin1 = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_11")
 		coin1.title = "Starbucks"
@@ -90,31 +112,47 @@ class CoinsViewModel: BaseViewModel {
 		coin3.coin = "MCD"
 		coin3.amount = 22.2234
 		
-		let button1 = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Convert")
-		button1.title = "CONVERT".localized()
+		let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Convert")
+		convertButton.buttonPattern = "blank"
+		convertButton.title = "CONVERT".localized()
 		
-		section1.items = [coin1, separator, coin2, separator, coin3, button1]
+		let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(String.random(length: 20))")
+		let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(String.random(length: 20))")
 		
-		self.sections.append(section)
-		self.sections.append(section1)
+		section1.items = [coin1, separator1, coin2, separator2, coin3, convertButton]
+		
+		sctns.append(section)
+		sctns.append(section1)
+		
+		self.sections.value = sctns
+		
 	}
 	
 	//MARK: -
 	
 	func section(index: Int) -> BaseTableSectionItem? {
-		return sections[safe: index]
+		return sections.value[safe: index]
 	}
 	
 	func sectionsCount() -> Int {
-		return sections.count
+		return sections.value.count
 	}
 	
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.items.count ?? 0
+		return sections.value[safe: section]?.items.count ?? 0
 	}
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.items[safe: row]
+		return sections.value[safe: section]?.items[safe: row]
+	}
+	
+	//MARK: -
+	
+	func explorerURL(section: Int, row: Int) -> URL? {
+		if let item = self.cellItem(section: section, row: row) as? TransactionTableViewCellItem {
+			return URL(string: MinterExplorerBaseURL + "transactions/\(item.txHash ?? "")")
+		}
+		return nil
 	}
 	
 }

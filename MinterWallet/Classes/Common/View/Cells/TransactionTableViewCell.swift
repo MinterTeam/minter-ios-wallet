@@ -11,6 +11,7 @@ import UIKit
 
 class TransactionTableViewCellItem : BaseCellItem {
 	
+	var txHash: String?
 	var title: String?
 	var image: UIImage?
 	var date: Date?
@@ -21,12 +22,20 @@ class TransactionTableViewCellItem : BaseCellItem {
 	var expandable: Bool?
 }
 
+protocol TransactionTableViewCellDelegate : class {
+	func didTapExpandedButton(cell: TransactionTableViewCell)
+}
+
 
 class TransactionTableViewCell: ExpandableCell {
 	
 	//MARK: -
 	
 	let formatter = CurrencyNumberFormatter.transactionFormatter
+	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
+	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
+	
+	weak var delegate: TransactionTableViewCellDelegate?
 	
 	//MARK: - IBOutlets
 
@@ -37,6 +46,19 @@ class TransactionTableViewCell: ExpandableCell {
 	@IBOutlet weak var amount: UILabel!
 	
 	@IBOutlet weak var coin: UILabel!
+	
+	@IBOutlet weak var fromAddressLabel: UILabel!
+	
+	@IBOutlet weak var toAddressLabel: UILabel!
+	
+	@IBOutlet weak var expandedAmountLabel: UILabel!
+	
+	@IBOutlet weak var coinLabel: UILabel!
+	
+	@IBOutlet weak var dateLabel: UILabel!
+	
+	@IBOutlet weak var timeLabel: UILabel!
+	
 	
 	//MARK: -
 	
@@ -64,6 +86,14 @@ class TransactionTableViewCell: ExpandableCell {
 			coinImage.image = transaction.image
 			amount.text = amountText(amount: transaction.amount ?? 0)
 			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
+			
+			fromAddressLabel.text = transaction.from
+			toAddressLabel.text = transaction.to
+			expandedAmountLabel.text = amountText(amount: transaction.amount ?? 0)
+			coinLabel.text = transaction.coin
+			dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
+			timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
+			
 			coin.text = transaction.coin
 			expandable = transaction.expandable ?? false
 		}
@@ -74,6 +104,10 @@ class TransactionTableViewCell: ExpandableCell {
 	}
 	
 	//MARK: -
+	
+	@IBAction func didTapExpandedButton(_ sender: Any) {
+		delegate?.didTapExpandedButton(cell: self)
+	}
 	
 	//MARK: -
 	

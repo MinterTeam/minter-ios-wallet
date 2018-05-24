@@ -42,6 +42,8 @@
 		DF95C2FD52E1D7EB13A9336F /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D7E209968E071ABD4EA83FD /* Settings.storyboard */; };
 		EFCE6415FD145CE2E62EF813 /* SendViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD518694233BEED9B6EE2B /* SendViewModel.swift */; };
 		FA01601F20B2CF3700746B51 /* UIColor+Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01601E20B2CF3700746B51 /* UIColor+Sugar.swift */; };
+		FA01604220B4533B00746B51 /* TransactionManager+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01604120B4533B00746B51 /* TransactionManager+Default.swift */; };
+		FA3154AA20B5ABD1005D9F21 /* TransactionDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */; };
 		FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */; };
 		FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA557E55207BA7490095459B /* DefaultHeader.swift */; };
 		FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA557E57207BA7560095459B /* DefaultHeader.xib */; };
@@ -204,6 +206,8 @@
 		E3CBBA0275DD9F23803817F0 /* RootViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		E4109631C8E25BC33A2D147E /* Address.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Address.storyboard; sourceTree = "<group>"; };
 		FA01601E20B2CF3700746B51 /* UIColor+Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Sugar.swift"; sourceTree = "<group>"; };
+		FA01604120B4533B00746B51 /* TransactionManager+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionManager+Default.swift"; sourceTree = "<group>"; };
+		FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDateFormatter.swift; sourceTree = "<group>"; };
 		FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDataBaseModel.swift; sourceTree = "<group>"; };
 		FA557E55207BA7490095459B /* DefaultHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeader.swift; sourceTree = "<group>"; };
 		FA557E57207BA7560095459B /* DefaultHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultHeader.xib; sourceTree = "<group>"; };
@@ -853,6 +857,14 @@
 			path = MinterWallet/Classes/Receive;
 			sourceTree = SOURCE_ROOT;
 		};
+		FA01604020B4532000746B51 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				FA01604120B4533B00746B51 /* TransactionManager+Default.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		FA319B8620AACB3D00751A48 /* Database Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1012,6 +1024,7 @@
 		FA669B9F2072460700AD110A /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				FA01604020B4532000746B51 /* Managers */,
 				FAA2608720946924009FF3DE /* Formatters */,
 				FA669BA02072461700AD110A /* String+Localized.swift */,
 				FA669BD020724A1200AD110A /* UIFont+Default.swift */,
@@ -1138,6 +1151,7 @@
 			isa = PBXGroup;
 			children = (
 				FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */,
+				FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */,
 			);
 			path = Formatters;
 			sourceTree = "<group>";
@@ -1503,6 +1517,7 @@
 				FAA234E62084A26900F999DE /* SeparatorTableViewCell.swift in Sources */,
 				FA669B9C207244E300AD110A /* BaseViewModel.swift in Sources */,
 				332EB812C95C0592C6924E65 /* CoinsViewController.swift in Sources */,
+				FA3154AA20B5ABD1005D9F21 /* TransactionDateFormatter.swift in Sources */,
 				FAA2608620946456009FF3DE /* UIViewController+HideKeyboard.swift in Sources */,
 				FAA2607020931D2F009FF3DE /* PasswordEditViewController.swift in Sources */,
 				FA835CCE2077BC9200BFC35A /* ScreenHeader.swift in Sources */,
@@ -1540,6 +1555,7 @@
 				550C26104C6471B011F52123 /* AddressViewController.swift in Sources */,
 				FAA26057208F7A55009FF3DE /* CountdownPopupViewModel.swift in Sources */,
 				1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */,
+				FA01604220B4533B00746B51 /* TransactionManager+Default.swift in Sources */,
 				FAA26055208F7A37009FF3DE /* CountdownPopupViewController.swift in Sources */,
 				FAA2606620930C68009FF3DE /* UsernameEditViewModel.swift in Sources */,
 				FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */,

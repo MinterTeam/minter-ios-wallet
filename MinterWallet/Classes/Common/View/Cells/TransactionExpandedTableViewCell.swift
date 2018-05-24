@@ -8,7 +8,10 @@
 
 import UIKit
 
+
 class TransactionExpandedTableViewCell: BaseCell {
+	
+	weak var delegate: TransactionTableViewCellDelegate?
 	
 	//MARK: -
 

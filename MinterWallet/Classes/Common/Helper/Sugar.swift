@@ -15,3 +15,12 @@ extension Array {
 		return indices ~= index ? self[index] : nil
 	}
 }
+
+extension Array {
+	subscript(safe range: Range<Index>) -> [Element]? {
+		guard range.lowerBound >= self.startIndex else { return nil }
+		guard range.upperBound <= self.endIndex else { return Array(self) }
+		
+		return Array(self[range])
+	}
+}

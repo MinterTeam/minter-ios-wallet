@@ -19,6 +19,7 @@ class CurrencyNumberFormatter : NumberFormatter {
 		formatter.plusSign = "+ "
 		formatter.minusSign = "- "
 		formatter.minimumFractionDigits = 2
+		formatter.maximumFractionDigits = 12
 		formatter.positivePrefix = formatter.plusSign
 		return formatter
 	}
@@ -31,6 +32,7 @@ class CurrencyNumberFormatter : NumberFormatter {
 		formatter.plusSign = ""
 		formatter.minusSign = ""
 		formatter.minimumFractionDigits = 2
+		formatter.maximumFractionDigits = 12
 		formatter.positivePrefix = formatter.plusSign
 		return formatter
 	}

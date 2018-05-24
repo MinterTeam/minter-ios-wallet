@@ -8,6 +8,7 @@
 
 import UIKit
 import ExpandableCell
+import RxDataSources
 
 
 
@@ -16,6 +17,10 @@ class TransactionsViewController: BaseTableViewController, UITableViewDataSource
 	//MARK: -
 	
 	var viewModel = TransactionsViewModel()
+	
+	//MARK: -
+	
+	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 
 	// MARK: Life cycle
 	
@@ -33,6 +38,26 @@ class TransactionsViewController: BaseTableViewController, UITableViewDataSource
 		self.tableView.tableFooterView = UIView()
 		
 		registerViews()
+		
+		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
+			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
+				
+				guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
+					return UITableViewCell()
+				}
+				
+				cell.configure(item: item)
+				
+				return cell
+		})
+		
+		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .automatic, reloadAnimation: .automatic, deleteAnimation: .automatic)
+		
+		tableView.rx.setDelegate(self).disposed(by: disposeBag)
+		
+		viewModel.sectionsObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
+		
+		
 	}
 	
 	func registerViews() {

@@ -8,8 +8,8 @@
 
 import UIKit
 import RxSwift
-//import ExpandableCell
-//import AEAccordion
+import RxDataSources
+import SafariServices
 
 
 
@@ -31,11 +31,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
 			tableView.contentInset = UIEdgeInsetsMake(70, 0, 0, 0)
-//			tableView.expandableDelegate = self
-//			tableView.animation = .middle
-//			tableView.scrollViewDelegate = self
 		}
 	}
+	
+	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 	
 	@IBOutlet var tableHeaderTopConstraint: NSLayoutConstraint?
 	
@@ -58,6 +57,32 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		self.usernameButton.setTitleColor(.white, for: .normal)
 		
 		registerCells()
+		
+		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
+			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
+
+				guard let item = self?.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
+					return UITableViewCell()
+				}
+				
+				cell.configure(item: item)
+				
+				if let buttonCell = cell as? ButtonTableViewCell {
+					buttonCell.delegate = self
+				}
+				
+				if let transactionCell = cell as? TransactionTableViewCell {
+					transactionCell.delegate = self
+				}
+				
+				return cell
+		})
+		
+		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .automatic, reloadAnimation: .automatic, deleteAnimation: .automatic)
+		
+		tableView.rx.setDelegate(self).disposed(by: disposeBag)
+		
+		viewModel.sectionsObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
 		
 		shouldAnimateCellToggle = true
 		
@@ -191,7 +216,19 @@ extension CoinsViewController : ButtonTableViewCellDelegate {
 		if item.identifier == "ButtonTableViewCell_Transactions" {
 			performSegue(withIdentifier: "showTransactions", sender: nil)
 		}
-		
+	}
+}
+
+extension CoinsViewController : TransactionTableViewCellDelegate {
+	
+	func didTapExpandedButton(cell: TransactionTableViewCell) {
+		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			let vc = SFSafariViewController(url: url)
+			
+			self.present(vc, animated: true) {
+				
+			}
+		}
 	}
 	
 }

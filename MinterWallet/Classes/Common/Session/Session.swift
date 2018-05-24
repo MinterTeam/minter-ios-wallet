@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 import MinterCore
-import MinterExpl
+import MinterExplorer
 
 
 class Session {
@@ -20,6 +20,7 @@ class Session {
 	
 	private let accountManager = AccountManager()
 	private let minterAccountManager = MinterCore.AccountManager.default
+	private let transactionManager = MinterExplorer.TransactionManager.default
 	
 	private var disposeBag = DisposeBag()
 	
@@ -27,11 +28,9 @@ class Session {
 	
 	var accounts = Variable([Account]())
 	
-	var transactions: [Transaction] = []
+	var transactions = Variable([Transaction]())
 	
 	var balances: [Any] = []
-	
-	private let transactionManager = TransactionManager.default
 	
 	private init() {
 
@@ -59,35 +58,30 @@ class Session {
 	
 	func loadTransactions() {
 		
-		transactions = []
+		transactions.value = []
 		
-		accounts.value.forEach { (account) in
-			transactionManager.transactions(address: account.address, query: "tx.from=\"" + account.address + "\"", completion: { [weak self] (trns, error) in
-				guard nil == error else {
-					return
-				}
-				
-				self?.transactions.append(contentsOf: trns)
-			})
-			transactionManager.transactions(address: account.address, query: "tx.to=\"" + account.address + "\"", completion: { [weak self] (trns, error) in
-				guard nil == error else {
-					return
-				}
-				
-				self?.transactions.append(contentsOf: trns)
-			})
+		let addresses = accounts.value.map { (acc) -> String in
+			return "Mx" + acc.address
 		}
+		
+		transactionManager.transactions(addresses: addresses, completion: { [weak self] (trs, error) in
+			guard nil == error else {
+				return
+			}
+			
+			self?.transactions.value = trs ?? []
+		})
 	}
 	
 	func loadBalances() {
 		balances = []
 		accounts.value.forEach { (account) in
-			minterAccountManager.balance(address: account.address, with: { (res, error) in
+			minterAccountManager.balance(address: account.address, with: { [weak self] (res, error) in
 				guard nil == error else {
 					return
 				}
 				
-				self.balances.append(res)
+				self?.balances.append(res)
 				
 				
 			})
