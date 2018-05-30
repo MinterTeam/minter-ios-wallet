@@ -12,7 +12,7 @@
         <!--Transactions View Controller-->
         <scene sceneID="kZJ-9A-dmF">
             <objects>
-                <viewController id="hrV-P9-6ZS" customClass="TransactionsViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="hrV-P9-6ZS" customClass="TransactionsViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TBZ-bY-a4l"/>
                         <viewControllerLayoutGuide type="bottom" id="ZQz-9g-loQ"/>
@@ -21,24 +21,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Uqw-AW-24T" customClass="SuperExpandableTableView" customModule="MinterWallet" customModuleProvider="target">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Uqw-AW-24T" customClass="SuperExpandableTableView" customModule="MinterWallet" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="hrV-P9-6ZS" id="OdQ-0a-KSP"/>
-                                    <outlet property="delegate" destination="hrV-P9-6ZS" id="7uT-1n-Bof"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Uqw-AW-24T" firstAttribute="top" secondItem="vnA-YH-H9y" secondAttribute="top" id="ECE-v4-IXh"/>
                             <constraint firstAttribute="trailing" secondItem="Uqw-AW-24T" secondAttribute="trailing" id="JHo-Fz-XVW"/>
                             <constraint firstItem="ZQz-9g-loQ" firstAttribute="top" secondItem="Uqw-AW-24T" secondAttribute="bottom" id="dpd-QL-eze"/>
                             <constraint firstItem="Uqw-AW-24T" firstAttribute="leading" secondItem="vnA-YH-H9y" secondAttribute="leading" id="eQU-4Z-bhx"/>
+                            <constraint firstItem="Uqw-AW-24T" firstAttribute="top" secondItem="vnA-YH-H9y" secondAttribute="top" id="xRF-aE-yVg"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
                         <outlet property="tableView" destination="Uqw-AW-24T" id="1Ab-s2-8NQ"/>
                     </connections>

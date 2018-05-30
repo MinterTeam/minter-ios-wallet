@@ -14,13 +14,17 @@ class PickerTableViewCellItem : BaseCellItem {
 	var title: String?
 }
 
+struct PickerTableViewCellPickerItem {
+	var title: String?
+	var object: Any?
+}
 
 protocol PickerTableViewCellDataSource: class {
-	
+	func pickerItems(for cell: PickerTableViewCell) -> [PickerTableViewCellPickerItem]
 }
 
 protocol PickerTableViewCellDelegate: class where Self: UIViewController {
-	
+	func didFinish(with item: PickerTableViewCellPickerItem?)
 }
 
 
@@ -38,10 +42,9 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 	
 	@IBOutlet weak var selectField: ValidatableTextField! {
 		didSet {
-			
 			let imageView = UIImageView(image: UIImage(named: "textFieldSelectIcon"))
-			let rightView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 5))
-			imageView.frame = CGRect(x: 0, y: 22, width: 10, height: 5)
+			let rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 5.0))
+			imageView.frame = CGRect(x: 0.0, y: 22.0, width: 10.0, height: 5.0)
 			rightView.addSubview(imageView)
 			
 			selectField.layer.cornerRadius = 8.0
@@ -81,18 +84,30 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 			return
 		}
 		
-		let data: [[String]] = [["BIP (120,912.98)", "SOL (10.01)", "COIN (2.98)", "MINT (0.98)"]]
+		guard let items = dataSource?.pickerItems(for: self) else {
+			return
+		}
+		
+		let data: [[String]] = [items.map({ (item) -> String in
+			return item.title ?? ""
+		})]
+		
 		let picker = McPicker(data: data)
 		picker.toolbarButtonsColor = .white
 		picker.toolbarDoneButtonColor = .white
 		picker.toolbarBarTintColor = UIColor(hex: 0x4225A4)
 		picker.toolbarItemsFont = UIFont.mediumFont(of: 16.0)
-		picker.show { (selected) in
+		picker.show { [weak self] (selected) in
 			guard let coin = selected[0] else {
 				return
 			}
-			self.selectField.text = coin
+			self?.selectField.text = coin
+			if let idx = selected.keys.first {
+				self?.delegate?.didFinish(with: items[safe: idx])
+			}
+			
 		}
+
 	}
 	
 	//MARK: - UITextFieldDelegate

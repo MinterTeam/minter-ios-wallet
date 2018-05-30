@@ -93,7 +93,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 				return !val
 			}).bind(to: rightView.rx.isHidden).disposed(by: disposeBag)
 		}
-
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -224,10 +223,7 @@ extension CoinsViewController : TransactionTableViewCellDelegate {
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			let vc = SFSafariViewController(url: url)
-			
-			self.present(vc, animated: true) {
-				
-			}
+			self.present(vc, animated: true) {}
 		}
 	}
 	

@@ -24,6 +24,8 @@ struct Account {
 	
 	var isMain: Bool
 	
+	var lastBalance: [String : Double] = [:]
+	
 	//MARK: -
 	
 	init(encryptedBy: EncryptedBy, address: String, isMain: Bool = false) {
@@ -39,5 +41,5 @@ struct Account {
 		self.address = account.address
 		self.isMain = account.isMain
 	}
-	
+
 }

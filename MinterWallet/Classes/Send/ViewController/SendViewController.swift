@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate {
 	
 	//MARK: - IBOutlet
 	
@@ -76,10 +76,22 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 
 extension SendViewController: PickerTableViewCellDelegate {
 	
+	func didFinish(with item: PickerTableViewCellPickerItem?) {
+		if let item = item?.object as? AccountPickerItem {
+			viewModel.accountPickerSelect(item: item)
+		}
+	}
+
 }
 
 extension SendViewController: PickerTableViewCellDataSource {
 	
+	func pickerItems(for cell: PickerTableViewCell) -> [PickerTableViewCellPickerItem] {
+		return viewModel.accountPickerItems().map({ (account) -> PickerTableViewCellPickerItem in
+			return PickerTableViewCellPickerItem(title: account.title, object: account)
+		})
+	}
+
 }
 
 
@@ -87,31 +99,62 @@ extension SendViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
-		let sendVM = SendPopupViewModel()
-		sendVM.amount = 1245
-		sendVM.coin = "BIP"
-		sendVM.username = "PavelDurov"
-		sendVM.avatarImage = UIImage(named: "AvatarPlaceholderImage")
-		sendVM.popupTitle = "You're Sending"
-		sendVM.buttonTitle = "BIP!"
-		sendVM.cancelTitle = "CANCEL"
+		guard let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextFieldTableViewCell,
+			let toAddress = addressCell.textField.text, toAddress.isValidAddress()
+			else {
+				//error
+				return
+		}
 		
-		let countdownVM = CountdownPopupViewModel()
-		countdownVM.popupTitle = "Please wait"
-		countdownVM.unit = (one: "second", two: "seconds", other: "seconds")
-		countdownVM.count = 20
-		countdownVM.desc1 = "Coins will be received in"
-		countdownVM.desc2 = "Too long? You can make a faster transaction for 0.00000001 BIP"
-		countdownVM.buttonTitle = "Express transaction"
+		guard let amountCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? TextFieldTableViewCell,
+			let amount = Double(amountCell.textField.text ?? "0") else {
+				return
+		}
+		
+//		viewModel.send(to: toAddress, amount: amount)
+
+		
+		//		let countdownVM = CountdownPopupViewModel()
+		//		countdownVM.popupTitle = "Please wait"
+		//		countdownVM.unit = (one: "second", two: "seconds", other: "seconds")
+		//		countdownVM.count = 20
+		//		countdownVM.desc1 = "Coins will be received in"
+		//		countdownVM.desc2 = "Too long? You can make a faster transaction for 0.00000001 BIP"
+		//		countdownVM.buttonTitle = "Express transaction"
 		
 		
-		let popup = Storyboards.Popup.instantiateInitialViewController()
-		popup.viewModel = sendVM
-		popup.modalPresentationStyle = .overFullScreen
-		popup.modalTransitionStyle = .crossDissolve
-		
-		self.tabBarController?.present(popup, animated: true, completion: nil)
-		
+		let vm = viewModel.sendViewModel(to: toAddress, amount: amount)
+
+		if let popup = Storyboards.Popup.instantiateInitialViewController() as? SendPopupViewController {
+			popup.viewModel = vm
+			popup.delegate = self
+			popup.modalPresentationStyle = .overFullScreen
+			popup.modalTransitionStyle = .crossDissolve
+			
+			self.tabBarController?.present(popup, animated: true, completion: nil)
+		}
 	}
 	
+	//MARK: - SendPopupViewControllerDelegate
+	
+	func didFinish(viewController: SendPopupViewController) {
+		guard let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextFieldTableViewCell,
+			let toAddress = addressCell.textField.text, toAddress.isValidAddress()
+			else {
+				//error
+				return
+		}
+		
+		guard let amountCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? TextFieldTableViewCell,
+			let amount = Double(amountCell.textField.text ?? "0") else {
+				return
+		}
+		
+		viewModel.send(to: toAddress, amount: amount)
+	}
+	
+	func didCancel(viewController: SendPopupViewController) {
+		
+	}
+
 }

@@ -87,6 +87,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="wwT-lq-D3q">
+                        <barButtonItem key="backBarButtonItem" title=" " id="esY-MT-34J"/>
                         <barButtonItem key="leftBarButtonItem" enabled="NO" title="Item" image="BipLogoSmall" id="2PJ-5X-ytA">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </barButtonItem>

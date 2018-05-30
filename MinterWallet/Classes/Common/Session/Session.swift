@@ -30,11 +30,31 @@ class Session {
 	
 	var transactions = Variable([Transaction]())
 	
-	var balances: [Any] = []
+	var allBalances = Variable([String : [String : Double]]())
+	
+	var balances = Variable([String : Double]())
+
+	//MARK: -
 	
 	private init() {
-
+		_ = self.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
+			
+			var newBalance = [String : Double]()
+			
+			val.values.forEach { (adr) in
+				adr.keys.forEach({ (key) in
+					if nil == newBalance[key] {
+						newBalance[key] = 0.0
+					}
+					newBalance[key]! += (adr[key] ?? 0.0)
+				})
+			}
+			
+			self?.balances.value = newBalance
+			
+		}).disposed(by: disposeBag)
 	}
+	
 	//MARK: -
 	
 	func loadAccounts() {
@@ -74,16 +94,22 @@ class Session {
 	}
 	
 	func loadBalances() {
-		balances = []
+
 		accounts.value.forEach { (account) in
 			minterAccountManager.balance(address: account.address, with: { [weak self] (res, error) in
 				guard nil == error else {
 					return
 				}
+
+				var newAllBalances = self?.allBalances.value
 				
-				self?.balances.append(res)
+				if let balance = res as? [String : Double] {
+					newAllBalances?[account.address] = balance.mapValues({ (val) -> Double in
+						return val / 100000000
+					})
+				}
 				
-				
+				self?.allBalances.value = newAllBalances ?? [:]
 			})
 		}
 	}

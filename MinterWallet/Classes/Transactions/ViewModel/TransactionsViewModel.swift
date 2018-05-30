@@ -9,6 +9,7 @@
 import RxSwift
 import MinterCore
 import MinterExplorer
+import AFDateHelper
 
 
 class TransactionsViewModel: BaseViewModel {
@@ -24,12 +25,18 @@ class TransactionsViewModel: BaseViewModel {
 	override init() {
 		super.init()
 		
-//		createSections()
+		loadData()
 	}
 	
 	private var sectionTitleDateFormatter = DateFormatter() {
 		didSet {
 			sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM"
+		}
+	}
+	
+	private var sectionTitleDateFullFormatter = DateFormatter() {
+		didSet {
+			sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM YYYY"
 		}
 	}
 
@@ -44,47 +51,98 @@ class TransactionsViewModel: BaseViewModel {
 		return self.sections.asObservable()
 	}
 	
-	private var page = 0
+	private var page = 1
 	
 	private var transactions = [Transaction]()
 	
 	private var isLoading = false
 	
-	func createSections(transactions: [Transaction]?) {
-		
-		//		var sctns = [BaseTableSectionItem]()
-		
-		
-		//		var section = BaseTableSectionItem(header: )
-		//		section.items = [transaction, separator]
-		
-		
-//		sections.value.append(sctns)
-		
-		transactions?.forEach({ (transaction) in
-			
-			
-			let sectionName =
-			
-			
+	private var canLoadMore = true
 	
+	
+	func createSections(with transactions: [Transaction]?) {
+		
+		var newSections = [BaseTableSectionItem]()
+		var items = [String : [BaseCellItem]]()
+		
+		
+		self.transactions.forEach({ (transaction) in
 			
-			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
-			let transaction = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell")
-			transaction.amount = 10
-			transaction.title = "McDonalds"
-			transaction.coin = "GRAM"
-			transaction.from = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-			transaction.to = "Mx86d167ffe6c81dd83a20e3731ed66dddaac42488"
-			transaction.date = sectionTitleDateFormatter.string(from: transaction.date)
-			transaction.image = UIImage(named: "AvatarPlaceholderImage")
+			let sectionName = sectionTitle(for: Date())
+			let sectionCandidate = newSections.index(where: { (item) -> Bool in
+				return item.header == sectionName
+			})
+			
+			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(String.random(length: 20))")
+			
+			var signMultiplier = 1.0
+			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+				"Mx" + account.address == transaction.from
+			})
+			
+			var title = ""
+			if hasAddress {
+				title = transaction.to ?? ""
+				signMultiplier = -1.0
+			}
+			else {
+				title = transaction.from ?? ""
+			}
+			
+			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(transaction.hash ?? String.random(length: 20))")
+			transactionCellItem.txHash = transaction.hash
+			transactionCellItem.title = title
+			transactionCellItem.image = UIImage(named: "AvatarPlaceholderImage")
+			transactionCellItem.date = transaction.date
+			transactionCellItem.from = transaction.from
+			transactionCellItem.to = transaction.to
+			transactionCellItem.coin = transaction.coinSymbol
+			transactionCellItem.amount = (transaction.value ?? 0) * signMultiplier
+			
+			
+			var section: BaseTableSectionItem?
+			if let idx = sectionCandidate, var sctn = newSections[safe: idx] {
+				section = sctn
+			}
+			else {
+				section = BaseTableSectionItem(header: sectionName)
+				section?.identifier = sectionName
+				newSections.append(section!)
+			}
+			if nil == items[sectionName] {
+				items[sectionName] = []
+			}
+			items[sectionName]?.append(transactionCellItem)
+			items[sectionName]?.append(separator)
+
 		})
+		
+		let sctns = newSections.map({ (item) -> BaseTableSectionItem in
+			return BaseTableSectionItem(header: item.header, items: (items[item.header] ?? []))
+		})
+		
+		self.sections.value = sctns
+		
 	}
 	
-	private func sectionTitle(for date: Date) -> String {
+	private func sectionTitle(for date: Date?) -> String {
 		
-		Date.isIn
-		sectionTitleDateFormatter.string(from: transaction.date)
+		guard nil != date else {
+			return " "
+		}
+		
+		if date!.compare(.isToday) {
+			return "TODAY".localized()
+		}
+		else if date!.compare(.isYesterday) {
+			return "YESTERDAY".localized()
+		}
+		else if date!.compare(.isThisYear) {
+			return sectionTitleDateFormatter.string(from: date!)
+		}
+		else {
+			return sectionTitleDateFullFormatter.string(from: date!)
+		}
 	}
 	
 	//MARK: -
@@ -95,11 +153,16 @@ class TransactionsViewModel: BaseViewModel {
 			return "Mx" + acc.address
 		}
 		
+		if isLoading || !canLoadMore { return }
 		isLoading = true
 		
 		MinterExplorer.TransactionManager.default.transactions(addresses: addresses, page: self.page) { [weak self] (transaction, error) in
+			
+			self?.page += 1
+			
 			guard nil == error && nil != transaction && (transaction?.count ?? 0) > 0 else {
 				//stop paging
+				self?.canLoadMore = false
 				return
 			}
 			
@@ -107,8 +170,38 @@ class TransactionsViewModel: BaseViewModel {
 			
 			self?.isLoading = false
 			
+			self?.createSections(with: transaction)
+			
 		}
-
+	}
+	
+	func shouldLoadMore(_ indexPath: IndexPath) -> Bool {
+		guard canLoadMore && isLoading == false else {
+			return false
+		}
+		
+		let cellItemsLoadedTotal = totalNumberOfItems()
+		let fromBottomConstant = 10
+		if cellItemsLoadedTotal <= fromBottomConstant {
+			return false
+		}
+		
+		var itemsCountFromPrevSections = 0
+		let endSection = indexPath.section - 1
+		if endSection >= 0 {
+			for i in 0...endSection {
+				itemsCountFromPrevSections = itemsCountFromPrevSections + rowsCount(for: i)
+			}
+		}
+		let cellTotalIndex = (indexPath.row + 1) + itemsCountFromPrevSections
+		if cellTotalIndex > cellItemsLoadedTotal - fromBottomConstant {
+			return true
+		}
+		return false
+	}
+	
+	fileprivate func totalNumberOfItems() -> Int {
+		return sections.value.reduce(0) { $0 +  $1.items.count }
 	}
 	
 	//MARK: -
@@ -127,6 +220,15 @@ class TransactionsViewModel: BaseViewModel {
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
 		return sections.value[safe: section]?.items[safe: row]
+	}
+	
+	//MARK: -
+	
+	func explorerURL(section: Int, row: Int) -> URL? {
+		if let item = self.cellItem(section: section, row: row) as? TransactionTableViewCellItem {
+			return URL(string: MinterExplorerBaseURL + "/transactions/" + (item.txHash ?? ""))
+		}
+		return nil
 	}
 	
 }

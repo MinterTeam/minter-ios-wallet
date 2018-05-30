@@ -1,5 +1,6 @@
 PODS:
   - AEAccordion (2.1.0)
+  - AFDateHelper (4.2.7)
   - Alamofire (4.7.2)
   - BigInt (3.0.1):
     - SipHash (~> 1.2)
@@ -45,6 +46,7 @@ PODS:
 
 DEPENDENCIES:
   - AEAccordion
+  - AFDateHelper (~> 4.2.2)
   - Alamofire
   - CKMnemonic
   - ExpandableCell (from `../ExpandableCell`)
@@ -66,6 +68,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AEAccordion
+    - AFDateHelper
     - Alamofire
     - BigInt
     - CKMnemonic
@@ -111,6 +114,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AEAccordion: 5ad8bdc99478f76379857e5351547252a7cfbf12
+  AFDateHelper: 4ad66fb19503041fbba8a3018cb7ef9c71b2ff88
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
   BigInt: 8e8a52161c745cd3ab78e3dc346a9fbee51e6cf6
   CKMnemonic: 88e745afffea6f3c719c799d9869a2ea5eb9f08b
@@ -137,6 +141,6 @@ SPEC CHECKSUMS:
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
 
-PODFILE CHECKSUM: 879a7ee0c7a32bf23bcb8d7e5eee59d5845d259b
+PODFILE CHECKSUM: 59b71b8286fc29b7ff37531eebcdfb22fc76e1cb
 
 COCOAPODS: 1.5.0

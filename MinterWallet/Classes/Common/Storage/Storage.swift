@@ -12,6 +12,7 @@ import KeychainSwift
 
 public protocol Storage {
 	func set<T: AnyObject>(_ object: T, forKey key: String) where T: NSCoding
+	func set(_ data: Data, forKey key: String)
 	func set(_ bool: Bool, forKey key: String)
 	
 	func object(forKey key: String) -> Any?
@@ -29,6 +30,11 @@ class LocalStorage : Storage {
 	func set<T : AnyObject>(_ object: T, forKey key: String) where T : NSCoding {
 		//archive key
 		let data = NSKeyedArchiver.archivedData(withRootObject: object)
+		storage.set(data, forKey: key)
+		storage.synchronize()
+	}
+	
+	func set(_ data: Data, forKey key: String) {
 		storage.set(data, forKey: key)
 		storage.synchronize()
 	}
@@ -79,13 +85,21 @@ class SecureStorage: Storage {
 		storage.set(archive, forKey: key)
 	}
 	
+	func set(_ data: Data, forKey key: String) {
+		let archive = NSKeyedArchiver.archivedData(withRootObject: data)
+		storage.set(archive, forKey: key)
+	}
+	
 	//MARK: - Getters
 	
 	func object(forKey key: String) -> Any? {
 		guard let archive = storage.getData(key) else {
 			return nil
 		}
-		return NSKeyedUnarchiver().encodeRootObject(archive)
+		
+		let res = NSKeyedUnarchiver.unarchiveObject(with: archive)
+		
+		return res
 	}
 	
 	func bool(forKey key: String) -> Bool? {

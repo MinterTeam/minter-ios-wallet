@@ -33,8 +33,9 @@ class CoinsViewModel: BaseViewModel {
 	override init() {
 		super.init()
 		
-		Session.shared.transactions.asObservable().subscribe(onNext: { [weak self] (transactions) in
-			self?.createSection()
+		Observable.combineLatest(Session.shared.transactions.asObservable(), Session.shared.balances.asObservable())
+			.subscribe(onNext: { [weak self] (transactions) in
+				self?.createSection()
 		}).disposed(by: disposeBag)
 		
 		createSection()
@@ -56,15 +57,15 @@ class CoinsViewModel: BaseViewModel {
 			var title = ""
 			var signMultiplier = 1.0
 			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-				account.address == transaction.to
+				"Mx" + account.address == transaction.from
 			})
 			
 			if hasAddress {
-				title = transaction.from ?? ""
+				title = transaction.to ?? ""
 				signMultiplier = -1.0
 			}
 			else {
-				title = transaction.to ?? ""
+				title = transaction.from ?? ""
 			}
 			
 			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
@@ -90,36 +91,30 @@ class CoinsViewModel: BaseViewModel {
 		
 		var section1 = BaseTableSectionItem(header: "MY COINS".localized())
 		section1.identifier = "BaseTableSectionItem_2"
-		
-		let coin1 = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_11")
-		coin1.title = "Starbucks"
-		coin1.image = UIImage(named: "AvatarPlaceholderImage")
-		coin1.date = Date()
-		coin1.coin = "MCD"
-		coin1.amount = 1
-		
-		let coin2 = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_12")
-		coin2.title = "Tesla"
-		coin2.image = UIImage(named: "AvatarPlaceholderImage")
-		coin2.date = Date()
-		coin2.coin = "TSL"
-		coin2.amount = 0.245654
-		
-		let coin3 = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_13")
-		coin3.title = "McDonalds"
-		coin3.image = UIImage(named: "AvatarPlaceholderImage")
-		coin3.date = Date()
-		coin3.coin = "MCD"
-		coin3.amount = 22.2234
+
+		Session.shared.balances.value.keys.forEach { (key) in
+			
+			let bal = Session.shared.balances.value
+				
+			let cellAdditionalId = "\(key)"
+			
+			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(String.random(length: 20))")
+			
+			let coin = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_\(cellAdditionalId)")
+			coin.title = key
+			coin.image = UIImage(named: "AvatarPlaceholderImage")
+			coin.coin = key
+			coin.amount = bal[key]
+			
+			section1.items.append(coin)
+			section1.items.append(separator)
+		}
 		
 		let convertButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Convert")
 		convertButton.buttonPattern = "blank"
 		convertButton.title = "CONVERT".localized()
 		
-		let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(String.random(length: 20))")
-		let separator2 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(String.random(length: 20))")
-		
-		section1.items = [coin1, separator1, coin2, separator2, coin3, convertButton]
+		section1.items.append(convertButton)
 		
 		sctns.append(section)
 		sctns.append(section1)
@@ -150,7 +145,7 @@ class CoinsViewModel: BaseViewModel {
 	
 	func explorerURL(section: Int, row: Int) -> URL? {
 		if let item = self.cellItem(section: section, row: row) as? TransactionTableViewCellItem {
-			return URL(string: MinterExplorerBaseURL + "transactions/\(item.txHash ?? "")")
+			return URL(string: MinterExplorerBaseURL + "/transactions/" + (item.txHash ?? ""))
 		}
 		return nil
 	}
