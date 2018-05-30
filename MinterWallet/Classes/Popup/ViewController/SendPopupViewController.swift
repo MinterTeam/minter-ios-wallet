@@ -33,16 +33,15 @@ class SendPopupViewController: PopupViewController {
 	@IBOutlet weak var cancelButton: DefaultButton!
 	
 	@IBAction func secondButtonDidTap(_ sender: Any) {
-		delegate?.didCancel(viewController: self)
-		self.dismiss(animated: true) {
-			
+		
+		self.dismiss(animated: true) { [weak self] in
+			self?.delegate?.didCancel(viewController: self!)
 		}
 	}
 	
 	@IBAction func didTapActionButton(_ sender: Any) {
-		delegate?.didFinish(viewController: self)
-		self.dismiss(animated: true) {
-			
+		self.dismiss(animated: true) { [weak self] in
+			self?.delegate?.didFinish(viewController: self!)
 		}
 	}
 	

@@ -65,10 +65,9 @@ class TransactionsViewModel: BaseViewModel {
 		var newSections = [BaseTableSectionItem]()
 		var items = [String : [BaseCellItem]]()
 		
-		
 		self.transactions.forEach({ (transaction) in
 			
-			let sectionName = sectionTitle(for: Date())
+			let sectionName = sectionTitle(for: transaction.date)
 			let sectionCandidate = newSections.index(where: { (item) -> Bool in
 				return item.header == sectionName
 			})
@@ -77,7 +76,7 @@ class TransactionsViewModel: BaseViewModel {
 			
 			var signMultiplier = 1.0
 			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-				"Mx" + account.address == transaction.from
+				account.address == transaction.from?.stripMinterHexPrefix()
 			})
 			
 			var title = ""

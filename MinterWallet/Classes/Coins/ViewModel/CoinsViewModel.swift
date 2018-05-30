@@ -8,6 +8,7 @@
 
 import RxSwift
 import MinterExplorer
+import MinterCore
 
 
 class CoinsViewModel: BaseViewModel {
@@ -57,7 +58,7 @@ class CoinsViewModel: BaseViewModel {
 			var title = ""
 			var signMultiplier = 1.0
 			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-				"Mx" + account.address == transaction.from
+				account.address == transaction.from?.stripMinterHexPrefix()
 			})
 			
 			if hasAddress {

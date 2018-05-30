@@ -24,4 +24,5 @@ target 'MinterWallet' do
 		pod 'RealmSwift'
 		pod 'AFDateHelper', '~> 4.2.2'
 		pod 'NotificationBannerSwift'
+		pod 'CountdownLabel'
 end

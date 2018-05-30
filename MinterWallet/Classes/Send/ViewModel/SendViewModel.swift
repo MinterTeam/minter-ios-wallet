@@ -8,6 +8,7 @@
 
 import RxSwift
 import MinterCore
+import MinterExplorer
 import BigInt
 
 struct AccountPickerItem {
@@ -40,8 +41,13 @@ class SendViewModel: BaseViewModel {
 	
 	private var selectedAddress: String?
 	private var selectedCoin: String?
+	private var lastSentTransactionHash: String?
 	
 	private let accountManager = AccountManager()
+	
+	var notifiableError = Variable<NotifiableError?>(nil)
+	
+	var successfullySentViewModel = Variable<SentPopupViewModel?>(nil)
 	
 	//MARK: -
 
@@ -121,7 +127,7 @@ class SendViewModel: BaseViewModel {
 	func accountPickerSelect(item: AccountPickerItem) {
 		
 		let balance = Session.shared.allBalances.value.filter { (acc) -> Bool in
-			return item.address == acc.key
+			return item.address?.stripMinterHexPrefix() == acc.key.stripMinterHexPrefix()
 		}.first
 		
 		guard nil != balance else {
@@ -137,23 +143,25 @@ class SendViewModel: BaseViewModel {
 	func send(to: String, amount: Double) {
 		
 		guard to.isValidAddress(), nil != selectedCoin else {
-			//error
+			self.notifiableError.value = NotifiableError(title: "Receiver address isn't valid", text: nil)
 			return
 		}
 		
 		guard let mnemonic = accountManager.mnemonic(for: selectedAddress!), let seed = accountManager.seed(mnemonic: mnemonic) else {
 			//Error no Private key found
+			self.notifiableError.value = NotifiableError(title: "No private key found", text: nil)
 			return
 		}
 		
 		MinterCore.TransactionManager.default.transactionCount(address: "Mx" + selectedAddress!) { [weak self] (count, err) in
 			
 			guard nil == err, nil != count else {
-				//Handle Error here
+				self?.notifiableError.value = NotifiableError(title: "Can't receive nonce", text: nil)
 				return
 			}
 			
 			guard let coin = self?.selectedCoin else {
+				self?.notifiableError.value = NotifiableError(title: "Should select coin", text: nil)
 				return
 			}
 			
@@ -170,20 +178,19 @@ class SendViewModel: BaseViewModel {
 				return
 			}
 			
-			MinterCore.TransactionManager.default.send(tx: signedTx) { (res, err) in
-				guard err == nil else {
-					//handle error
+			MinterCore.TransactionManager.default.send(tx: signedTx) { (hash, status, err) in
+				guard err == nil && nil != hash else {
+					self?.notifiableError.value = NotifiableError(title: nil != status ? status : "TX Error", text: nil)
 					return
 				}
 				
+				self?.lastSentTransactionHash = hash
 				
-				
+				self?.successfullySentViewModel.value = self!.sentViewModel(to: to)
 				
 			}
 		}
 	}
-	
-	
 	
 	//MARK: -
 	
@@ -198,6 +205,27 @@ class SendViewModel: BaseViewModel {
 		sendVM.buttonTitle = "BIP!".localized()
 		sendVM.cancelTitle = "CANCEL".localized()
 		return sendVM
+	}
+	
+	func sentViewModel(to: String) -> SentPopupViewModel {
+		
+		let vm = SentPopupViewModel()
+		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
+		vm.avatarImage = UIImage(named: "AvatarPlaceholderImage")
+		vm.secondButtonTitle = "CANCEL".localized()
+		vm.username = to
+		vm.title = "Success!".localized()
+		return vm
+	}
+	
+	//MARK: -
+	
+	func lastTransactionExplorerURL() -> URL? {
+		guard nil != lastSentTransactionHash else {
+			return nil
+		}
+		
+		return URL(string: MinterExplorerBaseURL + "/transactions/" + (lastSentTransactionHash ?? ""))
 	}
 
 }

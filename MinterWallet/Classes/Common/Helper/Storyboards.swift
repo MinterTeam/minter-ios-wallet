@@ -65,8 +65,16 @@ struct Storyboards {
             return self.storyboard.instantiateViewController(ofType: type)
         }
 
+        static func instantiateSendPopupViewController() -> SendPopupViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "SendPopupViewController") as! SendPopupViewController
+        }
+
         static func instantiateCountdownPopupViewController() -> CountdownPopupViewController {
             return self.storyboard.instantiateViewController(withIdentifier: "CountdownPopupViewController") as! CountdownPopupViewController
+        }
+
+        static func instantiateSentPopupViewController() -> SentPopupViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "SentPopupViewController") as! SentPopupViewController
         }
     }
 
@@ -554,6 +562,14 @@ extension SettingsViewController {
 // MARK: - PasswordEditViewController
 
 // MARK: - SendPopupViewController
+protocol SendPopupViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension SendPopupViewController: SendPopupViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: SendPopupViewController {
+    var storyboardIdentifier: String? { return "SendPopupViewController" }
+    static var storyboardIdentifier: String? { return "SendPopupViewController" }
+}
 
 // MARK: - CountdownPopupViewController
 protocol CountdownPopupViewControllerIdentifiableProtocol: IdentifiableProtocol { }
@@ -565,7 +581,15 @@ extension IdentifiableProtocol where Self: CountdownPopupViewController {
     static var storyboardIdentifier: String? { return "CountdownPopupViewController" }
 }
 
-// MARK: - SendPopupViewController
+// MARK: - SentPopupViewController
+protocol SentPopupViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension SentPopupViewController: SentPopupViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: SentPopupViewController {
+    var storyboardIdentifier: String? { return "SentPopupViewController" }
+    static var storyboardIdentifier: String? { return "SentPopupViewController" }
+}
 
 // MARK: - CreateWalletViewController
 

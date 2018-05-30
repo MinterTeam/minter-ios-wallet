@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import NotificationBannerSwift
+import RxSwift
+import SafariServices
 
-class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate {
+
+class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate {
 	
 	//MARK: - IBOutlet
 	
@@ -21,6 +25,8 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 	//MARK: -
 	
 	var viewModel = SendViewModel()
+	
+	private var disposeBag = DisposeBag()
 
 	//MARK: - Life cycle
 	
@@ -28,6 +34,30 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		super.viewDidLoad()
 		
 		registerCells()
+		
+		viewModel.notifiableError.asObservable().subscribe(onNext: { (notification) in
+			guard nil != notification else {
+				return
+			}
+			
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
+			banner.show()
+			
+		}).disposed(by: disposeBag)
+		
+		viewModel.successfullySentViewModel.asObservable().subscribe(onNext: { [weak self] (vm) in
+			guard nil != vm else {
+				return
+			}
+			
+			let popup = Storyboards.Popup.instantiateSentPopupViewController()
+			popup.viewModel = vm
+			popup.delegate = self
+			
+			self?.showPopup(viewController: popup)
+			
+		}).disposed(by: disposeBag)
+		
 	}
 	
 	//MARK: -
@@ -111,28 +141,20 @@ extension SendViewController : ButtonTableViewCellDelegate {
 				return
 		}
 		
-//		viewModel.send(to: toAddress, amount: amount)
-
-		
-		//		let countdownVM = CountdownPopupViewModel()
-		//		countdownVM.popupTitle = "Please wait"
-		//		countdownVM.unit = (one: "second", two: "seconds", other: "seconds")
-		//		countdownVM.count = 20
-		//		countdownVM.desc1 = "Coins will be received in"
-		//		countdownVM.desc2 = "Too long? You can make a faster transaction for 0.00000001 BIP"
-		//		countdownVM.buttonTitle = "Express transaction"
-		
-		
 		let vm = viewModel.sendViewModel(to: toAddress, amount: amount)
 
-		if let popup = Storyboards.Popup.instantiateInitialViewController() as? SendPopupViewController {
-			popup.viewModel = vm
-			popup.delegate = self
-			popup.modalPresentationStyle = .overFullScreen
-			popup.modalTransitionStyle = .crossDissolve
-			
-			self.tabBarController?.present(popup, animated: true, completion: nil)
-		}
+		let popup = Storyboards.Popup.instantiateInitialViewController()
+		popup.viewModel = vm
+		popup.delegate = self
+		
+		self.showPopup(viewController: popup)
+	}
+	
+	func showPopup(viewController: UIViewController) {
+		viewController.modalPresentationStyle = .overFullScreen
+		viewController.modalTransitionStyle = .crossDissolve
+		
+		self.tabBarController?.present(viewController, animated: true, completion: nil)
 	}
 	
 	//MARK: - SendPopupViewControllerDelegate
@@ -151,10 +173,39 @@ extension SendViewController : ButtonTableViewCellDelegate {
 		}
 		
 		viewModel.send(to: toAddress, amount: amount)
+		
+		let countdownVM = CountdownPopupViewModel()
+		countdownVM.popupTitle = "Please wait"
+		countdownVM.unit = (one: "second", two: "seconds", other: "seconds")
+		countdownVM.count = 20
+		countdownVM.desc1 = "Coins will be received in"
+		countdownVM.desc2 = "Too long? You can make a faster transaction for 0.00000001 BIP"
+		countdownVM.buttonTitle = "Express transaction"
+		
+		let countdownVC = Storyboards.Popup.instantiateCountdownPopupViewController()
+		countdownVC.viewModel = countdownVM
+		
+		self.showPopup(viewController: countdownVC)
 	}
 	
 	func didCancel(viewController: SendPopupViewController) {
 		
+	}
+	
+	//MARK: - SentPopupViewControllerDelegate
+	
+	
+	func didTapActionButton(viewController: SentPopupViewController) {
+		viewController.dismiss(animated: true) { [weak self] in
+			if let url = self?.viewModel.lastTransactionExplorerURL() {
+				let vc = SFSafariViewController(url: url)
+				self?.present(vc, animated: true) {}
+			}
+		}
+	}
+	
+	func didTapSecondButton(viewController: SentPopupViewController) {
+		viewController.dismiss(animated: true, completion: nil)
 	}
 
 }

@@ -102,12 +102,13 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 				return
 			}
 			self?.selectField.text = coin
-			if let idx = selected.keys.first {
-				self?.delegate?.didFinish(with: items[safe: idx])
-			}
 			
+			if let item = items.filter({ (item) -> Bool in
+				return item.title == coin
+			}).first {
+				self?.delegate?.didFinish(with: item)
+			}
 		}
-
 	}
 	
 	//MARK: - UITextFieldDelegate

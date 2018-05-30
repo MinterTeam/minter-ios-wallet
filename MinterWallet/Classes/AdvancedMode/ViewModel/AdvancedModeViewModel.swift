@@ -10,7 +10,7 @@ import RxSwift
 
 
 
-class AdvancedModeViewModel: BaseViewModel {
+class AdvancedModeViewModel: AdvancedModeBaseViewModel {
 	
 	enum ValidationError : String {
 		case wrongMnemonic
@@ -20,7 +20,7 @@ class AdvancedModeViewModel: BaseViewModel {
 	
 	var title: String {
 		get {
-			return "AdvancedMode".localized()
+			return "Advanced Mode".localized()
 		}
 	}
 
@@ -30,26 +30,26 @@ class AdvancedModeViewModel: BaseViewModel {
 	
 	//MARK: -
 	
-	private let databaseStorage = RealmDatabaseStorage.shared
+//	private let databaseStorage = RealmDatabaseStorage.shared
 	
 	//MARK: -
 	
 	private let accountManager = AccountManager()
 	
-	func saveAccount(mnemonic: String) {
-		
-		guard
-			let seed = accountManager.seed(mnemonic: mnemonic, passphrase: ""),
-			let account = accountManager.account(seed: seed, encryptedBy: .me) else {
-				return
-		}
-		
-		let dbModel = AccountDataBaseModel()
-		dbModel.address = account.address
-		dbModel.encryptedBy = account.encryptedBy.rawValue
-		
-		databaseStorage.add(object: dbModel)
-	}
+//	func saveAccount(mnemonic: String) {
+//
+//		guard
+//			let seed = accountManager.seed(mnemonic: mnemonic, passphrase: ""),
+//			let account = accountManager.account(seed: seed, encryptedBy: .me) else {
+//				return
+//		}
+//
+//		let dbModel = AccountDataBaseModel()
+//		dbModel.address = account.address
+//		dbModel.encryptedBy = account.encryptedBy.rawValue
+//
+//		databaseStorage.add(object: dbModel)
+//	}
 	
 	func validationText(for error: ValidationError) -> String {
 		switch error {
