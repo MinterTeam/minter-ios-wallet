@@ -8,6 +8,7 @@ target 'MinterWallet' do
 		pod 'MinterMy', :path => '../MinterMy'
 		pod 'MinterExplorer', :path => '../MinterExplorer'
     pod 'Alamofire'
+		pod 'AlamofireImage'
 		pod 'RxSwift'
 		pod 'RxDataSources'
 		pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'

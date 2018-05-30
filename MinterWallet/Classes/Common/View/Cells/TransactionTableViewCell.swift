@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import AlamofireImage
 
 
 class TransactionTableViewCellItem : BaseCellItem {
 	
 	var txHash: String?
 	var title: String?
-	var image: UIImage?
+	var image: URL?
 	var date: Date?
 	var from: String?
 	var to: String?
@@ -83,7 +84,12 @@ class TransactionTableViewCell: ExpandableCell {
 	override func configure(item: BaseCellItem) {
 		if let transaction = item as? TransactionTableViewCellItem {
 			title.text = transaction.title
-			coinImage.image = transaction.image
+			if let url = transaction.image {
+				coinImage.af_setImage(withURL: url)
+			}
+			else {
+				coinImage.image = UIImage(named: "AvatarPlaceholderImage")
+			}
 			amount.text = amountText(amount: transaction.amount ?? 0)
 			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
 			

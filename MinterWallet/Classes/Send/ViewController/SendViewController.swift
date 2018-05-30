@@ -12,7 +12,7 @@ import RxSwift
 import SafariServices
 
 
-class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate {
+class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate, CountdownPopupViewControllerDelegate {
 	
 	//MARK: - IBOutlet
 	
@@ -45,8 +45,8 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 			
 		}).disposed(by: disposeBag)
 		
-		viewModel.successfullySentViewModel.asObservable().subscribe(onNext: { [weak self] (vm) in
-			guard nil != vm else {
+		viewModel.showSuccessPopup.asObservable().subscribe(onNext: { [weak self] (vm, completed) in
+			guard nil != vm && completed else {
 				return
 			}
 			
@@ -184,6 +184,7 @@ extension SendViewController : ButtonTableViewCellDelegate {
 		
 		let countdownVC = Storyboards.Popup.instantiateCountdownPopupViewController()
 		countdownVC.viewModel = countdownVM
+		countdownVC.delegate = self
 		
 		self.showPopup(viewController: countdownVC)
 	}
@@ -193,7 +194,6 @@ extension SendViewController : ButtonTableViewCellDelegate {
 	}
 	
 	//MARK: - SentPopupViewControllerDelegate
-	
 	
 	func didTapActionButton(viewController: SentPopupViewController) {
 		viewController.dismiss(animated: true) { [weak self] in
@@ -208,4 +208,11 @@ extension SendViewController : ButtonTableViewCellDelegate {
 		viewController.dismiss(animated: true, completion: nil)
 	}
 
+	//MARK: - CountdownPopupViewControllerDelegate
+	
+	func didFinishCounting(viewController: CountdownPopupViewController) {
+		viewModel.countdownFinished.value = true
+	}
+	
+	
 }

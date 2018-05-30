@@ -72,7 +72,7 @@ class CoinsViewModel: BaseViewModel {
 			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
 			transactionCellItem.txHash = transaction.hash
 			transactionCellItem.title = title
-			transactionCellItem.image = UIImage(named: "AvatarPlaceholderImage")
+			transactionCellItem.image = URL(string: "https://my.beta.minter.network/api/v1/avatar/by/address/" + ((signMultiplier > 0 ? transaction.from : transaction.to) ?? ""))
 			transactionCellItem.date = transaction.date
 			transactionCellItem.from = transaction.from
 			transactionCellItem.to = transaction.to
@@ -99,7 +99,7 @@ class CoinsViewModel: BaseViewModel {
 				
 			let cellAdditionalId = "\(key)"
 			
-			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(String.random(length: 20))")
+			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(cellAdditionalId)")
 			
 			let coin = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_\(cellAdditionalId)")
 			coin.title = key
@@ -149,6 +149,12 @@ class CoinsViewModel: BaseViewModel {
 			return URL(string: MinterExplorerBaseURL + "/transactions/" + (item.txHash ?? ""))
 		}
 		return nil
+	}
+	
+	//MARK: -
+	
+	func updateData() {
+		Session.shared.loadTransactions()
 	}
 	
 }

@@ -49,6 +49,12 @@ class SendViewModel: BaseViewModel {
 	
 	var successfullySentViewModel = Variable<SentPopupViewModel?>(nil)
 	
+	var showSuccessPopup : Observable<(SentPopupViewModel?, Bool)> {
+		return Observable.combineLatest(self.successfullySentViewModel.asObservable(), countdownFinished.asObservable())
+	}
+	
+	var countdownFinished = Variable(false)
+	
 	//MARK: -
 
 	override init() {
@@ -153,6 +159,8 @@ class SendViewModel: BaseViewModel {
 			return
 		}
 		
+		countdownFinished.value = false
+		
 		MinterCore.TransactionManager.default.transactionCount(address: "Mx" + selectedAddress!) { [weak self] (count, err) in
 			
 			guard nil == err, nil != count else {
@@ -188,6 +196,8 @@ class SendViewModel: BaseViewModel {
 				
 				self?.successfullySentViewModel.value = self!.sentViewModel(to: to)
 				
+				Session.shared.loadTransactions()
+				SessionHelper.reloadAccounts()
 			}
 		}
 	}

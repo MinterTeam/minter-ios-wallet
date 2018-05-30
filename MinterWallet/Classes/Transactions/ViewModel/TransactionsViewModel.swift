@@ -91,7 +91,7 @@ class TransactionsViewModel: BaseViewModel {
 			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(transaction.hash ?? String.random(length: 20))")
 			transactionCellItem.txHash = transaction.hash
 			transactionCellItem.title = title
-			transactionCellItem.image = UIImage(named: "AvatarPlaceholderImage")
+			transactionCellItem.image = URL(string: "https://my.beta.minter.network/api/v1/avatar/by/address/" + ((signMultiplier > 0 ? transaction.from : transaction.to) ?? ""))
 			transactionCellItem.date = transaction.date
 			transactionCellItem.from = transaction.from
 			transactionCellItem.to = transaction.to

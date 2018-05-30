@@ -7,9 +7,16 @@
 //
 
 import UIKit
+import CountdownLabel
+
+protocol CountdownPopupViewControllerDelegate : class {
+	func didFinishCounting(viewController: CountdownPopupViewController)
+}
 
 
 class CountdownPopupViewController: PopupViewController {
+	
+	weak var delegate: CountdownPopupViewControllerDelegate?
 	
 	//MARK: - IBOutlets
 	
@@ -17,7 +24,7 @@ class CountdownPopupViewController: PopupViewController {
 	
 	@IBOutlet weak var desc1Label: UILabel!
 	
-	@IBOutlet weak var countdownLabel: UILabel!
+	@IBOutlet weak var countdownLabel: CountdownLabel!
 	
 	@IBOutlet weak var desc2Label: UILabel!
 	
@@ -27,6 +34,17 @@ class CountdownPopupViewController: PopupViewController {
 		super.viewDidLoad()
 		
 		updateUI()
+		
+		countdownLabel.setCountDownTime(minutes: 10)
+		countdownLabel.timeFormat = "ss"
+		countdownLabel.animationType = .Evaporate
+		countdownLabel.start()
+		
+		countdownLabel.then(targetTime: 1) { [weak self] in
+			self?.dismiss(animated: true, completion: {
+				self?.delegate?.didFinishCounting(viewController: self!)
+			})
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -44,7 +62,7 @@ class CountdownPopupViewController: PopupViewController {
 		button?.setTitle(vm.buttonTitle, for: .normal)
 		desc1Label?.text = vm.desc1
 		desc2Label?.text = vm.desc2
-		countdownLabel?.text = String(vm.count ?? 0)
+//		countdownLabel?.text = String(vm.count ?? 0)
 		
 	}
 	
