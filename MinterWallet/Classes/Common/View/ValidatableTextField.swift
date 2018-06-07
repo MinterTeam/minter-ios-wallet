@@ -7,15 +7,10 @@
 //
 
 import UIKit
+import SwiftValidator
 
 
-protocol Validatable : class where Self : UIView {
-	func setValid()
-	func setInvalid()
-}
-
-
-class ValidatableTextField: UITextField, Validatable {
+class ValidatableTextField: UITextField {
 
 	//MARK: -
 	
@@ -33,7 +28,6 @@ class ValidatableTextField: UITextField, Validatable {
 	
 	var prefixText: String? {
 		didSet {
-			
 			guard prefixText != nil else { return }
 			
 			let prefixTopPadding = topPadding + 3.0
@@ -108,8 +102,16 @@ class ValidatableTextField: UITextField, Validatable {
 		self.layer.cornerRadius = 8.0
 		self.layer.borderWidth = 2
 		self.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
-//		self.rightView = self.rightViewInvalid
+		self.rightView = self.rightViewInvalid
 		self.rightViewMode = .always
+	}
+	
+	func setDefault() {
+		self.layer.cornerRadius = 8.0
+		self.layer.borderWidth = 2
+		self.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
+		self.rightView = UIView()
+		self.rightViewMode = .never
 	}
 
 }

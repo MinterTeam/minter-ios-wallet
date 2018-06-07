@@ -12,10 +12,10 @@ extension String {
 	
 	func isValidAddress() -> Bool {
 		
-		if self.count == 40 {
+		if self.stripMinterHexPrefix().count == 40 {
 			return true
 		}
 		return false
 	}
-	
+
 }

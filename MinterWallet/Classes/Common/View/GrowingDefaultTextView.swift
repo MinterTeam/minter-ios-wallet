@@ -8,17 +8,23 @@
 
 import UIKit
 import GrowingTextView
+import SwiftValidator
 
-class GrowingDefaultTextView: GrowingTextView, Validatable {
+
+class GrowingDefaultTextView: AutoGrowingTextView, Validatable {
+	
+	public var validationText: String {
+		return self.text ?? ""
+	}
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		setDefaultAppearance()
+		setDefault()
 	}
 	
 	func setValid() {
-		setDefaultAppearance()
+		setDefault()
 	}
 	
 	func setInvalid() {
@@ -29,7 +35,7 @@ class GrowingDefaultTextView: GrowingTextView, Validatable {
 	
 	//MARK: -
 	
-	private func setDefaultAppearance() {
+	func setDefault() {
 		self.layer.cornerRadius = 8.0
 		self.layer.borderWidth = 2
 		self.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor

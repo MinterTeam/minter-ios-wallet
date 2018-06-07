@@ -14,7 +14,7 @@ class SentPopupViewModel : PopupViewModel {
 	
 	var coin: String?
 	
-	var avatarImage: UIImage?
+	var avatarImage: URL?
 	
 	var username: String?
 	
@@ -22,7 +22,4 @@ class SentPopupViewModel : PopupViewModel {
 	
 	var secondButtonTitle: String?
 	
-//	var transactionHash: String?
-	
 }
-

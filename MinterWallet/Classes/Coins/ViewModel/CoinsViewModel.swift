@@ -9,6 +9,7 @@
 import RxSwift
 import MinterExplorer
 import MinterCore
+import MinterMy
 
 
 class CoinsViewModel: BaseViewModel {
@@ -39,6 +40,8 @@ class CoinsViewModel: BaseViewModel {
 				self?.createSection()
 		}).disposed(by: disposeBag)
 		
+		Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateBalance), userInfo: nil, repeats: true).fire()
+		
 		createSection()
 	}
 	
@@ -55,12 +58,12 @@ class CoinsViewModel: BaseViewModel {
 			
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(sectionId)")
 			
-			var title = ""
 			var signMultiplier = 1.0
 			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
 				account.address == transaction.from?.stripMinterHexPrefix()
 			})
 			
+			var title = ""
 			if hasAddress {
 				title = transaction.to ?? ""
 				signMultiplier = -1.0
@@ -72,7 +75,7 @@ class CoinsViewModel: BaseViewModel {
 			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
 			transactionCellItem.txHash = transaction.hash
 			transactionCellItem.title = title
-			transactionCellItem.image = URL(string: "https://my.beta.minter.network/api/v1/avatar/by/address/" + ((signMultiplier > 0 ? transaction.from : transaction.to) ?? ""))
+			transactionCellItem.image = MinterMyAPIURL.avatar(address: ((signMultiplier > 0 ? transaction.from : transaction.to) ?? "")).url()
 			transactionCellItem.date = transaction.date
 			transactionCellItem.from = transaction.from
 			transactionCellItem.to = transaction.to
@@ -117,8 +120,13 @@ class CoinsViewModel: BaseViewModel {
 		
 		section1.items.append(convertButton)
 		
-		sctns.append(section)
-		sctns.append(section1)
+		if section.items.count > 1 {
+			sctns.append(section)
+		}
+		
+		if section1.items.count > 1 {
+			sctns.append(section1)
+		}
 		
 		self.sections.value = sctns
 		
@@ -154,6 +162,11 @@ class CoinsViewModel: BaseViewModel {
 	//MARK: -
 	
 	func updateData() {
+		Session.shared.loadTransactions()
+	}
+	
+	@objc func updateBalance() {
+		Session.shared.loadAccounts()
 		Session.shared.loadTransactions()
 	}
 	

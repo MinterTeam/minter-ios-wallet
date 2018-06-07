@@ -78,7 +78,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 				return cell
 		})
 		
-		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .automatic, reloadAnimation: .automatic, deleteAnimation: .automatic)
+		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top, reloadAnimation: .automatic, deleteAnimation: .automatic)
 		
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)
 		

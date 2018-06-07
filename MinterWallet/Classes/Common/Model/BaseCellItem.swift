@@ -11,7 +11,7 @@ import RxDataSources
 
 
 
-class BaseCellItem : IdentifiableType, Equatable {
+public class BaseCellItem : IdentifiableType, Equatable {
 
 	let reuseIdentifier: String
 	
@@ -24,15 +24,15 @@ class BaseCellItem : IdentifiableType, Equatable {
 	
 	//MARK: - IdentifiableType
 	
-	typealias Identity = String
+	public typealias Identity = String
 	
-	var identity : Identity {
+	public var identity : Identity {
 		return identifier
 	}
 	
 	//MARK: - Equatable
 	
-	static func == (lhs: BaseCellItem, rhs: BaseCellItem) -> Bool {
+	public static func == (lhs: BaseCellItem, rhs: BaseCellItem) -> Bool {
 		return lhs.identifier == rhs.identifier
 	}
 

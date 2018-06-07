@@ -9,7 +9,9 @@
 import RxSwift
 import MinterCore
 import MinterExplorer
+import MinterMy
 import BigInt
+import SwiftValidator
 
 struct AccountPickerItem {
 	
@@ -37,45 +39,116 @@ class SendViewModel: BaseViewModel {
 	
 	//MARK: -
 	
-	var sections: [BaseTableSectionItem] = []
+	var sections = Variable([BaseTableSectionItem]())
 	
 	private var selectedAddress: String?
 	private var selectedCoin: String?
 	private var lastSentTransactionHash: String?
+	private var to: String?
+	private var amount: Double?
+	private var nonce: Int? = 0
 	
 	private let accountManager = AccountManager()
 	
 	var notifiableError = Variable<NotifiableError?>(nil)
+	var txError = Variable<NotifiableError?>(nil)
 	
 	var successfullySentViewModel = Variable<SentPopupViewModel?>(nil)
 	
-	var showSuccessPopup : Observable<(SentPopupViewModel?, Bool)> {
-		return Observable.combineLatest(self.successfullySentViewModel.asObservable(), countdownFinished.asObservable())
-	}
+	var showPopup = Variable<PopupViewController?>(nil)
 	
+	//used to send request before real countdown finished
+	var fakeCountdownFinished = Variable(false)
 	var countdownFinished = Variable(false)
+	
+	var isCountingDown = false
+	
+	private let disposeBag = DisposeBag()
 	
 	//MARK: -
 
 	override init() {
 		super.init()
 		
+		Session.shared.allBalances.asObservable().filter({ (_) -> Bool in
+			return true //nil == self.selectedAddress
+		}).subscribe(onNext: { [weak self] (val) in
+			self?.createSections()
+		}).disposed(by: disposeBag)
+		
 		createSections()
+		
+		fakeCountdownFinished.asObservable().filter({ (val) -> Bool in
+			return val == true
+		}).subscribe(onNext: { [weak self] (val) in
+			self?.isCountingDown = false
+			
+			guard let to = self?.to, let amount = self?.amount, let selectedCoin = self?.selectedCoin, let nonce = self?.nonce else {
+				return
+			}
+			DispatchQueue.global().async {
+				
+				guard let mnemonic = self?.accountManager.mnemonic(for: self!.selectedAddress!), let seed = self?.accountManager.seed(mnemonic: mnemonic) else {
+					//Error no Private key found
+					assert(true)
+					self?.notifiableError.value = NotifiableError(title: "No private key found", text: nil)
+					return
+				}
+				
+				self?.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin, amount: amount)
+			}
+			
+		}).disposed(by: disposeBag)
+		
+		Observable.combineLatest(fakeCountdownFinished.asObservable(), countdownFinished.asObservable()).subscribe { [weak self] (val) in
+			
+			guard let to = self?.to, val.event.element?.0 == true && val.event.element?.1 == true else {
+				return
+			}
+			
+			DispatchQueue.main.async {
+				self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: to))
+			}
+			
+			DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
+				Session.shared.loadTransactions()
+				SessionHelper.reloadAccounts()
+			})
+		}.disposed(by: disposeBag)
+
 	}
 	
 	//MARK: - Sections
 	
 	func createSections() {
-		let username = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Username")
-		username.title = "CHOOSE @USERNAME".localized()
-		username.prefix = "@"
+		
+		let username = TextViewTableViewCellItem(reuseIdentifier: "TextViewTableViewCell", identifier: "TextViewTableViewCell_Username")
+		username.title = "TO (@USERNAME, EMAIL, MOBILE IR MX ADDRESS)".localized()
+		username.rules = [RegexRule(regex: "^Mx[a-zA-Z0-9]{40}$", message: "INCORRECT ADDRESS".localized())]
 		
 		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell", identifier: "PickerTableViewCell_Coin")
 		coin.title = "COIN".localized()
-//		coin.
+		if nil != self.selectedAddress && nil != self.selectedCoin {
+			let item = accountPickerItems().filter { (item) -> Bool in
+				if let object = item.object as? AccountPickerItem {
+					return selectedAddress == object.address && selectedCoin == object.coin
+				}
+				return false
+			}
+			if let first = item.first {
+				coin.selected = first
+			}
+		} else if let item = accountPickerItems().first {
+			coin.selected = item
+			if let object = item.object as? AccountPickerItem {
+				selectedAddress = object.address
+				selectedCoin = object.coin
+			}
+		}
 		
 		let amount = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Amount")
 		amount.title = "AMOUNT".localized()
+		amount.rules = [FloatRule(message: "INCORRECT AMOUNT".localized())]
 		
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell", identifier: "TwoTitleTableViewCell_TransactionFee")
 		fee.title = "Transaction Fee".localized()
@@ -92,25 +165,25 @@ class SendViewModel: BaseViewModel {
 		button.title = "SEND!".localized()
 		button.buttonPattern = "purple"
 		
-		
 		var section = BaseTableSectionItem(header: "")
 		section.items = [coin, username, amount, fee, separator, blank, sendForFree, separator, blank, button]
-		sections.append(section)
+		sections.value = [section]
+		
 	}
 
 	//MARK: - Rows
 
 	func rowsCount(for section: Int) -> Int {
-		return sections[safe: section]?.items.count ?? 0
+		return sections.value[safe: section]?.items.count ?? 0
 	}
 
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections[safe: section]?.items[safe: row]
+		return sections.value[safe: section]?.items[safe: row]
 	}
 	
 	//MARK: -
 	
-	func accountPickerItems() -> [AccountPickerItem] {
+	func accountPickerItems() -> [PickerTableViewCellPickerItem] {
 		var ret = [AccountPickerItem]()
 
 		let balances = Session.shared.allBalances.value
@@ -125,7 +198,24 @@ class SendViewModel: BaseViewModel {
 				ret.append(item)
 			})
 		}
-		return ret
+		
+		return ret.map({ (account) -> PickerTableViewCellPickerItem in
+			return PickerTableViewCellPickerItem(title: account.title, object: account)
+		})
+	}
+	
+	func selectedPickerItem() -> PickerTableViewCellPickerItem? {
+		guard let adrs = selectedAddress, let coin = selectedCoin else {
+			return nil
+		}
+		
+		guard let balances = Session.shared.allBalances.value[adrs], let balance = balances[coin] else {
+			return nil
+		}
+		
+		let title = coin + " (" + String(balance) + ")"
+		let item = AccountPickerItem(title: title, address: adrs, balance: balance, coin: coin)
+		return PickerTableViewCellPickerItem(title: item.title, object: item)
 	}
 	
 	//MARK: -
@@ -146,59 +236,68 @@ class SendViewModel: BaseViewModel {
 	
 	//MARK: -
 	
-	func send(to: String, amount: Double) {
+	func send(to: String, amount: Double, isFree: Bool = true) {
 		
 		guard to.isValidAddress(), nil != selectedCoin else {
+			assert(true)
 			self.notifiableError.value = NotifiableError(title: "Receiver address isn't valid", text: nil)
 			return
 		}
 		
-		guard let mnemonic = accountManager.mnemonic(for: selectedAddress!), let seed = accountManager.seed(mnemonic: mnemonic) else {
-			//Error no Private key found
-			self.notifiableError.value = NotifiableError(title: "No private key found", text: nil)
-			return
+		isCountingDown = true
+		
+		self.to = to
+		self.amount = amount
+		
+		DispatchQueue.global().async {
+			self.prepareTX(to: to, amount: amount)
 		}
+
+	}
+	
+	func prepareTX(to: String, amount: Double) {
 		
-		countdownFinished.value = false
+		self.countdownFinished.value = false
+		self.fakeCountdownFinished.value = false
 		
-		MinterCore.TransactionManager.default.transactionCount(address: "Mx" + selectedAddress!) { [weak self] (count, err) in
+		MinterCore.TransactionManager.default.transactionCount(address: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
 			
 			guard nil == err, nil != count else {
+				assert(true)
 				self?.notifiableError.value = NotifiableError(title: "Can't receive nonce", text: nil)
 				return
 			}
 			
-			guard let coin = self?.selectedCoin else {
-				self?.notifiableError.value = NotifiableError(title: "Should select coin", text: nil)
+			self?.nonce = (count ?? 0) + 1
+			
+			//Get difficulty hash?
+			DispatchQueue.main.async {
+				self?.showPopup.value = PopupRouter.countdownPopupViewController(viewModel: self!.countdownPopupViewModel())
+			}
+
+		}
+	}
+	
+	func sendTx(seed: Data, nonce: Int, to: String, coin: String, amount: Double) {
+		
+		let newPk = self.accountManager.privateKey(from: seed)
+		
+		let nonce = BigUInt(nonce)
+		let value = BigUInt(amount * TransactionCoinFactor)
+		let tx = SendCoinRawTransaction(nonce: nonce, to: to, value: value, coin: coin)
+		let pkString = newPk.raw.toHexString()
+		
+		guard let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pkString) else {
+			return
+		}
+		
+		MinterCore.TransactionManager.default.send(tx: signedTx) { [weak self] (hash, status, err) in
+			guard err == nil && nil != hash else {
+				self?.txError.value = NotifiableError(title: nil != status ? status : "Unable to send transaction".localized(), text: nil)
 				return
 			}
 			
-			let pk = PrivateKey(seed: seed)
-			let newPk = pk.derive(at: 44, hardened: true).derive(at: 60, hardened: true).derive(at: 0, hardened: true).derive(at: 0).derive(at: 0)
-			
-			
-			let nonce = BigUInt((count ?? 0) + 1)
-			let value = BigUInt(amount * 100000000)
-			let tx = SendCoinRawTransaction(nonce: nonce, to: to, value: value, coin: coin)
-			let pkString = newPk.raw.toHexString()
-			
-			guard let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pkString) else {
-				return
-			}
-			
-			MinterCore.TransactionManager.default.send(tx: signedTx) { (hash, status, err) in
-				guard err == nil && nil != hash else {
-					self?.notifiableError.value = NotifiableError(title: nil != status ? status : "TX Error", text: nil)
-					return
-				}
-				
-				self?.lastSentTransactionHash = hash
-				
-				self?.successfullySentViewModel.value = self!.sentViewModel(to: to)
-				
-				Session.shared.loadTransactions()
-				SessionHelper.reloadAccounts()
-			}
+			self?.lastSentTransactionHash = hash
 		}
 	}
 	
@@ -206,25 +305,37 @@ class SendViewModel: BaseViewModel {
 	
 	func sendViewModel(to: String, amount: Double) -> SendPopupViewModel {
 		
-		let sendVM = SendPopupViewModel()
-		sendVM.amount = amount
-		sendVM.coin = selectedCoin
-		sendVM.username = to
-		sendVM.avatarImage = UIImage(named: "AvatarPlaceholderImage")
-		sendVM.popupTitle = "You're Sending"
-		sendVM.buttonTitle = "BIP!".localized()
-		sendVM.cancelTitle = "CANCEL".localized()
-		return sendVM
+		let vm = SendPopupViewModel()
+		vm.amount = amount
+		vm.coin = selectedCoin
+		vm.username = to
+		vm.avatarImage = MinterMyAPIURL.avatar(address: to).url()
+		vm.popupTitle = "You're Sending"
+		vm.buttonTitle = "BIP!".localized()
+		vm.cancelTitle = "CANCEL".localized()
+		return vm
 	}
 	
 	func sentViewModel(to: String) -> SentPopupViewModel {
 		
 		let vm = SentPopupViewModel()
 		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
-		vm.avatarImage = UIImage(named: "AvatarPlaceholderImage")
+		vm.avatarImage = MinterMyAPIURL.avatar(address: to).url()
 		vm.secondButtonTitle = "CANCEL".localized()
 		vm.username = to
 		vm.title = "Success!".localized()
+		return vm
+	}
+	
+	func countdownPopupViewModel() -> CountdownPopupViewModel {
+		
+		let vm = CountdownPopupViewModel()
+		vm.popupTitle = "Please wait"
+		vm.unit = (one: "second", two: "seconds", other: "seconds")
+		vm.count = 13
+		vm.desc1 = "Coins will be received in"
+		vm.desc2 = "Too long? You can make a faster transaction for 0.00000001 BIP"
+		vm.buttonTitle = "Express transaction"
 		return vm
 	}
 	
@@ -237,5 +348,7 @@ class SendViewModel: BaseViewModel {
 		
 		return URL(string: MinterExplorerBaseURL + "/transactions/" + (lastSentTransactionHash ?? ""))
 	}
+	
+	//MARK: -
 
 }

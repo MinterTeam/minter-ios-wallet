@@ -9,8 +9,10 @@
 import UIKit
 import CountdownLabel
 
+
 protocol CountdownPopupViewControllerDelegate : class {
 	func didFinishCounting(viewController: CountdownPopupViewController)
+	func didExeed10(viewController: CountdownPopupViewController)
 }
 
 
@@ -35,16 +37,25 @@ class CountdownPopupViewController: PopupViewController {
 		
 		updateUI()
 		
-		countdownLabel.setCountDownTime(minutes: 10)
+		guard let vm = self.viewModel as? CountdownPopupViewModel else {
+			return
+		}
+		
+		countdownLabel.text = "\(vm.count ?? 00) + \(vm.unit?.one)"
+		countdownLabel.setCountDownTime(minutes: TimeInterval(vm.count ?? 1))
 		countdownLabel.timeFormat = "ss"
 		countdownLabel.animationType = .Evaporate
 		countdownLabel.start()
 		
-		countdownLabel.then(targetTime: 1) { [weak self] in
-			self?.dismiss(animated: true, completion: {
+		_ = countdownLabel.then(targetTime: 1) { [weak self] in
+			DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1), execute: {
 				self?.delegate?.didFinishCounting(viewController: self!)
 			})
-		}
+		}.then(targetTime: 10, completion: { [weak self] in
+			DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1), execute: {
+				self?.delegate?.didExeed10(viewController: self!)
+			})
+		})
 	}
 
 	override func didReceiveMemoryWarning() {

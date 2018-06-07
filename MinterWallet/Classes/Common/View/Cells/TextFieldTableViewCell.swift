@@ -20,7 +20,7 @@ class TextFieldTableViewCellItem : BaseCellItem {
 }
 
 
-class TextFieldTableViewCell: BaseCell {
+class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 	
 	enum State {
 		case valid
@@ -31,15 +31,16 @@ class TextFieldTableViewCell: BaseCell {
 	var state: State = .default {
 		didSet {
 			switch state {
-				
+
 			case .valid:
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 2
 				textField.layer.borderColor = UIColor(hex: 0x4DAC4A)?.cgColor
 				textField.rightView = textField.rightViewValid
 				textField.rightViewMode = .always
+				errorTitle.text = ""
 				break
-				
+
 			case .invalid:
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 2
@@ -47,13 +48,15 @@ class TextFieldTableViewCell: BaseCell {
 				textField.rightView = textField.rightViewInvalid
 				textField.rightViewMode = .always
 				break
-				
+
 			default:
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 2
 				textField.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
 				textField.rightView = UIView()
 				textField.rightViewMode = .never
+				errorTitle.text = ""
+				break
 			}
 		}
 	}
@@ -68,39 +71,30 @@ class TextFieldTableViewCell: BaseCell {
 	
 	//MARK: - Validators
 	
-	private let validator = Validator()
+	var validationText: String {
+		return textField.text ?? ""
+	}
+	
+	var validator = Validator()
 	
 	var validatorRules: [Rule] = [] {
 		didSet {
-			validator.registerField(self.textField, rules: validatorRules)
-		}
-	}
-	
-	func validationSuccessful() {
-		// submit the form
-	}
-	
-	func validationFailed(errors: [(Validatable, ValidationError)]) {
-		for (field, error) in errors {
-//			if let field = field as? UITextField {
-//				field.layer.borderColor = UIColor.redColor().CGColor
-//				field.layer.borderWidth = 1.0
-//			}
-//			error.errorLabel?.text = error.errorMessage // works if you added labels
-//			error.errorLabel?.isHidden = false
+			validator.registerField(self.textField, errorLabel: self.errorTitle, rules: validatorRules)
 		}
 	}
 	
 	//MARK: - BaseCell
 	
 	override func configure(item: BaseCellItem) {
+		super.configure(item: item)
+		
 		if let item = item as? TextFieldTableViewCellItem {
 			title.text = item.title
 			textField.isSecureTextEntry = item.isSecure
 			textField.prefixText = item.prefix
 			textField.text = item.value
 			state = item.state ?? .default
-			
+			validatorRules = item.rules
 		}
 	}
 	
@@ -132,4 +126,18 @@ class TextFieldTableViewCell: BaseCell {
 		self.textField.becomeFirstResponder()
 	}
 	
+	//MARK: - ValidatableCellProtocol
+	
+	func setValid() {
+		self.state = .valid
+	}
+	
+	func setInvalid() {
+		self.state = .invalid
+	}
+	
+	func setDefault() {
+		self.state = .default
+	}
+
 }

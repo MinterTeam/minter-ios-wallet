@@ -15,7 +15,7 @@ class SendPopupViewModel : PopupViewModel {
 	
 	var coin: String?
 	
-	var avatarImage: UIImage?
+	var avatarImage: URL?
 	
 	var username: String?
 	

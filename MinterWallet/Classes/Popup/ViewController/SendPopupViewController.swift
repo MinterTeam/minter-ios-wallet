@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 protocol SendPopupViewControllerDelegate : class {
 	func didFinish(viewController: SendPopupViewController)
@@ -24,7 +25,12 @@ class SendPopupViewController: PopupViewController {
 	
 	@IBOutlet weak var amountTitle: UILabel!
 	
-	@IBOutlet weak var avatarImage: UIImageView!
+	@IBOutlet weak var avatarImage: UIImageView! {
+		didSet {
+			avatarImage.backgroundColor = .white
+			avatarImage.layer.cornerRadius = 25.0
+		}
+	}
 	
 	@IBOutlet weak var userLabel: UILabel!
 	
@@ -32,17 +38,18 @@ class SendPopupViewController: PopupViewController {
 	
 	@IBOutlet weak var cancelButton: DefaultButton!
 	
-	@IBAction func secondButtonDidTap(_ sender: Any) {
-		
-		self.dismiss(animated: true) { [weak self] in
-			self?.delegate?.didCancel(viewController: self!)
-		}
+	@IBOutlet weak var acitionButtonActivityIndicator: UIActivityIndicatorView!
+	
+	@IBAction func secondButtonDidTap(_ sender: UIButton) {
+		self.delegate?.didCancel(viewController: self)
 	}
 	
-	@IBAction func didTapActionButton(_ sender: Any) {
-		self.dismiss(animated: true) { [weak self] in
-			self?.delegate?.didFinish(viewController: self!)
-		}
+	@IBAction func didTapActionButton(_ sender: UIButton) {
+		acitionButtonActivityIndicator?.startAnimating()
+		acitionButtonActivityIndicator?.alpha = 1.0
+		sender.isEnabled = false
+
+		self.delegate?.didFinish(viewController: self)
 	}
 	
 	//MARK: -
@@ -80,8 +87,12 @@ class SendPopupViewController: PopupViewController {
 		let sendViewModel = viewModel as? SendPopupViewModel
 		
 		popupTitle.text = sendViewModel?.popupTitle
-		amountTitle.text = String(sendViewModel?.amount ?? 0)
-		avatarImage.image = sendViewModel?.avatarImage
+		let cur = CurrencyNumberFormatter.coinFormatter.string(from: (sendViewModel?.amount ?? 0) as NSNumber) ?? ""
+		amountTitle.text = String(cur + " " + (sendViewModel?.coin ?? "")).uppercased()
+		avatarImage.image = UIImage(named: "AvatarPlaceholderImage")
+		if let avatarURL = sendViewModel?.avatarImage {
+			avatarImage.af_setImage(withURL: avatarURL, filter: RoundedCornersFilter(radius: 25.0))
+		}
 		userLabel.text = sendViewModel?.username
 		actionButton.setTitle(sendViewModel?.buttonTitle ?? "", for: .normal)
 		cancelButton.setTitle(sendViewModel?.cancelTitle ?? "", for: .normal)

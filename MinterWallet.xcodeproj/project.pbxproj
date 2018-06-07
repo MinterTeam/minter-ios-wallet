@@ -50,6 +50,7 @@
 		FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA557E57207BA7560095459B /* DefaultHeader.xib */; };
 		FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */; };
 		FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */; };
+		FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */; };
 		FA61EF46209B003600A6FB62 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF45209B003600A6FB62 /* Account.swift */; };
 		FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF48209B037700A6FB62 /* AccountManager.swift */; };
 		FA669B69207239F200AD110A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B68207239F200AD110A /* AppDelegate.swift */; };
@@ -87,6 +88,7 @@
 		FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */; };
 		FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */; };
 		FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */; };
+		FA79F5FE20C81A9E007876ED /* ValidatableCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79F5FD20C81A9E007876ED /* ValidatableCellProtocol.swift */; };
 		FA7A9BF620BEAC6D00E3CCDA /* NotifiableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF520BEAC6D00E3CCDA /* NotifiableError.swift */; };
 		FA7A9BF820BED28900E3CCDA /* SentPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */; };
 		FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */; };
@@ -144,6 +146,10 @@
 		FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */; };
 		FAA2608B2094ABA7009FF3DE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */; };
 		FAB865F120BEE9D5002568A4 /* AdvancedModeBaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB865F020BEE9D5002568A4 /* AdvancedModeBaseViewModel.swift */; };
+		FAB865F320C57007002568A4 /* PopupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB865F220C57007002568A4 /* PopupRouter.swift */; };
+		FAB865F520C68236002568A4 /* SendValidationRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB865F420C68236002568A4 /* SendValidationRules.swift */; };
+		FAB865FF20C7D0B3002568A4 /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB865FD20C7D0B3002568A4 /* TextViewTableViewCell.swift */; };
+		FAB8660020C7D0B3002568A4 /* TextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB865FE20C7D0B3002568A4 /* TextViewTableViewCell.xib */; };
 		FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */; };
 		FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C62074C4A20083333F /* BaseCellItem.swift */; };
 		FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C82074CEC90083333F /* Sugar.swift */; };
@@ -220,6 +226,7 @@
 		FA557E57207BA7560095459B /* DefaultHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultHeader.xib; sourceTree = "<group>"; };
 		FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldTableViewCell.xib; sourceTree = "<group>"; };
+		FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoGrowingTextView.swift; sourceTree = "<group>"; };
 		FA61EF45209B003600A6FB62 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		FA61EF48209B037700A6FB62 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		FA669B65207239F200AD110A /* MinterWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinterWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -263,6 +270,7 @@
 		FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopMost.swift"; sourceTree = "<group>"; };
+		FA79F5FD20C81A9E007876ED /* ValidatableCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatableCellProtocol.swift; sourceTree = "<group>"; };
 		FA7A9BF520BEAC6D00E3CCDA /* NotifiableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifiableError.swift; sourceTree = "<group>"; };
 		FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentPopupViewController.swift; sourceTree = "<group>"; };
 		FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentPopupViewModel.swift; sourceTree = "<group>"; };
@@ -320,6 +328,10 @@
 		FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyNumberFormatter.swift; sourceTree = "<group>"; };
 		FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		FAB865F020BEE9D5002568A4 /* AdvancedModeBaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedModeBaseViewModel.swift; sourceTree = "<group>"; };
+		FAB865F220C57007002568A4 /* PopupRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupRouter.swift; sourceTree = "<group>"; };
+		FAB865F420C68236002568A4 /* SendValidationRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendValidationRules.swift; sourceTree = "<group>"; };
+		FAB865FD20C7D0B3002568A4 /* TextViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewTableViewCell.swift; sourceTree = "<group>"; };
+		FAB865FE20C7D0B3002568A4 /* TextViewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextViewTableViewCell.xib; sourceTree = "<group>"; };
 		FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableSectionItem.swift; sourceTree = "<group>"; };
 		FAC1E1C62074C4A20083333F /* BaseCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellItem.swift; sourceTree = "<group>"; };
 		FAC1E1C82074CEC90083333F /* Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sugar.swift; sourceTree = "<group>"; };
@@ -553,6 +565,7 @@
 		598428AD646702E1411A72BC /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				FAB865F220C57007002568A4 /* PopupRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -742,6 +755,7 @@
 		B7E24AAEEE3865250A7D177A /* Send */ = {
 			isa = PBXGroup;
 			children = (
+				FAB865F620C6825A002568A4 /* Helpers */,
 				2305D3ECBAE8C223A172592D /* Router */,
 				7A2A3135D97A7398DEBC5B6E /* View */,
 				D3EA22F321CEB1682D7BD3FA /* ViewController */,
@@ -755,10 +769,10 @@
 		B8BED980FC2C715F7CFA524F /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */,
 				3BA1EA41241735BB83566B6A /* PopupViewController.swift */,
 				FAA234EC20872BD000F999DE /* SendPopupViewController.swift */,
 				FAA26054208F7A37009FF3DE /* CountdownPopupViewController.swift */,
+				FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -922,6 +936,8 @@
 				FAE794532089F5170006CB0B /* DisclosureTableViewCell.xib */,
 				FAA2607320932641009FF3DE /* BlankTableViewCell.swift */,
 				FAA2607420932641009FF3DE /* BlankTableViewCell.xib */,
+				FAB865FD20C7D0B3002568A4 /* TextViewTableViewCell.swift */,
+				FAB865FE20C7D0B3002568A4 /* TextViewTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1004,6 +1020,7 @@
 		FA669B982072448B00AD110A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FA79F5FC20C81A85007876ED /* Protocol */,
 				FA8AE85620AAD3DC00F26E11 /* Session */,
 				FADB3E3A20A9C25C00EB6CD7 /* Storage */,
 				FA61EF47209B036900A6FB62 /* Manager */,
@@ -1072,6 +1089,7 @@
 				FAA2605D209209DE009FF3DE /* DroppableView.swift */,
 				FAA2607720933984009FF3DE /* GrowingDefaultTextView.swift */,
 				FA3154AD20B851F7005D9F21 /* GroupedPickerView.swift */,
+				FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1110,6 +1128,14 @@
 				FA669BD8207267DA00AD110A /* BaseRouter.swift */,
 			);
 			path = Router;
+			sourceTree = "<group>";
+		};
+		FA79F5FC20C81A85007876ED /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				FA79F5FD20C81A9E007876ED /* ValidatableCellProtocol.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		FA7AD19A206437F1B24DD542 /* Router */ = {
@@ -1170,6 +1196,14 @@
 				FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */,
 			);
 			path = Formatters;
+			sourceTree = "<group>";
+		};
+		FAB865F620C6825A002568A4 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FAB865F420C68236002568A4 /* SendValidationRules.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		FAC1E1C32074C4650083333F /* Model */ = {
@@ -1327,6 +1361,7 @@
 				FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */,
 				FAA234E72084A26900F999DE /* SeparatorTableViewCell.xib in Resources */,
 				FAA2607620932641009FF3DE /* BlankTableViewCell.xib in Resources */,
+				FAB8660020C7D0B3002568A4 /* TextViewTableViewCell.xib in Resources */,
 				FA669B72207239F200AD110A /* Assets.xcassets in Resources */,
 				FA669B70207239F200AD110A /* Main.storyboard in Resources */,
 				FA669BC52072483100AD110A /* Ubuntu-R.ttf in Resources */,
@@ -1533,6 +1568,7 @@
 				FA9A6E51209B1D5D0012AC96 /* SHA3+String.swift in Sources */,
 				FA669BCF207249D300AD110A /* DefaultButton.swift in Sources */,
 				FAA234ED20872BD000F999DE /* SendPopupViewController.swift in Sources */,
+				FAB865F520C68236002568A4 /* SendValidationRules.swift in Sources */,
 				FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */,
 				2177DA1D3DFAC5A28E961357 /* LoginViewController.swift in Sources */,
 				FAB865F120BEE9D5002568A4 /* AdvancedModeBaseViewModel.swift in Sources */,
@@ -1540,6 +1576,7 @@
 				FA835CCC207630A100BFC35A /* ValidatableTextField.swift in Sources */,
 				FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */,
 				FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */,
+				FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */,
 				FAA2607220931D41009FF3DE /* PasswordEditViewModel.swift in Sources */,
 				FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */,
 				FAA26068209311C2009FF3DE /* MobileEditViewController.swift in Sources */,
@@ -1547,6 +1584,7 @@
 				FAA234DE20848EC900F999DE /* SwitchTableViewCell.swift in Sources */,
 				FA669B9E207244FF00AD110A /* BaseViewController.swift in Sources */,
 				FAA234E62084A26900F999DE /* SeparatorTableViewCell.swift in Sources */,
+				FAB865F320C57007002568A4 /* PopupRouter.swift in Sources */,
 				FA669B9C207244E300AD110A /* BaseViewModel.swift in Sources */,
 				332EB812C95C0592C6924E65 /* CoinsViewController.swift in Sources */,
 				FA3154AA20B5ABD1005D9F21 /* TransactionDateFormatter.swift in Sources */,
@@ -1575,6 +1613,7 @@
 				FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */,
 				D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */,
 				EFCE6415FD145CE2E62EF813 /* SendViewModel.swift in Sources */,
+				FA79F5FE20C81A9E007876ED /* ValidatableCellProtocol.swift in Sources */,
 				FAA2606C20931A56009FF3DE /* EmailEditViewController.swift in Sources */,
 				FAA234EF20872BF800F999DE /* SendPopupViewModel.swift in Sources */,
 				886A872ED336AA40162E4C11 /* PopupViewController.swift in Sources */,
@@ -1582,6 +1621,7 @@
 				FAA2607F20935C36009FF3DE /* GenerateAddressLabelTableViewCell.swift in Sources */,
 				07B23B1F8A8E95A0459601A1 /* ReceiveViewController.swift in Sources */,
 				27FF799EFD5EE33465322922 /* ReceiveViewModel.swift in Sources */,
+				FAB865FF20C7D0B3002568A4 /* TextViewTableViewCell.swift in Sources */,
 				AF44D30C07B56ACF70021D25 /* SettingsViewController.swift in Sources */,
 				DF1E9909F9D644AEBBBED0DF /* SettingsViewModel.swift in Sources */,
 				FA8AE85D20AC638900F26E11 /* String+Random.swift in Sources */,

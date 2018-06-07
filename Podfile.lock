@@ -9,7 +9,7 @@ PODS:
   - CKMnemonic (0.1.7):
     - CryptoSwift
   - CountdownLabel (3.0.0)
-  - CryptoSwift (0.9.0)
+  - CryptoSwift (0.10.0)
   - Differentiator (3.0.2)
   - ExpandableCell (1.2.2)
   - ExpyTableView (1.0)
@@ -32,12 +32,12 @@ PODS:
   - NotificationBannerSwift (1.6.3):
     - MarqueeLabel/Swift
     - SnapKit (~> 4.0)
-  - ObjectMapper (3.1.0)
-  - Realm (3.5.0):
-    - Realm/Headers (= 3.5.0)
-  - Realm/Headers (3.5.0)
-  - RealmSwift (3.5.0):
-    - Realm (= 3.5.0)
+  - ObjectMapper (3.2.0)
+  - Realm (3.6.0):
+    - Realm/Headers (= 3.6.0)
+  - Realm/Headers (3.6.0)
+  - RealmSwift (3.6.0):
+    - Realm (= 3.6.0)
   - RxCocoa (4.1.2):
     - RxSwift (~> 4.0)
   - RxDataSources (3.0.2):
@@ -46,7 +46,7 @@ PODS:
     - RxSwift (~> 4.0)
   - RxSwift (4.1.2)
   - secp256k1.swift (0.1.4)
-  - SipHash (1.2.0)
+  - SipHash (1.2.1)
   - SnapKit (4.0.0)
   - SVProgressHUD (2.2.5)
   - SwiftValidator (4.0.0)
@@ -136,7 +136,7 @@ SPEC CHECKSUMS:
   BigInt: 8e8a52161c745cd3ab78e3dc346a9fbee51e6cf6
   CKMnemonic: 88e745afffea6f3c719c799d9869a2ea5eb9f08b
   CountdownLabel: 4534a68892b1deb73fda18702dfdc2c8444cec08
-  CryptoSwift: bca8c5b653dcc2d9734409242a070ff53bafac86
+  CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   ExpandableCell: 759ca4b0b7655e34f4b73c28eec5028e22c53c63
   ExpyTableView: 75fe6494d4613fd3dc4bd965cce6e14cec7e2223
@@ -149,14 +149,14 @@ SPEC CHECKSUMS:
   MinterExplorer: d5784ab4fb1636fde9e3bae29c81525b2092307f
   MinterMy: a58b68a346872f7cee0524d879e31cd9214dc45b
   NotificationBannerSwift: b231e4c3244848ef300e1c53ce027b9756b9b06f
-  ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
-  Realm: 0378021c424e4e2bd6a0e63b27881e929d9b9ad1
-  RealmSwift: 3322562622fda2ad596985ead4d8d8be30cf838c
+  ObjectMapper: 5cccd2de6f253eda859df8116a5a554d9769e859
+  Realm: 08b464b462d4f31bbd4ba5f5a1c8722ef0a700b7
+  RealmSwift: 973e1499c44ab571f894c2c908e2db450be280c3
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
   RxDataSources: cb7c31e652a87ebb919da45f716bbb87b3765f6b
   RxSwift: e49536837d9901277638493ea537394d4b55f570
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
-  SipHash: c6e9e43e9c531b5bc6602545130c26194a6d31ce
+  SipHash: b26918dbe6925368d4322374371437c62c9038e2
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af

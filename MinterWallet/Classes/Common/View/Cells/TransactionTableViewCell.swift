@@ -42,7 +42,12 @@ class TransactionTableViewCell: ExpandableCell {
 
 	@IBOutlet weak var title: UILabel!
 	
-	@IBOutlet weak var coinImage: UIImageView!
+	@IBOutlet weak var coinImage: UIImageView! {
+		didSet {
+			coinImage?.layer.cornerRadius = 17.0
+			coinImage?.backgroundColor = .white
+		}
+	}
 	
 	@IBOutlet weak var amount: UILabel!
 	
@@ -85,7 +90,7 @@ class TransactionTableViewCell: ExpandableCell {
 		if let transaction = item as? TransactionTableViewCellItem {
 			title.text = transaction.title
 			if let url = transaction.image {
-				coinImage.af_setImage(withURL: url)
+				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 25.0))
 			}
 			else {
 				coinImage.image = UIImage(named: "AvatarPlaceholderImage")

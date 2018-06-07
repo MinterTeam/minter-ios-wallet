@@ -24,6 +24,8 @@ class PopupViewController: BaseViewController, CCMPlayNDropViewDelegate {
 	
 	@IBOutlet weak var popupView: DroppableView!
 	
+	@IBOutlet weak var blurView: UIVisualEffectView!
+	
 	//MARK: -
 	
 	var viewModel: PopupViewModel?
@@ -47,7 +49,7 @@ class PopupViewController: BaseViewController, CCMPlayNDropViewDelegate {
 		super.viewWillLayoutSubviews()
 	}
 	
-	//MARK: -
+	//MARK: - CCMPlayNDropView
 	
 	func ccmPlayNDropViewDidFinishDismissAnimation(withDynamics view: CCMPlayNDropView!) {
 //		self.dismiss(animated: true, completion: nil)

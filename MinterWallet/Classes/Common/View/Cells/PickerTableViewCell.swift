@@ -12,6 +12,7 @@ import McPicker
 
 class PickerTableViewCellItem : BaseCellItem {
 	var title: String?
+	var selected: PickerTableViewCellPickerItem?
 }
 
 struct PickerTableViewCellPickerItem {
@@ -55,7 +56,6 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 		}
 	}
 	
-	
 	//MARK: -
 	
 	override func awakeFromNib() {
@@ -73,7 +73,11 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 		
 		if let pickerItem = item as? PickerTableViewCellItem {
 			self.label.text = pickerItem.title
+			if let selected = pickerItem.selected {
+				self.selectField.text = selected.title
+			}
 		}
+
 	}
 	
 	//MARK: -

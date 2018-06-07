@@ -29,9 +29,7 @@ class AccountManager {
 	
 	//Account with seed
 	func account(seed: Data, encryptedBy: Account.EncryptedBy = .me) -> Account? {
-		let pk = PrivateKey(seed: seed)
-		
-		let newPk = pk.derive(at: 44, hardened: true).derive(at: 60, hardened: true).derive(at: 0, hardened: true).derive(at: 0).derive(at: 0)
+		let newPk = self.privateKey(from: seed)
 		
 		guard
 			let publicKey = RawTransactionSigner.publicKey(privateKey: newPk.raw, compressed: false)?.dropFirst(),
@@ -40,6 +38,12 @@ class AccountManager {
 		}
 		
 		return Account(encryptedBy: .me, address: address)
+	}
+	
+	func privateKey(from seed: Data) -> PrivateKey {
+		let pk = PrivateKey(seed: seed)
+		let newPk = pk.derive(at: 44, hardened: true).derive(at: 60, hardened: true).derive(at: 0, hardened: true).derive(at: 0).derive(at: 0)
+		return newPk
 	}
 	
 	//

@@ -78,8 +78,6 @@ class Session {
 	
 	func loadTransactions() {
 		
-		transactions.value = []
-		
 		let addresses = accounts.value.map { (acc) -> String in
 			return "Mx" + acc.address
 		}
@@ -103,9 +101,9 @@ class Session {
 
 				var newAllBalances = self?.allBalances.value
 				
-				if let balance = res as? [String : Double] {
+				if let balance = res as? [String : String] {
 					newAllBalances?[account.address] = balance.mapValues({ (val) -> Double in
-						return val / 100000000
+						return (Double(val) ?? 0) / TransactionCoinFactor
 					})
 				}
 				

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 
 protocol SentPopupViewControllerDelegate : class {
@@ -22,7 +23,12 @@ class SentPopupViewController: PopupViewController {
 	//MARK: -
 	
 	@IBOutlet weak var receiverLabel: UILabel!
-	@IBOutlet weak var avatarImageView: UIImageView!
+	@IBOutlet weak var avatarImageView: UIImageView! {
+		didSet {
+			avatarImageView?.backgroundColor = .white
+			avatarImageView?.layer.cornerRadius = 25.0
+		}
+	}
 	@IBOutlet weak var actionButton: DefaultButton!
 	@IBOutlet weak var secondButton: DefaultButton!
 	
@@ -34,6 +40,9 @@ class SentPopupViewController: PopupViewController {
 		delegate?.didTapSecondButton(viewController: self)
 	}
 	
+	//MARK: -
+	
+	var shadowLayer = CAShapeLayer()
 	
 	//MARK: -
 	
@@ -56,10 +65,36 @@ class SentPopupViewController: PopupViewController {
 		}
 		
 		self.receiverLabel.text = vm.username
-		self.avatarImageView.image = vm.avatarImage
+		self.avatarImageView.image = UIImage(named: "AvatarPlaceholderImage")
+		if let url = vm.avatarImage {
+			self.avatarImageView.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 25.0))
+		}
 		self.actionButton.setTitle(vm.actionButtonTitle, for: .normal)
 		self.secondButton.setTitle(vm.secondButtonTitle, for: .normal)
 		
+	}
+	
+	func dropShadow() {
+		shadowLayer.removeFromSuperlayer()
+		shadowLayer.frame = avatarImageView.frame
+		shadowLayer.path = UIBezierPath(roundedRect: avatarImageView.bounds, cornerRadius: 25.0).cgPath
+		shadowLayer.shadowOpacity = 1.0
+		shadowLayer.shadowRadius = 18.0
+		shadowLayer.masksToBounds = false
+		shadowLayer.shadowColor = UIColor(hex: 0x000000, alpha: 0.2)?.cgColor
+		shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+		shadowLayer.opacity = 1.0
+		shadowLayer.shouldRasterize = true
+		shadowLayer.rasterizationScale = UIScreen.main.scale
+		avatarImageView.superview?.layer.insertSublayer(shadowLayer, at: 0)
+	}
+	
+	//MARK: -
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		dropShadow()
 	}
 
 }
