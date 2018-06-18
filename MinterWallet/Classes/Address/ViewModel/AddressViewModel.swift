@@ -8,6 +8,8 @@
 
 import RxSwift
 import RxDataSources
+import MinterCore
+import MinterMy
 
 
 class AddressViewModel: BaseViewModel {

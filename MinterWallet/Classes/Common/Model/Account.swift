@@ -9,26 +9,26 @@
 import Foundation
 
 
-struct Account {
+public struct Account {
 	
-	enum EncryptedBy : String {
+	public enum EncryptedBy : String {
 		case me = "me"
 		case bipWallet = "bipWallet"
 	}
 	
 	//MARK: -
 	
-	var encryptedBy: EncryptedBy
+	public var encryptedBy: EncryptedBy
 	
-	var address: String
+	public var address: String
 	
-	var isMain: Bool
+	public var isMain: Bool
 	
-	var lastBalance: [String : Double] = [:]
+	public var lastBalance: [String : Double] = [:]
 	
 	//MARK: -
 	
-	init(encryptedBy: EncryptedBy, address: String, isMain: Bool = false) {
+	public init(encryptedBy: EncryptedBy, address: String, isMain: Bool = false) {
 		self.encryptedBy = encryptedBy
 		self.address = address
 		self.isMain = isMain
@@ -36,7 +36,7 @@ struct Account {
 	
 	//MARK: -
 
-	mutating func merge(with account: Account) {
+	public mutating func merge(with account: Account) {
 		self.encryptedBy = account.encryptedBy
 		self.address = account.address
 		self.isMain = account.isMain

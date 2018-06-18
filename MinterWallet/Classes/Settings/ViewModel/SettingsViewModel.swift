@@ -20,17 +20,34 @@ class SettingsViewModel: BaseViewModel {
 	
 	private var sections: [BaseTableSectionItem] = []
 	
+	var showLoginScreen = Variable(false)
+	
+	var shouldReloadTable = Variable(false)
+	
+	private var disposeBag = DisposeBag()
+	
 	//MARK: -
 
 	override init() {
 		super.init()
 		
+		Session.shared.isLoggedIn.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+			self?.createSections()
+			self?.shouldReloadTable.value = true
+		}).disposed(by: disposeBag)
+		
 		createSections()
+	}
+	
+	var rightButtonTitle : String {
+		return "Log Out".localized()
 	}
 	
 	//MARK: - Sections
 	
 	func createSections() {
+		
+		var sctns = [BaseTableSectionItem]()
 		
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
 		
@@ -60,11 +77,13 @@ class SettingsViewModel: BaseViewModel {
 			var items: [BaseCellItem] = []
 			
 			var section = BaseTableSectionItem(header: "")
-			section.items = items
-			sections.append(section)
+
 			items = [avatar, separator, username, separator, mobile, separator, email, separator, password, separator]
+			section.items = items
+			sctns.append(section)
+			
+			sections = sctns
 		}
-		
 		
 		let language = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Language")
 		language.title = "Language".localized()
@@ -76,12 +95,9 @@ class SettingsViewModel: BaseViewModel {
 		addresses.value = nil
 		addresses.placeholder = "Manage"
 		
-		
 		var section1 = BaseTableSectionItem(header: " ")
 		section1.items = [language, separator, addresses]
 		sections.append(section1)
-		
-		
 		
 	}
 	
@@ -101,6 +117,12 @@ class SettingsViewModel: BaseViewModel {
 	
 	func section(index: Int) -> BaseTableSectionItem? {
 		return sections[safe: index]
+	}
+	
+	//MARK: -
+	
+	func rightButtonTapped() {
+		Session.shared.logout()
 	}
 
 }

@@ -8,9 +8,12 @@
 
 import RxSwift
 
+
 class RootViewModel: BaseViewModel {
 	
 	private let session = Session.shared
+	
+	private let disposeBag = DisposeBag()
 
 	var title: String {
 		get {
@@ -22,5 +25,25 @@ class RootViewModel: BaseViewModel {
 		super.init()
 		
 		SessionHelper.reloadAccounts()
+		
+		Session.shared.isLoggedIn.asObservable().subscribe(onNext: { (isLoggedIn) in
+			if isLoggedIn {
+				//show wallet
+				SessionHelper.reloadAccounts()
+			}
+			else {
+				//show login/register
+//				if let rootVC = UIViewController.stars_topMostController() as? RootViewController {
+//					let vc = Storyboards.Main.instantiateInitialViewController()
+//
+//					rootVC.showViewControllerWith(vc, usingAnimation: .up) {
+//
+//					}
+//				}
+				
+			}
+		}).disposed(by: disposeBag)
+		
+		
 	}
 }

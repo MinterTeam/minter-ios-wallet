@@ -16,11 +16,14 @@ class TextFieldTableViewCellItem : BaseCellItem {
 	var rules: [Rule] = []
 	var prefix: String?
 	var state: TextFieldTableViewCell.State?
+	var error: String?
 	var value: String?
 }
 
 
 class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
+	
+	//MARK: -
 	
 	enum State {
 		case valid
@@ -95,6 +98,7 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 			textField.text = item.value
 			state = item.state ?? .default
 			validatorRules = item.rules
+			errorTitle.text = item.error
 		}
 	}
 	
@@ -108,6 +112,8 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
+		
+		state = .default
 		
 		layoutIfNeeded()
 	}
@@ -128,16 +134,37 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 	
 	//MARK: - ValidatableCellProtocol
 	
+	weak var validateDelegate: ValidatableCellDelegate?
+	
 	func setValid() {
 		self.state = .valid
+		self.errorTitle.text = ""
 	}
 	
-	func setInvalid() {
+	func setInvalid(message: String?) {
 		self.state = .invalid
+		if nil != message {
+			self.errorTitle.text = message
+		}
 	}
 	
 	func setDefault() {
 		self.state = .default
+		self.errorTitle.text = ""
 	}
 
+}
+
+extension TextFieldTableViewCell : UITextFieldDelegate {
+	
+	func textFieldDidEndEditing(_ textField: UITextField) {
+		
+		validateDelegate?.didValidateField(field: self)
+		
+		validateDelegate?.validate(field: self, completion: {
+			print("Validation has been completed")
+		})
+		
+	}
+	
 }

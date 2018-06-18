@@ -9,14 +9,25 @@
 import Foundation
 import SwiftValidator
 
+protocol ValidatableCellDelegate : class {
+	
+	func didValidateField(field: ValidatableCellProtocol)
+	
+	func validate(field: ValidatableCellProtocol, completion: (() -> ())?)
+	
+}
 
-protocol ValidatableCellProtocol : class, Validatable {
+
+protocol ValidatableCellProtocol : Validatable where Self : BaseCell {
+	
+	var validateDelegate: ValidatableCellDelegate? { get set }
 	
 	var validator: Validator { get set }
 	
 	func setValid()
 	
-	func setInvalid()
+	func setInvalid(message: String?)
 	
-	func setDefault()
+	func setDefault()	
+
 }

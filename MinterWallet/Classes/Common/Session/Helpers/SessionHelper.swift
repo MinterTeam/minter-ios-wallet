@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import MinterCore
+import MinterMy
 
 class SessionHelper {
 	
@@ -38,6 +40,25 @@ class SessionHelper {
 //			.sorted(by: { (acc1, acc2) -> Bool in
 //			return acc1.isMain && !acc2.isMain
 //		})
+	}
+	
+	class func set(accessToken: String?, refreshToken: String?, user: User?) {
+		
+		guard nil != accessToken, nil != refreshToken, nil != user else {
+			return
+		}
+		
+		if nil != accessToken {
+			Session.shared.setAccessToken(accessToken!)
+		}
+		
+		if nil != refreshToken {
+			Session.shared.setRefreshToken(refreshToken!)
+		}
+		
+		if nil != user {
+			Session.shared.setUser(user!)
+		}
 	}
 	
 	

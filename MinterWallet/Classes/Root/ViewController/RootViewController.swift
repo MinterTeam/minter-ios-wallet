@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class RootViewController: UIViewController {
 	
@@ -21,35 +22,53 @@ class RootViewController: UIViewController {
 	}
 
 	var viewModel = RootViewModel()
+	
+	private let disposeBag = DisposeBag()
 
 	// MARK: Life cycle
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if Session.shared.accounts.value.count > 0 {
-			//has local accounts, show wallet
+		Observable.combineLatest(Session.shared.isLoggedIn.asObservable(), Session.shared.accounts.asObservable()).distinctUntilChanged({ (first, second) -> Bool in
+			return first.0 == second.0 && first.1 == second.1
+		})
+		.subscribe(onNext: { (isLoggedIn, accounts) in
+			
+			print(isLoggedIn)
+			print(accounts)
+			
+			if accounts.count > 0 || isLoggedIn {
+				//has local accounts, show wallet
 				let vc = Storyboards.Main.instantiateInitialViewController()
-
+				
 				self.showViewControllerWith(vc, usingAnimation: .up) {
-
-				}
-		}
-		else {
-			if let loginVC = LoginRouter.viewController(path: ["login"], param: [:]) {
-				self.showViewControllerWith(loginVC, usingAnimation: .right, completion: {
 					
-				})
+				}
 			}
-		}
+			else {
+				if let loginVC = LoginRouter.viewController(path: ["login"], param: [:]) {
+					self.showViewControllerWith(loginVC, usingAnimation: .right, completion: {
+						
+					})
+				}
+			}
+		}).disposed(by: disposeBag)
+		
 	}
 
 	func showViewControllerWith(_ newViewController: UIViewController, usingAnimation animationType: AnimationType, completion: (() -> ())?) {
 		if animationStart {
 			return
 		}
-		
+
 		let currentViewController = self.childViewControllers.last
+		
+		if nil != currentViewController {
+			guard newViewController.classForCoder != currentViewController!.classForCoder else {
+				return
+			}
+		}
 		
 		let width = self.view.frame.size.width
 		let height = self.view.frame.size.height

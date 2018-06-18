@@ -13,7 +13,6 @@ PODS:
   - Differentiator (3.0.2)
   - ExpandableCell (1.2.2)
   - ExpyTableView (1.0)
-  - GrowingTextView (0.5.6)
   - ImagePicker (3.0.0)
   - KeychainSwift (11.0.0)
   - MarqueeLabel/Swift (3.1.4)
@@ -59,9 +58,9 @@ DEPENDENCIES:
   - AlamofireImage
   - CKMnemonic
   - CountdownLabel
+  - CryptoSwift
   - ExpandableCell (from `../ExpandableCell`)
   - ExpyTableView
-  - GrowingTextView (~> 0.5.5)
   - ImagePicker
   - KeychainSwift
   - McPicker
@@ -88,7 +87,6 @@ SPEC REPOS:
     - CryptoSwift
     - Differentiator
     - ExpyTableView
-    - GrowingTextView
     - ImagePicker
     - KeychainSwift
     - MarqueeLabel
@@ -140,7 +138,6 @@ SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   ExpandableCell: 759ca4b0b7655e34f4b73c28eec5028e22c53c63
   ExpyTableView: 75fe6494d4613fd3dc4bd965cce6e14cec7e2223
-  GrowingTextView: 8958f4fb7419de58dd622021b2d0696487e00e70
   ImagePicker: 973953c25960fe04729a7082a56194321c6762d2
   KeychainSwift: bea6bd9f98af7b8d7ca4aa79fe105c00fab532db
   MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
@@ -162,6 +159,6 @@ SPEC CHECKSUMS:
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
 
-PODFILE CHECKSUM: d6157fd1f9254982a9cf60c5bf2c89a45ac0e2b7
+PODFILE CHECKSUM: a0f1bca44cf285401ab47ef9b7f01fb3023ea191
 
 COCOAPODS: 1.5.0

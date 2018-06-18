@@ -77,6 +77,3 @@ class ExpandableCell : AccordionTableViewCell, Configurable {
 	}
 
 }
-
-
-

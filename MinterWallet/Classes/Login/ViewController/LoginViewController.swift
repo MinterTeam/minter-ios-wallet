@@ -7,6 +7,12 @@
 //
 
 import UIKit
+import NotificationBannerSwift
+import RxSwift
+
+protocol LoginViewControllerDelegate: class {
+	func didLogin()
+}
 
 class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 	
@@ -14,13 +20,17 @@ class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewD
 	
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
-			tableView.contentInset = UIEdgeInsets(top: 10.0, left: 0.0, bottom: 0.0, right: 0.0)
+			tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
 		}
 	}
 	
 	//MARK: -
+	
+	weak var delegate: LoginViewControllerDelegate?
 
 	var viewModel = LoginViewModel()
+	
+	private var disposeBag = DisposeBag()
 
 	//MARK: Life cycle
 
@@ -30,6 +40,16 @@ class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewD
 		registerCells()
 		
 		self.title = viewModel.title
+		
+		self.viewModel.notifiableError.asObservable().subscribe(onNext: { (errorNotification) in
+			guard nil != errorNotification else {
+				return
+			}
+			
+			let banner = NotificationBanner(title: errorNotification?.title ?? "", subtitle: errorNotification?.text, style: .danger)
+			banner.show()
+		}).disposed(by: disposeBag)
+		
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +97,18 @@ extension LoginViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
+		let usernameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell
+		let passwordCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextFieldTableViewCell
+		
+		let username = usernameCell?.textField.text
+		let password = passwordCell?.textField.text
+		
+		guard nil != username && nil != password else {
+			//Show error
+			return
+		}
+		
+		viewModel.login(username: username!, password: password!)
 	}
 }
 

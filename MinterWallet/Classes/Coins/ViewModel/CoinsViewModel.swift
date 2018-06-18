@@ -40,7 +40,7 @@ class CoinsViewModel: BaseViewModel {
 				self?.createSection()
 		}).disposed(by: disposeBag)
 		
-		Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateBalance), userInfo: nil, repeats: true).fire()
+//		Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateBalance), userInfo: nil, repeats: true).fire()
 		
 		createSection()
 	}

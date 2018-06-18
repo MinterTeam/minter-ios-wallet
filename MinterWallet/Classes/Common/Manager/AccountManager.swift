@@ -9,9 +9,16 @@
 import Foundation
 import CryptoSwift
 import MinterCore
+import MinterMy
 
 
 class AccountManager {
+	
+	enum AccountManagerError : Error {
+		case privateKeyUnableToEncrypt
+		case privateKeyEncryptionFaulted
+		case privateKeyCanNotBeSaved
+	}
 	
 	//MARK: - Sources
 	
@@ -28,6 +35,15 @@ class AccountManager {
 	//MARK: -
 	
 	//Account with seed
+	
+	func account(mnemonic: String, encryptedBy: Account.EncryptedBy = .me) -> Account? {
+		guard let seed = seed(mnemonic: mnemonic) else {
+			return nil
+		}
+		
+		return account(seed: seed, encryptedBy: encryptedBy)
+	}
+	
 	func account(seed: Data, encryptedBy: Account.EncryptedBy = .me) -> Account? {
 		let newPk = self.privateKey(from: seed)
 		
@@ -53,13 +69,14 @@ class AccountManager {
 	
 	//save hash of password
 	func save(password: String) {
-		let hash = password.sha256() as NSString
-		secureStorage.set(hash, forKey: passwordKey)
+		let hash = password.bytes.sha256()
+		let data = Data(bytes: hash)
+		secureStorage.set(data, forKey: passwordKey)
 	}
 	
-	func password() -> String? {
-		let val = secureStorage.object(forKey: passwordKey) as? NSString
-		return val as String?
+	func password() -> Data? {
+		let val = secureStorage.object(forKey: passwordKey) as? Data
+		return val
 	}
 	
 	//Generate Seed from mnemonic
@@ -68,29 +85,38 @@ class AccountManager {
 	}
 	
 	//Save PK to SecureStorage
-	func save(mnemonic: String, password: String) {
+	
+	func save(mnemonic: String, password: Data) throws {
 		
 		guard let key = self.address(from: mnemonic) else {
 			return
 		}
 		
+		guard let data = try? encryptedMnemonic(mnemonic: mnemonic, password: password) else {
+			
+			throw AccountManagerError.privateKeyCanNotBeSaved
+		}
+		
+		secureStorage.set(data!, forKey: key)
+	}
+
+	func encryptedMnemonic(mnemonic: String, password: Data) throws -> Data? {
 		do {
-			let aes = try AES(key: String(password.prefix(32)), iv: iv) // aes128
+			
+			let aes = try AES(key: password.bytes, blockMode: CBC(iv: self.iv.bytes))
 			let ciphertext = try aes.encrypt(Array(mnemonic.utf8))
 			
 			guard ciphertext.count > 0 else {
 				//throw error
 				assert(true)
-				return
+				throw AccountManagerError.privateKeyEncryptionFaulted
 			}
-			
-			let data = Data(bytes: ciphertext)
-			secureStorage.set(data, forKey: key)
-			
-		} catch {
-			//error
-			assert(true)
+			return Data(bytes: ciphertext)
 		}
+		catch {
+			throw AccountManagerError.privateKeyUnableToEncrypt
+		}
+		return nil
 	}
 	
 	func address(from mnemonic: String) -> String? {
@@ -113,22 +139,23 @@ class AccountManager {
 	}
 	
 	func mnemonic(for address: String) -> String? {
-		guard let encriptedMnemonic = secureStorage.object(forKey: address) as? Data else {
-			return nil
-		}
-		guard let password = self.password() else {
+		guard let encryptedMnemonic = secureStorage.object(forKey: address) as? Data, let password = self.password() else {
 			return nil
 		}
 		
-		let key = String(password.prefix(32))
-		let aes = try? AES(key: key, iv: iv) // aes128
+		return decryptMnemonic(encrypted: encryptedMnemonic, password: password)
+	}
+	
+	func decryptMnemonic(encrypted: Data, password: Data) -> String? {
 		
-		guard let decrypted = try? aes?.decrypt(encriptedMnemonic.bytes) else {
+		let key = password
+		let aes = try? AES(key: password.bytes, blockMode: CBC(iv: self.iv.bytes))
+		
+		guard let decrypted = try? aes?.decrypt(encrypted.bytes) else {
 			return nil
 		}
 		
 		let mnemonic = Data(bytes: decrypted!)
-		
 		return String(data: mnemonic, encoding: .utf8)
 	}
 	
@@ -156,8 +183,26 @@ class AccountManager {
 		return res
 	}
 	
-	func loadRemoteAccounts() -> [Account]? {
-		return []
+	func loadRemoteAccounts(completion: (([String]) -> ())?) {
+		
+		guard let accessToken = Session.shared.accessToken else {
+			return
+		}
+
+		let addressManager = AddressManager.manager(accessToken: accessToken)
+
+		addressManager.addresses { (addresses, error) in
+
+			var addresses = [String]()
+
+			defer {
+				completion?(addresses)
+			}
+
+			guard nil == error else {
+				return
+			}
+		}
 	}
 	
 	//MARK: -
@@ -165,6 +210,13 @@ class AccountManager {
 	func saveLocalAccount(account: Account) {
 		
 		guard let res = database.objects(class: AccountDataBaseModel.self, query: "address == \"\(account.address)\"")?.first as? AccountDataBaseModel else {
+			let dbModel = AccountDataBaseModel()
+			dbModel.address = account.address.stripMinterHexPrefix()
+			dbModel.encryptedBy = account.encryptedBy.rawValue
+			dbModel.isMain = account.isMain
+			
+			database.add(object: dbModel)
+			
 			return
 		}
 		

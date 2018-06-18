@@ -10,7 +10,7 @@ import Foundation
 import MinterCore
 import RxSwift
 
-class GenerateAddressViewModel : AdvancedModeBaseViewModel {
+class GenerateAddressViewModel : AccountantBaseViewModel {
 	
 	
 	let proceedAvailable = Variable(false)
@@ -31,7 +31,7 @@ class GenerateAddressViewModel : AdvancedModeBaseViewModel {
 	
 	//MARK: -
 	
-	private let accountManager = AccountManager()
+//	private let accountManager = AccountManager()
 	
 	func activate() {
 		

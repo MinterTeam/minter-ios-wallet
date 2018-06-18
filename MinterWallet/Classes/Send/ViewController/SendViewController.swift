@@ -189,11 +189,12 @@ extension SendViewController : ButtonTableViewCellDelegate {
 	//MARK: - Validation
 	
 	func validate(cell: ValidatableCellProtocol) {
-		cell.validator.validate { (result) in
+		let validator = cell.validator
+		validator.validate { (result) in
 			guard result.count == 0 else {
 				result.forEach({ (validation) in
-					cell.setInvalid()
-					validation.1.errorLabel?.text = validation.1.errorMessage
+					cell.setInvalid(message: validation.1.errorMessage)
+//					validation.1.errorLabel?.text =
 				})
 				return
 			}

@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxDataSources
+import NotificationBannerSwift
 
 
-class CreateWalletViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 
 	//MARK: - IBOutlets
 
@@ -23,12 +26,18 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate, UITab
 	@IBOutlet var footerView: UIView!
 	
 	@IBAction func createWalletDidTap(_ sender: Any) {
-		showCoins()
+		
+		tableView.endEditing(true)
+		
+		viewModel.register()
 	}
 	
 	//MARK: -
 	
 	var viewModel = CreateWalletViewModel()
+	
+	private var disposeBag = DisposeBag()
+	private var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 
 	//MARK: Life cycle
 
@@ -38,10 +47,45 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate, UITab
 		self.title = viewModel.title
 		self.tableView.tableFooterView = footerView
 		
-		registerCells()
+		//TableView
+		initializeTableView()
+		
+		//Errors
+		self.viewModel.notifiableError.asObservable().subscribe(onNext: { (errorNotification) in
+			guard nil != errorNotification else {
+				return
+			}
+			
+			let banner = NotificationBanner(title: errorNotification?.title ?? "", subtitle: errorNotification?.text, style: .danger)
+			banner.show()
+		}).disposed(by: disposeBag)
+		
 	}
 
 	//MARK: -
+	
+	func initializeTableView() {
+		registerCells()
+		
+		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(configureCell: { [weak self] (dataSource, tableView, IndexPath, itm) -> UITableViewCell in
+			guard let item = self?.viewModel.cellItem(section: IndexPath.section, row: IndexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
+				return UITableViewCell()
+			}
+			
+			cell.configure(item: item)
+			
+			var validatableCell = cell as? ValidatableCellProtocol
+			validatableCell?.validateDelegate = self
+			
+			return cell
+		})
+		
+		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .automatic, reloadAnimation: .automatic, deleteAnimation: .automatic)
+		
+		tableView.rx.setDelegate(self).disposed(by: disposeBag)
+		
+		viewModel.sectionsObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
+	}
 	
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
@@ -55,25 +99,74 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate, UITab
 		return viewModel.rowsCount(for: section)
 	}
 	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
-		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
-			return UITableViewCell()
-		}
-		
-		cell.configure(item: item)
-		return cell
-	}
+//	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//
+//		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
+//			return UITableViewCell()
+//		}
+//
+//		cell.configure(item: item)
+//
+//		if let validatableCell = cell as? ValidatableCellProtocol {
+//			validatableCell.validateDelegate = self
+//		}
+//
+//		if let textFieldCell = cell as? TextFieldTableViewCell {
+//			textFieldCell.textField.rx.controlEvent([.editingDidEnd]).asObservable().subscribe(onNext: { (_) in
+//			self.viewModel.checkField(identifier: item.identifier, value: textFieldCell.textField.text ?? "")
+//			}).disposed(by: disposeBag)
+//		}
+//
+//		return cell
+//	}
 	
 	//MARK: -
+
+}
+
+extension CreateWalletViewController : ValidatableCellDelegate {
 	
-	private func showCoins() {
-		if let rootVC = UIViewController.stars_topMostController() as? RootViewController {
-			let vc = Storyboards.Main.instantiateInitialViewController()
+	
+	func validate(field: ValidatableCellProtocol, completion: (() -> ())?) {
+		
+		defer {
+			completion?()
+		}
+		
+		guard let cell = field as? TextFieldTableViewCell, let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+			return
+		}
+		
+		let value = cell.textField.text ?? ""
+		
+		viewModel.validate(item: item, value: value) { [weak self] (isValid, err) in
 			
-			rootVC.showViewControllerWith(vc, usingAnimation: .up) {
-				
+			guard nil != isValid else {
+				cell.setDefault()
+				return
 			}
+			
+			if isValid! {
+				cell.setValid()
+			}
+			else {
+				var errorMessage: String?
+				if let err = err {
+					errorMessage = self?.viewModel.errorMessage(for: err)
+				}
+				cell.setInvalid(message: errorMessage)
+			}
+			
 		}
 	}
+	
+	
+	func didValidateField(field: ValidatableCellProtocol) {
+		if let cell = field as? TextFieldTableViewCell, let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+//			if let username = cell.textField.text, item.identifier.hasPrefix("TextFieldTableViewCell_Username") {
+//				viewModel.username.value = username
+//			}
+		}
+	}
+	
 }

@@ -7,21 +7,24 @@
 //
 
 import Foundation
+import MinterCore
+import MinterMy
 
-class AdvancedModeBaseViewModel : BaseViewModel {
+class AccountantBaseViewModel : BaseViewModel {
 	
-	private let accountManager = AccountManager()
+	let accountManager = AccountManager()
 	private let databaseStorage = RealmDatabaseStorage.shared
 	
-	func saveAccount(mnemonic: String) {
+	func saveAccount(mnemonic: String, isLocal: Bool = true) -> Account? {
 		
 		guard
 			let seed = accountManager.seed(mnemonic: mnemonic, passphrase: ""),
-			let account = accountManager.account(seed: seed, encryptedBy: .me) else {
-				return
+			let account = accountManager.account(seed: seed, encryptedBy: isLocal ? .me : .bipWallet) else {
+				return nil
 		}
 		
 		var password = accountManager.password()
+		
 		if nil == password {
 			accountManager.save(password: accountManager.generateRandomPassword(length: 32))
 			password = accountManager.password()
@@ -29,11 +32,16 @@ class AdvancedModeBaseViewModel : BaseViewModel {
 		
 		guard nil != password else {
 			assert(true)
-			return
+			return nil
 		}
 		
 		//save mnemonic
-		accountManager.save(mnemonic: mnemonic, password: password!)
+		do {
+			try accountManager.save(mnemonic: mnemonic, password: password!)
+		}
+		catch {
+			return nil
+		}
 		
 		let accounts = databaseStorage.objects(class: AccountDataBaseModel.self) as? [AccountDataBaseModel]
 		let hasObjects = (accounts?.count ?? 0) > 0
@@ -42,7 +50,7 @@ class AdvancedModeBaseViewModel : BaseViewModel {
 		guard (accounts ?? []).filter({ (acc) -> Bool in
 			return acc.address == account.address
 		}).count == 0 else {
-			return
+			return nil
 		}
 		
 		let dbModel = AccountDataBaseModel()
@@ -52,6 +60,8 @@ class AdvancedModeBaseViewModel : BaseViewModel {
 		databaseStorage.add(object: dbModel)
 		
 		SessionHelper.reloadAccounts()
+		
+		return account
 	}
 	
 }

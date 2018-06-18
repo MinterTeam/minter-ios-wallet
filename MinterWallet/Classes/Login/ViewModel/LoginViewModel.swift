@@ -7,6 +7,10 @@
 //
 
 import RxSwift
+import MinterCore
+import MinterMy
+
+
 
 class LoginViewModel: BaseViewModel {
 
@@ -18,6 +22,11 @@ class LoginViewModel: BaseViewModel {
 
 	private var sections: [BaseTableSectionItem] = []
 	
+	private var authManager = AuthManager.default
+	private var accountManager = AccountManager()
+	
+	var notifiableError = Variable<NotifiableError?>(nil)
+	
 	//MARK: -
 	
 	override init() {
@@ -28,12 +37,11 @@ class LoginViewModel: BaseViewModel {
 	
 	func createSection() {
 		let username = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Username")
-		username.title = "CHOOSE @USERNAME".localized()
+		username.title = "YOUR @USERNAME".localized()
 		username.prefix = "@"
-		username.state = .valid
 		
 		let password = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Password")
-		password.title = "CHOOSE PASSWORD".localized()
+		password.title = "YOUR PASSWORD".localized()
 		password.isSecure = true
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell")
@@ -62,6 +70,45 @@ class LoginViewModel: BaseViewModel {
 	
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
 		return sections[safe: section]?.items[safe: row]
+	}
+	
+	//MARK: -
+	
+	func login(username: String, password: String) {
+		
+		authManager.login(username: username, password: password.sha256().sha256()) { [weak self] (accessToken, refreshToken, user, error) in
+			
+			guard nil == error else {
+				
+				var errorMessage = ""
+				switch error! {
+				case .invalidCredentials:
+					errorMessage = "Invalid Credentials".localized()
+					break
+					
+				case .custom(let error):
+					errorMessage = "Something went wrong".localized()
+					break
+				}
+				
+				self?.notifiableError.value = NotifiableError(title: errorMessage, text: nil)
+				return
+			}
+			
+			guard nil != accessToken && nil != refreshToken else {
+				//Show error
+				return
+			}
+			
+			self?.accountManager.save(password: password)
+			
+			SessionHelper.set(accessToken: accessToken, refreshToken: refreshToken, user: user)
+			
+			AccountManager().save(password: password)
+			
+		}
+		
+		
 	}
 
 }

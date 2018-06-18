@@ -10,7 +10,7 @@ import RxSwift
 
 
 
-class AdvancedModeViewModel: AdvancedModeBaseViewModel {
+class AdvancedModeViewModel: AccountantBaseViewModel {
 	
 	enum ValidationError : String {
 		case wrongMnemonic
@@ -34,7 +34,7 @@ class AdvancedModeViewModel: AdvancedModeBaseViewModel {
 	
 	//MARK: -
 	
-	private let accountManager = AccountManager()
+//	private let accountManager = AccountManager()
 	
 //	func saveAccount(mnemonic: String) {
 //

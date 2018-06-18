@@ -191,7 +191,7 @@ class SendViewModel: BaseViewModel {
 			balances[address]?.keys.forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
 				
-				guard balance > 0 else { return }
+//				guard balance > 0 else { return }
 				
 				let title = coin + " (" + String(balance) + ")"
 				let item = AccountPickerItem(title: title, address: address, balance: balance, coin: coin)

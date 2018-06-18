@@ -84,7 +84,7 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 	
 	func showPicker() {
 		
-		guard let vc = delegate as? UIViewController else {
+		guard nil != delegate as? UIViewController else {
 			return
 		}
 		
@@ -119,9 +119,17 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 	
 	func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 		
+		guard self.shouldShowPicker() else {
+			return false
+		}
+		
 		showPicker()
 		
 		return false
+	}
+	
+	private func shouldShowPicker() -> Bool {
+		return (dataSource?.pickerItems(for: self).count ?? 0) > 1
 	}
 	
 }

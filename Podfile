@@ -27,3 +27,7 @@ target 'MinterWallet' do
 		pod 'NotificationBannerSwift'
 		pod 'CountdownLabel'
 end
+
+target 'MinterWalletTests' do
+	pod 'CryptoSwift'
+end

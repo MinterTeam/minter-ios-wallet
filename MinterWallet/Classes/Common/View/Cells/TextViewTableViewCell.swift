@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftValidator
-import GrowingTextView
+//import GrowingTextView
 
 
 protocol TextViewTableViewCellDelegate: class {
@@ -27,7 +27,12 @@ class TextViewTableViewCellItem : BaseCellItem {
 
 class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate, ValidatableCellProtocol {
 	
+	
+	//MARK: -
+	
 	weak var delegate: TextViewTableViewCellDelegate?
+	
+	weak var validateDelegate: ValidatableCellDelegate?
 
 	//MARK: - IBOutlets
 	
@@ -80,19 +85,23 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate, Validatable
 		delegate?.heightDidChange(cell: self)
 	}
 	
-	//MARK: -
+	//MARK: - Validate
 	
 	func setValid() {
 		self.textView.layer.cornerRadius = 8.0
 		self.textView.layer.borderWidth = 2
 		self.textView.layer.borderColor = UIColor(hex: 0x4DAC4A)?.cgColor
-				self.errorTitle.text = ""
+		self.errorTitle.text = ""
 	}
 	
-	func setInvalid() {
+	func setInvalid(message: String?) {
 		self.textView.layer.cornerRadius = 8.0
 		self.textView.layer.borderWidth = 2
 		self.textView.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
+		
+		if nil != message {
+			self.errorTitle.text = message
+		}
 	}
 	
 	func setDefault() {
@@ -101,5 +110,22 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate, Validatable
 		self.textView.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
 		self.errorTitle.text = ""
 	}
-    
+	
+	func validate() {
+		validator.validate { (result) in
+			result.forEach({ (validation) in
+//				validation.1.errorLabel?.text =
+				self.setInvalid(message: validation.1.errorMessage)
+			})
+		}
+	}
+
+}
+
+extension TextViewTableViewCell : UITextViewDelegate {
+	
+	func textViewDidEndEditing(_ textView: UITextView) {
+		self.validate()
+	}
+
 }

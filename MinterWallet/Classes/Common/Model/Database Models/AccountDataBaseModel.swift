@@ -9,6 +9,8 @@
 import Foundation
 import RealmSwift
 import BigInt
+import MinterCore
+import MinterMy
 
 
 class AccountDataBaseModel : Object, DatabaseStorageModel {
@@ -26,5 +28,23 @@ class AccountDataBaseModel : Object, DatabaseStorageModel {
 		self.isMain = account.isMain
 	}
 
+}
+
+class UserDataBaseModel : Object, DatabaseStorageModel {
+	@objc dynamic var id: Int = -1
+	@objc dynamic var username: String = ""
+	@objc dynamic var email: String = ""
+	@objc dynamic var phone: String = ""
+	
+	//MARK: -
+	
+	func substitute(with user: User) {
+		self.id = user.id ?? -1
+		self.username = user.username ?? ""
+		self.email = user.email ?? ""
+//		self.phone = user.phone ?? ""
+	}
+	
+	
 }
 

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		02A6A0A6DB602A40AB4A4C29 /* Transactions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95B1FA5B097979AF8769F441 /* Transactions.storyboard */; };
 		07B23B1F8A8E95A0459601A1 /* ReceiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4097C0B63C6B33FA262F918A /* ReceiveViewController.swift */; };
+		0F842A7479C1491499ECA722 /* Pods_MinterWalletTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA190F74D01E2665389C8EB /* Pods_MinterWalletTests.framework */; };
 		1091290DC26B4D7128B4DA92 /* TransactionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163841D5463C4C049F735C69 /* TransactionsViewModel.swift */; };
 		15A1B86305F7B488825D223C /* CreateWallet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFE872DC58134EE5C5D3F7CA /* CreateWallet.storyboard */; };
 		1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C98D3564335955BF4ED896A /* AddressViewModel.swift */; };
@@ -51,7 +52,6 @@
 		FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */; };
 		FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */; };
 		FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */; };
-		FA61EF46209B003600A6FB62 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF45209B003600A6FB62 /* Account.swift */; };
 		FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF48209B037700A6FB62 /* AccountManager.swift */; };
 		FA669B69207239F200AD110A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B68207239F200AD110A /* AppDelegate.swift */; };
 		FA669B70207239F200AD110A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B6E207239F200AD110A /* Main.storyboard */; };
@@ -88,7 +88,10 @@
 		FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */; };
 		FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */; };
 		FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */; };
+		FA7935FB20D30B710012642E /* SessionAddressSyncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7935FA20D30B710012642E /* SessionAddressSyncer.swift */; };
+		FA7935FF20D3B3D70012642E /* AddressManager+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7935FE20D3B3D70012642E /* AddressManager+Default.swift */; };
 		FA79F5FE20C81A9E007876ED /* ValidatableCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79F5FD20C81A9E007876ED /* ValidatableCellProtocol.swift */; };
+		FA79F60720D06D3D007876ED /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79F60520CBE9A7007876ED /* String+Email.swift */; };
 		FA7A9BF620BEAC6D00E3CCDA /* NotifiableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF520BEAC6D00E3CCDA /* NotifiableError.swift */; };
 		FA7A9BF820BED28900E3CCDA /* SentPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */; };
 		FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */; };
@@ -154,6 +157,7 @@
 		FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C62074C4A20083333F /* BaseCellItem.swift */; };
 		FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C82074CEC90083333F /* Sugar.swift */; };
 		FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1CA2074D9840083333F /* BaseCell.swift */; };
+		FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA694520D7C717006F173F /* MnemonicTests.swift */; };
 		FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB3E3B20A9C30000EB6CD7 /* Storage.swift */; };
 		FAE794502088C38F0006CB0B /* DisclosureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */; };
 		FAE794522088DC010006CB0B /* SettingsAvatarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE794512088DC010006CB0B /* SettingsAvatarTableViewCell.swift */; };
@@ -184,7 +188,9 @@
 		088EC129B1FBF3EE83B23AE0 /* CreateWalletViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewModel.swift; sourceTree = "<group>"; };
 		163841D5463C4C049F735C69 /* TransactionsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TransactionsViewModel.swift; sourceTree = "<group>"; };
 		1939F242DE0C1FE08F95338D /* AdvancedModeViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AdvancedModeViewModel.swift; sourceTree = "<group>"; };
+		1CA190F74D01E2665389C8EB /* Pods_MinterWalletTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MinterWalletTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25784C6ACDA695190875E917 /* Login.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		2F38857857433404311EAC7B /* Pods-MinterWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MinterWalletTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3BA1EA41241735BB83566B6A /* PopupViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		3F0861B418A65F5CA32B8596 /* Root.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Root.storyboard; sourceTree = "<group>"; };
 		3F1BDF87BDE21BBFB5B4968A /* CreateWalletViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
@@ -270,7 +276,10 @@
 		FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopMost.swift"; sourceTree = "<group>"; };
+		FA7935FA20D30B710012642E /* SessionAddressSyncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAddressSyncer.swift; sourceTree = "<group>"; };
+		FA7935FE20D3B3D70012642E /* AddressManager+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressManager+Default.swift"; sourceTree = "<group>"; };
 		FA79F5FD20C81A9E007876ED /* ValidatableCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatableCellProtocol.swift; sourceTree = "<group>"; };
+		FA79F60520CBE9A7007876ED /* String+Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
 		FA7A9BF520BEAC6D00E3CCDA /* NotifiableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifiableError.swift; sourceTree = "<group>"; };
 		FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentPopupViewController.swift; sourceTree = "<group>"; };
 		FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentPopupViewModel.swift; sourceTree = "<group>"; };
@@ -336,6 +345,7 @@
 		FAC1E1C62074C4A20083333F /* BaseCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellItem.swift; sourceTree = "<group>"; };
 		FAC1E1C82074CEC90083333F /* Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sugar.swift; sourceTree = "<group>"; };
 		FAC1E1CA2074D9840083333F /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
+		FACA694520D7C717006F173F /* MnemonicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTests.swift; sourceTree = "<group>"; };
 		FADB3E3B20A9C30000EB6CD7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureTableViewCell.swift; sourceTree = "<group>"; };
 		FAE794512088DC010006CB0B /* SettingsAvatarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAvatarTableViewCell.swift; sourceTree = "<group>"; };
@@ -345,6 +355,7 @@
 		FAE79459208DDC3F0006CB0B /* ActionBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBarButtonItem.swift; sourceTree = "<group>"; };
 		FAE7945B208E17BE0006CB0B /* CoinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinTableViewCell.swift; sourceTree = "<group>"; };
 		FAE7945C208E17BE0006CB0B /* CoinTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoinTableViewCell.xib; sourceTree = "<group>"; };
+		FDBD9A2B34C6F6AA0ED9062D /* Pods-MinterWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MinterWalletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests.release.xcconfig"; sourceTree = "<group>"; };
 		FE933B2B31E592FF04BA244B /* CoinsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoinsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -361,6 +372,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F842A7479C1491499ECA722 /* Pods_MinterWalletTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,6 +413,8 @@
 			children = (
 				9F4435C23EB81E845B852C59 /* Pods-MinterWallet.debug.xcconfig */,
 				C3CE2393C7B587A245B9687B /* Pods-MinterWallet.release.xcconfig */,
+				2F38857857433404311EAC7B /* Pods-MinterWalletTests.debug.xcconfig */,
+				FDBD9A2B34C6F6AA0ED9062D /* Pods-MinterWalletTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -707,6 +721,7 @@
 			isa = PBXGroup;
 			children = (
 				B370097C074218EF14E46E22 /* Pods_MinterWallet.framework */,
+				1CA190F74D01E2665389C8EB /* Pods_MinterWalletTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -889,6 +904,7 @@
 			isa = PBXGroup;
 			children = (
 				FA01604120B4533B00746B51 /* TransactionManager+Default.swift */,
+				FA7935FE20D3B3D70012642E /* AddressManager+Default.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1004,6 +1020,7 @@
 			children = (
 				FA669B7F207239F200AD110A /* MinterWalletTests.swift */,
 				FA669B81207239F200AD110A /* Info.plist */,
+				FACA694520D7C717006F173F /* MnemonicTests.swift */,
 			);
 			path = MinterWalletTests;
 			sourceTree = "<group>";
@@ -1071,6 +1088,7 @@
 				FA8AE85C20AC638900F26E11 /* String+Random.swift */,
 				FA01601E20B2CF3700746B51 /* UIColor+Sugar.swift */,
 				FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */,
+				FA79F60520CBE9A7007876ED /* String+Email.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1176,6 +1194,7 @@
 			isa = PBXGroup;
 			children = (
 				FA8AE85A20AC196800F26E11 /* SessionHelper.swift */,
+				FA7935FA20D30B710012642E /* SessionAddressSyncer.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1264,9 +1283,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA669B92207239F200AD110A /* Build configuration list for PBXNativeTarget "MinterWalletTests" */;
 			buildPhases = (
+				DBAADC731E8F0A11A5657F5D /* [CP] Check Pods Manifest.lock */,
 				FA669B77207239F200AD110A /* Sources */,
 				FA669B78207239F200AD110A /* Frameworks */,
 				FA669B79207239F200AD110A /* Resources */,
+				B8C1C5FC134019BDA584D02B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1448,7 +1469,6 @@
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/ExpandableCell/ExpandableCell.framework",
 				"${BUILT_PRODUCTS_DIR}/ExpyTableView/ExpyTableView.framework",
-				"${BUILT_PRODUCTS_DIR}/GrowingTextView/GrowingTextView.framework",
 				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
@@ -1483,7 +1503,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpyTableView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GrowingTextView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
@@ -1508,6 +1527,42 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MinterWallet/Pods-MinterWallet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8C1C5FC134019BDA584D02B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DBAADC731E8F0A11A5657F5D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MinterWalletTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FA669BD4207265AB00AD110A /* ShellScript */ = {
@@ -1535,6 +1590,7 @@
 				FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */,
 				FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */,
 				FAE7945A208DDC3F0006CB0B /* ActionBarButtonItem.swift in Sources */,
+				FA7935FF20D3B3D70012642E /* AddressManager+Default.swift in Sources */,
 				FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */,
 				FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */,
 				FAA2606A20931370009FF3DE /* MobileEditViewModel.swift in Sources */,
@@ -1560,7 +1616,6 @@
 				FAA234EA2084A42A00F999DE /* PickerTableViewCell.swift in Sources */,
 				FAA2606E20931A89009FF3DE /* EmailEditViewModel.swift in Sources */,
 				FA89A79B20888D470019226D /* ShadowView.swift in Sources */,
-				FA61EF46209B003600A6FB62 /* Account.swift in Sources */,
 				FA669BDD207269E700AD110A /* LoginRouter.swift in Sources */,
 				FAA2607520932641009FF3DE /* BlankTableViewCell.swift in Sources */,
 				FA8AE85B20AC196800F26E11 /* SessionHelper.swift in Sources */,
@@ -1577,6 +1632,7 @@
 				FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */,
 				FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */,
 				FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */,
+				FA79F60720D06D3D007876ED /* String+Email.swift in Sources */,
 				FAA2607220931D41009FF3DE /* PasswordEditViewModel.swift in Sources */,
 				FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */,
 				FAA26068209311C2009FF3DE /* MobileEditViewController.swift in Sources */,
@@ -1609,6 +1665,7 @@
 				FAA2608320935E8B009FF3DE /* GenerateAddressSeedTableViewCell.swift in Sources */,
 				1091290DC26B4D7128B4DA92 /* TransactionsViewModel.swift in Sources */,
 				FAA2607820933984009FF3DE /* GrowingDefaultTextView.swift in Sources */,
+				FA7935FB20D30B710012642E /* SessionAddressSyncer.swift in Sources */,
 				FA7D98F8207E16B900193B8A /* SuperExpandableTableView.swift in Sources */,
 				FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */,
 				D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */,
@@ -1645,6 +1702,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA669B80207239F200AD110A /* MinterWalletTests.swift in Sources */,
+				FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1837,6 +1895,7 @@
 		};
 		FA669B93207239F200AD110A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2F38857857433404311EAC7B /* Pods-MinterWalletTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1854,6 +1913,7 @@
 		};
 		FA669B94207239F200AD110A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FDBD9A2B34C6F6AA0ED9062D /* Pods-MinterWalletTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

@@ -22,6 +22,10 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		}
 	}
 	
+	@IBAction func logButton(_ sender: Any) {
+		viewModel.rightButtonTapped()
+	}
+	
 	//MARK: -
 	
 	var viewModel = SettingsViewModel()
@@ -37,11 +41,29 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		
 		registerCells()
 		
-		if let rightView = self.navigationItem.rightBarButtonItem?.customView {
-			Session.shared.isLoggedIn.asObservable().map({ (val) -> Bool in
-				return !val
-			}).bind(to: rightView.rx.isHidden).disposed(by: disposeBag)
-		}
+		//move to VM
+		Session.shared.isLoggedIn.asObservable().subscribe(onNext: { [weak self] (isLoggedIn) in
+			if let button = self?.navigationItem.rightBarButtonItem?.customView as? UIButton {
+				button.setTitle(self?.viewModel.rightButtonTitle, for: .normal)
+			}
+		}).disposed(by: disposeBag)
+		
+		viewModel.showLoginScreen.asObservable().filter({ (val) -> Bool in
+			return val == true
+		}).subscribe(onNext: { (show) in
+			guard let login = Storyboards.Login.instantiateInitialViewController() as? LoginViewController else {
+				return
+			}
+			self.present(UINavigationController(rootViewController: login), animated: true, completion: nil)
+			
+		}).disposed(by: disposeBag)
+		
+		viewModel.shouldReloadTable.asObservable().filter({ (val) -> Bool in
+			return val == true
+		}).subscribe(onNext: { [weak self] (val) in
+			self?.tableView.reloadData()
+		}).disposed(by: disposeBag)
+
 	}
 	
 	private func registerCells() {
