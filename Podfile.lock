@@ -4,6 +4,7 @@ PODS:
   - Alamofire (4.7.2)
   - AlamofireImage (3.3.1):
     - Alamofire (~> 4.5)
+  - ALCameraViewController (3.0.3)
   - BigInt (3.0.1):
     - SipHash (~> 1.2)
   - CKMnemonic (0.1.7):
@@ -32,6 +33,8 @@ PODS:
     - MarqueeLabel/Swift
     - SnapKit (~> 4.0)
   - ObjectMapper (3.2.0)
+  - QRCode (2.0)
+  - QRCodeReader.swift (8.2.0)
   - Realm (3.6.0):
     - Realm/Headers (= 3.6.0)
   - Realm/Headers (3.6.0)
@@ -49,6 +52,7 @@ PODS:
   - SnapKit (4.0.0)
   - SVProgressHUD (2.2.5)
   - SwiftValidator (4.0.0)
+  - Toucan (1.0.0)
   - TPKeyboardAvoiding (1.3.2)
 
 DEPENDENCIES:
@@ -56,6 +60,7 @@ DEPENDENCIES:
   - AFDateHelper (~> 4.2.2)
   - Alamofire
   - AlamofireImage
+  - ALCameraViewController
   - CKMnemonic
   - CountdownLabel
   - CryptoSwift
@@ -68,11 +73,14 @@ DEPENDENCIES:
   - MinterExplorer (from `../MinterExplorer`)
   - MinterMy (from `../MinterMy`)
   - NotificationBannerSwift
+  - QRCode
+  - QRCodeReader.swift (~> 8.2.0)
   - RealmSwift
   - RxDataSources
   - RxSwift
   - SVProgressHUD (from `https://github.com/SVProgressHUD/SVProgressHUD.git`)
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, branch `master`)
+  - Toucan
   - TPKeyboardAvoiding
 
 SPEC REPOS:
@@ -81,6 +89,7 @@ SPEC REPOS:
     - AFDateHelper
     - Alamofire
     - AlamofireImage
+    - ALCameraViewController
     - BigInt
     - CKMnemonic
     - CountdownLabel
@@ -93,6 +102,8 @@ SPEC REPOS:
     - McPicker
     - NotificationBannerSwift
     - ObjectMapper
+    - QRCode
+    - QRCodeReader.swift
     - Realm
     - RealmSwift
     - RxCocoa
@@ -101,6 +112,7 @@ SPEC REPOS:
     - secp256k1.swift
     - SipHash
     - SnapKit
+    - Toucan
     - TPKeyboardAvoiding
 
 EXTERNAL SOURCES:
@@ -131,6 +143,7 @@ SPEC CHECKSUMS:
   AFDateHelper: 4ad66fb19503041fbba8a3018cb7ef9c71b2ff88
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
   AlamofireImage: 3b35b586853abaf94ca1250f4e94cff3c21a4c0d
+  ALCameraViewController: 6398a9282057f709b87a1ecc52a83b48028ade64
   BigInt: 8e8a52161c745cd3ab78e3dc346a9fbee51e6cf6
   CKMnemonic: 88e745afffea6f3c719c799d9869a2ea5eb9f08b
   CountdownLabel: 4534a68892b1deb73fda18702dfdc2c8444cec08
@@ -147,6 +160,8 @@ SPEC CHECKSUMS:
   MinterMy: a58b68a346872f7cee0524d879e31cd9214dc45b
   NotificationBannerSwift: b231e4c3244848ef300e1c53ce027b9756b9b06f
   ObjectMapper: 5cccd2de6f253eda859df8116a5a554d9769e859
+  QRCode: f98a1886c8f37523704a7512a4c0cd45b34c18a4
+  QRCodeReader.swift: 003eb32f18a5a675b936ec82ba0ff368cddbff45
   Realm: 08b464b462d4f31bbd4ba5f5a1c8722ef0a700b7
   RealmSwift: 973e1499c44ab571f894c2c908e2db450be280c3
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
@@ -157,8 +172,9 @@ SPEC CHECKSUMS:
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
+  Toucan: 61867fb10948c02e9804280a95eb183e98eac97a
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
 
-PODFILE CHECKSUM: a0f1bca44cf285401ab47ef9b7f01fb3023ea191
+PODFILE CHECKSUM: c64eec61181e33785d4f864d625dfec7213e9860
 
 COCOAPODS: 1.5.0

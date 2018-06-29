@@ -47,10 +47,6 @@ class SessionAddressSyncer {
 				}).count ?? 0) == 0
 			})
 			
-			guard let password = self.accountManager.password() else {
-				return
-			}
-			
 			addressesToAdd.forEach({ (address) in
 				if let encr = address.encrypted {
 					
@@ -86,14 +82,12 @@ class SessionAddressSyncer {
 	
 	private func loadRemoteAccounts(completion: (([Address]) -> ())?) {
 		
-		guard let accessToken = Session.shared.accessToken else {
+		guard let client = APIClient.withAuthentication() else {
 			completion?([])
 			return
 		}
-		
-		let client = APIClient(headers: ["Authorization" : "Bearer " + accessToken, "Accept" : "application/json"])
+
 		addressManager = AddressManager(httpClient: client)
-		
 		addressManager?.addresses { (addresses, error) in
 			
 			var adrs = [Address]()

@@ -11,9 +11,11 @@ import NotificationBannerSwift
 import RxSwift
 import SafariServices
 import SwiftValidator
+import QRCodeReader
+import AVFoundation
 
 
-class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate, CountdownPopupViewControllerDelegate, TextViewTableViewCellDelegate {
+class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate, CountdownPopupViewControllerDelegate, TextViewTableViewCellDelegate, AddressTextViewTableViewCellDelegate {
 	
 	//MARK: - IBOutlet
 	
@@ -27,11 +29,19 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 	
 	//MARK: -
 	
-	var popupViewController = Storyboards.Popup.instantiateInitialViewController()
+	var popupViewController: PopupViewController? //Storyboards.Popup.instantiateInitialViewController()
 	
 	var viewModel = SendViewModel()
 	
 	private var disposeBag = DisposeBag()
+	
+	lazy var readerVC: QRCodeReaderViewController = {
+		let builder = QRCodeReaderViewControllerBuilder {
+			$0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
+		}
+		
+		return QRCodeReaderViewController(builder: builder)
+	}()
 
 	//MARK: - Life cycle
 	
@@ -40,10 +50,9 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		
 		registerCells()
 		
-		viewModel.notifiableError.asObservable().subscribe(onNext: { (notification) in
-			guard nil != notification else {
-				return
-			}
+		viewModel.notifiableError.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { (notification) in
 			
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
 			banner.show()
@@ -54,17 +63,15 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 				return
 			}
 			
-			self?.popupViewController.dismiss(animated: true, completion: nil)
+			self?.popupViewController?.dismiss(animated: true, completion: nil)
 			
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
 		
-		viewModel.showPopup.asObservable().subscribe(onNext: { [weak self] (popup) in
-			
-			guard nil != popup else {
-				return
-			}
+		viewModel.showPopup.asObservable().filter({ (popup) -> Bool in
+			return popup != nil
+		}).subscribe(onNext: { [weak self] (popup) in
 			
 			if let countdown = popup as? CountdownPopupViewController {
 				countdown.delegate = self
@@ -72,8 +79,18 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 			if let sent = popup as? SentPopupViewController {
 				sent.delegate = self
 			}
+			if let send = popup as? SendPopupViewController {
+				self?.popupViewController = nil
+				send.delegate = self
+			}
 			
-			self?.showPopup(viewController: popup!, inPopupViewController: self!.popupViewController)
+			if self?.popupViewController == nil {
+				self?.showPopup(viewController: popup!)
+				self?.popupViewController = popup
+			}
+			else {
+				self?.showPopup(viewController: popup!, inPopupViewController: self!.popupViewController)
+			}
 		}).disposed(by: disposeBag)
 
 		viewModel.sections.asObservable().subscribe(onNext: { [weak self] (_) in
@@ -92,7 +109,7 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 	
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
-		tableView.register(UINib(nibName: "TextViewTableViewCell", bundle: nil), forCellReuseIdentifier: "TextViewTableViewCell")
+		tableView.register(UINib(nibName: "AddressTextViewTableViewCell", bundle: nil), forCellReuseIdentifier: "AddressTextViewTableViewCell")
 		tableView.register(UINib(nibName: "PickerTableViewCell", bundle: nil), forCellReuseIdentifier: "PickerTableViewCell")
 		tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil), forCellReuseIdentifier: "SwitchTableViewCell")
 		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil), forCellReuseIdentifier: "TwoTitleTableViewCell")
@@ -132,6 +149,17 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 			textViewCell.delegate = self
 		}
 		
+		if let addressCell = cell as? AddressTextViewTableViewCell {
+			addressCell.addressDelegate = self
+		}
+		
+		if let switchCell = cell as? SwitchTableViewCell {
+			switchCell.delegate = self
+		}
+		
+		var validatableCell = cell as? ValidatableCellProtocol
+		validatableCell?.validateDelegate = self
+		
 		return cell
 	}
 
@@ -157,49 +185,41 @@ extension SendViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
-		guard let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextViewTableViewCell
-			else {
-				return
-		}
-		validate(cell: addressCell)
+		viewModel.sendButtonTaped()
 		
-		guard let toAddress = addressCell.textView.text, toAddress.isValidAddress() else {
-			return
-		}
-		
-		guard let amountCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? TextFieldTableViewCell else {
-				return
-		}
-		
-		validate(cell: amountCell)
-		
-		guard let amount = Double(amountCell.textField.text ?? "0") else {
-			return
-		}
-		
-		let vm = viewModel.sendViewModel(to: toAddress, amount: amount)
-
-		popupViewController = Storyboards.Popup.instantiateInitialViewController()
-		popupViewController.viewModel = vm
-		popupViewController.delegate = self
-		
-		self.showPopup(viewController: popupViewController)
 	}
 	
 	//MARK: - Validation
 	
 	func validate(cell: ValidatableCellProtocol) {
-		let validator = cell.validator
-		validator.validate { (result) in
-			guard result.count == 0 else {
-				result.forEach({ (validation) in
-					cell.setInvalid(message: validation.1.errorMessage)
-//					validation.1.errorLabel?.text =
-				})
-				return
+		//HACK: Some trouble with protocol?
+		
+		var validator: Validator?
+		if let fieldCell = cell as? TextFieldTableViewCell {
+			validator = fieldCell.validator
+			validator?.validate { [fieldCell] (result) in
+				guard result.count == 0 else {
+					result.forEach({ (validation) in
+						fieldCell.setInvalid(message: validation.1.errorMessage)
+					})
+					return
+				}
+				
+				fieldCell.setDefault()
 			}
-			
-			cell.setDefault()
+		}
+		else if let viewCell = cell as? TextViewTableViewCell {
+			validator = viewCell.validator
+			validator?.validate { [viewCell] (result) in
+				guard result.count == 0 else {
+					result.forEach({ (validation) in
+						viewCell.setInvalid(message: validation.1.errorMessage)
+					})
+					return
+				}
+				
+				viewCell.setDefault()
+			}
 		}
 	}
 
@@ -250,7 +270,7 @@ extension SendViewController {
 	
 	func didFinish(viewController: SendPopupViewController) {
 		guard let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextViewTableViewCell,
-			let toAddress = addressCell.textView.text, toAddress.isValidAddress()
+			let toAddress = addressCell.textView.text
 			else {
 				//error
 				return
@@ -261,7 +281,8 @@ extension SendViewController {
 				return
 		}
 		
-		viewModel.send(to: toAddress, amount: amount)
+		viewModel.submitSendButtonTaped()
+		
 	}
 	
 	func didCancel(viewController: SendPopupViewController) {
@@ -306,5 +327,73 @@ extension SendViewController {
 		// Re-enable animations
 		UIView.setAnimationsEnabled(true)
 	}
+	
+	func didTapScanButton() {
+		// Retrieve the QRCode content
+		// By using the delegate pattern
+		readerVC.delegate = self
+		
+		// Or by using the closure pattern
+		readerVC.completionBlock = { (result: QRCodeReaderResult?) in
+			print(result)
+		}
+		
+		// Presents the readerVC as modal form sheet
+		readerVC.modalPresentationStyle = .formSheet
+		present(readerVC, animated: true, completion: nil)
+	}
 
 }
+
+extension SendViewController : SwitchTableViewCellDelegate {
+	
+	func didSwitch(isOn: Bool, cell: SwitchTableViewCell) {
+		viewModel.isFreeTx.value = isOn
+	}
+	
+}
+
+extension SendViewController : ValidatableCellDelegate {
+	
+	func didValidateField(field: ValidatableCellProtocol?) {
+		
+	}
+	
+	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
+		if let indexPath = tableView.indexPath(for: field as! UITableViewCell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+			if viewModel.validateField(item: item, value: field?.validationText ?? "") {
+				
+			}
+		}
+	}
+}
+
+
+extension SendViewController : QRCodeReaderViewControllerDelegate {
+	// MARK: - QRCodeReaderViewController Delegate Methods
+	
+	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
+		reader.stopScanning()
+		
+		let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextViewTableViewCell
+		addressCell?.textView.text = result.value
+		addressCell?.textView.becomeFirstResponder()
+		
+		dismiss(animated: true, completion: nil)
+	}
+	
+	//This is an optional delegate method, that allows you to be notified when the user switches the cameraName
+	//By pressing on the switch camera button
+	func reader(_ reader: QRCodeReaderViewController, didSwitchCamera newCaptureDevice: AVCaptureDeviceInput) {
+		let cameraName = newCaptureDevice.device.localizedName
+		print("Switching capturing to: \(cameraName)")
+	}
+	
+	func readerDidCancel(_ reader: QRCodeReaderViewController) {
+		reader.stopScanning()
+		
+		dismiss(animated: true, completion: nil)
+	}
+}
+
+

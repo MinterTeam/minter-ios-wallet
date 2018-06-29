@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 
 protocol ButtonTableViewCellDelegate: class {
@@ -20,13 +21,23 @@ class ButtonTableViewCellItem : BaseCellItem {
 	
 	var buttonPattern: String?
 	
-	var isButtonEnabled: Bool = true
+	var isButtonEnabled = true
+	
+	var isButtonEnabledObservable: Observable<Bool>?
+	
+	var isLoadingObserver: Observable<Bool>?
 
 }
 
 
 class ButtonTableViewCell: BaseCell {
+	
+	private var disposeBag = DisposeBag()
+	
+	//MARK: -
 
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+	
 	@IBOutlet weak var button: DefaultButton!
 	
 	//MARK: - IBActions
@@ -56,6 +67,21 @@ class ButtonTableViewCell: BaseCell {
 			button?.setTitle(buttonItem.title, for: .normal)
 			button?.pattern = buttonItem.buttonPattern
 			button?.isEnabled = buttonItem.isButtonEnabled
+			activityIndicator?.isHidden = true
+			
+			buttonItem.isLoadingObserver?.bind(onNext: { [weak self] (val) in
+				self?.button?.isEnabled = !val
+				self?.activityIndicator?.isHidden = !val
+				if val {
+					self?.activityIndicator?.startAnimating()
+				}
+				else {
+					self?.activityIndicator?.stopAnimating()
+				}
+			}).disposed(by: disposeBag)
+			
+			buttonItem.isButtonEnabledObservable?.bind(to: button.rx.isEnabled).disposed(by: disposeBag)
+			
 		}
 	}
     

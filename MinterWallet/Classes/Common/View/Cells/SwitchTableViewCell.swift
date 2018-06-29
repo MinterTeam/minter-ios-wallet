@@ -64,8 +64,8 @@ class SwitchTableViewCell: BaseCell {
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		
-		self.label.text = ""
-		self.switch.isOn = false
+//		self.label.text = ""
+//		self.switch.isOn = false
 	}
 
 }

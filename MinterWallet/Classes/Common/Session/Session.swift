@@ -26,6 +26,8 @@ class Session {
 	private let accountManager = AccountManager()
 	private let minterAccountManager = MinterCore.AccountManager.default
 	private let transactionManager = MinterExplorer.TransactionManager.default
+	private let addressManager = MinterExplorer.AddressManager.default
+	private var profileManager: MinterMy.ProfileManager?
 	
 	private var disposeBag = DisposeBag()
 	
@@ -37,11 +39,13 @@ class Session {
 	
 	var accounts = Variable([Account]())
 	
-	var transactions = Variable([Transaction]())
+	var transactions = Variable([TransactionItem]())
 	
 	var allBalances = Variable([String : [String : Double]]())
 	
 	var balances = Variable([String : Double]())
+	
+	var mainCoinBalance = Variable(0.0)
 	
 	var accessToken: String? {
 		didSet {
@@ -55,7 +59,7 @@ class Session {
 		}
 	}
 	
-	var user: User?
+	var user = Variable<User?>(nil)
 
 	//MARK: -
 	
@@ -99,13 +103,24 @@ class Session {
 	}
 	
 	func setUser(_ user: User) {
-		self.user = user
-		
-		let dbObject = UserDataBaseModel()
-		dbObject.substitute(with: user)
-		
-		dataBaseStorage.add(object: dbObject)
+		self.user.value = user
+		saveUser(user: user)
 	}
+	func saveUser(user: User) {
+		guard let res = dataBaseStorage.objects(class: UserDataBaseModel.self)?.first as? UserDataBaseModel else {
+			let dbObject = UserDataBaseModel()
+			dbObject.substitute(with: user)
+			
+			dataBaseStorage.add(object: dbObject)
+			return
+		}
+	
+		_ = dataBaseStorage.objects(class: UserDataBaseModel.self) as? [UserDataBaseModel]
+	
+		dataBaseStorage.update {
+			res.substitute(with: user)
+		}
+}
 	
 	func restore() {
 		if let accessToken = secureStorage.object(forKey: SessionAccessTokenKey) as? String {
@@ -115,6 +130,14 @@ class Session {
 		if let refreshToken = secureStorage.object(forKey: SessionRefreshTokenKey) as? String {
 			self.refreshToken = refreshToken
 		}
+		
+		if let user = dataBaseStorage.objects(class: UserDataBaseModel.self)?.first as? UserDataBaseModel {
+			self.user.value = User(dbModel: user)
+		}
+		else {
+			//retreive user if doesn't exist?
+		}
+		
 		
 		checkLogin()
 	}
@@ -132,6 +155,8 @@ class Session {
 		transactions.value = []
 		allBalances.value = [:]
 		balances.value = [:]
+		mainCoinBalance.value = 0.0
+		user.value = nil
 		
 		checkLogin()
 	}
@@ -176,34 +201,119 @@ class Session {
 			return
 		}
 		
-		transactionManager.transactions(addresses: addresses, completion: { [weak self] (trs, error) in
+		//TODO: move to helper
+		let transactionManger1 = TransactionManager()
+		transactionManger1.transactions { [weak self] (transactions, users, error) in
+			
 			guard nil == error else {
 				return
 			}
 			
-			self?.transactions.value = trs ?? []
-		})
+			self?.transactions.value = transactions?.map({ (transaction) -> TransactionItem in
+				let item = TransactionItem()
+				item.transaction = transaction
+				
+				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
+				})
+				
+				var key = transaction.from?.lowercased()
+				
+				if hasAddress, let to = transaction.to {
+					key = to.lowercased()
+				}
+				if let key = key, let usr = users?[key] {
+					item.user = usr
+				}
+				return item
+			}) ?? []
+			
+		}
+		
 	}
 	
 	func loadBalances() {
-
-		accounts.value.forEach { (account) in
-			minterAccountManager.balance(address: account.address, with: { [weak self] (res, error) in
-				guard nil == error else {
+		
+		addressManager.addresses(addresses: accounts.value.map({ (account) -> String in
+			return "Mx" + account.address
+		})) { [weak self] (response, err) in
+			
+			guard nil == err else {
+				return
+			}
+			
+			var newMainCoinBalance = 0.0
+			
+			response?.forEach({ (address) in
+				
+				guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(), let coins = address["coins"] as? [[String : Any]] else {
 					return
 				}
-
+				
+				newMainCoinBalance += coins.map({ (dict) -> Double in
+					return (dict["baseCoinAmount"] as? Double) ?? 0.0
+				}).reduce(0, +)
+				
 				var newAllBalances = self?.allBalances.value
 				
-				if let balance = res as? [String : String] {
-					newAllBalances?[account.address] = balance.mapValues({ (val) -> Double in
-						return (Double(val) ?? 0) / TransactionCoinFactor
-					})
+				var blncs = [String : Double]()
+				if let defaultCoin = Coin.defaultCoin().symbol {
+					blncs[defaultCoin] = 0.0
 				}
+				coins.forEach({ (dict) in
+					if let key = dict["coin"] as? String {
+						blncs[key.uppercased()] = dict["amount"] as? Double ?? 0.0
+					}
+				})
+				
+				newAllBalances?[ads] = blncs
 				
 				self?.allBalances.value = newAllBalances ?? [:]
 			})
+			
+			self?.mainCoinBalance.value = newMainCoinBalance
 		}
+		
+//		accounts.value.forEach { (account) in
+//			minterAccountManager.balance(address: account.address, with: { [weak self] (res, error) in
+//				guard nil == error else {
+//					return
+//				}
+//
+//				var newAllBalances = self?.allBalances.value
+//
+//				if let balance = res as? [String : String] {
+//					newAllBalances?[account.address] = balance.mapValues({ (val) -> Double in
+//						return (Double(val) ?? 0) / TransactionCoinFactor
+//					})
+//				}
+//
+//				self?.allBalances.value = newAllBalances ?? [:]
+//			})
+//		}
+	}
+	
+	func loadUser() {
+		
+		guard let client = APIClient.withAuthentication() else {
+			return
+		}
+		
+		if nil == profileManager {
+			profileManager = ProfileManager(httpClient: client)
+		}
+		
+		profileManager?.profile(completion: { [weak self] (user, err) in
+			guard nil == err else {
+				return
+			}
+			
+			if let user = user {
+				self?.user.value = user
+				self?.saveUser(user: user)
+			}
+		})
+
 	}
 
 }

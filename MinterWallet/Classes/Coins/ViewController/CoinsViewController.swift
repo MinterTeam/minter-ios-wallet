@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxDataSources
 import SafariServices
+import AlamofireImage
 
 
 
@@ -27,6 +28,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 			headerView?.delegate = self
 		}
 	}
+	
+	@IBOutlet var usernameView: UsernameView!
+	
+	@IBOutlet weak var headerViewTitleLabel: UILabel!
 	
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
@@ -52,9 +57,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		self.usernameButton.titleLabel?.font = UIFont.boldFont(of: 14.0)
-		self.usernameButton.setTitleColor(.white, for: .normal)
 		
 		registerCells()
 		
@@ -88,31 +90,55 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		
 		hidesBottomBarWhenPushed = false
 		
-		if let rightView = self.navigationItem.rightBarButtonItem?.customView {
-			Session.shared.isLoggedIn.asObservable().map({ (val) -> Bool in
-				return !val
-			}).bind(to: rightView.rx.isHidden).disposed(by: disposeBag)
-		}
+		let username = UIBarButtonItem(customView: usernameView)
+		username.width = 250
+		
+		self.navigationItem.rightBarButtonItems = [username]
+		
+		
+		//Move to viewModel
+		Session.shared.isLoggedIn.asObservable().map({ (val) -> Bool in
+			return !val
+		}).bind(to: usernameView.rx.isHidden).disposed(by: disposeBag)
+		
+		viewModel.usernameViewObservable.asObservable().subscribe(onNext: { [weak self] (user) in
+			self?.updateUsernameView()
+		}).disposed(by: disposeBag)
+		
+		
+		viewModel.totalBalanceObservable.subscribe(onNext: { (balance) in
+			let title = self.headerViewTitleText(with: balance)
+			
+			self.headerViewTitleLabel.attributedText = title
+		}).disposed(by: disposeBag)
+	
+	}
+	
+	func headerViewTitleText(with balance: Double) -> NSAttributedString {
+		
+		let formatter = CurrencyNumberFormatter.coinFormatter
+		let balanceString = Array(formatter.string(from: NSNumber(floatLiteral: balance))!.split(separator: "."))
+		
+		let string = NSMutableAttributedString()
+		string.append(NSAttributedString(string: String(balanceString[0]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 28.0)]))
+		string.append(NSAttributedString(string: ".", attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
+		string.append(NSAttributedString(string: String(balanceString[1]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
+		string.append(NSAttributedString(string: " " + viewModel.basicCoinSymbol, attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
+		
+		return string
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		updateUsernameButton()
+		updateUsernameView()
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
-		updateUsernameButton()
 	}
 	
 	//MARK: -
-	
-	private func updateUsernameButton() {
-		//HACK: making the button's image to be at right
-		(self.navigationItem.rightBarButtonItem?.customView as? UIButton)?.semanticContentAttribute = .forceRightToLeft
-	}
 	
 	func registerCells() {
 		
@@ -121,6 +147,12 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 		tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil), forCellReuseIdentifier: "CoinTableViewCell")
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
+	}
+	
+	//MARK: -
+	
+	func updateUsernameView() {
+		usernameView.set(username: viewModel.rightButtonTitle, imageURL: viewModel.rightButtonImage)
 	}
 	
 	//MARK: -

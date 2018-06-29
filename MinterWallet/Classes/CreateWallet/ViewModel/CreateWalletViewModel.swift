@@ -15,6 +15,7 @@ import MinterMy
 class CreateWalletViewModel: AccountantBaseViewModel {
 	
 	enum registerFormError : Error {
+		case usernameTooShort
 		case incorrectUsername
 		case usernameTaken
 		case passwordTooShort
@@ -42,6 +43,8 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	
 	var shouldReloadTable = Variable(false)
 	
+	var isLoading = Variable(false)
+	
 	//MARK: -
 	
 	private let authManager = AuthManager.default
@@ -64,7 +67,6 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		super.init()
 		
 		createSections()
-		
 	}
 	
 	var sectionsObservable: Observable<[BaseTableSectionItem]> {
@@ -124,7 +126,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		return sections.value[safe: section]?.items[safe: row]
 	}
 	
-	func validate(item: BaseCellItem, value: String, completion: ((Bool?, registerFormError?) -> ())?) {
+	func validate(item: BaseCellItem, value: String, forceError: Bool = false, completion: ((Bool?, registerFormError?) -> ())?) {
 		
 		guard value != "" else {
 			completion?(nil, nil)
@@ -133,6 +135,17 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		
 		if item.identifier.hasPrefix(cellIdentifierPrefix.username.rawValue) {
 			self.username.value = value
+			
+			if value.count < 5 {
+				if !forceError {
+					completion?(nil, nil)
+				}
+				else {
+					completion?(false, registerFormError.usernameTooShort)
+				}
+				return
+			}
+			
 			isUsernameTaken = true
 			
 			if !isUsernameValid(username: value) {
@@ -186,6 +199,10 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	
 	func errorMessage(for error: registerFormError) -> String? {
 		switch error {
+			
+		case .usernameTooShort:
+			return "USERNAME IS TOO SHORT".localized()
+			
 		case .emailIsInvalid:
 			return "EMAIL IS NOT VALID".localized()
 			
@@ -232,6 +249,16 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	
 	func register() {
 		
+		isLoading.value = true
+		var startedProcessing = true
+		
+		
+		defer {
+			if startedProcessing {
+				isLoading.value = false
+			}
+		}
+		
 		guard let username = self.username.value, let password = self.password.value, let confirmPassword = self.confirmPassword.value, !isUsernameTaken else {
 //			self.notifiableError.value = NotifiableError(title: "Form is not valid".localized(), text: nil)
 			return
@@ -266,9 +293,14 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		}
 		
 		//sending double sha256
-		authManager.register(username: username, password: password.sha256().sha256(), email: email ?? "", phone: mobile ?? "", account: account, encrypted: encrypted) { [weak self] (isRegistered, error) in
+		
+		startedProcessing = false
+		
+		authManager.register(username: username, password: accountManager.accountPassword(password), email: email ?? "", phone: mobile ?? "", account: account, encrypted: encrypted) { [weak self] (isRegistered, error) in
 
 			guard nil == error else {
+				self?.isLoading.value = false
+				
 				switch error! {
 				case .custom(let code, let message):
 					if let errorMessage = message {
@@ -288,7 +320,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 				return
 			}
 			
-			self?.login(username: username, password: password.sha256().sha256())
+			self?.login(username: username, password: self!.accountManager.accountPassword(password))
 
 		}
 	}
@@ -296,6 +328,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	func login(username: String, password: String) {
 		
 		authManager.login(username: username, password: password) { [weak self] (accessToken, refreshToken, user, error) in
+			self?.isLoading.value = false
 			
 			guard nil == error else {
 				self?.notifiableError.value = NotifiableError(title: "Unable to log in".localized(), text: nil)
@@ -308,6 +341,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	
 	//MARK: - Form Validation
 	
+	//Move to helper?
 	private func isUsernameValid(username: String) -> Bool {
 		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,32}")
 		return usernameTest.evaluate(with: username)

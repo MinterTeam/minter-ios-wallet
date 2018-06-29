@@ -26,6 +26,10 @@ target 'MinterWallet' do
 		pod 'AFDateHelper', '~> 4.2.2'
 		pod 'NotificationBannerSwift'
 		pod 'CountdownLabel'
+		pod 'ALCameraViewController'
+		pod 'Toucan'
+		pod 'QRCode'
+		pod 'QRCodeReader.swift', '~> 8.2.0'
 end
 
 target 'MinterWalletTests' do

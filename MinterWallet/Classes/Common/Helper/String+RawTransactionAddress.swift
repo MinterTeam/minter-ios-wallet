@@ -11,11 +11,8 @@ import Foundation
 extension String {
 	
 	func isValidAddress() -> Bool {
-		
-		if self.stripMinterHexPrefix().count == 40 {
-			return true
-		}
-		return false
+		let addressTest = NSPredicate(format:"SELF MATCHES %@", "^Mx[a-zA-Z0-9]{40}$")
+		return addressTest.evaluate(with: self)
 	}
 
 }

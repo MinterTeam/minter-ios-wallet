@@ -42,10 +42,14 @@ class TransactionTableViewCell: ExpandableCell {
 
 	@IBOutlet weak var title: UILabel!
 	
+	@IBOutlet weak var coinImageWrapper: UIView! {
+		didSet {
+			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
+		}
+	}
 	@IBOutlet weak var coinImage: UIImageView! {
 		didSet {
-			coinImage?.layer.cornerRadius = 17.0
-			coinImage?.backgroundColor = .white
+			coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .white, borderWidth: 2.0)
 		}
 	}
 	
@@ -89,11 +93,9 @@ class TransactionTableViewCell: ExpandableCell {
 	override func configure(item: BaseCellItem) {
 		if let transaction = item as? TransactionTableViewCellItem {
 			title.text = transaction.title
+			coinImage.image = UIImage(named: "AvatarPlaceholderImage")
 			if let url = transaction.image {
-				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 25.0))
-			}
-			else {
-				coinImage.image = UIImage(named: "AvatarPlaceholderImage")
+				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 17.0))
 			}
 			amount.text = amountText(amount: transaction.amount ?? 0)
 			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
@@ -140,7 +142,7 @@ class TransactionTableViewCell: ExpandableCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		dropShadow()
+//		dropShadow()
 	}
 
 }

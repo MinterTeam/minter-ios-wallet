@@ -132,8 +132,8 @@ struct Storyboards {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
 
-        static func instantiateInitialViewController() -> UIViewController {
-            return self.storyboard.instantiateInitialViewController()!
+        static func instantiateInitialViewController() -> UINavigationController {
+            return self.storyboard.instantiateInitialViewController() as! UINavigationController
         }
 
         static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
@@ -632,6 +632,37 @@ extension CoinsViewController {
 
         var identifier: String? { return self.rawValue }
         var description: String { return "\(self.rawValue)" }
+    }
+
+}
+
+// MARK: - ReceiveViewController
+extension ReceiveViewController {
+
+    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
+        case ReceiveAddressTableViewCell_ = "ReceiveAddressTableViewCell"
+        case QRTableViewCell_ = "QRTableViewCell"
+
+        var kind: ReusableKind? {
+            switch self {
+            case .ReceiveAddressTableViewCell_:
+                return ReusableKind(rawValue: "tableViewCell")
+            case .QRTableViewCell_:
+                return ReusableKind(rawValue: "tableViewCell")
+            }
+        }
+
+        var viewType: UIView.Type? {
+            switch self {
+            case .ReceiveAddressTableViewCell_:
+                return ReceiveAddressTableViewCell.self
+            case .QRTableViewCell_:
+                return QRTableViewCell.self
+            }
+        }
+
+        var storyboardIdentifier: String? { return self.description }
+        var description: String { return self.rawValue }
     }
 
 }

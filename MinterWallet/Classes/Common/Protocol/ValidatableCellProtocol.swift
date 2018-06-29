@@ -11,9 +11,9 @@ import SwiftValidator
 
 protocol ValidatableCellDelegate : class {
 	
-	func didValidateField(field: ValidatableCellProtocol)
+	func didValidateField(field: ValidatableCellProtocol?)
 	
-	func validate(field: ValidatableCellProtocol, completion: (() -> ())?)
+	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?)
 	
 }
 

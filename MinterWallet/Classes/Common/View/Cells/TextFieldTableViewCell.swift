@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftValidator
+import RxSwift
 
 
 class TextFieldTableViewCellItem : BaseCellItem {
@@ -18,12 +19,16 @@ class TextFieldTableViewCellItem : BaseCellItem {
 	var state: TextFieldTableViewCell.State?
 	var error: String?
 	var value: String?
+	
+	var stateObservable: Observable<TextFieldTableViewCell.State>?
 }
 
 
 class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 	
 	//MARK: -
+	
+	var disposeBag = DisposeBag()
 	
 	enum State {
 		case valid
@@ -70,7 +75,15 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 	
 	@IBOutlet weak var errorTitle: UILabel!
 	
-	@IBOutlet weak var textField: ValidatableTextField!
+	@IBOutlet weak var textField: ValidatableTextField! {
+		didSet {
+			textField?.rx.text.orEmpty.asObservable().subscribe(onNext: { [weak self] (val) in
+				self?.validateDelegate?.validate(field: self, completion: {
+					//			print("Validation has been completed")
+				})
+			}).disposed(by: disposeBag)
+		}
+	}
 	
 	//MARK: - Validators
 	
@@ -95,7 +108,10 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 			title.text = item.title
 			textField.isSecureTextEntry = item.isSecure
 			textField.prefixText = item.prefix
-			textField.text = item.value
+			if let val = item.value {
+				textField.text = val
+			}
+			
 			state = item.state ?? .default
 			validatorRules = item.rules
 			errorTitle.text = item.error
@@ -162,9 +178,11 @@ extension TextFieldTableViewCell : UITextFieldDelegate {
 		validateDelegate?.didValidateField(field: self)
 		
 		validateDelegate?.validate(field: self, completion: {
-			print("Validation has been completed")
+//			print("Validation has been completed")
 		})
 		
 	}
+	
+	
 	
 }

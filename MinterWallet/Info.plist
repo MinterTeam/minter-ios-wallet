@@ -25,6 +25,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>To set avatar</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To set avatar</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Ubuntu-M.ttf</string>

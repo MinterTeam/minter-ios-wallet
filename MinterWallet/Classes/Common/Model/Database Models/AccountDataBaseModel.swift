@@ -32,9 +32,12 @@ class AccountDataBaseModel : Object, DatabaseStorageModel {
 
 class UserDataBaseModel : Object, DatabaseStorageModel {
 	@objc dynamic var id: Int = -1
+	@objc dynamic var name: String = ""
 	@objc dynamic var username: String = ""
 	@objc dynamic var email: String = ""
 	@objc dynamic var phone: String = ""
+	@objc dynamic var language: String = ""
+	@objc dynamic var avatar: String = ""
 	
 	//MARK: -
 	
@@ -44,7 +47,19 @@ class UserDataBaseModel : Object, DatabaseStorageModel {
 		self.email = user.email ?? ""
 //		self.phone = user.phone ?? ""
 	}
+}
+
+extension User {
 	
+	convenience init(dbModel: UserDataBaseModel) {
+		self.init()
+		
+		self.id = dbModel.id
+		self.username = dbModel.username
+		self.email = dbModel.email
+		self.language = dbModel.language
+		self.avatar = dbModel.avatar
+	}
 	
 }
 

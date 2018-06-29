@@ -30,6 +30,7 @@ class RootViewModel: BaseViewModel {
 			if isLoggedIn {
 				//show wallet
 				SessionHelper.reloadAccounts()
+				Session.shared.loadUser()
 			}
 			else {
 				//show login/register

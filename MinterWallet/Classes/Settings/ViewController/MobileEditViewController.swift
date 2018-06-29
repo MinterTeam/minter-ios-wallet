@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import RxSwift
+import NotificationBannerSwift
+
 
 class MobileEditViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 	
@@ -23,6 +26,8 @@ class MobileEditViewController: BaseViewController, UITableViewDelegate, UITable
 	
 	var viewModel = MobileEditViewModel()
 	
+	private var disposeBag = DisposeBag()
+	
 	//MARK: - ViewController
 	
 	override func viewDidLoad() {
@@ -31,6 +36,20 @@ class MobileEditViewController: BaseViewController, UITableViewDelegate, UITable
 		self.title = viewModel.title
 		
 		registerCells()
+		
+		viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { [weak self] (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
+			banner.show()
+		}).disposed(by: disposeBag)
+		
+		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { [weak self] (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
+			banner.show()
+		}).disposed(by: disposeBag)
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -48,7 +67,8 @@ class MobileEditViewController: BaseViewController, UITableViewDelegate, UITable
 	
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
-		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
+//		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -67,6 +87,9 @@ class MobileEditViewController: BaseViewController, UITableViewDelegate, UITable
 		
 		cell.configure(item: item)
 		
+		var buttonCell = cell as? ButtonTableViewCell
+		buttonCell?.delegate = self
+		
 		
 		return cell
 	}
@@ -79,6 +102,18 @@ class MobileEditViewController: BaseViewController, UITableViewDelegate, UITable
 			cell.startEditing()
 		}
 		
+	}
+	
+}
+
+extension MobileEditViewController : ButtonTableViewCellDelegate {
+	
+	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		
+		if let mobileCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell, let phone = mobileCell.textField.text {
+			
+			viewModel.update(phone: phone)
+		}
 	}
 	
 }

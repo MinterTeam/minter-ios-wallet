@@ -33,17 +33,19 @@
                         <viewLayoutGuide key="safeArea" id="zbH-cd-7GA"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="n3B-46-dEu" id="NUo-fN-WQn"/>
+                        <outlet property="createWalletButton" destination="Xwd-NG-cw5" id="kcg-JZ-D4d"/>
                         <outlet property="footerView" destination="B6M-a8-ZL4" id="zQj-VR-qb0"/>
                         <outlet property="tableView" destination="iKL-JU-mOv" id="bad-JJ-4aq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sjj-L0-ft0" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="B6M-a8-ZL4">
-                    <rect key="frame" x="0.0" y="0.0" width="373" height="186"/>
+                    <rect key="frame" x="0.0" y="0.0" width="904" height="186"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xwd-NG-cw5" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                            <rect key="frame" x="10" y="20" width="353" height="50"/>
+                            <rect key="frame" x="10" y="20" width="884" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="4Y2-tl-ave"/>
                             </constraints>
@@ -56,7 +58,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L28-8g-xMD">
-                            <rect key="frame" x="20" y="90" width="333" height="66"/>
+                            <rect key="frame" x="20" y="90" width="864" height="66"/>
                             <attributedString key="attributedText">
                                 <fragment>
                                     <string key="content">*	Email and Mobile Number are optional  	but can be very handy if you forget 	your password.</string>
@@ -69,6 +71,9 @@
                             </attributedString>
                             <nil key="highlightedColor"/>
                         </label>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="n3B-46-dEu">
+                            <rect key="frame" x="168" y="27" width="37" height="37"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -78,6 +83,8 @@
                         <constraint firstItem="Xwd-NG-cw5" firstAttribute="leading" secondItem="ezH-C8-Cpk" secondAttribute="leading" constant="10" id="Nw7-Ma-mq9"/>
                         <constraint firstItem="L28-8g-xMD" firstAttribute="top" secondItem="Xwd-NG-cw5" secondAttribute="bottom" constant="20" id="O4y-Ne-4jp"/>
                         <constraint firstItem="ezH-C8-Cpk" firstAttribute="trailing" secondItem="Xwd-NG-cw5" secondAttribute="trailing" constant="10" id="OoD-K3-G6D"/>
+                        <constraint firstItem="n3B-46-dEu" firstAttribute="centerX" secondItem="Xwd-NG-cw5" secondAttribute="centerX" id="QVc-3a-kDE"/>
+                        <constraint firstItem="n3B-46-dEu" firstAttribute="centerY" secondItem="Xwd-NG-cw5" secondAttribute="centerY" id="j5w-if-b5p"/>
                     </constraints>
                     <viewLayoutGuide key="safeArea" id="ezH-C8-Cpk"/>
                 </view>

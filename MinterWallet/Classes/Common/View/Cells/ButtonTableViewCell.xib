@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -32,19 +32,25 @@
                             <action selector="buttonDidTap:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="LOV-pB-3PT"/>
                         </connections>
                     </button>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="a2c-Bt-vOk">
+                        <rect key="frame" x="176" y="17" width="37" height="37"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="a2c-Bt-vOk" firstAttribute="centerY" secondItem="GV3-xv-TcD" secondAttribute="centerY" id="XOQ-Ou-ITU"/>
                     <constraint firstItem="GV3-xv-TcD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="b3w-v1-6Hq"/>
                     <constraint firstAttribute="trailing" secondItem="GV3-xv-TcD" secondAttribute="trailing" constant="10" id="icn-zA-bcK"/>
+                    <constraint firstItem="a2c-Bt-vOk" firstAttribute="centerX" secondItem="GV3-xv-TcD" secondAttribute="centerX" id="nvg-KI-OkF"/>
                     <constraint firstAttribute="bottom" secondItem="GV3-xv-TcD" secondAttribute="bottom" priority="999" constant="10" id="pvf-98-Nv2"/>
                     <constraint firstItem="GV3-xv-TcD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="tY8-aP-qYT"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="activityIndicator" destination="a2c-Bt-vOk" id="JYC-UQ-A3m"/>
                 <outlet property="button" destination="GV3-xv-TcD" id="teB-DL-9FJ"/>
             </connections>
-            <point key="canvasLocation" x="-44.5" y="-110"/>
+            <point key="canvasLocation" x="-45" y="-110"/>
         </tableViewCell>
     </objects>
 </document>

@@ -27,19 +27,15 @@ class TransactionsViewModel: BaseViewModel {
 		super.init()
 		
 		loadData()
+		
+		sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM"
+		
+		sectionTitleDateFullFormatter.dateFormat = "EEEE, dd MMM YYYY"
 	}
 	
-	private var sectionTitleDateFormatter = DateFormatter() {
-		didSet {
-			sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM"
-		}
-	}
+	private var sectionTitleDateFormatter = DateFormatter()
 	
-	private var sectionTitleDateFullFormatter = DateFormatter() {
-		didSet {
-			sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM YYYY"
-		}
-	}
+	private var sectionTitleDateFullFormatter = DateFormatter()
 
 	
 	//MARK: -
@@ -54,19 +50,25 @@ class TransactionsViewModel: BaseViewModel {
 	
 	private var page = 1
 	
-	private var transactions = [Transaction]()
+	private var transactions = [TransactionItem]()
 	
 	private var isLoading = false
 	
 	private var canLoadMore = true
 	
 	
-	func createSections(with transactions: [Transaction]?) {
+	func createSections(with transactions: [TransactionItem]?) {
 		
 		var newSections = [BaseTableSectionItem]()
 		var items = [String : [BaseCellItem]]()
 		
-		self.transactions.forEach({ (transaction) in
+		self.transactions.forEach({ (item) in
+			
+			guard let transaction = item.transaction else {
+				return
+			}
+			
+			let user = item.user
 			
 			let sectionName = sectionTitle(for: transaction.date)
 			let sectionCandidate = newSections.index(where: { (item) -> Bool in
@@ -77,22 +79,22 @@ class TransactionsViewModel: BaseViewModel {
 			
 			var signMultiplier = 1.0
 			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-				account.address == transaction.from?.stripMinterHexPrefix()
+				account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
 			})
 			
 			var title = ""
 			if hasAddress {
-				title = transaction.to ?? ""
+				title = user?.username ?? (transaction.to ?? "")
 				signMultiplier = -1.0
 			}
 			else {
-				title = transaction.from ?? ""
+				title = user?.username ?? (transaction.from ?? "")
 			}
 			
 			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(transaction.hash ?? String.random(length: 20))")
 			transactionCellItem.txHash = transaction.hash
 			transactionCellItem.title = title
-			transactionCellItem.image = MinterMyAPIURL.avatar(address: ((signMultiplier > 0 ? transaction.from : transaction.to) ?? "")).url()
+			transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.to) ?? "")).url()
 			transactionCellItem.date = transaction.date
 			transactionCellItem.from = transaction.from
 			transactionCellItem.to = transaction.to
@@ -138,10 +140,10 @@ class TransactionsViewModel: BaseViewModel {
 			return "YESTERDAY".localized()
 		}
 		else if date!.compare(.isThisYear) {
-			return sectionTitleDateFormatter.string(from: date!)
+			return sectionTitleDateFormatter.string(from: date!).uppercased()
 		}
 		else {
-			return sectionTitleDateFullFormatter.string(from: date!)
+			return sectionTitleDateFullFormatter.string(from: date!).uppercased()
 		}
 	}
 	
@@ -156,21 +158,39 @@ class TransactionsViewModel: BaseViewModel {
 			return "Mx" + acc.address
 		}
 		
-		MinterExplorer.TransactionManager.default.transactions(addresses: addresses, page: self.page) { [weak self] (transaction, error) in
+		TransactionManager().transactions(page: self.page) { [weak self] (transactions, users, error) in
 			
 			self?.page += 1
 			
-			guard nil == error && nil != transaction && (transaction?.count ?? 0) > 0 else {
+			guard nil == error && nil != transactions && (transactions?.count ?? 0) > 0 else {
 				//stop paging
 				self?.canLoadMore = false
 				return
 			}
 			
-			self?.transactions.append(contentsOf: transaction!)
+			let items = transactions?.map({ (transaction) -> TransactionItem in
+				let item = TransactionItem()
+				item.transaction = transaction
+				
+				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
+				})
+				
+				var key = transaction.from?.lowercased()
+				if hasAddress, let to = transaction.to {
+					key = to.lowercased()
+				}
+				if let key = key, let usr = users?[key] {
+					item.user = usr
+				}
+				return item
+			}) ?? []
+			
+			self?.transactions.append(contentsOf: items)
 			
 			self?.isLoading = false
 			
-			self?.createSections(with: transaction)
+			self?.createSections(with: items)
 			
 		}
 	}

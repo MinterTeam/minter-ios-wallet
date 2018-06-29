@@ -8,6 +8,7 @@
 
 import XCTest
 import CryptoSwift
+import MinterCore
 @testable import MinterWallet
 
 
@@ -15,20 +16,19 @@ class MnemonicTests: XCTestCase {
 	
 	let accountManager = AccountManager()
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
+	override func setUp() {
+		super.setUp()
+	}
+	
+	override func tearDown() {
+
+		super.tearDown()
+	}
 	
 	func testEnc() {
 		let mnemonic = "globe arrange forget twice potato nurse ice dwarf arctic piano scorpion tube"
 		let rawPassword = "123456".bytes.sha256()
-		let encryptedMnemonic = "82678708bf256c89978a1705a3302c6258e2ae9bf9a0daad6982f2c02a6efb49f98ff01321c0252c389c9c2f56ea977653d8867ac42862c0e97524256dee50788224867e65079d4fc2b3a35fe8b425fa"
+		let encryptedMnemonic = "e28513acd2336aa048b68cf382a45ec0bc7bed1e7d35f2b7bf0b6c1406e6f3c57fc91c08ba972f7ed82050e54867e1624b2e2f145aa8d0a40d51ad4eb258faa7e2a9ccaed555d15d7830df188897c054"
 		
 		let res = try! accountManager.encryptedMnemonic(mnemonic: mnemonic, password: Data(bytes: rawPassword))
 		
@@ -38,7 +38,7 @@ class MnemonicTests: XCTestCase {
 	}
 	
 	func testDecrypt() {
-		let encryptedMnemonic = "82678708bf256c89978a1705a3302c6258e2ae9bf9a0daad6982f2c02a6efb49f98ff01321c0252c389c9c2f56ea977653d8867ac42862c0e97524256dee50788224867e65079d4fc2b3a35fe8b425fa"
+		let encryptedMnemonic = "e28513acd2336aa048b68cf382a45ec0bc7bed1e7d35f2b7bf0b6c1406e6f3c57fc91c08ba972f7ed82050e54867e1624b2e2f145aa8d0a40d51ad4eb258faa7e2a9ccaed555d15d7830df188897c054"
 		let mnemonic = "globe arrange forget twice potato nurse ice dwarf arctic piano scorpion tube"
 		let rawPassword = "123456".bytes.sha256()
 		
@@ -47,25 +47,52 @@ class MnemonicTests: XCTestCase {
 		XCTAssert(res == mnemonic)
 		
 	}
-    
-    func testEncrypt() {
-			let mnemonic = "globe arrange forget twice potato nurse ice dwarf arctic piano scorpion tube"
-			let rawPassword = "123456"
-			let IV = "pjSfpWAjdSaYpOBy"
-			let encryptedMnemonic = "fd5ade23281968499a2b5a7e53eaa2295a195a1794abe985c66edc0744fcf945118238c1a2a598f7940aa186b2f9f9bf2515bc49bd41c1fe29b27a2f8da96e40254306c4f4d605352b567f074ec6deb3"
-			
-			let aes = try! AES(key: rawPassword.bytes.sha256(), blockMode: CBC(iv: IV.bytes))
-			
-			let ciphertext = try! aes.encrypt(Array(mnemonic.utf8))
-			
-			XCTAssert(Data(bytes: ciphertext).toHexString() == encryptedMnemonic)
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
+	
+	func testDecryptedAddress() {
+		let encryptedMnemonic = "518984845bf2cb4ca6e3e0cf830cab1feaa41b08f475dd97243ab299e612e668bac1e6b5bd98a6fedecb711c1c346e0e0ac58be1463d2cc6e7b06fb1413c14b857e979a9ff235a07ab011fa8183b319e"
+//		let mnemonic = "solve print three view soft oblige awake typical kite solution online shallow"
+		let rawPassword = "123456".bytes.sha256()
+		
+		let mnemonic = try! accountManager.decryptMnemonic(encrypted: Data(hex: encryptedMnemonic), password: Data(bytes: rawPassword))
+		
+		let address = accountManager.address(from: mnemonic!)
+		
+		XCTAssert("Mx" + address! == "Mx228e5a68b847d169da439ec15f727f08233a7ca6")
+		
+	}
+	
+	func testEncrypt() {
+		let mnemonic = "globe arrange forget twice potato nurse ice dwarf arctic piano scorpion tube"
+		let rawPassword = "123456"
+		var IV = Data(bytes: "Minter seed".bytes)
+		IV.append(Data(repeating: UInt8(0), count: 16 - IV.count))
+		
+		let encryptedMnemonic = "e28513acd2336aa048b68cf382a45ec0bc7bed1e7d35f2b7bf0b6c1406e6f3c57fc91c08ba972f7ed82050e54867e1624b2e2f145aa8d0a40d51ad4eb258faa7e2a9ccaed555d15d7830df188897c054"
+		
+		let aes = try! AES(key: rawPassword.bytes.sha256(), blockMode: CBC(iv: IV.bytes))
+		
+		let ciphertext = try! aes.encrypt(Array(mnemonic.utf8))
+		
+		XCTAssert(Data(bytes: ciphertext).toHexString() == encryptedMnemonic)
+	}
+	
+
+	//
+	
+	func testPasswordHash() {
+		let originalPassword = "123456"
+		let passwordHash = "49dc52e6bf2abe5ef6e2bb5b0f1ee2d765b922ae6cc8b95d39dc06c21c848f8c"
+		
+		XCTAssert(originalPassword.sha256().sha256() == passwordHash)
+	}
+	
+	func testAccountPassword() {
+		let originalPassword = "123456"
+		let passwordHash = "49dc52e6bf2abe5ef6e2bb5b0f1ee2d765b922ae6cc8b95d39dc06c21c848f8c"
+		
+		XCTAssert(accountManager.accountPassword(originalPassword) == passwordHash)
+	}
+	
+	
+	
 }

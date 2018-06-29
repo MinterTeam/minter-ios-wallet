@@ -73,7 +73,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="errorTitle" destination="vsV-Gm-DFW" id="zxw-0o-eYh"/>
-                <outlet property="textView" destination="S3Q-VI-0gu" id="KjQ-Al-3Up"/>
+                <outlet property="textView" destination="S3Q-VI-0gu" id="Rx8-aZ-dtO"/>
                 <outlet property="title" destination="atq-t3-IbB" id="ap2-by-hSb"/>
             </connections>
             <point key="canvasLocation" x="34" y="48"/>

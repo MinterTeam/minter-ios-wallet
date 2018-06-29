@@ -25,6 +25,8 @@ class LoginViewModel: BaseViewModel {
 	private var authManager = AuthManager.default
 	private var accountManager = AccountManager()
 	
+	var isLoading = Variable(false)
+	
 	var notifiableError = Variable<NotifiableError?>(nil)
 	
 	//MARK: -
@@ -47,6 +49,7 @@ class LoginViewModel: BaseViewModel {
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell")
 		button.title = "CONTINUE".localized()
 		button.buttonPattern = "purple"
+		button.isLoadingObserver = self.isLoading.asObservable()
 		
 		var section = BaseTableSectionItem(header: "")
 		section.items = [username, password, button]
@@ -76,7 +79,11 @@ class LoginViewModel: BaseViewModel {
 	
 	func login(username: String, password: String) {
 		
-		authManager.login(username: username, password: password.sha256().sha256()) { [weak self] (accessToken, refreshToken, user, error) in
+		isLoading.value = true
+		
+		authManager.login(username: username, password: accountManager.accountPassword(password)) { [weak self] (accessToken, refreshToken, user, error) in
+			
+			self?.isLoading.value = false
 			
 			guard nil == error else {
 				
@@ -87,7 +94,12 @@ class LoginViewModel: BaseViewModel {
 					break
 					
 				case .custom(let error):
-					errorMessage = "Something went wrong".localized()
+					if nil != error.message {
+						errorMessage = error.message!
+					}
+					else {
+						errorMessage = "Something went wrong".localized()
+					}
 					break
 				}
 				

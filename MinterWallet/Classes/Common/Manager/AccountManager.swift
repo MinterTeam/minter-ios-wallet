@@ -30,11 +30,15 @@ class AccountManager {
 	private let passwordKey = "AccountPassword"
 	
 	//TODO: Change to random
-	private let iv = "pjSfpWAjdSaYpOBy"
+	private let iv = Data(bytes: "Minter seed".bytes).setLengthRight(16)
 	
 	//MARK: -
 	
 	//Account with seed
+	
+	func accountPassword(_ password: String) -> String {
+		return password.sha256().sha256()
+	}
 	
 	func account(mnemonic: String, encryptedBy: Account.EncryptedBy = .me) -> Account? {
 		guard let seed = seed(mnemonic: mnemonic) else {
@@ -103,7 +107,7 @@ class AccountManager {
 	func encryptedMnemonic(mnemonic: String, password: Data) throws -> Data? {
 		do {
 			
-			let aes = try AES(key: password.bytes, blockMode: CBC(iv: self.iv.bytes))
+			let aes = try AES(key: password.bytes, blockMode: CBC(iv: self.iv!.bytes))
 			let ciphertext = try aes.encrypt(Array(mnemonic.utf8))
 			
 			guard ciphertext.count > 0 else {
@@ -149,7 +153,7 @@ class AccountManager {
 	func decryptMnemonic(encrypted: Data, password: Data) -> String? {
 		
 		let key = password
-		let aes = try? AES(key: password.bytes, blockMode: CBC(iv: self.iv.bytes))
+		let aes = try? AES(key: password.bytes, blockMode: CBC(iv: self.iv!.bytes))
 		
 		guard let decrypted = try? aes?.decrypt(encrypted.bytes) else {
 			return nil
@@ -211,7 +215,7 @@ class AccountManager {
 		
 		guard let res = database.objects(class: AccountDataBaseModel.self, query: "address == \"\(account.address)\"")?.first as? AccountDataBaseModel else {
 			let dbModel = AccountDataBaseModel()
-			dbModel.address = account.address.stripMinterHexPrefix()
+			dbModel.address = account.address.stripMinterHexPrefix().lowercased()
 			dbModel.encryptedBy = account.encryptedBy.rawValue
 			dbModel.isMain = account.isMain
 			

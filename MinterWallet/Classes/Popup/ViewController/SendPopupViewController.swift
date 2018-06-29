@@ -23,12 +23,23 @@ class SendPopupViewController: PopupViewController {
 	
 	//MARK: - IBOutlet
 	
+	@IBOutlet weak var avatarWrapper: UIView! {
+		didSet {
+			avatarWrapper.layer.cornerRadius = 25.0
+			avatarWrapper?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
+		}
+	}
+	
 	@IBOutlet weak var amountTitle: UILabel!
 	
 	@IBOutlet weak var avatarImage: UIImageView! {
 		didSet {
 			avatarImage.backgroundColor = .white
 			avatarImage.layer.cornerRadius = 25.0
+
+			avatarImage.makeBorderWithCornerRadius(radius: 25, borderColor: .white, borderWidth: 4)
+			
+			
 		}
 	}
 	
@@ -116,7 +127,7 @@ class SendPopupViewController: PopupViewController {
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
-		dropShadow()
+//		dropShadow()
 	}
 
 }

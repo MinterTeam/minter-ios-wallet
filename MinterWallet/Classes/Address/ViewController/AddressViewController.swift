@@ -79,6 +79,7 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 			
 			return cell
 		})
+		
 		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .automatic, reloadAnimation: .automatic, deleteAnimation: .automatic)
 		
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)

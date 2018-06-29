@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import ALCameraViewController
 
 
 class SettingsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
@@ -54,8 +55,8 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 			guard let login = Storyboards.Login.instantiateInitialViewController() as? LoginViewController else {
 				return
 			}
-			self.present(UINavigationController(rootViewController: login), animated: true, completion: nil)
 			
+			self.present(UINavigationController(rootViewController: login), animated: true, completion: nil)
 		}).disposed(by: disposeBag)
 		
 		viewModel.shouldReloadTable.asObservable().filter({ (val) -> Bool in
@@ -64,6 +65,12 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 			self?.tableView.reloadData()
 		}).disposed(by: disposeBag)
 
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		viewModel.viewWillAppear()
 	}
 	
 	private func registerCells() {
@@ -89,6 +96,9 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		}
 		
 		cell.configure(item: item)
+		
+		let avatarCell = cell as? SettingsAvatarTableViewCell
+		avatarCell?.delegate = self
 		
 		return cell
 	}
@@ -137,7 +147,32 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		else if item.identifier == "DisclosureTableViewCell_Password" {
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showPassword.rawValue, sender: self)
 		}
+	}
+	
+	//MARK: - ImagePicker
+	
+	func showImagePicker() {
 		
+		let cropping = CroppingParameters(isEnabled: true, allowResizing: true, allowMoving: true, minimumSize: CGSize(width: 20, height: 20))
+		
+		let camera = CameraViewController(croppingParameters: cropping, allowsLibraryAccess: true, allowsSwapCameraOrientation: true, allowVolumeButtonCapture: true) { [weak self] (image, asset) in
+			
+			if let image = image {
+				self?.viewModel.updateAvatar(image)
+			}
+			
+			self?.dismiss(animated: true, completion: nil)
+		}
+
+		let imagePickerViewController = CameraViewController.imagePickerViewController(croppingParameters: cropping) { [weak self] image, asset in
+			if let image = image {
+				self?.viewModel.updateAvatar(image)
+			}
+			
+			self?.dismiss(animated: true, completion: nil)
+		}
+		
+		present(imagePickerViewController, animated: true, completion: nil)
 		
 	}
 	
@@ -147,4 +182,13 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		
 	}
 
+}
+
+
+extension SettingsViewController : SettingsAvatarTableViewCellDelegate {
+	
+	func didTapChangeAvatar(cell: SettingsAvatarTableViewCell) {
+		showImagePicker()
+	}
+	
 }

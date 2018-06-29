@@ -22,6 +22,10 @@ class CoinsViewModel: BaseViewModel {
 		}
 	}
 	
+	var basicCoinSymbol: String {
+		return Coin.defaultCoin().symbol ?? "bip"
+	}
+	
 	private var disposeBag = DisposeBag()
 	
 	private var sections = Variable([BaseTableSectionItem]())
@@ -30,14 +34,38 @@ class CoinsViewModel: BaseViewModel {
 		return self.sections.asObservable()
 	}
 	
+	var totalBalanceObservable: Observable<Double> {
+		return Session.shared.mainCoinBalance.asObservable()
+	}
+	
+	var usernameViewObservable: Observable<User?> {
+		return Session.shared.user.asObservable()
+	}
+	
+	var rightButtonTitle: String {
+		return "@" + (Session.shared.user.value?.username ?? "")
+	}
+	
+	var rightButtonImage: URL? {
+		var url: URL?
+		if let id = Session.shared.user.value?.id {
+			url = MinterMyAPIURL.avatarUserId(id: id).url()
+		}
+		if let avatarURLString = Session.shared.user.value?.avatar, let avatarURL = URL(string: avatarURLString) {
+			url = avatarURL
+		}
+		
+		return url
+	}
+	
 	//MARK: -
 
 	override init() {
 		super.init()
 		
 		Observable.combineLatest(Session.shared.transactions.asObservable(), Session.shared.balances.asObservable())
-			.subscribe(onNext: { [weak self] (transactions) in
-				self?.createSection()
+		.subscribe(onNext: { [weak self] (transactions) in
+			self?.createSection()
 		}).disposed(by: disposeBag)
 		
 //		Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateBalance), userInfo: nil, repeats: true).fire()
@@ -52,30 +80,36 @@ class CoinsViewModel: BaseViewModel {
 		var section = BaseTableSectionItem(header: "LATEST TRANSACTIONS".localized())
 		section.identifier = "BaseTableSectionItem_1"
 		
-		Array(Session.shared.transactions.value[safe: 0..<5] ?? []).forEach { (transaction) in
+		Array(Session.shared.transactions.value[safe: 0..<5] ?? []).forEach { (transactionItem) in
+			
+			guard let transaction = transactionItem.transaction else {
+				return
+			}
+			
+			let user = transactionItem.user
 			
 			let sectionId = transaction.hash ?? String.random(length: 20)
 			
-			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(sectionId)")
+			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_" + sectionId)
 			
 			var signMultiplier = 1.0
 			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-				account.address == transaction.from?.stripMinterHexPrefix()
+				account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
 			})
 			
 			var title = ""
 			if hasAddress {
-				title = transaction.to ?? ""
+				title = user?.username ?? (transaction.to ?? "")
 				signMultiplier = -1.0
 			}
 			else {
-				title = transaction.from ?? ""
+				title = user?.username ?? (transaction.from ?? "")
 			}
 			
 			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
 			transactionCellItem.txHash = transaction.hash
 			transactionCellItem.title = title
-			transactionCellItem.image = MinterMyAPIURL.avatar(address: ((signMultiplier > 0 ? transaction.from : transaction.to) ?? "")).url()
+			transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.to) ?? "")).url()
 			transactionCellItem.date = transaction.date
 			transactionCellItem.from = transaction.from
 			transactionCellItem.to = transaction.to

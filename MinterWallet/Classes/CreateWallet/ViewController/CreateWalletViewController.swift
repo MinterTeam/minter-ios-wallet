@@ -25,9 +25,14 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 	}
 	@IBOutlet var footerView: UIView!
 	
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+	@IBOutlet weak var createWalletButton: DefaultButton!
+	
 	@IBAction func createWalletDidTap(_ sender: Any) {
 		
 		tableView.endEditing(true)
+		
+		//validate all?
 		
 		viewModel.register()
 	}
@@ -59,6 +64,21 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 			let banner = NotificationBanner(title: errorNotification?.title ?? "", subtitle: errorNotification?.text, style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
+		
+		viewModel.isLoading.asObservable().bind { [weak self] (val) in
+			
+			self?.createWalletButton.isEnabled = !val
+			self?.activityIndicator.isHidden = !val
+			
+			if val {
+				self?.activityIndicator.startAnimating()
+				
+			}
+			else {
+				self?.activityIndicator.stopAnimating()
+			}
+		}.disposed(by: disposeBag)
+		//activityIndicator
 		
 	}
 
@@ -127,7 +147,7 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 extension CreateWalletViewController : ValidatableCellDelegate {
 	
 	
-	func validate(field: ValidatableCellProtocol, completion: (() -> ())?) {
+	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
 		
 		defer {
 			completion?()
@@ -161,7 +181,7 @@ extension CreateWalletViewController : ValidatableCellDelegate {
 	}
 	
 	
-	func didValidateField(field: ValidatableCellProtocol) {
+	func didValidateField(field: ValidatableCellProtocol?) {
 		if let cell = field as? TextFieldTableViewCell, let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 //			if let username = cell.textField.text, item.identifier.hasPrefix("TextFieldTableViewCell_Username") {
 //				viewModel.username.value = username

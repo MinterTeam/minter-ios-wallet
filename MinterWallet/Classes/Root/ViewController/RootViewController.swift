@@ -35,9 +35,6 @@ class RootViewController: UIViewController {
 		})
 		.subscribe(onNext: { (isLoggedIn, accounts) in
 			
-			print(isLoggedIn)
-			print(accounts)
-			
 			if accounts.count > 0 || isLoggedIn {
 				//has local accounts, show wallet
 				let vc = Storyboards.Main.instantiateInitialViewController()

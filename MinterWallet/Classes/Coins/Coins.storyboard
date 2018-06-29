@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="q4X-VK-tqr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="q4X-VK-tqr">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -91,26 +92,68 @@
                         <barButtonItem key="leftBarButtonItem" enabled="NO" title="Item" image="BipLogoSmall" id="2PJ-5X-ytA">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title=" " style="plain" id="g3m-BI-pjZ">
-                            <button key="customView" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SHf-II-J3V">
-                                <rect key="frame" x="102" y="9" width="257" height="26"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
-                                <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
-                                <inset key="imageEdgeInsets" minX="50" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="@AlexeySidorov" image="AvatarPlaceholderImage"/>
-                            </button>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Item" id="k3h-zs-mht"/>
+                            <barButtonItem title="Item" id="EvV-xS-6cZ">
+                                <inset key="largeContentSizeImageInsets" minX="-100" minY="0.0" maxX="1" maxY="0.0"/>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="headerView" destination="1OM-Ql-2PQ" id="nj2-Q6-cqJ"/>
+                        <outlet property="headerViewTitleLabel" destination="RIV-Gf-6Jf" id="aT8-bq-ew0"/>
                         <outlet property="tableHeaderTopConstraint" destination="N7n-hV-Obi" id="d8n-Dj-aiQ"/>
                         <outlet property="tableView" destination="WIo-BM-mO4" id="QrX-Ng-w8P"/>
-                        <outlet property="usernameBarItem" destination="g3m-BI-pjZ" id="CuA-ZV-yzl"/>
-                        <outlet property="usernameButton" destination="SHf-II-J3V" id="85G-xm-tCU"/>
+                        <outlet property="usernameView" destination="KgI-cv-0c8" id="Pvt-yW-LoK"/>
                         <segue destination="EEO-nY-xhf" kind="show" identifier="showTransactions" id="yuR-5V-wmd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zcm-H8-vEm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="KgI-cv-0c8" customClass="UsernameView" customModule="MinterWallet" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="373" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kur-L6-fh2">
+                            <rect key="frame" x="347" y="9" width="26" height="26"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wsn-Um-hM3">
+                                    <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="26" id="0K8-lD-RuY"/>
+                                        <constraint firstAttribute="width" constant="26" id="FuT-NU-HLT"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="wsn-Um-hM3" firstAttribute="top" secondItem="Kur-L6-fh2" secondAttribute="top" id="BiW-Jb-NpU"/>
+                                <constraint firstItem="wsn-Um-hM3" firstAttribute="leading" secondItem="Kur-L6-fh2" secondAttribute="leading" id="DQy-QL-f68"/>
+                                <constraint firstAttribute="bottom" secondItem="wsn-Um-hM3" secondAttribute="bottom" id="Ms2-Ku-6ou"/>
+                                <constraint firstAttribute="trailing" secondItem="wsn-Um-hM3" secondAttribute="trailing" id="m9l-M8-LMA"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E9E-9g-ZIY">
+                            <rect key="frame" x="300" y="10" width="37" height="22"/>
+                            <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Kur-L6-fh2" firstAttribute="centerY" secondItem="KgI-cv-0c8" secondAttribute="centerY" id="2vL-21-ipy"/>
+                        <constraint firstAttribute="bottom" secondItem="E9E-9g-ZIY" secondAttribute="bottom" constant="12" id="bJh-wQ-XYt"/>
+                        <constraint firstAttribute="trailing" secondItem="Kur-L6-fh2" secondAttribute="trailing" id="kZD-Jq-WZu"/>
+                        <constraint firstItem="Kur-L6-fh2" firstAttribute="leading" secondItem="E9E-9g-ZIY" secondAttribute="trailing" constant="10" id="mum-44-lnK"/>
+                        <constraint firstItem="E9E-9g-ZIY" firstAttribute="top" secondItem="KgI-cv-0c8" secondAttribute="top" constant="10" id="yZn-eD-wFn"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="imageView" destination="wsn-Um-hM3" id="Whq-Vh-ZNY"/>
+                        <outlet property="imageWrapperView" destination="Kur-L6-fh2" id="SjR-ML-a6v"/>
+                        <outlet property="usernameLabel" destination="E9E-9g-ZIY" id="leQ-gq-SWD"/>
+                    </connections>
+                </view>
             </objects>
             <point key="canvasLocation" x="1008.8" y="184.85757121439281"/>
         </scene>
@@ -146,7 +189,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AvatarPlaceholderImage" width="26" height="26"/>
         <image name="BipLogoSmall" width="37" height="26"/>
         <image name="circle" width="16" height="16"/>
     </resources>

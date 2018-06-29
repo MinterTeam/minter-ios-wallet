@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import RxSwift
+import NotificationBannerSwift
 
-class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+
+class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ValidatableCellDelegate {
 	
 	//MARK: - IBOutlets
 	
@@ -23,6 +26,8 @@ class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITab
 	
 	var viewModel = UsernameEditViewModel()
 	
+	private var disposeBag = DisposeBag()
+	
 	//MARK: - ViewController
 
 	override func viewDidLoad() {
@@ -31,6 +36,21 @@ class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITab
 		self.title = viewModel.title
 		
 		registerCells()
+		
+		viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { [weak self] (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
+			banner.show()
+		}).disposed(by: disposeBag)
+		
+		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { [weak self] (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
+			banner.show()
+		}).disposed(by: disposeBag)
+		
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -38,7 +58,6 @@ class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITab
 		
 		showKeyboard()
 	}
-	
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
@@ -49,6 +68,7 @@ class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITab
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -67,6 +87,12 @@ class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITab
 		
 		cell.configure(item: item)
 		
+		var textFieldCell = cell as? TextFieldTableViewCell
+		textFieldCell?.validateDelegate = self
+		
+		if let button = cell as? ButtonTableViewCell {
+			button.delegate = self
+		}
 		
 		return cell
 	}
@@ -78,7 +104,27 @@ class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITab
 		if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
 			cell.startEditing()
 		}
+	}
+	
+	func didValidateField(field: ValidatableCellProtocol?) {
+		let value = field?.validationText
+		
+	}
+	
+	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
 		
 	}
 
+}
+
+extension UsernameEditViewController : ButtonTableViewCellDelegate {
+	
+	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		
+		if let usernameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell, let username = usernameCell.textField.text {
+		
+			viewModel.update(username: username)
+		}
+	}
+	
 }

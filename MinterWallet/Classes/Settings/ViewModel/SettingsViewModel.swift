@@ -7,6 +7,10 @@
 //
 
 import RxSwift
+import MinterCore
+import MinterMy
+import Toucan
+
 
 class SettingsViewModel: BaseViewModel {
 	
@@ -26,12 +30,16 @@ class SettingsViewModel: BaseViewModel {
 	
 	private var disposeBag = DisposeBag()
 	
+	private var profileManager: ProfileManager?
+	
+	private var selectedImage: UIImage?
+	
 	//MARK: -
 
 	override init() {
 		super.init()
 		
-		Session.shared.isLoggedIn.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+		Observable.combineLatest(Session.shared.isLoggedIn.asObservable(), Session.shared.user.asObservable()).subscribe(onNext: { [weak self] (_, _) in
 			self?.createSections()
 			self?.shouldReloadTable.value = true
 		}).disposed(by: disposeBag)
@@ -47,6 +55,8 @@ class SettingsViewModel: BaseViewModel {
 	
 	func createSections() {
 		
+		let user = Session.shared.user.value
+		
 		var sctns = [BaseTableSectionItem]()
 		
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell")
@@ -54,19 +64,36 @@ class SettingsViewModel: BaseViewModel {
 		if Session.shared.isLoggedIn.value {
 			
 			let avatar = SettingsAvatarTableViewCellItem(reuseIdentifier: "SettingsAvatarTableViewCell", identifier: "SettingsAvatarTableViewCell")
+			
+			if nil != selectedImage {
+				avatar.avatar = selectedImage
+			}
+			
+			if let avatarURLString = user?.avatar, let avatarURL = URL(string: avatarURLString) {
+				avatar.avatarURL = avatarURL
+			}
+			else {
+				if let id = user?.id {
+					avatar.avatarURL = MinterMyAPIURL.avatarUserId(id: id).url()
+				}
+			}
+			
 			let username = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Username")
 			username.title = "Username".localized()
-			username.value = "@AlexeySidorov"
+			
+			username.value = user?.username
 			username.placeholder = "Change"
 
 			let mobile = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Mobile")
 			mobile.title = "Mobile".localized()
-			mobile.value = "+7 999 600 0000"
+			mobile.value = user?.phone
 			mobile.placeholder = "Change"
 
 			let email = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Email")
 			email.title = "Email".localized()
-			email.value = nil
+			if let eml = user?.email, eml != "" {
+				email.value = eml
+			}
 			email.placeholder = "Add"
 			
 			let password = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Password")
@@ -123,6 +150,53 @@ class SettingsViewModel: BaseViewModel {
 	
 	func rightButtonTapped() {
 		Session.shared.logout()
+	}
+	
+	//MARK: -
+	
+	func viewWillAppear() {
+		createSections()
+		shouldReloadTable.value = true
+	}
+	
+	//MARK: -
+	
+	func updateAvatar(_ image: UIImage) {
+		
+		guard let client = APIClient.withAuthentication(), let user = Session.shared.user.value else {
+//			self.errorNotification.value = NotifiableError(title: "Something went wrong".localized(), text: nil)
+			return
+		}
+		
+		if nil == profileManager {
+			profileManager = ProfileManager(httpClient: client)
+		}
+		
+		let toucan = Toucan(image: image).resize(CGSize(width: 500, height: 500), fitMode: Toucan.Resize.FitMode.crop).image
+		
+		selectedImage = image
+		
+		self.shouldReloadTable.value = true
+		
+		if let data = UIImagePNGRepresentation(toucan!) {
+			let base64 = data.base64EncodedString()
+			
+			profileManager?.uploadAvatar(imageBase64: base64, completion: { (succeed, url, error) in
+				
+				guard nil == error else {
+					return
+				}
+				
+				if let user = Session.shared.user.value {
+					user.avatar = url?.absoluteString
+					Session.shared.user.value = user
+				}
+				
+				Session.shared.loadUser()
+				
+			})
+		}
+		
 	}
 
 }
