@@ -143,6 +143,7 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 				}
 			}).disposed(by: disposeBag)
 			
+			activityIndicator?.isHidden = true
 			item.isLoadingObservable?.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (isLoading) in
 				if isLoading {
 					self?.activityIndicator.startAnimating()
@@ -153,7 +154,7 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 					self?.activityIndicator.isHidden = true
 				}
 			}).disposed(by: disposeBag)
-			}
+		}
 	}
 	
 	//MARK: -
