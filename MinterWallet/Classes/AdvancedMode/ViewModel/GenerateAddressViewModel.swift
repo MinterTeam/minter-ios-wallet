@@ -31,15 +31,19 @@ class GenerateAddressViewModel : AccountantBaseViewModel {
 	
 	//MARK: -
 	
-//	private let accountManager = AccountManager()
+	private let isLoading = Variable(false)
 	
 	func activate() {
+		
+		isLoading.value = true
 		
 		guard let mnemonic = mnemonic else {
 			return
 		}
 		
 		self.saveAccount(mnemonic: mnemonic)
+		
+		isLoading.value = false
 	}
 	
 	func setMnemonicChecked(isChecked: Bool) {
@@ -76,6 +80,7 @@ class GenerateAddressViewModel : AccountantBaseViewModel {
 		button.title = "LAUNCH THE WALLET".localized()
 		button.buttonPattern = "purple"
 		button.isButtonEnabled = proceedAvailable.value
+		button.isLoadingObserver = isLoading.asObservable()
 		
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: "BlankTableViewCell")
 		

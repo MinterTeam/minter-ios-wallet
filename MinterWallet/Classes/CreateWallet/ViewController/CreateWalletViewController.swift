@@ -72,13 +72,11 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 			
 			if val {
 				self?.activityIndicator.startAnimating()
-				
 			}
 			else {
 				self?.activityIndicator.stopAnimating()
 			}
 		}.disposed(by: disposeBag)
-		//activityIndicator
 		
 	}
 
@@ -110,34 +108,13 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
 	}
-	
-	func numberOfSections(in tableView: UITableView) -> Int {
-		return 1
-	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return viewModel.rowsCount(for: section)
-	}
-	
-//	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //
-//		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
-//			return UITableViewCell()
-//		}
+//	func numberOfSections(in tableView: UITableView) -> Int {
+//		return 1
+//	}
 //
-//		cell.configure(item: item)
-//
-//		if let validatableCell = cell as? ValidatableCellProtocol {
-//			validatableCell.validateDelegate = self
-//		}
-//
-//		if let textFieldCell = cell as? TextFieldTableViewCell {
-//			textFieldCell.textField.rx.controlEvent([.editingDidEnd]).asObservable().subscribe(onNext: { (_) in
-//			self.viewModel.checkField(identifier: item.identifier, value: textFieldCell.textField.text ?? "")
-//			}).disposed(by: disposeBag)
-//		}
-//
-//		return cell
+//	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//		return viewModel.rowsCount(for: section)
 //	}
 	
 	//MARK: -

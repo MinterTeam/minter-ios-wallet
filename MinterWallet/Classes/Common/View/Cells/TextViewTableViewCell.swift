@@ -26,6 +26,10 @@ class TextViewTableViewCellItem : BaseCellItem {
 	
 	var isLoadingObservable: Observable<Bool>?
 	
+	var value: String?
+	
+	var keybordType: UIKeyboardType?
+	
 }
 
 
@@ -42,8 +46,6 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 	weak var delegate: TextViewTableViewCellDelegate?
 	
 	weak var validateDelegate: ValidatableCellDelegate?
-	
-	private var disposeBag = DisposeBag()
 
 	//MARK: - IBOutlets
 	
@@ -94,6 +96,10 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 		if let item = item as? TextViewTableViewCellItem {
 			self.title.text = item.title
 			self.validatorRules = item.rules
+			self.textView.text = item.value
+			if let keyboard = item.keybordType {
+				self.textView.keyboardType = keyboard
+			}
 			
 			item.isLoadingObservable?.subscribe(onNext: { [weak self] (val) in
 				if val {

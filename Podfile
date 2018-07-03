@@ -30,6 +30,7 @@ target 'MinterWallet' do
 		pod 'Toucan'
 		pod 'QRCode'
 		pod 'QRCodeReader.swift', '~> 8.2.0'
+		pod 'CentrifugeiOS'
 end
 
 target 'MinterWalletTests' do

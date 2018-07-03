@@ -37,9 +37,13 @@ class Session {
 	
 	//MARK: -
 	
+	var isLoading = Variable(true)
+	
 	var accounts = Variable([Account]())
 	
 	var transactions = Variable([TransactionItem]())
+	
+	var baseCoinBalances = Variable([String : Double]())
 	
 	var allBalances = Variable([String : [String : Double]]())
 	
@@ -106,6 +110,7 @@ class Session {
 		self.user.value = user
 		saveUser(user: user)
 	}
+	
 	func saveUser(user: User) {
 		guard let res = dataBaseStorage.objects(class: UserDataBaseModel.self)?.first as? UserDataBaseModel else {
 			let dbObject = UserDataBaseModel()
@@ -135,7 +140,7 @@ class Session {
 			self.user.value = User(dbModel: user)
 		}
 		else {
-			//retreive user if doesn't exist?
+			//retrive user if doesn't exist?
 		}
 		
 		
@@ -205,6 +210,8 @@ class Session {
 		let transactionManger1 = TransactionManager()
 		transactionManger1.transactions { [weak self] (transactions, users, error) in
 			
+			self?.isLoading.value = false
+			
 			guard nil == error else {
 				return
 			}
@@ -250,9 +257,13 @@ class Session {
 					return
 				}
 				
-				newMainCoinBalance += coins.map({ (dict) -> Double in
+				let baseCoinBalance = coins.map({ (dict) -> Double in
 					return (dict["baseCoinAmount"] as? Double) ?? 0.0
 				}).reduce(0, +)
+				
+				self?.baseCoinBalances.value[ads] = baseCoinBalance
+				
+				newMainCoinBalance += baseCoinBalance
 				
 				var newAllBalances = self?.allBalances.value
 				
@@ -273,24 +284,7 @@ class Session {
 			
 			self?.mainCoinBalance.value = newMainCoinBalance
 		}
-		
-//		accounts.value.forEach { (account) in
-//			minterAccountManager.balance(address: account.address, with: { [weak self] (res, error) in
-//				guard nil == error else {
-//					return
-//				}
-//
-//				var newAllBalances = self?.allBalances.value
-//
-//				if let balance = res as? [String : String] {
-//					newAllBalances?[account.address] = balance.mapValues({ (val) -> Double in
-//						return (Double(val) ?? 0) / TransactionCoinFactor
-//					})
-//				}
-//
-//				self?.allBalances.value = newAllBalances ?? [:]
-//			})
-//		}
+
 	}
 	
 	func loadUser() {
@@ -302,6 +296,7 @@ class Session {
 		if nil == profileManager {
 			profileManager = ProfileManager(httpClient: client)
 		}
+		profileManager?.httpClient = client
 		
 		profileManager?.profile(completion: { [weak self] (user, err) in
 			guard nil == err else {

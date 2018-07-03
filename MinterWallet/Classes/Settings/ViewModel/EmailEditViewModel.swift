@@ -22,9 +22,16 @@ class EmailEditViewModel: BaseViewModel {
 	
 	var successMessage = Variable<NotifiableSuccess?>(nil)
 	
+	var disposeBag = DisposeBag()
+	
 	//MARK: -
 	
 	private var isLoading = Variable(false)
+	
+	var email = Variable<String?>(Session.shared.user.value?.email)
+	
+	var isButtonEnabled = Variable(false)
+	var state = Variable(TextFieldTableViewCell.State.default)
 	
 	//MARK: -
 	
@@ -32,6 +39,17 @@ class EmailEditViewModel: BaseViewModel {
 		super.init()
 		
 		createSection()
+		
+		email.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+			if val?.isValidEmail() == true {
+				self?.isButtonEnabled.value = true
+				self?.state.value = .default
+			}
+			else {
+				self?.isButtonEnabled.value = false
+				self?.state.value = .invalid(error: "EMAIL IS INCORRECT".localized())
+			}
+		}).disposed(by: disposeBag)
 	}
 	
 	//MARK: -
@@ -52,11 +70,15 @@ class EmailEditViewModel: BaseViewModel {
 		
 		let email = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Email")
 		email.title = "EMAIL (OPTIONAL *)".localized()
+		email.value = Session.shared.user.value?.email
+		email.keyboardType = .emailAddress
+		email.stateObservable = state.asObservable()
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell")
 		button.buttonPattern = "purple"
 		button.title = "SAVE".localized()
 		button.isLoadingObserver = isLoading.asObservable()
+		button.isButtonEnabledObservable = isButtonEnabled.asObservable()
 		
 		section.items = [email, button]
 		
@@ -115,5 +137,12 @@ class EmailEditViewModel: BaseViewModel {
 	}
 	
 	//MARK: -
+	
+	func validate() -> [String]? {
+		if let eml = email.value, !eml.isValidEmail() {
+			return ["EMAIL IS NOT VALID".localized()]
+		}
+		return nil
+	}
 	
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBJ-OA-h4b">
-                    <rect key="frame" x="20" y="27" width="345" height="13"/>
+                    <rect key="frame" x="20" y="27" width="345" height="21"/>
                     <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -33,6 +33,7 @@
                 <constraint firstItem="VBJ-OA-h4b" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="LFC-hp-93t"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="VBJ-OA-h4b" secondAttribute="trailing" constant="10" id="QQN-KZ-BWI"/>
                 <constraint firstItem="VBJ-OA-h4b" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="27" id="dOG-oN-0Fr"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="VBJ-OA-h4b" secondAttribute="bottom" constant="11" id="dsM-2D-G1P"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>

@@ -80,14 +80,13 @@ class SettingsViewModel: BaseViewModel {
 			
 			let username = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Username")
 			username.title = "Username".localized()
-			
 			username.value = user?.username
 			username.placeholder = "Change"
 
-			let mobile = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Mobile")
-			mobile.title = "Mobile".localized()
-			mobile.value = user?.phone
-			mobile.placeholder = "Change"
+//			let mobile = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Mobile")
+//			mobile.title = "Mobile".localized()
+//			mobile.value = user?.phone
+//			mobile.placeholder = "Add"
 
 			let email = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Email")
 			email.title = "Email".localized()
@@ -105,17 +104,16 @@ class SettingsViewModel: BaseViewModel {
 			
 			var section = BaseTableSectionItem(header: "")
 
-			items = [avatar, separator, username, separator, mobile, separator, email, separator, password, separator]
+			items = [avatar, separator, username, separator, email, separator, password, separator]
 			section.items = items
 			sctns.append(section)
-			
-			sections = sctns
 		}
 		
 		let language = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Language")
 		language.title = "Language".localized()
 		language.value = "English"
 		language.placeholder = "Change"
+		language.showIndicator = false
 
 		let addresses = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Addresses")
 		addresses.title = "My Addresses".localized()
@@ -124,7 +122,9 @@ class SettingsViewModel: BaseViewModel {
 		
 		var section1 = BaseTableSectionItem(header: " ")
 		section1.items = [language, separator, addresses]
-		sections.append(section1)
+		sctns.append(section1)
+		
+		sections = sctns
 		
 	}
 	

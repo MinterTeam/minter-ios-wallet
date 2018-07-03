@@ -38,8 +38,6 @@ class SwitchTableViewCell: BaseCell {
 	
 	weak var delegate: SwitchTableViewCellDelegate?
 	
-	var disposeBag = DisposeBag()
-	
 	//MARK: -
 	
 	override func awakeFromNib() {

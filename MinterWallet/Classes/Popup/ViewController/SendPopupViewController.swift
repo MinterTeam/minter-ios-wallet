@@ -39,7 +39,6 @@ class SendPopupViewController: PopupViewController {
 
 			avatarImage.makeBorderWithCornerRadius(radius: 25, borderColor: .white, borderWidth: 4)
 			
-			
 		}
 	}
 	

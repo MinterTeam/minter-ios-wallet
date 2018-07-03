@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="qNr-PD-H9p">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="qNr-PD-H9p">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -34,13 +34,7 @@
                             <constraint firstItem="l7Q-eZ-ez1" firstAttribute="top" secondItem="H5d-7O-wHL" secondAttribute="top" id="rSB-1n-MZa"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="6hI-Ok-PIx">
-                        <barButtonItem key="rightBarButtonItem" title="Add New" id="U8v-Kn-bPh" customClass="ActionBarButtonItem" customModule="MinterWallet" customModuleProvider="target">
-                            <connections>
-                                <action selector="didTapAddNewButton:" destination="qNr-PD-H9p" id="AAR-UR-EVb"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Title" id="6hI-Ok-PIx"/>
                     <connections>
                         <outlet property="headerView" destination="zuQ-cu-38d" id="tBj-sm-NfM"/>
                         <outlet property="tableView" destination="l7Q-eZ-ez1" id="DI9-PA-EfX"/>

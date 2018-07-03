@@ -39,14 +39,14 @@ class EmailEditViewController: BaseViewController, UITableViewDelegate, UITableV
 		
 		viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
-		}).subscribe(onNext: { [weak self] (notification) in
+		}).subscribe(onNext: { (notification) in
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
 		
 		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
-		}).subscribe(onNext: { [weak self] (notification) in
+		}).subscribe(onNext: { (notification) in
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
 			banner.show()
 		}).disposed(by: disposeBag)
@@ -58,7 +58,6 @@ class EmailEditViewController: BaseViewController, UITableViewDelegate, UITableV
 		showKeyboard()
 	}
 	
-	
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 	}
@@ -67,7 +66,6 @@ class EmailEditViewController: BaseViewController, UITableViewDelegate, UITableV
 	
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
-		//		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 	}
 	
@@ -87,6 +85,9 @@ class EmailEditViewController: BaseViewController, UITableViewDelegate, UITableV
 		
 		cell.configure(item: item)
 		
+		var validationCell = cell as? ValidatableCellProtocol
+		validationCell?.validateDelegate = self
+		
 		var buttonCell = cell as? ButtonTableViewCell
 		buttonCell?.delegate = self
 		
@@ -97,11 +98,24 @@ class EmailEditViewController: BaseViewController, UITableViewDelegate, UITableV
 	//MARK: -
 	
 	func showKeyboard() {
-		
 		if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
 			cell.startEditing()
 		}
-		
+	}
+	
+	//MARK: -
+	
+	func checkErrors() {
+		if let errors = viewModel.validate(), let err = errors.first {
+			if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+				cell.setInvalid(message: err)
+			}
+		}
+		else {
+			if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+				cell.setDefault()
+			}
+		}
 	}
 	
 }
@@ -110,10 +124,32 @@ extension EmailEditViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
+		tableView.endEditing(true)
+		
 		if let emailCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell, let email = emailCell.textField.text {
 			
-			viewModel.update(email: email)
+			self.viewModel.email.value = email
+			
+			checkErrors()
+			
+			if nil == viewModel.validate() {
+				viewModel.update(email: email)
+			}
 		}
 	}
 	
+}
+
+extension EmailEditViewController : ValidatableCellDelegate {
+	
+	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
+		
+		self.viewModel.email.value = field?.validationText
+		completion?()
+	}
+
+	func didValidateField(field: ValidatableCellProtocol?) {
+		checkErrors()
+	}
+
 }

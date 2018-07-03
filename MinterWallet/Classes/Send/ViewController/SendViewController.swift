@@ -94,6 +94,9 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		}).disposed(by: disposeBag)
 
 		viewModel.sections.asObservable().subscribe(onNext: { [weak self] (_) in
+			
+			self?.tableView.reloadData()
+			
 			guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
 				return
 			}
@@ -184,6 +187,8 @@ extension SendViewController: PickerTableViewCellDataSource {
 extension SendViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		
+		tableView.endEditing(true)
 		
 		viewModel.sendButtonTaped()
 		
@@ -356,6 +361,9 @@ extension SendViewController : SwitchTableViewCellDelegate {
 extension SendViewController : ValidatableCellDelegate {
 	
 	func didValidateField(field: ValidatableCellProtocol?) {
+		if let indexPath = tableView.indexPath(for: field as! UITableViewCell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+			viewModel.submitField(item: item, value: field?.validationText ?? "")
+		}
 		
 	}
 	

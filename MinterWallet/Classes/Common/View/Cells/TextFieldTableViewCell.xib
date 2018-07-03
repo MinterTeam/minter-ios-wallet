@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -47,13 +47,18 @@
                             <outlet property="delegate" destination="hhU-0F-JyV" id="5rB-8T-QqV"/>
                         </connections>
                     </textField>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Myo-4g-g52">
+                        <rect key="frame" x="335" y="56.5" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="fDJ-ug-mwR" firstAttribute="centerY" secondItem="nHc-GT-F7U" secondAttribute="centerY" id="Cms-Dl-GIR"/>
+                    <constraint firstItem="gEW-Yp-p6t" firstAttribute="trailing" secondItem="Myo-4g-g52" secondAttribute="trailing" constant="10" id="E3O-7M-ouM"/>
                     <constraint firstItem="gEW-Yp-p6t" firstAttribute="top" secondItem="nHc-GT-F7U" secondAttribute="bottom" constant="8.5" id="EDA-ng-rkp"/>
                     <constraint firstAttribute="bottom" secondItem="gEW-Yp-p6t" secondAttribute="bottom" constant="20" id="FSQ-TG-le9"/>
                     <constraint firstItem="fDJ-ug-mwR" firstAttribute="trailing" secondItem="gEW-Yp-p6t" secondAttribute="trailing" id="JAj-h6-Ybe"/>
                     <constraint firstItem="gEW-Yp-p6t" firstAttribute="leading" secondItem="gFd-nU-9ZI" secondAttribute="leading" constant="10" id="OHH-2B-Z8c"/>
+                    <constraint firstItem="Myo-4g-g52" firstAttribute="centerY" secondItem="gEW-Yp-p6t" secondAttribute="centerY" id="TZK-fh-RTW"/>
                     <constraint firstAttribute="trailing" secondItem="gEW-Yp-p6t" secondAttribute="trailing" constant="10" id="U5T-Gg-e2q"/>
                     <constraint firstItem="nHc-GT-F7U" firstAttribute="leading" secondItem="gEW-Yp-p6t" secondAttribute="leading" constant="10" id="W2t-M0-3ZU"/>
                     <constraint firstItem="nHc-GT-F7U" firstAttribute="top" secondItem="gFd-nU-9ZI" secondAttribute="top" constant="2" id="bUk-L0-2g3"/>
@@ -61,6 +66,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="activityIndicator" destination="Myo-4g-g52" id="cYb-ht-rJz"/>
                 <outlet property="errorTitle" destination="fDJ-ug-mwR" id="jt1-4T-Z02"/>
                 <outlet property="textField" destination="gEW-Yp-p6t" id="dz9-ZP-dYj"/>
                 <outlet property="title" destination="nHc-GT-F7U" id="DuC-Tb-Ogd"/>

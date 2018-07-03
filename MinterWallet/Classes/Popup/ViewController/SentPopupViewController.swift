@@ -27,10 +27,19 @@ class SentPopupViewController: PopupViewController {
 		didSet {
 			avatarImageView?.backgroundColor = .white
 			avatarImageView?.layer.cornerRadius = 25.0
+			
+			avatarImageView?.makeBorderWithCornerRadius(radius: 25, borderColor: .white, borderWidth: 4)
+			
 		}
 	}
 	@IBOutlet weak var actionButton: DefaultButton!
 	@IBOutlet weak var secondButton: DefaultButton!
+	@IBOutlet weak var avatarWrapper: UIView! {
+		didSet {
+			avatarWrapper?.layer.cornerRadius = 25.0
+			avatarWrapper?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
+		}
+	}
 	
 	@IBAction func actionBtnDidTap(_ sender: Any) {
 		delegate?.didTapActionButton(viewController: self)
@@ -94,7 +103,7 @@ class SentPopupViewController: PopupViewController {
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
-		dropShadow()
+//		dropShadow()
 	}
 
 }

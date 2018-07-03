@@ -176,6 +176,8 @@
 		FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE79455208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift */; };
 		FAE79458208DC73A0006CB0B /* SettingsSwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE79457208DC7390006CB0B /* SettingsSwitchTableViewCell.xib */; };
 		FAE7945A208DDC3F0006CB0B /* ActionBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE79459208DDC3F0006CB0B /* ActionBarButtonItem.swift */; };
+		FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */; };
+		FAF70FF920E791390067B5E0 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -377,6 +379,8 @@
 		FAE79459208DDC3F0006CB0B /* ActionBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBarButtonItem.swift; sourceTree = "<group>"; };
 		FAE7945B208E17BE0006CB0B /* CoinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinTableViewCell.swift; sourceTree = "<group>"; };
 		FAE7945C208E17BE0006CB0B /* CoinTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoinTableViewCell.xib; sourceTree = "<group>"; };
+		FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
+		FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
 		FDBD9A2B34C6F6AA0ED9062D /* Pods-MinterWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MinterWalletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests.release.xcconfig"; sourceTree = "<group>"; };
 		FE933B2B31E592FF04BA244B /* CoinsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoinsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -982,6 +986,8 @@
 				FAA2607420932641009FF3DE /* BlankTableViewCell.xib */,
 				FAB865FD20C7D0B3002568A4 /* TextViewTableViewCell.swift */,
 				FAB865FE20C7D0B3002568A4 /* TextViewTableViewCell.xib */,
+				FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */,
+				FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1442,6 +1448,7 @@
 				FAA234EB2084A42A00F999DE /* PickerTableViewCell.xib in Resources */,
 				2E776157C3BE73E6DF25F7C2 /* Send.storyboard in Resources */,
 				419C54AF2049C56F7120C6B2 /* Popup.storyboard in Resources */,
+				FAF70FF920E791390067B5E0 /* LoadingTableViewCell.xib in Resources */,
 				FAE794542089F5170006CB0B /* DisclosureTableViewCell.xib in Resources */,
 				9C6DD4F4A99B7274AF32C13A /* Receive.storyboard in Resources */,
 				DF95C2FD52E1D7EB13A9336F /* Settings.storyboard in Resources */,
@@ -1499,11 +1506,13 @@
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CKMnemonic/CKMnemonic.framework",
+				"${BUILT_PRODUCTS_DIR}/CentrifugeiOS/CentrifugeiOS.framework",
 				"${BUILT_PRODUCTS_DIR}/CountdownLabel/CountdownLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/ExpandableCell/ExpandableCell.framework",
 				"${BUILT_PRODUCTS_DIR}/ExpyTableView/ExpyTableView.framework",
+				"${BUILT_PRODUCTS_DIR}/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
@@ -1523,6 +1532,7 @@
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftValidator/SwiftValidator.framework",
 				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
 				"${BUILT_PRODUCTS_DIR}/Toucan/Toucan.framework",
@@ -1537,11 +1547,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CKMnemonic.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CentrifugeiOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountdownLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpyTableView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IDZSwiftCommonCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
@@ -1561,6 +1573,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftValidator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toucan.framework",
@@ -1737,6 +1750,7 @@
 				550C26104C6471B011F52123 /* AddressViewController.swift in Sources */,
 				FAA26057208F7A55009FF3DE /* CountdownPopupViewModel.swift in Sources */,
 				1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */,
+				FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */,
 				FA01604220B4533B00746B51 /* Manager+Default.swift in Sources */,
 				FA7A9BF820BED28900E3CCDA /* SentPopupViewController.swift in Sources */,
 				FAA26055208F7A37009FF3DE /* CountdownPopupViewController.swift in Sources */,
@@ -1914,12 +1928,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65V4NDES7Y;
 				INFOPLIST_FILE = MinterWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.MinterWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MinterWallet/MinterWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -1933,12 +1949,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 65V4NDES7Y;
 				INFOPLIST_FILE = MinterWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.MinterWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MinterWallet/MinterWallet-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

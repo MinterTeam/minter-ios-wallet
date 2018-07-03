@@ -82,35 +82,38 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		username.prefix = "@"
 		username.value = self.username.value
 		username.state = .default
+		username.keyboardType = .emailAddress
 		
-		var passwordId = cellIdentifierPrefix.password.rawValue + "_"
-		passwordId += (self.password.value ?? "") + "_" + (self.confirmPassword.value ?? "")
+//		var passwordId = cellIdentifierPrefix.password.rawValue + "_"
+//		passwordId += (self.password.value ?? "") + "_" + (self.confirmPassword.value ?? "")
 		
-		let password = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: passwordId)
+		let password = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.password.rawValue)
 		password.title = "CHOOSE PASSWORD".localized()
 		password.isSecure = true
 		password.value = self.password.value
 		password.prefix = nil
 		password.state = .default
 		
-		let confirmPassword = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.confirmPassword.rawValue + "_" + (self.confirmPassword.value ?? ""))
+		let confirmPassword = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.confirmPassword.rawValue)
 		confirmPassword.title = "CONFIRM PASSWORD".localized()
 		confirmPassword.isSecure = true
 		confirmPassword.value = self.confirmPassword.value
 		confirmPassword.state = .default
 		
-		let email = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.email.rawValue + "_" + (self.email.value ?? ""))
+		let email = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.email.rawValue)
 		email.title = "EMAIL (OPTIONAL *)".localized()
 		email.value = self.email.value
 		email.state = .default
+		email.keyboardType = .emailAddress
 		
-		let mobile = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.mobile.rawValue + "_" + (self.mobile.value ?? ""))
-		mobile.title = "MOBILE NUMBER (OPTIONAL *)".localized()
-		mobile.value = self.mobile.value
+//		let mobile = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.mobile.rawValue)
+//		mobile.title = "MOBILE NUMBER (OPTIONAL *)".localized()
+//		mobile.value = self.mobile.value
+//		mobile.keyboardType = .phonePad
 		
 		var section = BaseTableSectionItem(header: "")
 		section.identifier = "CreateWalletSection"
-		section.items = [username, password, confirmPassword, email, mobile]
+		section.items = [username, password, confirmPassword, email]
 		sctns.append(section)
 		
 		sections.value = sctns
@@ -127,22 +130,23 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	}
 	
 	func validate(item: BaseCellItem, value: String, forceError: Bool = false, completion: ((Bool?, registerFormError?) -> ())?) {
-		
-		guard value != "" else {
-			completion?(nil, nil)
-			return
-		}
-		
+
 		if item.identifier.hasPrefix(cellIdentifierPrefix.username.rawValue) {
 			self.username.value = value
 			
 			if value.count < 5 {
-				if !forceError {
+				guard value != "" else {
 					completion?(nil, nil)
+					return
 				}
-				else {
-					completion?(false, registerFormError.usernameTooShort)
-				}
+				
+//				if !forceError {
+//					completion?(nil, nil)
+//				}
+//				else {
+//						completion?(false, registerFormError.usernameTooShort)
+//				}
+				completion?(false, registerFormError.usernameTooShort)
 				return
 			}
 			
@@ -154,16 +158,21 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 			}
 			
 			self.checkUsername().subscribe(
-			onError: { [weak self] (err) in
-				self?.isUsernameTaken = true
-				completion?(false, registerFormError.usernameTaken)
-			}, onCompleted: { [weak self] in
-				self?.isUsernameTaken = false
-				completion?(true, nil)
+				onError: { [weak self] (err) in
+					self?.isUsernameTaken = true
+					completion?(false, registerFormError.usernameTaken)
+				}, onCompleted: { [weak self] in
+					self?.isUsernameTaken = false
+					completion?(true, nil)
 			}).disposed(by: disposeBag)
 		}
 		else if item.identifier.hasPrefix(cellIdentifierPrefix.password.rawValue) {
 			self.password.value = value
+			
+			guard value != "" else {
+				completion?(nil, nil)
+				return
+			}
 			
 			if !isPasswordValid(password: value) {
 				completion?(false, registerFormError.passwordTooShort)
@@ -175,6 +184,11 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		else if item.identifier.hasPrefix(cellIdentifierPrefix.confirmPassword.rawValue) {
 			self.confirmPassword.value = value
 			
+			guard value != "" else {
+				completion?(nil, nil)
+				return
+			}
+			
 			if !isPasswordValid(password: value) || self.confirmPassword.value != self.password.value {
 				completion?(false, registerFormError.passwordsAreNotEqual)
 			}
@@ -185,6 +199,11 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		else if item.identifier.hasPrefix(cellIdentifierPrefix.email.rawValue) {
 			self.email.value = value
 			
+			guard value != "" else {
+				completion?(nil, nil)
+				return
+			}
+			
 			if value.isValidEmail() {
 				completion?(true, nil)
 			}
@@ -194,6 +213,12 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		}
 		else if item.identifier.hasPrefix(cellIdentifierPrefix.mobile.rawValue) {
 			self.mobile.value = value
+			
+			guard value != "" else {
+				completion?(nil, nil)
+				return
+			}
+			
 		}
 	}
 	
@@ -361,6 +386,9 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	}
 	
 	private func isMobileValid(mobile: String?) -> Bool {
+		if nil != mobile {
+			return String.isPhoneValid(mobile!)
+		}
 		return true
 	}
 

@@ -68,9 +68,6 @@ class CoinsViewModel: BaseViewModel {
 			self?.createSection()
 		}).disposed(by: disposeBag)
 		
-//		Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateBalance), userInfo: nil, repeats: true).fire()
-		
-		createSection()
 	}
 	
 	func createSection() {
@@ -99,11 +96,11 @@ class CoinsViewModel: BaseViewModel {
 			
 			var title = ""
 			if hasAddress {
-				title = user?.username ?? (transaction.to ?? "")
+				title = user?.username != nil ? "@" + user!.username! : (transaction.to ?? "")
 				signMultiplier = -1.0
 			}
 			else {
-				title = user?.username ?? (transaction.from ?? "")
+				title = user?.username != nil ? "@" + user!.username! : (transaction.from ?? "")
 			}
 			
 			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
@@ -160,6 +157,13 @@ class CoinsViewModel: BaseViewModel {
 		
 		if section1.items.count > 1 {
 			sctns.append(section1)
+		}
+		
+		if sctns.count == 0 {
+			let loadingItem = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell", identifier: "LoadingTableViewCell")
+			loadingItem.isLoadingObservable = Session.shared.isLoading.asObservable()
+			let sctn = BaseTableSectionItem(header: "", items: [loadingItem])
+			sctns.append(sctn)
 		}
 		
 		self.sections.value = sctns

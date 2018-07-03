@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 
 protocol Configurable where Self : UITableViewCell {
@@ -18,12 +19,22 @@ typealias ConfigurableCell = UITableViewCell & Configurable
 
 class BaseCell : ConfigurableCell {
 	
+	var disposeBag = DisposeBag()
+	
 	func configure(item: BaseCellItem) {}
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		
+		disposeBag = DisposeBag()
+	}
 	
 }
 
 
 class ExpandableCell : AccordionTableViewCell, Configurable {
+	
+	var disposeBag = DisposeBag()
 	
 	func configure(item: BaseCellItem) {}
 	
@@ -74,6 +85,12 @@ class ExpandableCell : AccordionTableViewCell, Configurable {
 	
 	private func toggleCell() {
 		detailView?.isHidden = expanded
+	}
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		
+		disposeBag = DisposeBag()
 	}
 
 }

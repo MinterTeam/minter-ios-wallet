@@ -26,6 +26,10 @@ class AddressViewModel: BaseViewModel {
 	//MARK: -
 	
 	private var sections = Variable([BaseTableSectionItem]())
+	
+	let accounts = Session.shared.accounts.value.sorted { (acc1, acc2) -> Bool in
+		return acc1.isMain && !acc2.isMain
+	}
 
 	//MARK: -
 	
@@ -49,9 +53,7 @@ class AddressViewModel: BaseViewModel {
 	
 	private func createSections() {
 		
-		let accounts = Session.shared.accounts.value.sorted { (acc1, acc2) -> Bool in
-			return acc1.isMain && !acc2.isMain
-		}
+		let allBalances = Session.shared.allBalances.value
 		
 		var addressNum = 0
 		let sctns = accounts.map { (account) -> BaseTableSectionItem in
@@ -68,9 +70,11 @@ class AddressViewModel: BaseViewModel {
 			address.address = account.address
 			address.buttonTitle = "Copy".localized()
 			
+			let coins = Session.shared.baseCoinBalances.value
+			
 			let balance = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Balance_1\(sectionId)")
 			balance.title = "Balance".localized()
-			balance.value = "12.23213213"
+			balance.value = String(coins[account.address] ?? 0.0)
 			balance.placeholder = ""
 			
 			let secured = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Secured_2\(sectionId)")
@@ -158,9 +162,12 @@ class AddressViewModel: BaseViewModel {
 		
 //		Session.shared.accounts.value =
 		
-		
-		
-
+	}
+	
+	//MARK: -
+	
+	func account(for index: Int) -> Account? {
+		return accounts[safe: index]
 	}
 	
 	//MARK: - TableView

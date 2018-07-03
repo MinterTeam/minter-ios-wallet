@@ -15,12 +15,44 @@ import NotificationBannerSwift
 
 class UsernameEditViewModel : BaseViewModel {
 	
+	enum usernameFormError : Error {
+		case usernameTooShort
+		case incorrectUsername
+		case usernameTaken
+	}
+	
+	//MARK: -
+	
+	private let authManager = AuthManager.default
+	
 	//MARK: -
 	
 	override init() {
 		super.init()
 		
 		createSection()
+		
+		isTaken.asObservable().subscribe(onNext: { [weak self] (val) in
+			if val {
+				self?.state.value = .invalid(error: "USERNAME IS TAKEN".localized())
+			}
+			else {
+				self?.state.value = .default
+			}
+		}).disposed(by: disposeBag)
+		
+		username.asObservable().distinctUntilChanged().subscribe({ (username) in
+			
+			self.checkUsername().subscribe(onNext: { (val) in
+				
+			}, onError: { (err) in
+				self.isTaken.value = true
+			}, onCompleted: {
+				self.isTaken.value = false
+			}).disposed(by: self.disposeBag)
+			
+		}).disposed(by: disposeBag)
+		
 	}
 	
 	//MARK: -
@@ -37,7 +69,22 @@ class UsernameEditViewModel : BaseViewModel {
 		}
 	}
 	
+	private var disposeBag = DisposeBag()
+	
 	private var isLoading = Variable(false)
+	private var isTakenLoading = Variable(false)
+	
+	private var isTaken = Variable(false)
+	
+	var username = Variable<String?>(Session.shared.user.value?.username)
+	
+	var buttonObservable: Observable<Bool> {
+		return Observable.combineLatest(isTaken.asObservable(), isLoading.asObservable(), isTakenLoading.asObservable()).map({ (val) -> Bool in
+			return !val.0 && !val.1 && !val.2
+		})
+	}
+	
+	var state = Variable<TextFieldTableViewCell.State>(.default)
 	
 	//MARK: - TableView
 	
@@ -51,11 +98,14 @@ class UsernameEditViewModel : BaseViewModel {
 		username.title = "CHOOSE @USERNAME".localized()
 		username.prefix = "@"
 		username.value = Session.shared.user.value?.username ?? ""
+		username.isLoadingObservable = isTakenLoading.asObservable()
+		username.stateObservable = state.asObservable()
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell")
 		button.buttonPattern = "purple"
 		button.title = "SAVE".localized()
 		button.isLoadingObserver = isLoading.asObservable()
+		button.isButtonEnabledObservable = buttonObservable
 		
 		section.items = [username, button]
 		
@@ -113,6 +163,55 @@ class UsernameEditViewModel : BaseViewModel {
 		})
 	}
 	
+	private func checkUsername() -> Observable<Bool> {
+		return Observable.create { [weak self] observer in
+			if let username = self?.username.value {
+				
+				if username == Session.shared.user.value?.username {
+					observer.onCompleted()
+				}
+
+				self?.isTakenLoading.value = true
+				
+				self?.authManager.isTaken(username: username) { (isTaken, error) in
+					
+					self?.isTakenLoading.value = false
+					
+					guard nil == error else {
+						observer.onError(error!)
+						return
+					}
+
+					if isTaken == true {
+						observer.onError(usernameFormError.usernameTaken)
+					}
+					else {
+						observer.onCompleted()
+					}
+				}
+			}
+			else {
+				observer.onError(usernameFormError.incorrectUsername)
+			}
+			return Disposables.create()
+		}
+	}
+	
 	//MARK: -
+	
+	func validate() -> [String]? {
+		if let username = username.value, !isUsernameValid(username: username) {
+			return ["USERNAME IS NOT VALID".localized()]
+		}
+		return nil
+	}
+	
+	//MARK: -
+	
+	//Move to helper?
+	private func isUsernameValid(username: String) -> Bool {
+		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,32}")
+		return usernameTest.evaluate(with: username)
+	}
 
 }

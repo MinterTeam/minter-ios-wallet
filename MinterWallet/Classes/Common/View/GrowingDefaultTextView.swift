@@ -15,8 +15,6 @@ class GrowingDefaultTextView: AutoGrowingTextView, Validatable {
 	
 	//MARK: - IBOutlets
 	
-//	var activityIndicator: UIActivityIndicatorView?
-	
 	//MARK: -
 	
 	public var validationText: String {
@@ -27,12 +25,6 @@ class GrowingDefaultTextView: AutoGrowingTextView, Validatable {
 		super.awakeFromNib()
 		
 		setDefault()
-		
-//		activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-//		activityIndicator?.backgroundColor = .red
-//		activityIndicator?.translatesAutoresizingMaskIntoConstraints = false
-//
-//		self.superview?.addSubview(activityIndicator!)
 		
 	}
 	

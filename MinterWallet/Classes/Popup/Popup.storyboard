@@ -34,7 +34,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dc8-FK-Mm0" customClass="DroppableView" customModule="MinterWallet" customModuleProvider="target">
-                                            <rect key="frame" x="27.5" y="104.5" width="320" height="379"/>
+                                            <rect key="frame" x="27.5" y="105" width="320" height="379"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tV1-KQ-pfy">
                                                     <rect key="frame" x="10" y="10" width="300" height="359"/>
@@ -64,16 +64,16 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="to" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zZ9-w6-FEV">
-                                                            <rect key="frame" x="143" y="117" width="14" height="16"/>
+                                                            <rect key="frame" x="143.5" y="117" width="14" height="16"/>
                                                             <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rer-ZR-RJL">
-                                                            <rect key="frame" x="29.5" y="115.5" width="240" height="128"/>
+                                                            <rect key="frame" x="124.5" y="143" width="50" height="50"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AvatarPlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="e9J-AW-NRL">
-                                                                    <rect key="frame" x="95" y="39" width="50" height="50"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="50" id="7fq-gc-ZTr"/>
                                                                         <constraint firstAttribute="height" constant="50" id="EFI-8P-Cs3"/>
@@ -364,7 +364,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Il-XT-rwG" customClass="DroppableView" customModule="MinterWallet" customModuleProvider="target">
-                                            <rect key="frame" x="37" y="168" width="300" height="332"/>
+                                            <rect key="frame" x="37" y="168.5" width="300" height="332"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ha-rn-GNz">
                                                     <rect key="frame" x="10" y="10" width="280" height="312"/>
@@ -389,18 +389,30 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coins are received by" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h6U-TR-Z3p">
-                                                            <rect key="frame" x="73" y="70" width="134" height="16"/>
+                                                            <rect key="frame" x="73.5" y="70" width="134" height="16"/>
                                                             <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AvatarPlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="dLz-OO-I8N">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EWP-Xi-TlV">
                                                             <rect key="frame" x="115" y="96" width="50" height="50"/>
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AvatarPlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="dLz-OO-I8N">
+                                                                    <rect key="frame" x="0.0" y="-0.5" width="50" height="50"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="50" id="JCf-b0-e4w"/>
+                                                                        <constraint firstAttribute="height" constant="50" id="pAp-rZ-3zK"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="50" id="JCf-b0-e4w"/>
-                                                                <constraint firstAttribute="height" constant="50" id="pAp-rZ-3zK"/>
+                                                                <constraint firstAttribute="trailing" secondItem="dLz-OO-I8N" secondAttribute="trailing" id="LNx-5x-shO"/>
+                                                                <constraint firstAttribute="bottom" secondItem="dLz-OO-I8N" secondAttribute="bottom" id="LVS-lj-OA7"/>
+                                                                <constraint firstItem="dLz-OO-I8N" firstAttribute="leading" secondItem="EWP-Xi-TlV" secondAttribute="leading" id="TaX-BY-szO"/>
+                                                                <constraint firstItem="dLz-OO-I8N" firstAttribute="top" secondItem="EWP-Xi-TlV" secondAttribute="top" id="dJW-hk-BsA"/>
                                                             </constraints>
-                                                        </imageView>
+                                                        </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eX8-4T-odh">
                                                             <rect key="frame" x="25" y="156" width="230" height="16"/>
                                                             <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="14"/>
@@ -440,17 +452,17 @@
                                                         <constraint firstAttribute="trailing" secondItem="eX8-4T-odh" secondAttribute="trailing" constant="25" id="4yC-iC-DvQ"/>
                                                         <constraint firstItem="h6U-TR-Z3p" firstAttribute="centerX" secondItem="9Ha-rn-GNz" secondAttribute="centerX" id="7Uo-cd-qJA"/>
                                                         <constraint firstItem="eX8-4T-odh" firstAttribute="leading" secondItem="9Ha-rn-GNz" secondAttribute="leading" constant="25" id="Amd-6B-51y"/>
+                                                        <constraint firstItem="EWP-Xi-TlV" firstAttribute="top" secondItem="h6U-TR-Z3p" secondAttribute="bottom" constant="10" id="BAS-rG-lzs"/>
                                                         <constraint firstAttribute="trailing" secondItem="CqZ-j3-nfM" secondAttribute="trailing" id="FF5-9A-Jt8"/>
                                                         <constraint firstItem="CqZ-j3-nfM" firstAttribute="top" secondItem="9Ha-rn-GNz" secondAttribute="top" id="J2d-Yj-aoB"/>
-                                                        <constraint firstItem="eX8-4T-odh" firstAttribute="top" secondItem="dLz-OO-I8N" secondAttribute="bottom" constant="10" id="KQh-dJ-qNp"/>
                                                         <constraint firstItem="CqZ-j3-nfM" firstAttribute="leading" secondItem="9Ha-rn-GNz" secondAttribute="leading" id="MPy-IS-cuY"/>
                                                         <constraint firstItem="OQs-Ri-1BK" firstAttribute="top" secondItem="eX8-4T-odh" secondAttribute="bottom" constant="20" id="V9b-SY-CmW"/>
-                                                        <constraint firstItem="dLz-OO-I8N" firstAttribute="centerX" secondItem="9Ha-rn-GNz" secondAttribute="centerX" id="fuP-KR-iDL"/>
+                                                        <constraint firstItem="eX8-4T-odh" firstAttribute="top" secondItem="EWP-Xi-TlV" secondAttribute="bottom" constant="10" id="ZF2-xM-Oyk"/>
                                                         <constraint firstAttribute="trailing" secondItem="OQs-Ri-1BK" secondAttribute="trailing" constant="10" id="hPU-St-yfh"/>
                                                         <constraint firstAttribute="bottom" secondItem="7sq-up-q09" secondAttribute="bottom" constant="10" id="jZT-rK-26z"/>
                                                         <constraint firstItem="7sq-up-q09" firstAttribute="trailing" secondItem="OQs-Ri-1BK" secondAttribute="trailing" id="kFM-dQ-aCW"/>
                                                         <constraint firstItem="OQs-Ri-1BK" firstAttribute="leading" secondItem="9Ha-rn-GNz" secondAttribute="leading" constant="10" id="ksO-iC-BFL"/>
-                                                        <constraint firstItem="dLz-OO-I8N" firstAttribute="top" secondItem="h6U-TR-Z3p" secondAttribute="bottom" constant="10" id="qK4-dD-Jny"/>
+                                                        <constraint firstItem="EWP-Xi-TlV" firstAttribute="centerX" secondItem="9Ha-rn-GNz" secondAttribute="centerX" id="tak-PY-ElA"/>
                                                         <constraint firstItem="7sq-up-q09" firstAttribute="leading" secondItem="OQs-Ri-1BK" secondAttribute="leading" id="uxH-7k-TMS"/>
                                                         <constraint firstItem="7sq-up-q09" firstAttribute="top" secondItem="OQs-Ri-1BK" secondAttribute="bottom" constant="10" id="yYr-Nd-PC1"/>
                                                     </constraints>
@@ -491,6 +503,7 @@
                     <connections>
                         <outlet property="actionButton" destination="OQs-Ri-1BK" id="b3K-0Q-kMF"/>
                         <outlet property="avatarImageView" destination="dLz-OO-I8N" id="dKd-m9-94u"/>
+                        <outlet property="avatarWrapper" destination="EWP-Xi-TlV" id="wm9-ig-7yU"/>
                         <outlet property="blurView" destination="DsO-9x-xZj" id="bLY-7h-gUD"/>
                         <outlet property="popupHeader" destination="CqZ-j3-nfM" id="2Wx-CF-PK2"/>
                         <outlet property="popupTitle" destination="twk-kn-uvE" id="KZT-hX-d10"/>

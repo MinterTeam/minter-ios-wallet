@@ -11,6 +11,7 @@ import SwiftValidator
 import RxSwift
 
 
+
 class TextFieldTableViewCellItem : BaseCellItem {
 	var title: String = ""
 	var isSecure: Bool = false
@@ -20,7 +21,12 @@ class TextFieldTableViewCellItem : BaseCellItem {
 	var error: String?
 	var value: String?
 	
+	var keyboardType: UIKeyboardType?
+	
 	var stateObservable: Observable<TextFieldTableViewCell.State>?
+	
+	var isLoadingObservable: Observable<Bool>?
+	
 }
 
 
@@ -28,11 +34,9 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 	
 	//MARK: -
 	
-	var disposeBag = DisposeBag()
-	
 	enum State {
 		case valid
-		case invalid
+		case invalid(error: String?)
 		case `default`
 	}
 	
@@ -49,12 +53,15 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 				errorTitle.text = ""
 				break
 
-			case .invalid:
+			case .invalid(let error):
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 2
 				textField.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
 				textField.rightView = textField.rightViewInvalid
 				textField.rightViewMode = .always
+				if nil != error {
+					self.errorTitle.text = error
+				}
 				break
 
 			default:
@@ -74,6 +81,8 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 	@IBOutlet weak var title: UILabel!
 	
 	@IBOutlet weak var errorTitle: UILabel!
+	
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
 	@IBOutlet weak var textField: ValidatableTextField! {
 		didSet {
@@ -112,10 +121,39 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 				textField.text = val
 			}
 			
+			if let keyboard = item.keyboardType {
+				textField.keyboardType = keyboard
+			}
+			
 			state = item.state ?? .default
 			validatorRules = item.rules
 			errorTitle.text = item.error
-		}
+			
+			item.stateObservable?.asObservable().subscribe(onNext: { (state) in
+				switch state {
+				case .default:
+					self.setDefault()
+					break
+				case .valid:
+					self.setValid()
+					break
+				case .invalid(let err):
+					self.setInvalid(message: err)
+					break
+				}
+			}).disposed(by: disposeBag)
+			
+			item.isLoadingObservable?.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (isLoading) in
+				if isLoading {
+					self?.activityIndicator.startAnimating()
+					self?.activityIndicator.isHidden = false
+				}
+				else {
+					self?.activityIndicator.stopAnimating()
+					self?.activityIndicator.isHidden = true
+				}
+			}).disposed(by: disposeBag)
+			}
 	}
 	
 	//MARK: -
@@ -158,7 +196,7 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 	}
 	
 	func setInvalid(message: String?) {
-		self.state = .invalid
+		self.state = .invalid(error: message)
 		if nil != message {
 			self.errorTitle.text = message
 		}

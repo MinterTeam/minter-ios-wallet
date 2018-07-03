@@ -58,6 +58,14 @@ class SendViewModel: BaseViewModel {
 	private var amountField: String? {
 		didSet {
 			self.amount.value = Double(amountField ?? "0.0")
+			
+			if isAmountValid(amount: self.amount.value ?? 0) {
+				amountStateObservable.value = .default
+			}
+//			else {
+//				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
+//			}
+			
 		}
 	}
 	
@@ -70,7 +78,7 @@ class SendViewModel: BaseViewModel {
 	private var isLoadingNonce = Variable(false)
 	
 	private var addressStateObservable = Variable(TextViewTableViewCell.State.default)
-	
+	private var amountStateObservable = Variable(TextFieldTableViewCell.State.default)
 	
 	private var selectedAddress: String?
 	private var selectedAddressBalance: Double? {
@@ -169,8 +177,8 @@ class SendViewModel: BaseViewModel {
 		username.rules = [RegexRule(regex: "^@[a-zA-Z0-9_]{5,32}", message: "INCORRECT ADDRESS".localized())]
 		username.isLoadingObservable = isLoadingAddress.asObservable()
 		username.stateObservable = addressStateObservable.asObservable()
-		
-		
+		username.value = toField ?? ""
+		username.keybordType = .emailAddress
 		
 		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell", identifier: cellIdentifierPrefix.coin.rawValue)
 		coin.title = "COIN".localized()
@@ -195,9 +203,9 @@ class SendViewModel: BaseViewModel {
 		let amount = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.amount.rawValue)
 		amount.title = "AMOUNT".localized()
 		amount.rules = [FloatRule(message: "INCORRECT AMOUNT".localized())]
-		if let amnt = self.amount.value {
-			amount.value = String(amnt)
-		}
+		amount.value = self.amountField ?? ""
+		amount.stateObservable = amountStateObservable.asObservable()
+		amount.keyboardType = .decimalPad
 		
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell", identifier: cellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
@@ -214,6 +222,7 @@ class SendViewModel: BaseViewModel {
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: cellIdentifierPrefix.button.rawValue)
 		button.title = "SEND!".localized()
 		button.buttonPattern = "purple"
+		button.isButtonEnabled = validate().count == 0
 		button.isLoadingObserver = isPrepearingObservable
 		button.isButtonEnabledObservable = isSubmitButtonEnabledObservable.asObservable()
 		
@@ -230,7 +239,7 @@ class SendViewModel: BaseViewModel {
 			
 		}
 		else {
-			errs[cellIdentifierPrefix.address.rawValue] = "ADDRESS OR USERNAME IS INCORRECT"
+			errs[cellIdentifierPrefix.address.rawValue] = "ADDRESS OR USERNAME IS INCORRECT".localized()
 		}
 		
 		if let amnt = self.amount.value, amnt > 0 {
@@ -260,10 +269,36 @@ class SendViewModel: BaseViewModel {
 		return false
 	}
 	
+	func submitField(item: BaseCellItem, value: String) {
+		
+//		if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) {
+//			self.toField = value
+//
+//			if isAmountValid(amount: self.amount.value ?? 0) {
+//				amountStateObservable.value = .default
+//			}
+//			else {
+//				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
+//			}
+//		}
+//		else
+		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
+			self.amountField = value
+			
+			if isAmountValid(amount: self.amount.value ?? 0) {
+				amountStateObservable.value = .default
+			}
+			else {
+				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
+			}
+		}
+	}
+	
 	func isToValid(to: String) -> Bool {
-		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,32}")
+		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^@[a-zA-Z0-9_]{5,32}")
+		let usernameTest1 = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,32}")
 		let addressTest = NSPredicate(format:"SELF MATCHES %@", "^Mx[a-zA-Z0-9]{40}$")
-		return usernameTest.evaluate(with: to) || addressTest.evaluate(with: to)
+		return usernameTest.evaluate(with: to) || usernameTest1.evaluate(with: to) || addressTest.evaluate(with: to) || to.isValidEmail()
 	}
 	
 	func isAmountValid(amount: Double) -> Bool {
@@ -321,7 +356,12 @@ class SendViewModel: BaseViewModel {
 					return
 				}
 				
-				if address.isValidAddress(), let toFld = self?.toField?.lowercased(), let usr = user?.username?.lowercased(), toFld == usr {
+				var toFld = self?.toField?.lowercased()
+				if toFld?.hasPrefix("@") == true {
+					toFld?.removeFirst()
+				}
+				
+				if address.isValidAddress(), let usr = user?.username?.lowercased(), toFld == usr {
 					self?.toAddress.value = address
 					self?.addressStateObservable.value = .default
 				}
@@ -400,7 +440,10 @@ class SendViewModel: BaseViewModel {
 	
 	func clear() {
 		
+		self.toField = nil
 		self.to.value = nil
+		self.amount.value = nil
+		self.amountField = nil
 		self.nonce.value = nil
 		self.toAddress.value = nil
 	}
@@ -496,6 +539,11 @@ class SendViewModel: BaseViewModel {
 			self?.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin, amount: amount) { [weak self] res in
 				
 				if res == true {
+					
+					self?.clear()
+					
+					self?.createSections()
+					
 					DispatchQueue.main.async {
 						self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: to))
 					}
@@ -564,7 +612,7 @@ class SendViewModel: BaseViewModel {
 		let vm = SentPopupViewModel()
 		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
 		vm.avatarImage = MinterMyAPIURL.avatarAddress(address: to).url()
-		vm.secondButtonTitle = "CANCEL".localized()
+		vm.secondButtonTitle = "CLOSE".localized()
 		vm.username = to
 		vm.title = "Success!".localized()
 		return vm

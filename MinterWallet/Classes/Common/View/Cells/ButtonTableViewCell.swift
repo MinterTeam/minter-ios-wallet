@@ -32,8 +32,6 @@ class ButtonTableViewCellItem : BaseCellItem {
 
 class ButtonTableViewCell: BaseCell {
 	
-	private var disposeBag = DisposeBag()
-	
 	//MARK: -
 
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -63,24 +61,31 @@ class ButtonTableViewCell: BaseCell {
 	//MARK: -
 	
 	override func configure(item: BaseCellItem) {
+		super.configure(item: item)
+		
 		if let buttonItem = item as? ButtonTableViewCellItem {
 			button?.setTitle(buttonItem.title, for: .normal)
 			button?.pattern = buttonItem.buttonPattern
 			button?.isEnabled = buttonItem.isButtonEnabled
 			activityIndicator?.isHidden = true
 			
+			buttonItem.isButtonEnabledObservable?.bind(to: button.rx.isEnabled).disposed(by: disposeBag)
+			
 			buttonItem.isLoadingObserver?.bind(onNext: { [weak self] (val) in
-				self?.button?.isEnabled = !val
+				
+				var defaultState = buttonItem.isButtonEnabled
+				
+				self?.button?.isEnabled = defaultState//!val
 				self?.activityIndicator?.isHidden = !val
 				if val {
 					self?.activityIndicator?.startAnimating()
+					self?.button?.isEnabled = false
 				}
 				else {
 					self?.activityIndicator?.stopAnimating()
+//					self?.button?.isEnabled = defaultState
 				}
 			}).disposed(by: disposeBag)
-			
-			buttonItem.isButtonEnabledObservable?.bind(to: button.rx.isEnabled).disposed(by: disposeBag)
 			
 		}
 	}

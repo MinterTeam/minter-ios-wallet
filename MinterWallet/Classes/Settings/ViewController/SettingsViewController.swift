@@ -52,9 +52,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		viewModel.showLoginScreen.asObservable().filter({ (val) -> Bool in
 			return val == true
 		}).subscribe(onNext: { (show) in
-			guard let login = Storyboards.Login.instantiateInitialViewController() as? LoginViewController else {
-				return
-			}
+			let login = Storyboards.Login.instantiateInitialViewController()
 			
 			self.present(UINavigationController(rootViewController: login), animated: true, completion: nil)
 		}).disposed(by: disposeBag)

@@ -109,11 +109,33 @@ class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITab
 	func didValidateField(field: ValidatableCellProtocol?) {
 		let value = field?.validationText
 		
+		viewModel.username.value = value
+		
 	}
 	
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
 		
+		viewModel.username.value = field?.validationText
+		
+		checkErrors()
 	}
+	
+	//MARK: -
+	
+	func checkErrors() {
+		if let errors = viewModel.validate(), let err = errors.first {
+			if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+				cell.setInvalid(message: err)
+			}
+		}
+		else {
+			if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+				cell.setDefault()
+			}
+		}
+	}
+	
+	//MARK: -
 
 }
 
@@ -122,8 +144,14 @@ extension UsernameEditViewController : ButtonTableViewCellDelegate {
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
 		if let usernameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell, let username = usernameCell.textField.text {
-		
-			viewModel.update(username: username)
+			
+			self.viewModel.username.value = username
+			
+			checkErrors()
+			
+			if nil == viewModel.validate() {
+				viewModel.update(username: username)
+			}
 		}
 	}
 	

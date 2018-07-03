@@ -23,14 +23,28 @@ class TransactionsViewModel: BaseViewModel {
 		}
 	}
 	
-	override init() {
+	var addresses: [String] = []
+	
+	init(addresses: [String]? = nil) {
 		super.init()
-		
-		loadData()
 		
 		sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM"
 		
 		sectionTitleDateFullFormatter.dateFormat = "EEEE, dd MMM YYYY"
+		
+		if nil == addresses {
+			self.addresses = Session.shared.accounts.value.map { (acc) -> String in
+				return "Mx" + acc.address
+			}
+		}
+		else {
+			self.addresses = addresses ?? []
+		}
+		
+		loadData()
+		
+		createSections(with: [])
+		
 	}
 	
 	private var sectionTitleDateFormatter = DateFormatter()
@@ -52,7 +66,7 @@ class TransactionsViewModel: BaseViewModel {
 	
 	private var transactions = [TransactionItem]()
 	
-	private var isLoading = false
+	private var isLoading = Variable(false)
 	
 	private var canLoadMore = true
 	
@@ -84,11 +98,11 @@ class TransactionsViewModel: BaseViewModel {
 			
 			var title = ""
 			if hasAddress {
-				title = user?.username ?? (transaction.to ?? "")
+				title = user?.username != nil ? "@" + user!.username! : (transaction.to ?? "")
 				signMultiplier = -1.0
 			}
 			else {
-				title = user?.username ?? (transaction.from ?? "")
+				title = user?.username != nil ? "@" + user!.username! : (transaction.from ?? "")
 			}
 			
 			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(transaction.hash ?? String.random(length: 20))")
@@ -103,7 +117,7 @@ class TransactionsViewModel: BaseViewModel {
 			
 			
 			var section: BaseTableSectionItem?
-			if let idx = sectionCandidate, var sctn = newSections[safe: idx] {
+			if let idx = sectionCandidate, let sctn = newSections[safe: idx] {
 				section = sctn
 			}
 			else {
@@ -119,12 +133,22 @@ class TransactionsViewModel: BaseViewModel {
 
 		})
 		
-		let sctns = newSections.map({ (item) -> BaseTableSectionItem in
+		var sctns = newSections.map({ (item) -> BaseTableSectionItem in
 			return BaseTableSectionItem(header: item.header, items: (items[item.header] ?? []))
 		})
 		
-		self.sections.value = sctns
+		let loadingItem = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell", identifier: "LoadingTableViewCell")
+		loadingItem.isLoadingObservable = isLoading.asObservable()
 		
+		if var lastSection = sctns.last {
+			lastSection.items.append(loadingItem)
+		}
+		else {
+			let section = BaseTableSectionItem(header: "", items: [loadingItem])
+			sctns.append(section)
+		}
+		
+		self.sections.value = sctns
 	}
 	
 	private func sectionTitle(for date: Date?) -> String {
@@ -151,14 +175,10 @@ class TransactionsViewModel: BaseViewModel {
 	
 	func loadData() {
 
-		if isLoading || !canLoadMore { return }
-		isLoading = true
+		if isLoading.value || !canLoadMore { return }
+		isLoading.value = true
 		
-		let addresses = Session.shared.accounts.value.map { (acc) -> String in
-			return "Mx" + acc.address
-		}
-		
-		TransactionManager().transactions(page: self.page) { [weak self] (transactions, users, error) in
+		TransactionManager().transactions(addresses: addresses, page: self.page) { [weak self] (transactions, users, error) in
 			
 			self?.page += 1
 			
@@ -188,7 +208,7 @@ class TransactionsViewModel: BaseViewModel {
 			
 			self?.transactions.append(contentsOf: items)
 			
-			self?.isLoading = false
+			self?.isLoading.value = false
 			
 			self?.createSections(with: items)
 			
@@ -196,7 +216,7 @@ class TransactionsViewModel: BaseViewModel {
 	}
 	
 	func shouldLoadMore(_ indexPath: IndexPath) -> Bool {
-		guard canLoadMore && isLoading == false else {
+		guard canLoadMore && isLoading.value == false else {
 			return false
 		}
 		

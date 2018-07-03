@@ -15,16 +15,24 @@ import ObjectMapper
 
 class TransactionManager {
 	
-	func transactions(page: Int = 0, completion: (([Transaction]?, [String : User]?, Error?) -> ())?) {
+	func transactions(addresses: [String]? = nil, page: Int = 0, completion: (([Transaction]?, [String : User]?, Error?) -> ())?) {
 		
-		let addresses = Session.shared.accounts.value.map { (account) -> String in
-			return "Mx" + account.address
+		var ads: [String]? = addresses
+		if nil == ads {
+			ads = Session.shared.accounts.value.map { (account) -> String in
+				return "Mx" + account.address
+			}
+		}
+		
+		guard ads!.count > 0 else {
+			completion?([], [:], nil)
+			return
 		}
 		
 		let transactionManager = MinterExplorer.TransactionManager.default
 		let infoManager = MinterMy.InfoManager.default
 		
-		transactionManager.transactions(addresses: addresses, page: page) { (transactions, error) in
+		transactionManager.transactions(addresses: ads!, page: page) { (transactions, error) in
 			guard nil == error else {
 				return
 			}

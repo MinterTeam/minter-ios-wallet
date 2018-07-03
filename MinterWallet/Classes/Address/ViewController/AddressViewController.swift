@@ -86,6 +86,8 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 		
 		viewModel.accountObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
 		
+		self.navigationController?.navigationItem.rightBarButtonItem = nil
+		
 	}
 	
 	//MARK: -
@@ -161,8 +163,8 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 			return
 		}
 		
-		if item.identifier == "DisclosureTableViewCell_Balance" {
-			self.performSegue(withIdentifier: AddressViewController.Segue.showBalance.rawValue, sender: self)
+		if item.identifier.hasPrefix("DisclosureTableViewCell_Balance") {
+			self.performSegue(withIdentifier: AddressViewController.Segue.showBalance.rawValue, sender: indexPath)
 		}
 	}
 	
@@ -175,6 +177,32 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 			switchCell.switch.setOn(item.isOn.value, animated: true)
 		}
 	}
+	
+	//MARK: -
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		super.prepare(for: segue, sender: sender)
+		
+		if segue.identifier == AddressViewController.Segue.showBalance.rawValue {
+			
+			guard let indexPath = sender as? IndexPath else {
+				return
+			}
+			
+			guard let account = viewModel.account(for: indexPath.section) else {
+				return
+			}
+			
+			let address = account.address.stripMinterHexPrefix()
+			
+			let vm = TransactionsViewModel(addresses: ["Mx" + address])
+			if let vc = segue.destination as? TransactionsViewController {
+				vc.viewModel = vm
+			}
+			
+		}
+	}
+	
 }
 
 extension AddressViewController : SwitchTableViewCellDelegate {

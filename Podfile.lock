@@ -7,6 +7,9 @@ PODS:
   - ALCameraViewController (3.0.3)
   - BigInt (3.0.1):
     - SipHash (~> 1.2)
+  - CentrifugeiOS (5.0.1):
+    - IDZSwiftCommonCrypto (~> 0.10.0)
+    - Starscream (~> 3.0.4)
   - CKMnemonic (0.1.7):
     - CryptoSwift
   - CountdownLabel (3.0.0)
@@ -14,6 +17,7 @@ PODS:
   - Differentiator (3.0.2)
   - ExpandableCell (1.2.2)
   - ExpyTableView (1.0)
+  - IDZSwiftCommonCrypto (0.10.0)
   - ImagePicker (3.0.0)
   - KeychainSwift (11.0.0)
   - MarqueeLabel/Swift (3.1.4)
@@ -50,6 +54,7 @@ PODS:
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.1)
   - SnapKit (4.0.0)
+  - Starscream (3.0.5)
   - SVProgressHUD (2.2.5)
   - SwiftValidator (4.0.0)
   - Toucan (1.0.0)
@@ -61,6 +66,7 @@ DEPENDENCIES:
   - Alamofire
   - AlamofireImage
   - ALCameraViewController
+  - CentrifugeiOS
   - CKMnemonic
   - CountdownLabel
   - CryptoSwift
@@ -91,11 +97,13 @@ SPEC REPOS:
     - AlamofireImage
     - ALCameraViewController
     - BigInt
+    - CentrifugeiOS
     - CKMnemonic
     - CountdownLabel
     - CryptoSwift
     - Differentiator
     - ExpyTableView
+    - IDZSwiftCommonCrypto
     - ImagePicker
     - KeychainSwift
     - MarqueeLabel
@@ -112,6 +120,7 @@ SPEC REPOS:
     - secp256k1.swift
     - SipHash
     - SnapKit
+    - Starscream
     - Toucan
     - TPKeyboardAvoiding
 
@@ -145,12 +154,14 @@ SPEC CHECKSUMS:
   AlamofireImage: 3b35b586853abaf94ca1250f4e94cff3c21a4c0d
   ALCameraViewController: 6398a9282057f709b87a1ecc52a83b48028ade64
   BigInt: 8e8a52161c745cd3ab78e3dc346a9fbee51e6cf6
+  CentrifugeiOS: 1194c0928bda8f3cbbf3306d4165866e44a062e2
   CKMnemonic: 88e745afffea6f3c719c799d9869a2ea5eb9f08b
   CountdownLabel: 4534a68892b1deb73fda18702dfdc2c8444cec08
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   ExpandableCell: 759ca4b0b7655e34f4b73c28eec5028e22c53c63
   ExpyTableView: 75fe6494d4613fd3dc4bd965cce6e14cec7e2223
+  IDZSwiftCommonCrypto: 4eef2c46e262dfbcbc1fd76365e066336680ad7d
   ImagePicker: 973953c25960fe04729a7082a56194321c6762d2
   KeychainSwift: bea6bd9f98af7b8d7ca4aa79fe105c00fab532db
   MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
@@ -170,11 +181,12 @@ SPEC CHECKSUMS:
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: b26918dbe6925368d4322374371437c62c9038e2
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
   Toucan: 61867fb10948c02e9804280a95eb183e98eac97a
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
 
-PODFILE CHECKSUM: c64eec61181e33785d4f864d625dfec7213e9860
+PODFILE CHECKSUM: c31924fe0f553c5bb9dca8167c024013ab3081df
 
 COCOAPODS: 1.5.0
