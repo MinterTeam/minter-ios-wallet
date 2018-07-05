@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import AlamofireImage
 
 
 class CoinTableViewCellItem : BaseCellItem {
 	
 	var title: String?
 	var image: UIImage?
+	var imageURL: URL?
 	var date: Date?
 	var coin: String?
 	var amount: Double?
@@ -29,14 +31,24 @@ class CoinTableViewCell: BaseCell {
 
 	@IBOutlet weak var title: UILabel!
 	
-	@IBOutlet weak var coinImage: UIImageView!
+	@IBOutlet weak var coinImage: UIImageView! {
+		didSet {
+			coinImage.makeBorderWithCornerRadius(radius: 17, borderColor: .white, borderWidth: 2)
+		}
+	}
 	
 	@IBOutlet weak var amount: UILabel!
 	
 	@IBOutlet weak var coin: UILabel!
-	//MARK: -
 	
-	var shadowLayer = CAShapeLayer()
+	@IBOutlet weak var coinImageWrapper: UIView! {
+		didSet {
+			coinImageWrapper.layer.cornerRadius = 17
+			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
+		}
+	}
+	
+	//MARK: -
 	
 	//MARK: -
 	
@@ -58,6 +70,12 @@ class CoinTableViewCell: BaseCell {
 		if let transaction = item as? CoinTableViewCellItem {
 			title.text = transaction.title
 			coinImage.image = transaction.image
+			if let url = transaction.imageURL {
+				coinImage.af_setImage(withURL: url)
+			}
+			else {
+				coinImage.image = transaction.image
+			}
 			amount.text = formatter.string(from: (transaction.amount ?? 0) as NSNumber)
 			coin.text = transaction.coin
 		}
@@ -65,25 +83,8 @@ class CoinTableViewCell: BaseCell {
 	
 	//MARK: -
 	
-	func dropShadow() {
-		shadowLayer.removeFromSuperlayer()
-		shadowLayer.frame = coinImage.frame
-		shadowLayer.path = UIBezierPath(roundedRect: coinImage.bounds, cornerRadius: 17.0).cgPath
-		shadowLayer.shadowOpacity = 1.0
-		shadowLayer.shadowRadius = 18.0
-		shadowLayer.masksToBounds = false
-		shadowLayer.shadowColor = UIColor(hex: 0x000000)?.cgColor
-		shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-		shadowLayer.opacity = 0.2
-		shadowLayer.shouldRasterize = true
-		shadowLayer.rasterizationScale = UIScreen.main.scale
-		layer.insertSublayer(shadowLayer, at: 0)
-	}
-	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		
-		dropShadow()
 	}
 
 }

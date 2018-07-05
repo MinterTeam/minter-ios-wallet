@@ -48,6 +48,8 @@ class ValidatableTextField: UITextField {
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		
+		self.font = UIFont.mediumFont(of: 16.0)
+		
 		rightViewInvalid = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 30.0, height: 46.0))
 		rightViewInvalid?.translatesAutoresizingMaskIntoConstraints = false
 		invalidImageView.translatesAutoresizingMaskIntoConstraints = false

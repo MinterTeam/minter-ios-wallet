@@ -275,6 +275,27 @@ struct Storyboards {
         }
     }
 
+    struct Convert: Storyboard {
+
+        static let identifier = "Convert"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> ConvertViewController {
+            return self.storyboard.instantiateInitialViewController() as! ConvertViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct LaunchScreen: Storyboard {
 
         static let identifier = "LaunchScreen"
@@ -614,10 +635,13 @@ extension CoinsViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
         case showTransactions = "showTransactions"
+        case showConvert = "showConvert"
 
         var kind: SegueKind? {
             switch self {
             case .showTransactions:
+                return SegueKind(rawValue: "show")
+            case .showConvert:
                 return SegueKind(rawValue: "show")
             }
         }
@@ -788,6 +812,8 @@ extension HomeViewController {
 }
 
 // MARK: - LoginViewController
+
+// MARK: - ConvertViewController
 
 // MARK: - TabBarController
 

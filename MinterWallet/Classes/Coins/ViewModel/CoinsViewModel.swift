@@ -138,6 +138,7 @@ class CoinsViewModel: BaseViewModel {
 			let coin = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell", identifier: "CoinTableViewCell_\(cellAdditionalId)")
 			coin.title = key
 			coin.image = UIImage(named: "AvatarPlaceholderImage")
+			coin.imageURL = MinterMyAPIURL.avatarByCoin(coin: key).url()
 			coin.coin = key
 			coin.amount = bal[key]
 			

@@ -106,6 +106,7 @@
                         <outlet property="tableView" destination="WIo-BM-mO4" id="QrX-Ng-w8P"/>
                         <outlet property="usernameView" destination="KgI-cv-0c8" id="Pvt-yW-LoK"/>
                         <segue destination="EEO-nY-xhf" kind="show" identifier="showTransactions" id="yuR-5V-wmd"/>
+                        <segue destination="Bnl-uG-dmT" kind="show" identifier="showConvert" id="8AC-xe-OEi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zcm-H8-vEm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -163,7 +164,15 @@
                 <viewControllerPlaceholder storyboardName="Transactions" id="EEO-nY-xhf" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="clf-9F-tRN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1865" y="184"/>
+            <point key="canvasLocation" x="1852" y="144"/>
+        </scene>
+        <!--Convert-->
+        <scene sceneID="dnw-OR-PcY">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Convert" id="Bnl-uG-dmT" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Nc-hj-1vh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1828" y="245"/>
         </scene>
         <!--Coin-->
         <scene sceneID="6HV-PS-vXh">

@@ -56,12 +56,6 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 	@IBOutlet weak var textView: GrowingDefaultTextView! {
 		didSet {
 			textView.contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 6, right: 16)
-			
-			textView?.rx.text.orEmpty.asObservable().subscribe(onNext: { (val) in
-				self.validateDelegate?.validate(field: self, completion: {
-					
-				})
-			}).disposed(by: disposeBag)
 		}
 	}
 	
@@ -126,6 +120,12 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 					break
 				}
 				
+			}).disposed(by: disposeBag)
+			
+			textView?.rx.text.orEmpty.asObservable().subscribe(onNext: { (val) in
+				self.validateDelegate?.validate(field: self, completion: {
+					
+				})
 			}).disposed(by: disposeBag)
 			
 		}

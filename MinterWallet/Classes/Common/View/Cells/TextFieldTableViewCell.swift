@@ -84,15 +84,7 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 	
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
-	@IBOutlet weak var textField: ValidatableTextField! {
-		didSet {
-			textField?.rx.text.orEmpty.asObservable().subscribe(onNext: { [weak self] (val) in
-				self?.validateDelegate?.validate(field: self, completion: {
-					//			print("Validation has been completed")
-				})
-			}).disposed(by: disposeBag)
-		}
-	}
+	@IBOutlet weak var textField: ValidatableTextField!
 	
 	//MARK: - Validators
 	
@@ -154,6 +146,13 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 					self?.activityIndicator.isHidden = true
 				}
 			}).disposed(by: disposeBag)
+			
+			textField?.rx.text.orEmpty.asObservable().subscribe(onNext: { [weak self] (val) in
+				self?.validateDelegate?.validate(field: self, completion: {
+					//			print("Validation has been completed")
+				})
+			}).disposed(by: disposeBag)
+			
 		}
 	}
 	

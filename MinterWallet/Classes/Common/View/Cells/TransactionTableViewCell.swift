@@ -124,25 +124,17 @@ class TransactionTableViewCell: ExpandableCell {
 	
 	//MARK: -
 	
-	func dropShadow() {
-		shadowLayer.removeFromSuperlayer()
-		shadowLayer.frame = coinImage.frame
-		shadowLayer.path = UIBezierPath(roundedRect: coinImage.bounds, cornerRadius: 17.0).cgPath
-		shadowLayer.shadowOpacity = 1.0
-		shadowLayer.shadowRadius = 18.0
-		shadowLayer.masksToBounds = false
-		shadowLayer.shadowColor = UIColor(hex: 0x000000)?.cgColor
-		shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-		shadowLayer.opacity = 0.2
-		shadowLayer.shouldRasterize = true
-		shadowLayer.rasterizationScale = UIScreen.main.scale
-		layer.insertSublayer(shadowLayer, at: 0)
-	}
-	
 	override func layoutSubviews() {
 		super.layoutSubviews()
+	}
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
 		
-//		dropShadow()
+		if expanded {
+			
+		}
+		
 	}
 
 }

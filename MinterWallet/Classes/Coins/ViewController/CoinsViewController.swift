@@ -248,6 +248,9 @@ extension CoinsViewController : ButtonTableViewCellDelegate {
 		if item.identifier == "ButtonTableViewCell_Transactions" {
 			performSegue(withIdentifier: "showTransactions", sender: nil)
 		}
+		else if item.identifier == "ButtonTableViewCell_Convert" {
+			performSegue(withIdentifier: Segue.showConvert.rawValue, sender: self)
+		}
 	}
 }
 
