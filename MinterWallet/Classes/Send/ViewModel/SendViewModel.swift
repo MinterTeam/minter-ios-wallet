@@ -552,8 +552,7 @@ class SendViewModel: BaseViewModel {
 						Session.shared.loadTransactions()
 						SessionHelper.reloadAccounts()
 					})
-				}
-				
+				}	
 			}
 		}
 	}
@@ -561,9 +560,12 @@ class SendViewModel: BaseViewModel {
 	func sendTx(seed: Data, nonce: Int, to: String, coin: String, amount: Double, completion: ((Bool?) -> ())? = nil) {
 		
 		let newPk = self.accountManager.privateKey(from: seed)
-		let newAmount = amount * pow(10, 18)
 		let nonce = BigUInt(nonce)
-		let value = BigUInt(newAmount)
+		guard let value = BigUInt(String(Int(amount * pow(10, 18)))) else {
+			completion?(false)
+			return
+		}
+		
 		let tx = SendCoinRawTransaction(nonce: nonce, to: to, value: value, coin: coin.uppercased())
 		let pkString = newPk.raw.toHexString()
 		
