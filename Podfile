@@ -31,6 +31,8 @@ target 'MinterWallet' do
 		pod 'QRCode'
 		pod 'QRCodeReader.swift', '~> 8.2.0'
 		pod 'CentrifugeiOS'
+		pod 'Fabric'
+		pod 'Crashlytics'
 end
 
 target 'MinterWalletTests' do

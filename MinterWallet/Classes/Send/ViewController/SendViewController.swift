@@ -282,7 +282,7 @@ extension SendViewController {
 		}
 		
 		guard let amountCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? TextFieldTableViewCell,
-			let amount = Double(amountCell.textField.text ?? "0") else {
+			let amount = Double(amountCell.textField.text?.replacingOccurrences(of: ",", with: ".") ?? "0") else {
 				return
 		}
 		

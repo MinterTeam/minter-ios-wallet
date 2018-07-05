@@ -85,7 +85,7 @@ class CoinsViewModel: BaseViewModel {
 			
 			let user = transactionItem.user
 			
-			let sectionId = transaction.hash ?? String.random(length: 20)
+			let sectionId = (transaction.hash  ?? String.random(length: 20))// + String(transaction.date?.timeIntervalSinceNow ?? 0)
 			
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_" + sectionId)
 			

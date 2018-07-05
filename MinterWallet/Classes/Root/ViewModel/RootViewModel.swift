@@ -34,6 +34,7 @@ class RootViewModel: BaseViewModel {
 	var token: String?
 	
 	var client: CentrifugeClient?
+	var isConnected: Bool = false
 	
 	var addressManager = AddressManager.default
 
@@ -74,46 +75,54 @@ class RootViewModel: BaseViewModel {
 				self?.timestamp = timestamp
 				self?.token = token
 				
-				self?.unsubscribeAccountBalanceChange() {
-					
-				}
-				
-				self?.subscribeAccountBalanceChange()
-				
+				self?.connect(completion: {
+					if self?.isConnected == true {
+						self?.subscribeAccountBalanceChange()
+					}
+				})
 			})
 			
 		}).disposed(by: disposeBag)
-		
-		
+
 	}
 	
-	private func subscribeAccountBalanceChange() {
+	func connect(completion: (() -> ())?) {
 		
 		guard let cnl = self.channel, let tkn = self.token, let tmstmp = self.timestamp else {
 			return
 		}
 		
-		client?.disconnect()
-		
 		let user = ""//String(Session.shared.user.value?.id ?? 0)
 		let timestamp = String(tmstmp)
 		let token = tkn
-
+		
 		let creds = CentrifugeCredentials(token: token, user: user, timestamp: timestamp)
 		let url = "ws://92.53.87.98:8000/connection/websocket"
 		client = Centrifuge.client(url: url, creds: creds, delegate: self)
-
+		
 		client?.connect { message, error in
-
+			
 			guard nil == error else {
+				self.isConnected = false
 				return
 			}
-
-			self.client?.subscribe(toChannel: cnl, delegate: self, completion: { (message, error) in
-				print(message)
-				print(error)
-			})
+			
+			self.isConnected = true
+			completion?()
+			
 		}
+	}
+	
+	private func subscribeAccountBalanceChange() {
+		guard self.isConnected == true else {
+			return
+		}
+		
+		self.client?.subscribe(toChannel: self.channel!, delegate: self, completion: { (mes, err) in
+			print(mes)
+			print(err)
+		})
+
 	}
 	
 	private func unsubscribeAccountBalanceChange(completed: (() -> ())?) {
@@ -123,13 +132,13 @@ class RootViewModel: BaseViewModel {
 			return
 		}
 		
-//		self.client?.unsubscribe(fromChannel: cnl, completion: { (message, error) in
-//
-//			defer {
-//				completed?()
-//			}
-//
-//		})
+		self.client?.unsubscribe(fromChannel: cnl, completion: { (message, error) in
+
+			defer {
+				completed?()
+			}
+
+		})
 	}
 
 }

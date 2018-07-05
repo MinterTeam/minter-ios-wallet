@@ -13,10 +13,13 @@ PODS:
   - CKMnemonic (0.1.7):
     - CryptoSwift
   - CountdownLabel (3.0.0)
+  - Crashlytics (3.10.2):
+    - Fabric (~> 1.7.7)
   - CryptoSwift (0.10.0)
   - Differentiator (3.0.2)
   - ExpandableCell (1.2.2)
   - ExpyTableView (1.0)
+  - Fabric (1.7.7)
   - IDZSwiftCommonCrypto (0.10.0)
   - ImagePicker (3.0.0)
   - KeychainSwift (11.0.0)
@@ -69,9 +72,11 @@ DEPENDENCIES:
   - CentrifugeiOS
   - CKMnemonic
   - CountdownLabel
+  - Crashlytics
   - CryptoSwift
   - ExpandableCell (from `../ExpandableCell`)
   - ExpyTableView
+  - Fabric
   - ImagePicker
   - KeychainSwift
   - McPicker
@@ -100,9 +105,11 @@ SPEC REPOS:
     - CentrifugeiOS
     - CKMnemonic
     - CountdownLabel
+    - Crashlytics
     - CryptoSwift
     - Differentiator
     - ExpyTableView
+    - Fabric
     - IDZSwiftCommonCrypto
     - ImagePicker
     - KeychainSwift
@@ -157,10 +164,12 @@ SPEC CHECKSUMS:
   CentrifugeiOS: 1194c0928bda8f3cbbf3306d4165866e44a062e2
   CKMnemonic: 88e745afffea6f3c719c799d9869a2ea5eb9f08b
   CountdownLabel: 4534a68892b1deb73fda18702dfdc2c8444cec08
+  Crashlytics: 0360624eea1c978a743feddb2fb1ef8b37fb7a0d
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   ExpandableCell: 759ca4b0b7655e34f4b73c28eec5028e22c53c63
   ExpyTableView: 75fe6494d4613fd3dc4bd965cce6e14cec7e2223
+  Fabric: bda89e242bce1b7b8ab264248cf3407774ce0095
   IDZSwiftCommonCrypto: 4eef2c46e262dfbcbc1fd76365e066336680ad7d
   ImagePicker: 973953c25960fe04729a7082a56194321c6762d2
   KeychainSwift: bea6bd9f98af7b8d7ca4aa79fe105c00fab532db
@@ -187,6 +196,6 @@ SPEC CHECKSUMS:
   Toucan: 61867fb10948c02e9804280a95eb183e98eac97a
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
 
-PODFILE CHECKSUM: c31924fe0f553c5bb9dca8167c024013ab3081df
+PODFILE CHECKSUM: 90f18036b9f08d0e5e46be0ad16799d4bf37e505
 
 COCOAPODS: 1.5.0

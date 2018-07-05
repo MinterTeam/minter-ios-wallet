@@ -218,7 +218,7 @@
 		6719CF909F82E3872F3A93D9 /* LoginViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		73982ED5A99C92B1AC2B4148 /* Coins.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Coins.storyboard; sourceTree = "<group>"; };
 		7A971869C2A1BA233AE2C2A3 /* RootViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
-		8EB9FDE7FE8682F706D3A2E4 /* Convert.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; path = Convert.storyboard; sourceTree = "<group>"; };
+		8EB9FDE7FE8682F706D3A2E4 /* Convert.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Convert.storyboard; sourceTree = "<group>"; };
 		95B1FA5B097979AF8769F441 /* Transactions.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Transactions.storyboard; sourceTree = "<group>"; };
 		990C3B74651449146698C1EC /* SettingsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9D7E209968E071ABD4EA83FD /* Settings.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
@@ -422,7 +422,6 @@
 			isa = PBXGroup;
 			children = (
 			);
-			name = Router;
 			path = Router;
 			sourceTree = "<group>";
 		};
@@ -517,7 +516,6 @@
 			children = (
 				B1DD36989D4BF5B7F08C1150 /* ConvertViewController.swift */,
 			);
-			name = ViewController;
 			path = ViewController;
 			sourceTree = "<group>";
 		};
@@ -559,7 +557,6 @@
 			children = (
 				A42B75D78AC3C32F51A833EC /* ConvertViewModel.swift */,
 			);
-			name = ViewModel;
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
@@ -700,7 +697,6 @@
 			isa = PBXGroup;
 			children = (
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -1362,6 +1358,7 @@
 				FA669B62207239F200AD110A /* Frameworks */,
 				FA669B63207239F200AD110A /* Resources */,
 				6AE9AC3B6A90BD4349CF1CDF /* [CP] Embed Pods Frameworks */,
+				FA380F0920EE2AC3004B91C9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1674,6 +1671,19 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		FA380F0920EE2AC3004B91C9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" e0c0d96cb82d0098481845be3477bc7970f956e3 f517f858c0ad1f507a4748574f0f8ee3d3fba624917b0b78fc49f5f8859b78f4";
 		};
 		FA669BD4207265AB00AD110A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

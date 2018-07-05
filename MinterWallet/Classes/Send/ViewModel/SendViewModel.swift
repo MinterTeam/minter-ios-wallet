@@ -260,7 +260,7 @@ class SendViewModel: BaseViewModel {
 			return isToValid(to: value)
 		}
 		else if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
-			self.amountField = value
+			self.amountField = value.replacingOccurrences(of: ",", with: ".")
 			
 			return isAmountValid(amount: Double(value) ?? 0)
 		}
@@ -283,7 +283,7 @@ class SendViewModel: BaseViewModel {
 //		}
 //		else
 		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
-			self.amountField = value
+			self.amountField = value.replacingOccurrences(of: ",", with: ".")
 			
 			if isAmountValid(amount: self.amount.value ?? 0) {
 				amountStateObservable.value = .default
@@ -561,9 +561,9 @@ class SendViewModel: BaseViewModel {
 	func sendTx(seed: Data, nonce: Int, to: String, coin: String, amount: Double, completion: ((Bool?) -> ())? = nil) {
 		
 		let newPk = self.accountManager.privateKey(from: seed)
-		
+		let newAmount = amount * pow(10, 18)
 		let nonce = BigUInt(nonce)
-		let value = BigUInt(amount * TransactionCoinFactor)
+		let value = BigUInt(newAmount)
 		let tx = SendCoinRawTransaction(nonce: nonce, to: to, value: value, coin: coin.uppercased())
 		let pkString = newPk.raw.toHexString()
 		
