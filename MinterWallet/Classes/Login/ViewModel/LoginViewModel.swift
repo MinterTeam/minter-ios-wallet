@@ -27,7 +27,16 @@ class LoginViewModel: BaseViewModel {
 	
 	var isLoading = Variable(false)
 	
+	var username = Variable<String?>(nil)
+	var password = Variable<String?>(nil)
+	
 	var notifiableError = Variable<NotifiableError?>(nil)
+	
+	var isButtonEnabled: Observable<Bool> {
+		return Observable.combineLatest(username.asObservable(), password.asObservable()).map({ (val) -> Bool in
+			return String.isUsernameValid(val.0 ?? "") && (val.1 ?? "").count > 4
+		})
+	}
 	
 	//MARK: -
 	
@@ -50,6 +59,8 @@ class LoginViewModel: BaseViewModel {
 		button.title = "CONTINUE".localized()
 		button.buttonPattern = "purple"
 		button.isLoadingObserver = self.isLoading.asObservable()
+		button.isButtonEnabledObservable = self.isButtonEnabled
+		button.isButtonEnabled = false
 		
 		var section = BaseTableSectionItem(header: "")
 		section.items = [username, password, button]

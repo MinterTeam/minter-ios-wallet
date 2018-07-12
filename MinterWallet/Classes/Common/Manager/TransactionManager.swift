@@ -15,6 +15,10 @@ import ObjectMapper
 
 class TransactionManager {
 	
+	
+	let transactionManager = MinterExplorer.TransactionManager.default
+	let infoManager = MinterMy.InfoManager.default
+	
 	func transactions(addresses: [String]? = nil, page: Int = 0, completion: (([Transaction]?, [String : User]?, Error?) -> ())?) {
 		
 		var ads: [String]? = addresses
@@ -29,40 +33,38 @@ class TransactionManager {
 			return
 		}
 		
-		let transactionManager = MinterExplorer.TransactionManager.default
-		let infoManager = MinterMy.InfoManager.default
-		
 		transactionManager.transactions(addresses: ads!, page: page) { (transactions, error) in
 			guard nil == error else {
+				completion?(nil, nil, error)
 				return
 			}
-			
+
 			let users = transactions?.map({ (transaction) -> String? in
-				let from = transaction.from
-				let to = transaction.to
-				
+				let from = transaction.data?.from
+				let to = transaction.data?.to
+
 				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
+					account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
 				})
-				
+
 				return hasAddress ? to : from
 			}).filter({ (user) -> Bool in
 				return user != nil
 			}) as! [String]?
-			
+
 			if (users?.count ?? 0) > 0 {
-				infoManager.info(by: users!, completion: { (res, err) in
-					
+				self.infoManager.info(by: users!, completion: { (res, err) in
+
 					var usrs = [String : User]()
-					
+
 					defer {
 						completion?(transactions, usrs, error)
 					}
-					
+
 					guard err == nil else {
 						return
 					}
-					
+
 					res?.forEach({ (dict) in
 						if let key = dict["address"] as? String, let userDict = dict["user"] as? [String : Any] {
 							let user = User()
@@ -73,11 +75,15 @@ class TransactionManager {
 							user.language = userDict["language"] as? String
 							user.avatar = userDict["avatar"] as? String
 							user.phone = userDict["phone"] as? String
-							
+
 							usrs[key.lowercased()] = user
 						}
 					})
 				})
+			}
+			else {
+				completion?(transactions, nil, error)
+				return
 			}
 		}
 	}

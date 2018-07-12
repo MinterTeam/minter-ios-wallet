@@ -48,7 +48,7 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 	
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
-		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -67,6 +67,14 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 		
 		cell.configure(item: item)
 		
+		if let buttonCell = (cell as? ButtonTableViewCell) {
+			buttonCell.delegate = self
+		}
+		
+		if var textFieldCell = cell as? ValidatableCellProtocol {
+			textFieldCell.validateDelegate = self
+		}
+		
 		
 		return cell
 	}
@@ -81,4 +89,48 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 		
 	}
 	
+}
+
+extension PasswordEditViewController : ButtonTableViewCellDelegate, ValidatableCellDelegate {
+	
+	//MARK: -
+	
+	func didValidateField(field: ValidatableCellProtocol?) {
+		if let ip = tableView.indexPath(for: field as! UITableViewCell) {
+			if ip.row == 0 {
+				viewModel.password.value = field?.validationText
+			}
+			else if ip.row == 1 {
+				viewModel.confirmPassword.value = field?.validationText
+			}
+		}
+	}
+	
+	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
+		if let ip = tableView.indexPath(for: field as! UITableViewCell) {
+			if ip.row == 0 {
+				viewModel.password.value = field?.validationText
+			}
+			else if ip.row == 1 {
+				viewModel.confirmPassword.value = field?.validationText
+			}
+			if let item = viewModel.cellItem(section: ip.section, row: ip.row) {
+				let errors = viewModel.validate(item: item)
+				if let err = errors?.first {
+					(field as? TextFieldTableViewCell)?.setInvalid(message: err)
+				}
+				else {
+					(field as? TextFieldTableViewCell)?.setDefault()
+				}
+			}
+		}
+
+	}
+	
+	//MARK: -
+	
+	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		viewModel.changePassword()
+	}
+
 }

@@ -10,6 +10,7 @@ import RxSwift
 import CentrifugeiOS
 import MinterCore
 import MinterExplorer
+import RxAppState
 
 
 class RootViewModel: BaseViewModel {
@@ -43,21 +44,24 @@ class RootViewModel: BaseViewModel {
 		
 		SessionHelper.reloadAccounts()
 		
-		Session.shared.isLoggedIn.asObservable().distinctUntilChanged().subscribe(onNext: { /*[weak self]*/ (isLoggedIn) in
-			if isLoggedIn {
-				//show wallet
-				SessionHelper.reloadAccounts()
-				Session.shared.loadUser()
-			}
+		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in
+			return isLoggedIn
+		}).distinctUntilChanged().subscribe(onNext: { (isLoggedIn) in
+			//show wallet
+			SessionHelper.reloadAccounts()
+			Session.shared.loadUser()
 		}).disposed(by: disposeBag)
 		
-		Session.shared.accounts.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (accounts) in
+		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable()).subscribe(onNext: { [weak self] (state, accounts) in
 			
 			let addresses = accounts.map({ (account) -> String in
 				return "Mx" + account.address
 			})
 			
 			guard addresses.count > 0 else {
+				self?.unsubscribeAccountBalanceChange(completed: {
+					
+				})
 				return
 			}
 			
@@ -88,7 +92,7 @@ class RootViewModel: BaseViewModel {
 	
 	func connect(completion: (() -> ())?) {
 		
-		guard let cnl = self.channel, let tkn = self.token, let tmstmp = self.timestamp else {
+		guard let tkn = self.token, let tmstmp = self.timestamp else {
 			return
 		}
 		
@@ -97,7 +101,7 @@ class RootViewModel: BaseViewModel {
 		let token = tkn
 		
 		let creds = CentrifugeCredentials(token: token, user: user, timestamp: timestamp)
-		let url = "ws://92.53.87.98:8000/connection/websocket"
+		let url = "wss://rtm.explorer.minter.network/connection/websocket"
 		client = Centrifuge.client(url: url, creds: creds, delegate: self)
 		
 		client?.connect { message, error in
@@ -114,11 +118,11 @@ class RootViewModel: BaseViewModel {
 	}
 	
 	private func subscribeAccountBalanceChange() {
-		guard self.isConnected == true else {
+		guard self.isConnected == true, let cnl = self.channel else {
 			return
 		}
 		
-		self.client?.subscribe(toChannel: self.channel!, delegate: self, completion: { (mes, err) in
+		self.client?.subscribe(toChannel: cnl, delegate: self, completion: { (mes, err) in
 			print(mes)
 			print(err)
 		})
@@ -137,7 +141,6 @@ class RootViewModel: BaseViewModel {
 			defer {
 				completed?()
 			}
-
 		})
 	}
 
@@ -159,18 +162,22 @@ extension RootViewModel : CentrifugeClientDelegate, CentrifugeChannelDelegate {
 	
 	func client(_ client: CentrifugeClient, didReceiveMessageInChannel channel: String, message: CentrifugeServerMessage) {
 		Session.shared.loadBalances()
+		Session.shared.loadTransactions()
 	}
 	
 	func client(_ client: CentrifugeClient, didReceiveJoinInChannel channel: String, message: CentrifugeServerMessage) {
 		Session.shared.loadBalances()
+		Session.shared.loadTransactions()
 	}
 	
 	func client(_ client: CentrifugeClient, didReceiveLeaveInChannel channel: String, message: CentrifugeServerMessage) {
 		Session.shared.loadBalances()
+		Session.shared.loadTransactions()
 	}
 	
 	func client(_ client: CentrifugeClient, didReceiveUnsubscribeInChannel channel: String, message: CentrifugeServerMessage) {
 		Session.shared.loadBalances()
+		Session.shared.loadTransactions()
 	}
 	
 }

@@ -43,9 +43,11 @@ class LoadingTableViewCell: BaseCell {
 			item.isLoadingObservable?.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
 				if val {
 					self?.activityIndicator?.startAnimating()
+					self?.activityIndicator?.isHidden = false
 				}
 				else {
 					self?.activityIndicator?.stopAnimating()
+					self?.activityIndicator?.isHidden = true
 				}
 			}).disposed(by: disposeBag)
 			

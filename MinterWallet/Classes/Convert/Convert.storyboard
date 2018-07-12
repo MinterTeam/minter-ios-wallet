@@ -30,7 +30,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU GET" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lX5-si-G9R">
-                                        <rect key="frame" x="40" y="42" width="48" height="13"/>
+                                        <rect key="frame" x="40" y="42" width="46" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -48,7 +48,10 @@
                                             <outlet property="delegate" destination="cg1-sc-2Jk" id="YwE-NP-aXE"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EbC-by-mD1" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="n1y-bh-FNY">
+                                        <rect key="frame" x="110" y="76.5" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.0" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EbC-by-mD1" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
                                         <rect key="frame" x="150" y="63.5" width="215" height="46"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -57,8 +60,11 @@
                                             <outlet property="delegate" destination="cg1-sc-2Jk" id="6uL-Nv-lXa"/>
                                         </connections>
                                     </textField>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="V6N-Jt-Zi3">
+                                        <rect key="frame" x="335" y="76.5" width="20" height="20"/>
+                                    </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU SPEND" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVm-Vc-YX1">
-                                        <rect key="frame" x="40" y="129.5" width="63.5" height="13"/>
+                                        <rect key="frame" x="40" y="129.5" width="61" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -75,7 +81,7 @@
                                             <outlet property="delegate" destination="cg1-sc-2Jk" id="Yu1-rL-PkB"/>
                                         </connections>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g8I-Fu-AA3" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.0" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g8I-Fu-AA3" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
                                         <rect key="frame" x="150" y="150" width="215" height="46"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -84,6 +90,9 @@
                                             <outlet property="delegate" destination="cg1-sc-2Jk" id="SdP-Ki-wPS"/>
                                         </connections>
                                     </textField>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pSr-2Y-HxX">
+                                        <rect key="frame" x="335" y="163" width="20" height="20"/>
+                                    </activityIndicatorView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4V-x7-ifu" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
                                         <rect key="frame" x="20" y="216" width="335" height="50"/>
                                         <constraints>
@@ -115,14 +124,20 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="animateButtonTouch" value="YES"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="exchangeButtonDidTap:" destination="cg1-sc-2Jk" eventType="touchUpInside" id="Ywi-jn-69K"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="n1y-bh-FNY" firstAttribute="trailing" secondItem="JHK-Ad-eE3" secondAttribute="trailing" constant="-10" id="0jI-Rx-IdB"/>
                                     <constraint firstItem="g8I-Fu-AA3" firstAttribute="centerY" secondItem="IQT-xf-1hm" secondAttribute="centerY" id="2tD-60-1ns"/>
+                                    <constraint firstItem="pSr-2Y-HxX" firstAttribute="trailing" secondItem="g8I-Fu-AA3" secondAttribute="trailing" constant="-10" id="39H-6c-r5a"/>
                                     <constraint firstItem="Pev-rW-XlN" firstAttribute="leading" secondItem="dd0-ti-k7h" secondAttribute="leading" constant="20" id="517-3l-8Wj"/>
                                     <constraint firstItem="lX5-si-G9R" firstAttribute="top" secondItem="dd0-ti-k7h" secondAttribute="top" constant="42" id="DtB-Rb-Esg"/>
                                     <constraint firstItem="IQT-xf-1hm" firstAttribute="leading" secondItem="dd0-ti-k7h" secondAttribute="leading" constant="10" id="EKi-it-jZR"/>
                                     <constraint firstItem="g8I-Fu-AA3" firstAttribute="leading" secondItem="IQT-xf-1hm" secondAttribute="trailing" constant="10" id="H3a-KG-v1Z"/>
+                                    <constraint firstItem="V6N-Jt-Zi3" firstAttribute="centerY" secondItem="EbC-by-mD1" secondAttribute="centerY" id="Hwp-Jz-zwP"/>
                                     <constraint firstAttribute="trailing" secondItem="Pev-rW-XlN" secondAttribute="trailing" constant="20" id="I0A-e3-7oQ"/>
                                     <constraint firstItem="IQT-xf-1hm" firstAttribute="top" secondItem="LVm-Vc-YX1" secondAttribute="bottom" constant="8" id="ICf-BT-iu8"/>
                                     <constraint firstItem="EbC-by-mD1" firstAttribute="leading" secondItem="JHK-Ad-eE3" secondAttribute="trailing" constant="10" id="IaS-2r-067"/>
@@ -132,13 +147,16 @@
                                     <constraint firstItem="IQT-xf-1hm" firstAttribute="width" secondItem="JHK-Ad-eE3" secondAttribute="width" id="PKu-qo-cKu"/>
                                     <constraint firstItem="LVm-Vc-YX1" firstAttribute="leading" secondItem="lX5-si-G9R" secondAttribute="leading" id="Pbo-UY-YaT"/>
                                     <constraint firstItem="g8I-Fu-AA3" firstAttribute="height" secondItem="IQT-xf-1hm" secondAttribute="height" id="SAR-xi-GaU"/>
+                                    <constraint firstItem="pSr-2Y-HxX" firstAttribute="centerY" secondItem="g8I-Fu-AA3" secondAttribute="centerY" id="YJ2-ly-Wuf"/>
                                     <constraint firstAttribute="trailing" secondItem="xCS-fV-2hQ" secondAttribute="trailing" id="Ycp-1L-CqH"/>
                                     <constraint firstItem="w4V-x7-ifu" firstAttribute="top" secondItem="IQT-xf-1hm" secondAttribute="bottom" constant="20" id="aOy-ea-Lj9"/>
+                                    <constraint firstItem="V6N-Jt-Zi3" firstAttribute="trailing" secondItem="EbC-by-mD1" secondAttribute="trailing" constant="-10" id="bkB-Kr-HTe"/>
                                     <constraint firstAttribute="trailing" secondItem="EbC-by-mD1" secondAttribute="trailing" constant="10" id="cOR-cQ-uNE"/>
                                     <constraint firstItem="lX5-si-G9R" firstAttribute="leading" secondItem="dd0-ti-k7h" secondAttribute="leading" constant="40" id="cYT-jE-m7l"/>
                                     <constraint firstItem="EbC-by-mD1" firstAttribute="height" secondItem="JHK-Ad-eE3" secondAttribute="height" id="eab-eF-h8x"/>
                                     <constraint firstItem="xCS-fV-2hQ" firstAttribute="top" secondItem="w4V-x7-ifu" secondAttribute="bottom" constant="20" id="f2H-xF-q3p"/>
                                     <constraint firstItem="JHK-Ad-eE3" firstAttribute="top" secondItem="lX5-si-G9R" secondAttribute="bottom" constant="8" id="gha-kg-AhW"/>
+                                    <constraint firstItem="n1y-bh-FNY" firstAttribute="centerY" secondItem="JHK-Ad-eE3" secondAttribute="centerY" id="hN9-pf-voA"/>
                                     <constraint firstAttribute="bottom" secondItem="Pev-rW-XlN" secondAttribute="bottom" constant="20" id="igu-Bg-Xs1"/>
                                     <constraint firstItem="EbC-by-mD1" firstAttribute="centerY" secondItem="JHK-Ad-eE3" secondAttribute="centerY" id="k3F-ju-DLD"/>
                                     <constraint firstItem="w4V-x7-ifu" firstAttribute="leading" secondItem="dd0-ti-k7h" secondAttribute="leading" constant="20" id="sX1-lv-hJP"/>
@@ -158,9 +176,12 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="coinActivityIndicator" destination="n1y-bh-FNY" id="q7K-Wk-56N"/>
                         <outlet property="exchangeButton" destination="Pev-rW-XlN" id="aDO-xp-YOP"/>
+                        <outlet property="getAmountActivityIndicator" destination="V6N-Jt-Zi3" id="LbG-IR-TjK"/>
                         <outlet property="getCoinAmountTextField" destination="EbC-by-mD1" id="7Tc-Mn-Kb8"/>
                         <outlet property="getCoinTextField" destination="JHK-Ad-eE3" id="VSE-2F-gn3"/>
+                        <outlet property="spendAmountActivityIndicator" destination="pSr-2Y-HxX" id="nLN-3H-F1m"/>
                         <outlet property="spendCoinAmountTextField" destination="g8I-Fu-AA3" id="yMQ-rb-anX"/>
                         <outlet property="spendCoinTextField" destination="IQT-xf-1hm" id="GRx-1I-44h"/>
                         <outlet property="useMaxButton" destination="w4V-x7-ifu" id="MbR-Xl-DiI"/>

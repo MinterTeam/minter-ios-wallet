@@ -48,7 +48,7 @@ class AdvancedModeViewController: BaseViewController {
 			return
 		}
 		
-		viewModel.saveAccount(mnemonic: mnemonicText.joined(separator: " "))
+		viewModel.saveAccount(id: -1, mnemonic: mnemonicText.joined(separator: " "))
 		
 		delegate?.AdvancedModeViewControllerDidAddAccount()
 	}

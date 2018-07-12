@@ -81,8 +81,7 @@ class TransactionsViewModel: BaseViewModel {
 			guard let transaction = item.transaction else {
 				return
 			}
-			
-			let user = item.user
+//			let user = item.user
 			
 			let sectionName = sectionTitle(for: transaction.date)
 			let sectionCandidate = newSections.index(where: { (item) -> Bool in
@@ -90,30 +89,31 @@ class TransactionsViewModel: BaseViewModel {
 			})
 			
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(String.random(length: 20))")
+
 			
-			var signMultiplier = 1.0
-			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-				account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
-			})
-			
-			var title = ""
-			if hasAddress {
-				title = user?.username != nil ? "@" + user!.username! : (transaction.to ?? "")
-				signMultiplier = -1.0
-			}
-			else {
-				title = user?.username != nil ? "@" + user!.username! : (transaction.from ?? "")
-			}
-			
-			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(transaction.hash ?? String.random(length: 20))")
-			transactionCellItem.txHash = transaction.hash
-			transactionCellItem.title = title
-			transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.to) ?? "")).url()
-			transactionCellItem.date = transaction.date
-			transactionCellItem.from = transaction.from
-			transactionCellItem.to = transaction.to
-			transactionCellItem.coin = transaction.coinSymbol
-			transactionCellItem.amount = (transaction.value ?? 0) * signMultiplier
+//			var signMultiplier = 1.0
+//			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+//				account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
+//			})
+//
+//			var title = ""
+//			if hasAddress {
+//				title = user?.username != nil ? "@" + user!.username! : (transaction.to ?? "")
+//				signMultiplier = -1.0
+//			}
+//			else {
+//				title = user?.username != nil ? "@" + user!.username! : (transaction.from ?? "")
+//			}
+//
+//			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(transaction.hash ?? String.random(length: 20))")
+//			transactionCellItem.txHash = transaction.hash
+//			transactionCellItem.title = title
+//			transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.to) ?? "")).url()
+//			transactionCellItem.date = transaction.date
+//			transactionCellItem.from = transaction.from
+//			transactionCellItem.to = transaction.to
+//			transactionCellItem.coin = transaction.coinSymbol
+//			transactionCellItem.amount = (transaction.value ?? 0) * signMultiplier
 			
 			
 			var section: BaseTableSectionItem?
@@ -128,7 +128,18 @@ class TransactionsViewModel: BaseViewModel {
 			if nil == items[sectionName] {
 				items[sectionName] = []
 			}
-			items[sectionName]?.append(transactionCellItem)
+//			items[sectionName]?.append(transactionCellItem)
+			
+			if transaction.type == .sendCoin {
+				if let transactionCellItem = self.sendTransactionItem(with: item) {
+					items[sectionName]?.append(transactionCellItem)
+				}
+			}
+			else if transaction.type == .convert {
+				if let transactionCellItem = self.convertTransactionItem(with: item) {
+					items[sectionName]?.append(transactionCellItem)
+				}
+			}
 			items[sectionName]?.append(separator)
 
 		})
@@ -151,6 +162,84 @@ class TransactionsViewModel: BaseViewModel {
 		self.sections.value = sctns
 	}
 	
+	
+	func sendTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
+		let user = transactionItem.user
+		guard let transaction = transactionItem.transaction else {
+			return nil
+		}
+		
+		let sectionId = (transaction.hash  ?? String.random(length: 20))
+		
+		var signMultiplier = 1.0
+		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+			account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+		})
+		
+		var title = ""
+		if hasAddress {
+			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.to ?? "")
+			signMultiplier = -1.0
+		}
+		else {
+			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.from ?? "")
+		}
+		
+		let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
+		transactionCellItem.txHash = transaction.hash
+		transactionCellItem.title = title
+		transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.data?.from : transaction.data?.to) ?? "")).url()
+		transactionCellItem.date = transaction.date
+		transactionCellItem.from = transaction.data?.from
+		transactionCellItem.to = transaction.data?.to
+		if let data = transaction.data as? SendCoinTransactionData {
+			transactionCellItem.coin = data.coin
+			transactionCellItem.amount = (data.amount ?? 0) * signMultiplier
+		}
+		
+		return transactionCellItem
+	}
+	
+	func convertTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
+		
+		let user = transactionItem.user
+		guard let transaction = transactionItem.transaction else {
+			return nil
+		}
+		
+		let sectionId = (transaction.hash ?? String.random(length: 20))
+		
+		var signMultiplier = 1.0
+		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+			account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+		})
+		
+		var title = ""
+		if hasAddress {
+			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.to ?? "")
+			signMultiplier = -1.0
+		}
+		else {
+			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.from ?? "")
+		}
+		
+		
+		let transactionCellItem = ConvertTransactionTableViewCellItem(reuseIdentifier: "ConvertTransactionTableViewCell", identifier: "ConvertTransactionTableViewCell_\(sectionId)")
+		transactionCellItem.txHash = transaction.hash
+		transactionCellItem.title = title
+		transactionCellItem.date = transaction.date
+		transactionCellItem.from = transaction.data?.from
+		transactionCellItem.to = transaction.data?.to
+		if let data = transaction.data as? ConvertTransactionData {
+			transactionCellItem.coin = data.toCoin
+			transactionCellItem.amount = (data.value ?? 0) * signMultiplier
+			transactionCellItem.title = (data.fromCoin ?? "") + "  ⟶  " + (data.toCoin ?? "")
+		}
+		
+		return transactionCellItem
+		
+	}
+	
 	private func sectionTitle(for date: Date?) -> String {
 		
 		guard nil != date else {
@@ -171,6 +260,8 @@ class TransactionsViewModel: BaseViewModel {
 		}
 	}
 	
+	let manager = MinterWallet.TransactionManager()
+	
 	//MARK: -
 	
 	func loadData() {
@@ -178,26 +269,27 @@ class TransactionsViewModel: BaseViewModel {
 		if isLoading.value || !canLoadMore { return }
 		isLoading.value = true
 		
-		TransactionManager().transactions(addresses: addresses, page: self.page) { [weak self] (transactions, users, error) in
-			
+		manager.transactions(addresses: addresses, page: self.page) { [weak self] (transactions, users, error) in
+
 			self?.page += 1
-			
+
 			guard nil == error && nil != transactions && (transactions?.count ?? 0) > 0 else {
 				//stop paging
 				self?.canLoadMore = false
+				self?.isLoading.value = false
 				return
 			}
-			
+
 			let items = transactions?.map({ (transaction) -> TransactionItem in
 				let item = TransactionItem()
 				item.transaction = transaction
-				
+
 				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
+					account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
 				})
-				
-				var key = transaction.from?.lowercased()
-				if hasAddress, let to = transaction.to {
+
+				var key = transaction.data?.from?.lowercased()
+				if hasAddress, let to = transaction.data?.to {
 					key = to.lowercased()
 				}
 				if let key = key, let usr = users?[key] {
@@ -205,13 +297,13 @@ class TransactionsViewModel: BaseViewModel {
 				}
 				return item
 			}) ?? []
-			
+
 			self?.transactions.append(contentsOf: items)
-			
+
 			self?.isLoading.value = false
-			
+
 			self?.createSections(with: items)
-			
+
 		}
 	}
 	

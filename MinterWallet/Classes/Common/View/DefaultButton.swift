@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 
 @IBDesignable
@@ -23,12 +24,6 @@ class DefaultButton: UIButton {
 		}
 	}
 	
-	override var isEnabled: Bool {
-		didSet {
-			
-		}
-	}
-	
 	//MARK: -
 	
 	@IBInspectable var pattern: String? {
@@ -38,6 +33,7 @@ class DefaultButton: UIButton {
 	}
 	
 	func updateAppearance() {
+
 		if pattern == "blank" {
 			self.backgroundColor = .clear
 			self.layer.borderWidth = 2.0
@@ -52,7 +48,7 @@ class DefaultButton: UIButton {
 		}
 		else if pattern == "purple" {
 			self.setBackgroundImage(UIImage(named: "button-purple-default"), for: .normal)
-			self.setBackgroundImage(UIImage(named: "button-disabled"), for: .disabled)
+			self.setBackgroundImage(UIImage(named: "button-purple-disabled"), for: .disabled)
 			self.setBackgroundImage(UIImage(named: "button-purple-hover"), for: .highlighted)
 			
 			self.setTitleColor(.white, for: .normal)
@@ -66,6 +62,11 @@ class DefaultButton: UIButton {
 			self.setTitleColor(UIColor(hex: 0x502EC2), for: .normal)
 			addShadow()
 		}
+		
+		if state == .disabled {
+			clearShadow()
+		}
+		
 	}
 	
 	func addShadow() {
@@ -77,6 +78,11 @@ class DefaultButton: UIButton {
 		self.layer.shadowOpacity = 1.0
 	}
 	
+	func clearShadow() {
+		self.layer.shadowColor = UIColor.clear.cgColor
+		self.layer.shadowPath = UIBezierPath(rect: CGRect.zero).cgPath
+	}
+	
 	//MARK: -
 
 	override func awakeFromNib() {
@@ -86,6 +92,9 @@ class DefaultButton: UIButton {
 		self.layer.cornerRadius = 16.0
 		self.updateAppearance()
 		self.animateButtonTouch = true
+		
+//		self.rx.observe
+		
 	}
 	
 	override func layoutSubviews() {

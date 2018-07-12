@@ -15,11 +15,11 @@ class AccountantBaseViewModel : BaseViewModel {
 	let accountManager = AccountManager()
 	private let databaseStorage = RealmDatabaseStorage.shared
 	
-	func saveAccount(mnemonic: String, isLocal: Bool = true) -> Account? {
+	func saveAccount(id: Int, mnemonic: String, isLocal: Bool = true) -> Account? {
 		
 		guard
 			let seed = accountManager.seed(mnemonic: mnemonic, passphrase: ""),
-			let account = accountManager.account(seed: seed, encryptedBy: isLocal ? .me : .bipWallet) else {
+			let account = accountManager.account(id: id, seed: seed, encryptedBy: isLocal ? .me : .bipWallet) else {
 				return nil
 		}
 		

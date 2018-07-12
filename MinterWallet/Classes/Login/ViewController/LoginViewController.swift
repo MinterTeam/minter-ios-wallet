@@ -14,7 +14,7 @@ protocol LoginViewControllerDelegate: class {
 	func didLogin()
 }
 
-class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ValidatableCellDelegate {
 	
 	//MARK: -
 	
@@ -67,6 +67,24 @@ class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewD
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
 	}
 	
+	func didValidateField(field: ValidatableCellProtocol?) {
+		
+		
+		
+	}
+	
+	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
+		
+		if let cell = field as? UITableViewCell, let ip = tableView.indexPath(for: cell) {
+			if ip.row == 0 {
+				viewModel.username.value = field?.validationText
+			}
+			else if ip.row == 1 {
+				viewModel.password.value = field?.validationText
+			}
+		}
+	}
+	
 	//MARK: -
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -84,6 +102,10 @@ class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewD
 		}
 		
 		cell.configure(item: item)
+		
+		if var textFieldCell = cell as? ValidatableCellProtocol {
+			textFieldCell.validateDelegate = self
+		}
 		
 		if let buttonCell = cell as? ButtonTableViewCell {
 			buttonCell.delegate = self

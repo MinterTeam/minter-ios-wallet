@@ -11,12 +11,12 @@ import MinterMy
 import MinterCore
 
 
-public extension AddressManager {
+public extension MyAddressManager {
 	
 	
-	public class func manager(accessToken: String) -> AddressManager {
+	public class func manager(accessToken: String) -> MyAddressManager {
 		let client = APIClient(headers: ["Authorization" : accessToken])
-		return AddressManager(httpClient: client)
+		return MyAddressManager(httpClient: client)
 	}
 	
 //	public class var shared: AddressManager {

@@ -239,6 +239,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 			
 		case .passwordTooShort:
 			return "PASSWORD IS TOO SHORT".localized()
+			
 		case .usernameTaken:
 			return "USERNAME IS TAKEN".localized()
 		}
@@ -307,7 +308,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		
 		guard
 			let seed = accountManager.seed(mnemonic: mnemonic, passphrase: ""),
-			let account = accountManager.account(seed: seed, encryptedBy: .bipWallet) else {
+			let account = accountManager.account(id: -1, seed: seed, encryptedBy: .bipWallet) else {
 				return
 		}
 		
@@ -340,7 +341,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 			}
 
 			//save here
-			guard let account = self?.saveAccount(mnemonic: mnemonic, isLocal: false) else {
+			guard let account = self?.saveAccount(id: account.id, mnemonic: mnemonic, isLocal: false) else {
 				self?.notifiableError.value = NotifiableError(title: "Something went wrong".localized(), text: nil)
 				return
 			}

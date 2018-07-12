@@ -43,6 +43,10 @@ class UsernameEditViewModel : BaseViewModel {
 		
 		username.asObservable().distinctUntilChanged().subscribe({ (username) in
 			
+			if self.validate() != nil {
+				return
+			}
+			
 			self.checkUsername().subscribe(onNext: { (val) in
 				
 			}, onError: { (err) in

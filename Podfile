@@ -11,11 +11,12 @@ target 'MinterWallet' do
 		pod 'AlamofireImage'
 		pod 'RxSwift'
 		pod 'RxDataSources'
+		pod 'RxAppState'
 		pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
 		pod 'TPKeyboardAvoiding'
 		pod 'ExpandableCell', :path => '../ExpandableCell'
-		pod 'ExpyTableView'
-		pod 'AEAccordion'
+#		pod 'ExpyTableView'
+#		pod 'AEAccordion'
 		pod 'McPicker'
 		pod 'ImagePicker'
 		pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
@@ -33,6 +34,7 @@ target 'MinterWallet' do
 		pod 'CentrifugeiOS'
 		pod 'Fabric'
 		pod 'Crashlytics'
+		pod 'ObjectMapper'
 end
 
 target 'MinterWalletTests' do

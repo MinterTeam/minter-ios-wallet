@@ -153,7 +153,6 @@ extension CreateWalletViewController : ValidatableCellDelegate {
 				}
 				cell.setInvalid(message: errorMessage)
 			}
-			
 		}
 	}
 	

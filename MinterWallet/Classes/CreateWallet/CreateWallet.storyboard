@@ -61,7 +61,7 @@
                             <rect key="frame" x="20" y="90" width="864" height="66"/>
                             <attributedString key="attributedText">
                                 <fragment>
-                                    <string key="content">*	Email and Mobile Number are optional  	but can be very handy if you forget 	your password.</string>
+                                    <string key="content">*	Email is optional  	but can be very handy if you forget 	your password.</string>
                                     <attributes>
                                         <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <font key="NSFont" size="14" name="Ubuntu"/>

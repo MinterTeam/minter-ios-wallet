@@ -71,6 +71,7 @@ class TransactionsViewController: BaseTableViewController {
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
 		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingTableViewCell")
+		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "ConvertTransactionTableViewCell")
 		
 	}
 	

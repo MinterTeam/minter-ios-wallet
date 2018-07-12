@@ -11,6 +11,7 @@ import RxSwift
 import MinterCore
 import MinterMy
 import MinterExplorer
+import RxAppState
 
 fileprivate let SessionAccessTokenKey = "AccessToken"
 fileprivate let SessionRefreshTokenKey = "RefreshToken"
@@ -28,6 +29,8 @@ class Session {
 	private let transactionManager = MinterExplorer.TransactionManager.default
 	private let addressManager = MinterExplorer.AddressManager.default
 	private var profileManager: MinterMy.ProfileManager?
+	private let transactionManger = MinterWallet.TransactionManager()
+	private let syncer = SessionAddressSyncer()
 	
 	private var disposeBag = DisposeBag()
 	
@@ -85,11 +88,16 @@ class Session {
 			
 		}).disposed(by: disposeBag)
 		
-		accounts.asObservable().filter({ (accs) -> Bool in
+		accounts.asObservable().distinctUntilChanged().filter({ (accs) -> Bool in
 			return accs.count > 0
 		}).subscribe(onNext: { [weak self] (accounts) in
 			self?.loadTransactions()
 			self?.loadBalances()
+		}).disposed(by: disposeBag)
+		
+		UIApplication.shared.rx.applicationDidBecomeActive.subscribe(onNext: { (state) in
+			self.loadTransactions()
+			self.loadTransactions()
 		}).disposed(by: disposeBag)
 		
 		restore()
@@ -177,8 +185,6 @@ class Session {
 	
 	//MARK: -
 	
-	let syncer = SessionAddressSyncer()
-	
 	func loadAccounts() {
 		
 		syncer.isSyncing.asObservable().skip(1).filter({ (val) -> Bool in
@@ -207,26 +213,26 @@ class Session {
 		}
 		
 		//TODO: move to helper
-		let transactionManger1 = TransactionManager()
-		transactionManger1.transactions { [weak self] (transactions, users, error) in
-			
+		
+		transactionManger.transactions { [weak self] (transactions, users, error) in
+
 			self?.isLoading.value = false
-			
+
 			guard nil == error else {
 				return
 			}
-			
+
 			self?.transactions.value = transactions?.map({ (transaction) -> TransactionItem in
 				let item = TransactionItem()
 				item.transaction = transaction
-				
+
 				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
+					account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
 				})
-				
-				var key = transaction.from?.lowercased()
-				
-				if hasAddress, let to = transaction.to {
+
+				var key = transaction.data?.from?.lowercased()
+
+				if hasAddress, let to = transaction.data?.to {
 					key = to.lowercased()
 				}
 				if let key = key, let usr = users?[key] {
@@ -234,7 +240,7 @@ class Session {
 				}
 				return item
 			}) ?? []
-			
+
 		}
 		
 	}
@@ -284,7 +290,6 @@ class Session {
 			
 			self?.mainCoinBalance.value = newMainCoinBalance
 		}
-
 	}
 	
 	func loadUser() {
@@ -308,7 +313,6 @@ class Session {
 				self?.saveUser(user: user)
 			}
 		})
-
 	}
 
 }

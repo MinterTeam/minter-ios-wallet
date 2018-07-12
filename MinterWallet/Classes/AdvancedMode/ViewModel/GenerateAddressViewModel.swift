@@ -41,7 +41,7 @@ class GenerateAddressViewModel : AccountantBaseViewModel {
 			return
 		}
 		
-		self.saveAccount(mnemonic: mnemonic)
+		self.saveAccount(id: -1, mnemonic: mnemonic)
 		
 		isLoading.value = false
 	}

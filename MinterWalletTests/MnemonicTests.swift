@@ -8,7 +8,7 @@
 
 import XCTest
 import CryptoSwift
-import MinterCore
+@testable import MinterCore
 @testable import MinterWallet
 
 
@@ -76,9 +76,6 @@ class MnemonicTests: XCTestCase {
 		XCTAssert(Data(bytes: ciphertext).toHexString() == encryptedMnemonic)
 	}
 	
-
-	//
-	
 	func testPasswordHash() {
 		let originalPassword = "123456"
 		let passwordHash = "49dc52e6bf2abe5ef6e2bb5b0f1ee2d765b922ae6cc8b95d39dc06c21c848f8c"
@@ -91,6 +88,13 @@ class MnemonicTests: XCTestCase {
 		let passwordHash = "49dc52e6bf2abe5ef6e2bb5b0f1ee2d765b922ae6cc8b95d39dc06c21c848f8c"
 		
 		XCTAssert(accountManager.accountPassword(originalPassword) == passwordHash)
+	}
+	
+	func testDerive() {
+		let mnemonic = "exercise fantasy smooth enough arrive steak demise donkey true employ jealous decide blossom bind someone"
+		let adds = accountManager.address(from: mnemonic)
+		XCTAssert(adds?.uppercased() == "7633980C000139dd3BD24A3f54E06474FA941e16".uppercased())
+
 	}
 	
 	

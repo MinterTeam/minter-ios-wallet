@@ -15,6 +15,7 @@ import MinterMy
 
 class AccountDataBaseModel : Object, DatabaseStorageModel {
 	
+	@objc dynamic var id: Int = -1
 	@objc dynamic var address: String = ""
 	@objc dynamic var encryptedBy: String = ""
 	@objc dynamic var isMain: Bool = false
@@ -23,6 +24,7 @@ class AccountDataBaseModel : Object, DatabaseStorageModel {
 	//MARK: -
 	
 	func substitute(with account: Account) {
+		self.id = account.id
 		self.encryptedBy = account.encryptedBy.rawValue
 		self.address = account.address
 		self.isMain = account.isMain

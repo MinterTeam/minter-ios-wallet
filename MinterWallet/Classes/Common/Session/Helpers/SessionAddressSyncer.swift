@@ -43,7 +43,7 @@ class SessionAddressSyncer {
 			
 			let addressesToAdd = addresses.filter({ (address) -> Bool in
 				return (local?.filter({ (account) -> Bool in
-					return account.address == address.address
+					return account.address == address.address && address.id != nil
 				}).count ?? 0) == 0
 			})
 			
@@ -53,7 +53,7 @@ class SessionAddressSyncer {
 					if let mnemonic = self.accountManager.decryptMnemonic(encrypted: Data(hex: encr), password: password) {
 						try? self.accountManager.save(mnemonic: mnemonic, password: password)
 
-						if let account = self.accountManager.account(mnemonic: mnemonic, encryptedBy: .bipWallet) {
+						if let account = self.accountManager.account(id: address.id!, mnemonic: mnemonic, encryptedBy: .bipWallet) {
 							self.accountManager.saveLocalAccount(account: account)
 						}
 					}
@@ -65,20 +65,20 @@ class SessionAddressSyncer {
 		
 	}
 	
-	//MARK: -
+	//TODO: Substitute with AccountManager one
 	private func loadLocal() -> [Account]? {
 		
 		let accounts = database.objects(class: AccountDataBaseModel.self, query: nil) as? [AccountDataBaseModel]
 		
 		let res = accounts?.map { (dbModel) -> Account in
-			return Account(encryptedBy: Account.EncryptedBy(rawValue: dbModel.encryptedBy) ?? .me, address: dbModel.address, isMain: dbModel.isMain)
+			return Account(id: dbModel.id, encryptedBy: Account.EncryptedBy(rawValue: dbModel.encryptedBy) ?? .me, address: dbModel.address, isMain: dbModel.isMain)
 		}
 		
 		return res
 	}
 	
 	
-	private var addressManager: AddressManager?
+	private var addressManager: MyAddressManager?
 	
 	private func loadRemoteAccounts(completion: (([Address]) -> ())?) {
 		
@@ -87,7 +87,7 @@ class SessionAddressSyncer {
 			return
 		}
 
-		addressManager = AddressManager(httpClient: client)
+		addressManager = MyAddressManager(httpClient: client)
 		addressManager?.addresses { (addresses, error) in
 			
 			var adrs = [Address]()

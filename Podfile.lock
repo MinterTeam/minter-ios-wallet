@@ -1,11 +1,10 @@
 PODS:
-  - AEAccordion (2.1.0)
   - AFDateHelper (4.2.7)
   - Alamofire (4.7.2)
   - AlamofireImage (3.3.1):
     - Alamofire (~> 4.5)
   - ALCameraViewController (3.0.3)
-  - BigInt (3.0.1):
+  - BigInt (3.1.0):
     - SipHash (~> 1.2)
   - CentrifugeiOS (5.0.1):
     - IDZSwiftCommonCrypto (~> 0.10.0)
@@ -13,17 +12,16 @@ PODS:
   - CKMnemonic (0.1.7):
     - CryptoSwift
   - CountdownLabel (3.0.0)
-  - Crashlytics (3.10.2):
-    - Fabric (~> 1.7.7)
+  - Crashlytics (3.10.3):
+    - Fabric (~> 1.7.8)
   - CryptoSwift (0.10.0)
   - Differentiator (3.0.2)
   - ExpandableCell (1.2.2)
-  - ExpyTableView (1.0)
-  - Fabric (1.7.7)
+  - Fabric (1.7.8)
   - IDZSwiftCommonCrypto (0.10.0)
   - ImagePicker (3.0.0)
   - KeychainSwift (11.0.0)
-  - MarqueeLabel/Swift (3.1.4)
+  - MarqueeLabel/Swift (3.1.6)
   - McPicker (1.0.0)
   - MinterCore (0.1.1):
     - Alamofire (~> 4.6)
@@ -39,23 +37,26 @@ PODS:
   - NotificationBannerSwift (1.6.3):
     - MarqueeLabel/Swift
     - SnapKit (~> 4.0)
-  - ObjectMapper (3.2.0)
+  - ObjectMapper (3.3.0)
   - QRCode (2.0)
   - QRCodeReader.swift (8.2.0)
-  - Realm (3.6.0):
-    - Realm/Headers (= 3.6.0)
-  - Realm/Headers (3.6.0)
-  - RealmSwift (3.6.0):
-    - Realm (= 3.6.0)
-  - RxCocoa (4.1.2):
+  - Realm (3.7.4):
+    - Realm/Headers (= 3.7.4)
+  - Realm/Headers (3.7.4)
+  - RealmSwift (3.7.4):
+    - Realm (= 3.7.4)
+  - RxAppState (1.1.2):
+    - RxCocoa (~> 4.0)
+    - RxSwift (~> 4.0)
+  - RxCocoa (4.2.0):
     - RxSwift (~> 4.0)
   - RxDataSources (3.0.2):
     - Differentiator (~> 3.0)
     - RxCocoa (~> 4.0)
     - RxSwift (~> 4.0)
-  - RxSwift (4.1.2)
+  - RxSwift (4.2.0)
   - secp256k1.swift (0.1.4)
-  - SipHash (1.2.1)
+  - SipHash (1.2.2)
   - SnapKit (4.0.0)
   - Starscream (3.0.5)
   - SVProgressHUD (2.2.5)
@@ -64,7 +65,6 @@ PODS:
   - TPKeyboardAvoiding (1.3.2)
 
 DEPENDENCIES:
-  - AEAccordion
   - AFDateHelper (~> 4.2.2)
   - Alamofire
   - AlamofireImage
@@ -75,7 +75,6 @@ DEPENDENCIES:
   - Crashlytics
   - CryptoSwift
   - ExpandableCell (from `../ExpandableCell`)
-  - ExpyTableView
   - Fabric
   - ImagePicker
   - KeychainSwift
@@ -84,9 +83,11 @@ DEPENDENCIES:
   - MinterExplorer (from `../MinterExplorer`)
   - MinterMy (from `../MinterMy`)
   - NotificationBannerSwift
+  - ObjectMapper
   - QRCode
   - QRCodeReader.swift (~> 8.2.0)
   - RealmSwift
+  - RxAppState
   - RxDataSources
   - RxSwift
   - SVProgressHUD (from `https://github.com/SVProgressHUD/SVProgressHUD.git`)
@@ -95,8 +96,7 @@ DEPENDENCIES:
   - TPKeyboardAvoiding
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - AEAccordion
+  https://github.com/cocoapods/specs.git:
     - AFDateHelper
     - Alamofire
     - AlamofireImage
@@ -108,7 +108,6 @@ SPEC REPOS:
     - Crashlytics
     - CryptoSwift
     - Differentiator
-    - ExpyTableView
     - Fabric
     - IDZSwiftCommonCrypto
     - ImagePicker
@@ -121,6 +120,7 @@ SPEC REPOS:
     - QRCodeReader.swift
     - Realm
     - RealmSwift
+    - RxAppState
     - RxCocoa
     - RxDataSources
     - RxSwift
@@ -148,47 +148,46 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SVProgressHUD:
-    :commit: 7f676d51905ede045ca5dcaf82d4ba0d9f96addf
+    :commit: 12ef3375791136be10cc8685fa8074ec56a64491
     :git: https://github.com/SVProgressHUD/SVProgressHUD.git
   SwiftValidator:
     :commit: ba27b0e501bf542b5c1a97bed8f706d12fb2d4f4
     :git: https://github.com/jpotts18/SwiftValidator.git
 
 SPEC CHECKSUMS:
-  AEAccordion: 5ad8bdc99478f76379857e5351547252a7cfbf12
   AFDateHelper: 4ad66fb19503041fbba8a3018cb7ef9c71b2ff88
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
   AlamofireImage: 3b35b586853abaf94ca1250f4e94cff3c21a4c0d
   ALCameraViewController: 6398a9282057f709b87a1ecc52a83b48028ade64
-  BigInt: 8e8a52161c745cd3ab78e3dc346a9fbee51e6cf6
+  BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   CentrifugeiOS: 1194c0928bda8f3cbbf3306d4165866e44a062e2
   CKMnemonic: 88e745afffea6f3c719c799d9869a2ea5eb9f08b
   CountdownLabel: 4534a68892b1deb73fda18702dfdc2c8444cec08
-  Crashlytics: 0360624eea1c978a743feddb2fb1ef8b37fb7a0d
+  Crashlytics: 2aea305161a2122492698c75af27f2b98aa49a25
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   ExpandableCell: 759ca4b0b7655e34f4b73c28eec5028e22c53c63
-  ExpyTableView: 75fe6494d4613fd3dc4bd965cce6e14cec7e2223
-  Fabric: bda89e242bce1b7b8ab264248cf3407774ce0095
+  Fabric: fba4684a95df789565b0b27fc5b6e68f1755af32
   IDZSwiftCommonCrypto: 4eef2c46e262dfbcbc1fd76365e066336680ad7d
   ImagePicker: 973953c25960fe04729a7082a56194321c6762d2
   KeychainSwift: bea6bd9f98af7b8d7ca4aa79fe105c00fab532db
-  MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
+  MarqueeLabel: 0c41f08ef5773e29c0f71064a8fa788a2fd8b365
   McPicker: 130183cd3d22fc6933ea9e63c5a0d0d1becc0122
   MinterCore: 696e84a3e27a51dfed47564143789f8706139a6c
   MinterExplorer: d5784ab4fb1636fde9e3bae29c81525b2092307f
   MinterMy: a58b68a346872f7cee0524d879e31cd9214dc45b
   NotificationBannerSwift: b231e4c3244848ef300e1c53ce027b9756b9b06f
-  ObjectMapper: 5cccd2de6f253eda859df8116a5a554d9769e859
+  ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
   QRCode: f98a1886c8f37523704a7512a4c0cd45b34c18a4
   QRCodeReader.swift: 003eb32f18a5a675b936ec82ba0ff368cddbff45
-  Realm: 08b464b462d4f31bbd4ba5f5a1c8722ef0a700b7
-  RealmSwift: 973e1499c44ab571f894c2c908e2db450be280c3
-  RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
+  Realm: a469bb59e33f9926102ccaea4349822c53b9117e
+  RealmSwift: a45861b21c180f5cf0f122144b9759fa8dde3e9e
+  RxAppState: 0238d65c304725fa815a4b3758be210d48f4db82
+  RxCocoa: 0b54909c902e1e581212a03e690bbd94032d8baa
   RxDataSources: cb7c31e652a87ebb919da45f716bbb87b3765f6b
-  RxSwift: e49536837d9901277638493ea537394d4b55f570
+  RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
-  SipHash: b26918dbe6925368d4322374371437c62c9038e2
+  SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -196,6 +195,6 @@ SPEC CHECKSUMS:
   Toucan: 61867fb10948c02e9804280a95eb183e98eac97a
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
 
-PODFILE CHECKSUM: 90f18036b9f08d0e5e46be0ad16799d4bf37e505
+PODFILE CHECKSUM: f34e6912b0ee1eb7e25f7f5d9934f152815eaee0
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

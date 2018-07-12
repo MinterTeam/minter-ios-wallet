@@ -83,37 +83,56 @@ class CoinsViewModel: BaseViewModel {
 				return
 			}
 			
-			let user = transactionItem.user
-			
+//			let user = transactionItem.user
+//
 			let sectionId = (transaction.hash  ?? String.random(length: 20))// + String(transaction.date?.timeIntervalSinceNow ?? 0)
-			
+//
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_" + sectionId)
 			
-			var signMultiplier = 1.0
-			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-				account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
-			})
-			
-			var title = ""
-			if hasAddress {
-				title = user?.username != nil ? "@" + user!.username! : (transaction.to ?? "")
-				signMultiplier = -1.0
+			if transaction.type == .sendCoin {
+				if let transactionCellItem = self.sendTransactionItem(with: transactionItem) {
+					section.items.append(transactionCellItem)
+				}
 			}
-			else {
-				title = user?.username != nil ? "@" + user!.username! : (transaction.from ?? "")
+			else if transaction.type == .convert {
+				if let transactionCellItem = self.convertTransactionItem(with: transactionItem) {
+					section.items.append(transactionCellItem)
+				}
 			}
+//
+//			var signMultiplier = 1.0
+//			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+//				account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+//			})
+//
+//			var title = ""
+//			if hasAddress {
+//				title = user?.username != nil ? "@" + user!.username! : (transaction.data?.to ?? "")
+//				signMultiplier = -1.0
+//			}
+//			else {
+//				title = user?.username != nil ? "@" + user!.username! : (transaction.data?.from ?? "")
+//			}
+//
+//			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
+//			transactionCellItem.txHash = transaction.hash
+//			transactionCellItem.title = title
+//			transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.data?.from : transaction.data?.to) ?? "")).url()
+//			transactionCellItem.date = transaction.date
+//			transactionCellItem.from = transaction.data?.from
+//			transactionCellItem.to = transaction.data?.to
+//			if let data = transaction.data as? ConvertTransactionData {
+//				transactionCellItem.coin = data.toCoin
+//				transactionCellItem.amount = (data.value ?? 0) * signMultiplier
+//				transactionCellItem.title = (data.fromCoin ?? "") + " ⟶ " + (data.toCoin ?? "")
+//				transactionCellItem.image =
+//			}
+//			else if let data = transaction.data as? SendCoinTransactionData {
+//				transactionCellItem.coin = data.coin
+//				transactionCellItem.amount = (data.amount ?? 0) * signMultiplier
+//			}
 			
-			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
-			transactionCellItem.txHash = transaction.hash
-			transactionCellItem.title = title
-			transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.to) ?? "")).url()
-			transactionCellItem.date = transaction.date
-			transactionCellItem.from = transaction.from
-			transactionCellItem.to = transaction.to
-			transactionCellItem.coin = transaction.coinSymbol
-			transactionCellItem.amount = (transaction.value ?? 0) * signMultiplier
 			
-			section.items.append(transactionCellItem)
 			section.items.append(separator)
 		}
 		
@@ -169,6 +188,83 @@ class CoinsViewModel: BaseViewModel {
 		
 		self.sections.value = sctns
 		
+	}
+	
+	func sendTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
+		let user = transactionItem.user
+		guard let transaction = transactionItem.transaction else {
+			return nil
+		}
+		
+		let sectionId = (transaction.hash  ?? String.random(length: 20))
+		
+		var signMultiplier = 1.0
+		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+			account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+		})
+		
+		var title = ""
+		if hasAddress {
+			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.to ?? "")
+			signMultiplier = -1.0
+		}
+		else {
+			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.from ?? "")
+		}
+		
+		let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
+		transactionCellItem.txHash = transaction.hash
+		transactionCellItem.title = title
+		transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.data?.from : transaction.data?.to) ?? "")).url()
+		transactionCellItem.date = transaction.date
+		transactionCellItem.from = transaction.data?.from
+		transactionCellItem.to = transaction.data?.to
+		if let data = transaction.data as? SendCoinTransactionData {
+			transactionCellItem.coin = data.coin
+			transactionCellItem.amount = (data.amount ?? 0) * signMultiplier
+		}
+
+		return transactionCellItem
+	}
+	
+	func convertTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
+		
+		let user = transactionItem.user
+		guard let transaction = transactionItem.transaction else {
+			return nil
+		}
+		
+		let sectionId = (transaction.hash ?? String.random(length: 20))
+		
+		var signMultiplier = 1.0
+		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+			account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+		})
+		
+		var title = ""
+		if hasAddress {
+			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.to ?? "")
+			signMultiplier = -1.0
+		}
+		else {
+			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.from ?? "")
+		}
+		
+		
+		let transactionCellItem = ConvertTransactionTableViewCellItem(reuseIdentifier: "ConvertTransactionTableViewCell", identifier: "ConvertTransactionTableViewCell_\(sectionId)")
+		transactionCellItem.txHash = transaction.hash
+		transactionCellItem.title = title
+		transactionCellItem.date = transaction.date
+		transactionCellItem.from = transaction.data?.from
+		transactionCellItem.to = transaction.data?.to
+		if let data = transaction.data as? ConvertTransactionData {
+			transactionCellItem.coin = data.toCoin
+			transactionCellItem.amount = (data.value ?? 0) * signMultiplier
+			transactionCellItem.title = (data.fromCoin ?? "") + "  ⟶  " + (data.toCoin ?? "")
+		}
+		
+		return transactionCellItem
+
 	}
 	
 	//MARK: -

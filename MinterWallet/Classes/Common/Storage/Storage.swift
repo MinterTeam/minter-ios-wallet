@@ -72,7 +72,14 @@ class SecureStorage: Storage {
 	
 	//MARK: -
 	
-	private let storage = KeychainSwift(keyPrefix: "SecureStorage")
+	init(namespace: String = "SecureStorage") {
+		self.namespace = namespace
+		storage = KeychainSwift(keyPrefix: namespace)
+	}
+	
+	let namespace: String
+	
+	private let storage: KeychainSwift
 	
 	//MARK: - Setters
 	

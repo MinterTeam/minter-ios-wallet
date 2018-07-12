@@ -14,6 +14,10 @@ import MinterMy
 
 class AccountManager {
 	
+	init(secureStorage: Storage = SecureStorage()) {
+		self.secureStorage = secureStorage
+	}
+	
 	enum AccountManagerError : Error {
 		case privateKeyUnableToEncrypt
 		case privateKeyEncryptionFaulted
@@ -23,7 +27,8 @@ class AccountManager {
 	//MARK: - Sources
 	
 	private let database = RealmDatabaseStorage.shared
-	private let secureStorage = SecureStorage()
+	private let secureStorage: Storage
+	
 	
 	//MARK: -
 	
@@ -40,15 +45,15 @@ class AccountManager {
 		return password.sha256().sha256()
 	}
 	
-	func account(mnemonic: String, encryptedBy: Account.EncryptedBy = .me) -> Account? {
+	func account(id: Int, mnemonic: String, encryptedBy: Account.EncryptedBy = .me) -> Account? {
 		guard let seed = seed(mnemonic: mnemonic) else {
 			return nil
 		}
 		
-		return account(seed: seed, encryptedBy: encryptedBy)
+		return account(id: id, seed: seed, encryptedBy: encryptedBy)
 	}
 	
-	func account(seed: Data, encryptedBy: Account.EncryptedBy = .me) -> Account? {
+	func account(id: Int, seed: Data, encryptedBy: Account.EncryptedBy = .me) -> Account? {
 		let newPk = self.privateKey(from: seed)
 		
 		guard
@@ -57,7 +62,7 @@ class AccountManager {
 				return nil
 		}
 		
-		return Account(encryptedBy: .me, address: address)
+		return Account(id: id, encryptedBy: .me, address: address)
 	}
 	
 	func privateKey(from seed: Data) -> PrivateKey {
@@ -181,7 +186,7 @@ class AccountManager {
 		let accounts = database.objects(class: AccountDataBaseModel.self, query: nil) as? [AccountDataBaseModel]
 		
 		let res = accounts?.map { (dbModel) -> Account in
-			return Account(encryptedBy: Account.EncryptedBy(rawValue: dbModel.encryptedBy) ?? .me, address: dbModel.address, isMain: dbModel.isMain)
+			return Account(id: dbModel.id, encryptedBy: Account.EncryptedBy(rawValue: dbModel.encryptedBy) ?? .me, address: dbModel.address, isMain: dbModel.isMain)
 		}
 		
 		return res
@@ -193,7 +198,7 @@ class AccountManager {
 			return
 		}
 
-		let addressManager = AddressManager.manager(accessToken: accessToken)
+		let addressManager = MyAddressManager.manager(accessToken: accessToken)
 
 		addressManager.addresses { (addresses, error) in
 
@@ -215,6 +220,7 @@ class AccountManager {
 		
 		guard let res = database.objects(class: AccountDataBaseModel.self, query: "address == \"\(account.address)\"")?.first as? AccountDataBaseModel else {
 			let dbModel = AccountDataBaseModel()
+			dbModel.id = account.id
 			dbModel.address = account.address.stripMinterHexPrefix().lowercased()
 			dbModel.encryptedBy = account.encryptedBy.rawValue
 			dbModel.isMain = account.isMain

@@ -39,18 +39,18 @@ class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITab
 		
 		viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
-		}).subscribe(onNext: { [weak self] (notification) in
+		}).subscribe(onNext: { (notification) in
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
 		
 		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
-		}).subscribe(onNext: { [weak self] (notification) in
+		}).subscribe(onNext: { (notification) in
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
 			banner.show()
 		}).disposed(by: disposeBag)
-		
+
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {

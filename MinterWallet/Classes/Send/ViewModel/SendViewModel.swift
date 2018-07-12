@@ -134,7 +134,7 @@ class SendViewModel: BaseViewModel {
 	override init() {
 		super.init()
 		
-		Session.shared.allBalances.asObservable().filter({ (_) -> Bool in
+		Session.shared.allBalances.asObservable().distinctUntilChanged().filter({ (_) -> Bool in
 			return true //nil == self.selectedAddress
 		}).subscribe(onNext: { [weak self] (val) in
 			self?.createSections()
@@ -497,7 +497,7 @@ class SendViewModel: BaseViewModel {
 		}
 		isLoadingNonce.value = true
 		
-		MinterCore.TransactionManager.default.transactionCount(address: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
+		MinterCore.TransactionManagerr.default.transactionCount(address: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
 			
 			var success = false
 			
@@ -561,7 +561,9 @@ class SendViewModel: BaseViewModel {
 		
 		let newPk = self.accountManager.privateKey(from: seed)
 		let nonce = BigUInt(nonce)
-		guard let value = BigUInt(String(Int(amount * pow(10, 18)))) else {
+		
+		
+		guard let value = BigUInt(String(BigInt(amount * pow(10, 18)))) else {
 			completion?(false)
 			return
 		}
@@ -576,7 +578,7 @@ class SendViewModel: BaseViewModel {
 		
 		self.nonce.value = nil
 		
-		MinterCore.TransactionManager.default.send(tx: signedTx) { [weak self] (hash, status, err) in
+		MinterCore.TransactionManagerr.default.send(tx: signedTx) { [weak self] (hash, status, err) in
 			
 			var res = false
 			
