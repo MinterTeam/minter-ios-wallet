@@ -34,7 +34,7 @@ class LoginViewModel: BaseViewModel {
 	
 	var isButtonEnabled: Observable<Bool> {
 		return Observable.combineLatest(username.asObservable(), password.asObservable()).map({ (val) -> Bool in
-			return String.isUsernameValid(val.0 ?? "") && (val.1 ?? "").count > 4
+			return LoginForm.isUsernameValid(username: val.0 ?? "") && LoginForm.isPasswordValid(password: (val.1 ?? ""))
 		})
 	}
 	

@@ -80,7 +80,7 @@ class SettingsViewModel: BaseViewModel {
 			
 			let username = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Username")
 			username.title = "Username".localized()
-			username.value = user?.username
+			username.value = "@" + (user?.username ?? "")
 			username.placeholder = "Change"
 
 //			let mobile = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Mobile")

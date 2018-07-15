@@ -77,7 +77,14 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 				self?.activityIndicator.stopAnimating()
 			}
 		}.disposed(by: disposeBag)
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
 		
+		if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+			cell.textField?.becomeFirstResponder()
+		}
 	}
 
 	//MARK: -

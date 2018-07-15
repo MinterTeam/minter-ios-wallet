@@ -32,9 +32,9 @@ class AccountManager {
 	
 	//MARK: -
 	
+	//TODO: rename
 	private let passwordKey = "AccountPassword"
 	
-	//TODO: Change to random
 	private let iv = Data(bytes: "Minter seed".bytes).setLengthRight(16)
 	
 	//MARK: -
@@ -61,8 +61,9 @@ class AccountManager {
 			let address = RawTransactionSigner.address(publicKey: publicKey) else {
 				return nil
 		}
-		
-		return Account(id: id, encryptedBy: .me, address: address)
+		var acc = Account(id: id, encryptedBy: .me, address: address)
+		acc.encryptedBy = encryptedBy
+		return acc
 	}
 	
 	func privateKey(from seed: Data) -> PrivateKey {
@@ -77,15 +78,31 @@ class AccountManager {
 	}
 	
 	//save hash of password
+	//TODO: rename to encryption key
 	func save(password: String) {
 		let hash = password.bytes.sha256()
 		let data = Data(bytes: hash)
-		secureStorage.set(data, forKey: passwordKey)
+		DispatchQueue.main.async {
+			self.secureStorage.set(data, forKey: self.passwordKey)
+		}
 	}
 	
+	//TODO: rename to encryption key
 	func password() -> Data? {
 		let val = secureStorage.object(forKey: passwordKey) as? Data
 		return val
+	}
+	
+	func save(encryptionKey: Data) {
+		DispatchQueue.main.async {
+			self.secureStorage.set(encryptionKey, forKey: self.passwordKey)
+		}
+	}
+	
+	func deleteEncryptionKey() {
+		DispatchQueue.main.async {
+			self.secureStorage.removeObject(forKey: self.passwordKey)
+		}
 	}
 	
 	//Generate Seed from mnemonic

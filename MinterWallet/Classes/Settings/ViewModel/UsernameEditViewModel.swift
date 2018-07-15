@@ -136,7 +136,7 @@ class UsernameEditViewModel : BaseViewModel {
 	
 	func update(username: String) {
 		
-		guard String.isUsernameValid(username) && username != (Session.shared.user.value?.username ?? "") else {
+		guard LoginForm.isUsernameValid(username: username) && username != (Session.shared.user.value?.username ?? "") else {
 			return
 		}
 		
@@ -214,8 +214,7 @@ class UsernameEditViewModel : BaseViewModel {
 	
 	//Move to helper?
 	private func isUsernameValid(username: String) -> Bool {
-		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,32}")
-		return usernameTest.evaluate(with: username)
+		return LoginForm.isUsernameValid(username: username)
 	}
 
 }

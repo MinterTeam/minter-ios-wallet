@@ -58,6 +58,7 @@
 		FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */; };
 		FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */; };
 		FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF48209B037700A6FB62 /* AccountManager.swift */; };
+		FA6259E820F899CB003B8BEF /* Forms.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6259E720F899CB003B8BEF /* Forms.swift */; };
 		FA669B69207239F200AD110A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B68207239F200AD110A /* AppDelegate.swift */; };
 		FA669B70207239F200AD110A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B6E207239F200AD110A /* Main.storyboard */; };
 		FA669B72207239F200AD110A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA669B71207239F200AD110A /* Assets.xcassets */; };
@@ -259,6 +260,7 @@
 		FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoGrowingTextView.swift; sourceTree = "<group>"; };
 		FA61EF45209B003600A6FB62 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		FA61EF48209B037700A6FB62 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		FA6259E720F899CB003B8BEF /* Forms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forms.swift; sourceTree = "<group>"; };
 		FA669B65207239F200AD110A /* MinterWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinterWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA669B68207239F200AD110A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Classes/AppDelegate.swift; sourceTree = "<group>"; };
 		FA669B6F207239F200AD110A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -1056,6 +1058,14 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		FA6259E620F899AD003B8BEF /* Forms */ = {
+			isa = PBXGroup;
+			children = (
+				FA6259E720F899CB003B8BEF /* Forms.swift */,
+			);
+			path = Forms;
+			sourceTree = "<group>";
+		};
 		FA669B5C207239F100AD110A = {
 			isa = PBXGroup;
 			children = (
@@ -1163,6 +1173,7 @@
 		FA669B9F2072460700AD110A /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				FA6259E620F899AD003B8BEF /* Forms */,
 				FA01604020B4532000746B51 /* Managers */,
 				FAA2608720946924009FF3DE /* Formatters */,
 				FA669BA02072461700AD110A /* String+Localized.swift */,
@@ -1807,6 +1818,7 @@
 				FA79F5FE20C81A9E007876ED /* ValidatableCellProtocol.swift in Sources */,
 				FAA2606C20931A56009FF3DE /* EmailEditViewController.swift in Sources */,
 				FAC4BA1420DA49E2005A1B90 /* Notifiable.swift in Sources */,
+				FA6259E820F899CB003B8BEF /* Forms.swift in Sources */,
 				FAA234EF20872BF800F999DE /* SendPopupViewModel.swift in Sources */,
 				886A872ED336AA40162E4C11 /* PopupViewController.swift in Sources */,
 				FAC4BA1020D9445F005A1B90 /* APIClient+Auth.swift in Sources */,

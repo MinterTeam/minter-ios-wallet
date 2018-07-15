@@ -153,7 +153,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 			isUsernameTaken = true
 			
 			if !isUsernameValid(username: value) {
-				completion?(false, registerFormError.usernameTaken)
+				completion?(false, registerFormError.incorrectUsername)
 				return
 			}
 			
@@ -293,7 +293,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		let email = self.email.value
 		let mobile = self.mobile.value
 
-		guard isUsernameValid(username: username) && isPasswordValid(password: password) && password == confirmPassword && isEmailValid(email: email) && isMobileValid(mobile: mobile) else {
+		guard isUsernameValid(username: username) && isPasswordValid(password: password) && password == confirmPassword && isEmailValid(email: email)/* && isMobileValid(mobile: mobile)*/ else {
 //			self.notifiableError.value = NotifiableError(title: "Form is not valid".localized(), text: nil)
 			return
 		}
@@ -369,12 +369,11 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	
 	//Move to helper?
 	private func isUsernameValid(username: String) -> Bool {
-		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,32}")
-		return usernameTest.evaluate(with: username)
+		return RegistrationForm.isUsernameValid(username: username)
 	}
 	
 	private func isPasswordValid(password: String) -> Bool {
-		return password.count >= 6
+		return RegistrationForm.isPasswordValid(password: password)
 	}
 	
 	private func isEmailValid(email: String?) -> Bool {
@@ -383,7 +382,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 			return true
 		}
 		
-		return email!.isValidEmail()
+		return RegistrationForm.isEmailValid(email: email!)
 	}
 	
 	private func isMobileValid(mobile: String?) -> Bool {

@@ -16,7 +16,7 @@ class AddressViewModel: BaseViewModel {
 
 	var title: String {
 		get {
-			return "Address".localized()
+			return "My Addresses".localized()
 		}
 	}
 	

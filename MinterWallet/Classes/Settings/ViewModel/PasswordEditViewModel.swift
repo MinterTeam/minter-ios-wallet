@@ -8,13 +8,18 @@
 
 import Foundation
 import RxSwift
+import MinterCore
 import MinterMy
+import NotificationBannerSwift
 
 
 enum PasswordChangeError : Error {
 	case canNotGetLocalAccounts
-	case canNotGetEcryptionKey
+	case canNotGetEncryptionKey
+	case canNotGetMnemonic
+	case canNotEncryptMnemonic
 	case canNotSaveMnemonic
+	case canNotGetAccountPassword
 }
 
 class PasswordEditViewModel: BaseViewModel {
@@ -34,6 +39,10 @@ class PasswordEditViewModel: BaseViewModel {
 			return "Password".localized()
 		}
 	}
+	
+	var errorNotification = Variable<NotifiableError?>(nil)
+	
+	var successMessage = Variable<NotifiableSuccess?>(nil)
 	
 	private var isLoading = Variable(false)
 	
@@ -128,15 +137,15 @@ class PasswordEditViewModel: BaseViewModel {
 		
 		DispatchQueue.global(qos: .default).async {
 			DispatchQueue.main.async {
-				let mnemonics = try? self.step1()
-				
-				let newRawPwd = self.newPassword()
-				try? self.step2(mnemonics: mnemonics ?? [], rawPassword: newRawPwd!)
-				
-				
+				do {
+					try self.start()
+				}
+				catch {
+					self.errorNotification.value = NotifiableError(title: "Password can't be changed. Please try again later".localized(), text: nil)
+					self.isLoading.value = false
+				}
 			}
 		}
-
 	}
 	
 	private func newPassword() -> String? {
@@ -148,58 +157,122 @@ class PasswordEditViewModel: BaseViewModel {
 		return pwd
 	}
 	
-	private let accountManager = AccountManager(secureStorage: SecureStorage(namespace: "ReserveSecureStorage"))
+	private let rescueStorage = SecureStorage(namespace: "ReserveSecureStorage")
+	private var accountManager: AccountManager?
 	private let oldAccountManager = AccountManager()
-	
-	//get decrypted mnemonics
-	private func step1() throws -> [String]  {
-		
-		guard let accounts = oldAccountManager.loadLocalAccounts() else {
-			throw PasswordChangeError.canNotGetLocalAccounts
-			return []
-		}
-
-		var rawPassword: String?
-		
-		let mnemonics = accounts.map { (account) -> String? in
-			return oldAccountManager.mnemonic(for: account.address)
-		}.filter { (mnemonic) -> Bool in
-			return mnemonic != nil
-		} as! [String]
-		
-		return mnemonics
-	}
-	
-	//Get new encrypt key
-	private func step2(mnemonics: [String], rawPassword: String) throws {
-		
-		accountManager.save(password: rawPassword)
-		
-		guard let encKey = accountManager.password() else {
-			throw PasswordChangeError.canNotGetEcryptionKey
-		}
-		
-		try? mnemonics.forEach { (mnemonic) in
-			do {
-				try self.accountManager.save(mnemonic: mnemonic, password: encKey)
-			}
-			catch {
-				throw PasswordChangeError.canNotSaveMnemonic
-			}
-		}
-	}
+	private var authManager: AuthManager?
 	
 	//Send to server
-	private func step3() {
+	private func start() throws {
+		
+		accountManager = AccountManager(secureStorage: rescueStorage)
 		
 		guard let pwd = newPassword() else {
 			return
 		}
 		
-		let newPwd = accountManager.accountPassword(pwd)
+		//Loading local accounts
+		guard let accounts = oldAccountManager.loadLocalAccounts() else {
+			throw PasswordChangeError.canNotGetLocalAccounts
+		}
 		
-		AuthManager.default.changePassword(newPassword: <#T##String#>, encryptedMnemonics: <#T##String#>, completion: <#T##((Bool?, AuthManager.AuthManagerLoginError?) -> ())?##((Bool?, AuthManager.AuthManagerLoginError?) -> ())?##(Bool?, AuthManager.AuthManagerLoginError?) -> ()#>)
+		//getting encryption key to decrypt
+		guard let oldEncryptionKey = self.oldAccountManager.password() else {
+			throw PasswordChangeError.canNotGetEncryptionKey
+		}
+		
+		//saving new encryption key to the rescue storage
+		accountManager?.save(password: pwd)
+		
+		guard let newEncryptionKey = self.accountManager?.password() else {
+			throw PasswordChangeError.canNotGetEncryptionKey
+		}
+		
+		//password to be sent to MyMinter
+		guard let newPwd = accountManager?.accountPassword(pwd) else {
+			throw PasswordChangeError.canNotGetAccountPassword
+		}
+		
+		var mnemonics: [(id: Int, mnemonic: String)] = []
+		
+		try? accounts.forEach { (account) in
+			
+			guard let mnemonic = oldAccountManager.mnemonic(for: account.address) else {
+				throw PasswordChangeError.canNotGetMnemonic
+			}
+			
+			guard let encryptedMnemonic = try self.accountManager?.encryptedMnemonic(mnemonic: mnemonic, password: newEncryptionKey)?.toHexString() else {
+				throw PasswordChangeError.canNotEncryptMnemonic
+			}
+			
+			try self.accountManager?.save(mnemonic: mnemonic, password: newEncryptionKey)
+			
+			mnemonics.append((id: account.id, mnemonic: encryptedMnemonic))
+			
+		}
+		
+		guard let client = APIClient.withAuthentication() else {
+			return
+		}
+		
+		self.authManager = AuthManager(httpClient: client)
+		self.authManager?.changePassword(newPassword: newPwd, encryptedMnemonics: mnemonics) { (succeed, error) in
+			
+			self.isLoading.value = false
+			
+			if succeed == true {
+				
+				self.successMessage.value = NotifiableSuccess(title: "Password has been changed".localized(), text: nil)
+				
+				do {
+					try self.finish()
+				}
+				catch {
+					//logout if can't finish PKs recovery
+					Session.shared.logout()
+				}
+			}
+			else {
+				self.errorNotification.value = NotifiableError(title: "Password can't be changed. Please try again later".localized(), text: nil)
+				self.cleanUp()
+			}
+		}
 	}
-
+	
+	func finish() throws {
+		guard let accounts = accountManager?.loadLocalAccounts() else {
+			throw PasswordChangeError.canNotGetLocalAccounts
+		}
+		
+		guard let newEncryptionKey = self.accountManager?.password() else {
+			throw PasswordChangeError.canNotGetEncryptionKey
+		}
+		
+		self.oldAccountManager.save(encryptionKey: newEncryptionKey)
+		
+		try? accounts.forEach { (account) in
+			
+			guard let mnemonic = accountManager?.mnemonic(for: account.address) else {
+				throw PasswordChangeError.canNotGetMnemonic
+			}
+			
+			try self.oldAccountManager.save(mnemonic: mnemonic, password: newEncryptionKey)
+			
+			try? self.cleanUp()
+		}
+	}
+	
+	func cleanUp() throws {
+		
+		accountManager?.deleteEncryptionKey()
+		guard let accounts = accountManager?.loadLocalAccounts() else {
+			throw PasswordChangeError.canNotGetLocalAccounts
+		}
+		
+		try? accounts.forEach { (account) in
+			
+			
+		}
+	}
 
 }

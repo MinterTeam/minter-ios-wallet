@@ -14,6 +14,7 @@ import RxDataSources
 class AddressViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 	
 	let disposeBag = DisposeBag()
+	
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -24,21 +25,16 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 	
 	//MARK: - IBOutlet
 	
-	@IBOutlet var headerView: UIView! {
-		didSet {
-			headerView.sizeToFit()
-			headerView.setNeedsDisplay()
-			headerView.layoutIfNeeded()
-			
-		}
-	}
+	@IBOutlet var headerView: UIView!
+	
+	@IBOutlet weak var tableHeaderTitle: UILabel!
 	
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
 			tableView?.tableFooterView = UIView()
 			tableView.rowHeight = UITableViewAutomaticDimension
 			tableView.estimatedRowHeight = 54.0
-			tableView.tableHeaderView = headerView
+//			tableView.tableHeaderView = headerView
 		}
 	}
 	
@@ -58,10 +54,17 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 
 	//MARK: Life cycle
 	
+	override func viewWillLayoutSubviews() {
+		super.viewWillLayoutSubviews()
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		self.title = viewModel.title
+		
+		tableView.tableHeaderView = headerView
+//		headerView.addConstraint(NSLayoutConstraint(item: headerView, attribute: .width, relatedBy: .equal, toItem: tableView, attribute: .width, multiplier: 1.0, constant: 0.0))
 		
 		registerCells()
 		

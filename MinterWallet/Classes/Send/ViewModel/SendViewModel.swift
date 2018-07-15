@@ -156,7 +156,7 @@ class SendViewModel: BaseViewModel {
 			}
 			
 			DispatchQueue.main.async {
-				self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: to))
+				self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: self!.toField ?? to, address: to))
 			}
 			
 			DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
@@ -172,7 +172,7 @@ class SendViewModel: BaseViewModel {
 	func createSections() {
 		
 		let username = AddressTextViewTableViewCellItem(reuseIdentifier: "AddressTextViewTableViewCell", identifier: cellIdentifierPrefix.address.rawValue)
-		username.title = "TO (@USERNAME, EMAIL, MOBILE OR MX ADDRESS)".localized()
+		username.title = "TO (@USERNAME, EMAIL OR MX ADDRESS)".localized()
 		username.rules = [RegexRule(regex: "^Mx[a-zA-Z0-9]{40}$", message: "INCORRECT ADDRESS".localized())]
 		username.rules = [RegexRule(regex: "^@[a-zA-Z0-9_]{5,32}", message: "INCORRECT ADDRESS".localized())]
 		username.isLoadingObservable = isLoadingAddress.asObservable()
@@ -466,7 +466,7 @@ class SendViewModel: BaseViewModel {
 					return
 				}
 				
-				let vm = self?.sendViewModel(to: address, amount: amount)
+				let vm = self?.sendPopupViewModel(to: self!.toField ?? address, address: address, amount: amount)
 				let vc = Storyboards.Popup.instantiateInitialViewController()
 				vc.viewModel = vm
 				
@@ -536,7 +536,9 @@ class SendViewModel: BaseViewModel {
 				return
 			}
 			
-			self?.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin, amount: amount) { [weak self] res in
+			let toFld = self?.toField
+			
+			self?.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin, amount: amount) { [weak self, toFld] res in
 				
 				if res == true {
 					
@@ -545,13 +547,16 @@ class SendViewModel: BaseViewModel {
 					self?.createSections()
 					
 					DispatchQueue.main.async {
-						self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: to))
+						self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: toFld ?? to, address: to))
 					}
 					
 					DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
 						Session.shared.loadTransactions()
 						SessionHelper.reloadAccounts()
 					})
+					
+					
+					
 				}	
 			}
 		}
@@ -598,24 +603,24 @@ class SendViewModel: BaseViewModel {
 	
 	//MARK: -
 	
-	func sendViewModel(to: String, amount: Double) -> SendPopupViewModel {
+	func sendPopupViewModel(to: String, address: String, amount: Double) -> SendPopupViewModel {
 		
 		let vm = SendPopupViewModel()
 		vm.amount = amount
 		vm.coin = selectedCoin.value
 		vm.username = to
-		vm.avatarImage = MinterMyAPIURL.avatarAddress(address: to).url()
+		vm.avatarImage = MinterMyAPIURL.avatarAddress(address: address).url()
 		vm.popupTitle = "You're Sending"
 		vm.buttonTitle = "BIP!".localized()
 		vm.cancelTitle = "CANCEL".localized()
 		return vm
 	}
 	
-	func sentViewModel(to: String) -> SentPopupViewModel {
+	func sentViewModel(to: String, address: String) -> SentPopupViewModel {
 		
 		let vm = SentPopupViewModel()
 		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
-		vm.avatarImage = MinterMyAPIURL.avatarAddress(address: to).url()
+		vm.avatarImage = MinterMyAPIURL.avatarAddress(address: address).url()
 		vm.secondButtonTitle = "CLOSE".localized()
 		vm.username = to
 		vm.title = "Success!".localized()
@@ -625,12 +630,12 @@ class SendViewModel: BaseViewModel {
 	func countdownPopupViewModel() -> CountdownPopupViewModel {
 		
 		let vm = CountdownPopupViewModel()
-		vm.popupTitle = "Please wait"
+		vm.popupTitle = "Please wait".localized()
 		vm.unit = (one: "second", two: "seconds", other: "seconds")
 		vm.count = 13
-		vm.desc1 = "Coins will be received in"
-		vm.desc2 = "Too long? You can make a faster transaction for 0.00000001 BIP"
-		vm.buttonTitle = "Express transaction"
+		vm.desc1 = "Coins will be received in".localized()
+		vm.desc2 = "Too long? You can make a faster transaction for 0.00000001 BIP".localized()
+		vm.buttonTitle = "Express transaction".localized()
 		return vm
 	}
 	

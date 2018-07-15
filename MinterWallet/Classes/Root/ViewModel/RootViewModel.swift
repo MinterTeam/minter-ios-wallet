@@ -46,7 +46,7 @@ class RootViewModel: BaseViewModel {
 		
 		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in
 			return isLoggedIn
-		}).distinctUntilChanged().subscribe(onNext: { (isLoggedIn) in
+		}).subscribe(onNext: { (isLoggedIn) in
 			//show wallet
 			SessionHelper.reloadAccounts()
 			Session.shared.loadUser()
@@ -101,7 +101,7 @@ class RootViewModel: BaseViewModel {
 		let token = tkn
 		
 		let creds = CentrifugeCredentials(token: token, user: user, timestamp: timestamp)
-		let url = "wss://rtm.explorer.minter.network/connection/websocket"
+		let url = "ws://92.53.87.98:8000/connection/websocket"
 		client = Centrifuge.client(url: url, creds: creds, delegate: self)
 		
 		client?.connect { message, error in

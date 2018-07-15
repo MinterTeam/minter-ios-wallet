@@ -37,21 +37,23 @@
                     <navigationItem key="navigationItem" title="Title" id="6hI-Ok-PIx"/>
                     <connections>
                         <outlet property="headerView" destination="zuQ-cu-38d" id="tBj-sm-NfM"/>
+                        <outlet property="tableHeaderTitle" destination="25L-8b-FTq" id="nr4-FF-sJx"/>
                         <outlet property="tableView" destination="l7Q-eZ-ez1" id="DI9-PA-EfX"/>
                         <segue destination="5RV-5V-HNQ" kind="show" identifier="showBalance" id="y8B-MW-yqr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fea-8I-qGe" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="zuQ-cu-38d">
-                    <rect key="frame" x="0.0" y="0.0" width="372" height="151"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="156"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25L-8b-FTq">
-                            <rect key="frame" x="20" y="20" width="332" height="131"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25L-8b-FTq">
+                            <rect key="frame" x="20" y="0.0" width="335" height="156"/>
+                            <color key="backgroundColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                             <attributedString key="attributedText">
                                 <fragment>
                                     <string key="content">Addresses are similar to bank accounts except for being operated only by you. 
-All funds are received and sent from Main Address which is linked to your profile data —@username, email, or mobile number.</string>
+All funds are received and sent from Main Address which is linked to your profile data -@username or email.</string>
                                     <attributes>
                                         <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <font key="NSFont" size="14" name="Ubuntu"/>
@@ -67,7 +69,7 @@ All funds are received and sent from Main Address which is linked to your profil
                         <constraint firstAttribute="bottom" secondItem="25L-8b-FTq" secondAttribute="bottom" id="2Lw-fi-w2L"/>
                         <constraint firstAttribute="trailing" secondItem="25L-8b-FTq" secondAttribute="trailing" constant="20" id="Axl-k3-Nz3"/>
                         <constraint firstItem="25L-8b-FTq" firstAttribute="leading" secondItem="zuQ-cu-38d" secondAttribute="leading" constant="20" id="Qby-gT-jGE"/>
-                        <constraint firstItem="25L-8b-FTq" firstAttribute="top" secondItem="zuQ-cu-38d" secondAttribute="top" constant="20" id="ote-MJ-bue"/>
+                        <constraint firstItem="25L-8b-FTq" firstAttribute="top" secondItem="zuQ-cu-38d" secondAttribute="top" id="ote-MJ-bue"/>
                     </constraints>
                 </view>
             </objects>

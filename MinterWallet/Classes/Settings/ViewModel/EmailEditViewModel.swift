@@ -46,8 +46,13 @@ class EmailEditViewModel: BaseViewModel {
 				self?.state.value = .default
 			}
 			else {
+				if nil == self?.email.value || self?.email.value == "" {
+					self?.state.value = .default
+				}
+				else {
+					self?.state.value = .invalid(error: "EMAIL IS INCORRECT".localized())
+				}
 				self?.isButtonEnabled.value = false
-				self?.state.value = .invalid(error: "EMAIL IS INCORRECT".localized())
 			}
 		}).disposed(by: disposeBag)
 	}
@@ -79,6 +84,7 @@ class EmailEditViewModel: BaseViewModel {
 		button.title = "SAVE".localized()
 		button.isLoadingObserver = isLoading.asObservable()
 		button.isButtonEnabledObservable = isButtonEnabled.asObservable()
+		button.isButtonEnabled = false
 		
 		section.items = [email, button]
 		
@@ -139,7 +145,7 @@ class EmailEditViewModel: BaseViewModel {
 	//MARK: -
 	
 	func validate() -> [String]? {
-		if let eml = email.value, !eml.isValidEmail() {
+		if let eml = email.value, !eml.isValidEmail()/* && eml != "" */{
 			return ["EMAIL IS NOT VALID".localized()]
 		}
 		return nil

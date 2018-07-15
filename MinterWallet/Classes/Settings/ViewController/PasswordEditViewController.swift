@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import NotificationBannerSwift
+import RxSwift
+
 
 class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 	
@@ -23,6 +26,8 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 	
 	var viewModel = PasswordEditViewModel()
 	
+	private var disposeBag = DisposeBag()
+	
 	//MARK: - ViewController
 	
 	override func viewDidLoad() {
@@ -31,6 +36,22 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 		self.title = viewModel.title
 		
 		registerCells()
+		
+		
+		viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
+			banner.show()
+		}).disposed(by: disposeBag)
+		
+		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
+			banner.show()
+		}).disposed(by: disposeBag)
+		
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
