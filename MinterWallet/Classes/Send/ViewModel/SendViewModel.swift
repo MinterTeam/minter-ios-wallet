@@ -72,6 +72,7 @@ class SendViewModel: BaseViewModel {
 	//MARK: -
 	
 	var sections = Variable([BaseTableSectionItem]())
+	private let formatter = NumberFormatter()
 	
 	
 	private var isLoadingAddress = Variable(false)
@@ -91,6 +92,22 @@ class SendViewModel: BaseViewModel {
 			return (nil != val.value[selectedCoin.value!])
 		}
 		return balance[selectedAddress!]![selectedCoin.value!]
+	}
+	
+	var baseCoinBalance: Decimal {
+		let balances = Session.shared.allBalances.value
+		if let ads = selectedAddress, let cn = Coin.baseCoin().symbol, let smt = balances[ads], let blnc = smt[cn] {
+			return Decimal(blnc)
+		}
+		return 0
+	}
+	
+	func canPayComission() -> Bool {
+		let balance = self.baseCoinBalance
+		if balance >= TransactionCommisionType.send.amount() {
+			return true
+		}
+		return false
 	}
 	
 	private var lastSentTransactionHash: String?
@@ -133,6 +150,9 @@ class SendViewModel: BaseViewModel {
 
 	override init() {
 		super.init()
+		
+		formatter.generatesDecimalNumbers = true
+		
 		
 		Session.shared.allBalances.asObservable().distinctUntilChanged().filter({ (_) -> Bool in
 			return true //nil == self.selectedAddress
@@ -554,9 +574,7 @@ class SendViewModel: BaseViewModel {
 						Session.shared.loadTransactions()
 						SessionHelper.reloadAccounts()
 					})
-					
-					
-					
+
 				}	
 			}
 		}
@@ -567,13 +585,22 @@ class SendViewModel: BaseViewModel {
 		let newPk = self.accountManager.privateKey(from: seed)
 		let nonce = BigUInt(nonce)
 		
-		
-		guard let value = BigUInt(String(BigInt(amount * pow(10, 18)))) else {
+		guard let str = formatter.string(from: (Decimal(amount) * pow(10, 18)) as NSNumber) else {
 			completion?(false)
 			return
 		}
 		
-		let tx = SendCoinRawTransaction(nonce: nonce, to: to, value: value, coin: coin.uppercased())
+		let decimalAmount = BigUInt(str)
+		
+		guard let value = decimalAmount else {
+			completion?(false)
+			return
+		}
+		
+		let cn = (self.canPayComission() ?? false) ? Coin.baseCoin().symbol : coin
+		let coinData = cn?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+		
+		let tx = SendCoinRawTransaction(nonce: nonce, gasCoin: coinData, to: to, value: value, coin: coin.uppercased())
 		let pkString = newPk.raw.toHexString()
 		
 		guard let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pkString) else {

@@ -48,6 +48,8 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		automaticallyAdjustsScrollViewInsets = false
+		
 		registerCells()
 		
 		viewModel.notifiableError.asObservable().filter({ (notification) -> Bool in
@@ -174,6 +176,10 @@ extension SendViewController: PickerTableViewCellDelegate {
 		if let item = item?.object as? AccountPickerItem {
 			viewModel.accountPickerSelect(item: item)
 		}
+	}
+	
+	func willShowPicker() {
+		tableView.endEditing(true)
 	}
 }
 

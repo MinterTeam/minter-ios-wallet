@@ -82,9 +82,9 @@ class AccountManager {
 	func save(password: String) {
 		let hash = password.bytes.sha256()
 		let data = Data(bytes: hash)
-		DispatchQueue.main.async {
+//		DispatchQueue.main.async {
 			self.secureStorage.set(data, forKey: self.passwordKey)
-		}
+//		}
 	}
 	
 	//TODO: rename to encryption key

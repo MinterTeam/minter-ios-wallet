@@ -72,7 +72,6 @@ class TransactionsViewController: BaseTableViewController {
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
 		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingTableViewCell")
 		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "ConvertTransactionTableViewCell")
-		
 	}
 	
 	//MARK: - Expandable
@@ -83,7 +82,7 @@ class TransactionsViewController: BaseTableViewController {
 			return 1
 		}
 		
-		return expandedIndexPaths.contains(indexPath) ? 314 : 54
+		return expandedIndexPaths.contains(indexPath) ? 378 : 54
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -122,7 +121,7 @@ class TransactionsViewController: BaseTableViewController {
 
 }
 
-extension TransactionsViewController : TransactionTableViewCellDelegate {
+extension TransactionsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate {
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
@@ -130,4 +129,12 @@ extension TransactionsViewController : TransactionTableViewCellDelegate {
 			self.present(vc, animated: true) {}
 		}
 	}
+	
+	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
+		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			let vc = SFSafariViewController(url: url)
+			self.present(vc, animated: true) {}
+		}
+	}
+	
 }

@@ -19,7 +19,7 @@ class TransactionTableViewCellItem : BaseCellItem {
 	var from: String?
 	var to: String?
 	var coin: String?
-	var amount: Double?
+	var amount: Decimal?
 	var expandable: Bool?
 }
 
@@ -49,7 +49,8 @@ class TransactionTableViewCell: ExpandableCell {
 	}
 	@IBOutlet weak var coinImage: UIImageView! {
 		didSet {
-			coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .white, borderWidth: 2.0)
+//			coinImage.layer.cornerRadius = 17.0
+			coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .clear, borderWidth: 2.0)
 		}
 	}
 	
@@ -112,7 +113,7 @@ class TransactionTableViewCell: ExpandableCell {
 		}
 	}
 	
-	private func amountText(amount: Double) -> String {
+	private func amountText(amount: Decimal) -> String {
 		return formatter.string(from: amount as NSNumber) ?? ""
 	}
 	
@@ -131,8 +132,14 @@ class TransactionTableViewCell: ExpandableCell {
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		
+		detailView?.setNeedsLayout()
+		detailView?.layoutIfNeeded()
+		
+		self.setNeedsLayout()
+		self.layoutIfNeeded()
+		
 		if expanded {
-			
+			setExpanded(false, animated: false)
 		}
 		
 	}

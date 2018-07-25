@@ -35,16 +35,16 @@
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1OM-Ql-2PQ" customClass="ScreenHeader" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="96"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7g-aO-BzU">
-                                        <rect key="frame" x="20" y="10" width="378" height="17"/>
+                                        <rect key="frame" x="20" y="20" width="378" height="17"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIV-Gf-6Jf">
-                                        <rect key="frame" x="15.999999999999986" y="26.999999999999996" width="225.66666666666663" height="32.666666666666657"/>
+                                        <rect key="frame" x="20" y="40" width="242" height="36"/>
                                         <attributedString key="attributedText">
                                             <fragment content="120 912">
                                                 <attributes>
@@ -53,10 +53,17 @@
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
                                             </fragment>
-                                            <fragment content=".98230221 bips">
+                                            <fragment content=".">
                                                 <attributes>
                                                     <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <font key="NSFont" size="18" name="Ubuntu-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content="98230221 bips">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <font key="NSFont" size="20" name="Ubuntu-Bold"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
                                             </fragment>
@@ -66,12 +73,13 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.25882352941176467" green="0.14509803921568626" blue="0.64313725490196072" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="1Tf-ya-4PI"/>
-                                    <constraint firstItem="RIV-Gf-6Jf" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="27" id="PMt-ql-XFh"/>
+                                    <constraint firstAttribute="height" constant="96" id="1Tf-ya-4PI"/>
+                                    <constraint firstItem="RIV-Gf-6Jf" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="40" id="PMt-ql-XFh"/>
+                                    <constraint firstAttribute="bottom" secondItem="RIV-Gf-6Jf" secondAttribute="bottom" constant="20" id="Ul2-Jj-AnY"/>
                                     <constraint firstAttribute="trailing" secondItem="b7g-aO-BzU" secondAttribute="trailing" constant="16" id="dgu-16-Ocz"/>
-                                    <constraint firstItem="RIV-Gf-6Jf" firstAttribute="leading" secondItem="1OM-Ql-2PQ" secondAttribute="leading" constant="16" id="pJq-CB-152"/>
+                                    <constraint firstItem="RIV-Gf-6Jf" firstAttribute="leading" secondItem="1OM-Ql-2PQ" secondAttribute="leading" constant="20" id="pJq-CB-152"/>
                                     <constraint firstItem="b7g-aO-BzU" firstAttribute="leading" secondItem="1OM-Ql-2PQ" secondAttribute="leading" constant="20" id="qaZ-1H-VRK"/>
-                                    <constraint firstItem="b7g-aO-BzU" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="10" id="v3A-Rl-OwY"/>
+                                    <constraint firstItem="b7g-aO-BzU" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="20" id="v3A-Rl-OwY"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -135,7 +143,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E9E-9g-ZIY">
-                            <rect key="frame" x="302.66666666666669" y="10" width="34.333333333333314" height="22"/>
+                            <rect key="frame" x="300" y="10" width="37" height="22"/>
                             <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>

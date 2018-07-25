@@ -11,12 +11,6 @@ import MinterCore
 import BigInt
 
 
-struct ConvertPickerItem {
-	var coin: String?
-	var address: String?
-	var balance: Double?
-}
-
 
 class ConvertViewModel: BaseViewModel {
 
@@ -149,7 +143,7 @@ class ConvertViewModel: BaseViewModel {
 			return
 		}
 		
-		if coin == Coin.defaultCoin().symbol {
+		if coin == Coin.baseCoin().symbol {
 			hasCoin.value = true
 			return
 		}
@@ -218,29 +212,29 @@ class ConvertViewModel: BaseViewModel {
 		
 		isLoading.value = true
 		
-		self.coinManager.estimateExchangeReturn(from: from, to: to, amount: amount, includeCommission: true, completion: { [weak self] (val, err) in
-			
-			defer {
-				self?.isLoading.value = false
-				self?.getAmountIsLoading.value = false
-				self?.spendAmountIsLoading.value = false
-			}
-			
-			guard nil == err else {
-				return
-			}
-			
-			self?.shouldUpdateForm = false
-			
-			if backConversion {
-				self?.spendAmount.value = val ?? 0.0
-			}
-			else {
-				self?.getAmount.value = val ?? 0.0
-			}
-			self?.shouldUpdateForm = true
-			
-		})
+//		self.coinManager.estimateExchangeReturn(from: from, to: to, amount: amount, includeCommission: true, completion: { [weak self] (val, err) in
+//
+//			defer {
+//				self?.isLoading.value = false
+//				self?.getAmountIsLoading.value = false
+//				self?.spendAmountIsLoading.value = false
+//			}
+//
+//			guard nil == err else {
+//				return
+//			}
+//
+//			self?.shouldUpdateForm = false
+//
+//			if backConversion {
+//				self?.spendAmount.value = val ?? 0.0
+//			}
+//			else {
+//				self?.getAmount.value = val ?? 0.0
+//			}
+//			self?.shouldUpdateForm = true
+//
+//		})
 	}
 	
 	
@@ -268,33 +262,33 @@ class ConvertViewModel: BaseViewModel {
 		
 		let pk = accountManager.privateKey(from: seed).raw.toHexString()
 		
-		MinterCore.TransactionManagerr.default.transactionCount(address: "Mx" + selectedAddress) { [weak self] (count, err) in
-			
-			guard err == nil, let nnce = count else {
-				self?.isLoading.value = false
-				self?.errorNotification.value = NotifiableError(title: "Can't get nonce", text: nil)
-				return
-			}
-			
-			let nonce = nnce + 1
-			
-			let tx = ConvertCoinRawTransaction(nonce: BigUInt(nonce), coinFrom: coinFrom, coinTo: coinTo, value: value)
-			let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
-			
-			MinterCore.TransactionManagerr.default.send(tx: signedTx!) { (hash, status, err) in
-				self?.isLoading.value = false
-				
-				defer {
-					Session.shared.loadBalances()
-					Session.shared.loadTransactions()
-				}
-				
-				guard nil == err else {
-					self?.errorNotification.value = NotifiableError(title: "Can't send Transaction", text: nil)
-					return
-				}
-			}
-		}
+//		MinterCore.TransactionManagerr.default.transactionCount(address: "Mx" + selectedAddress) { [weak self] (count, err) in
+//
+//			guard err == nil, let nnce = count else {
+//				self?.isLoading.value = false
+//				self?.errorNotification.value = NotifiableError(title: "Can't get nonce", text: nil)
+//				return
+//			}
+//
+//			let nonce = nnce + 1
+//
+//			let tx = SellCoinRawTransaction(nonce: BigUInt(nonce), coinFrom: coinFrom, coinTo: coinTo, value: value)
+//			let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
+//
+//			MinterCore.TransactionManagerr.default.send(tx: signedTx!) { (hash, status, err) in
+//				self?.isLoading.value = false
+//
+//				defer {
+//					Session.shared.loadBalances()
+//					Session.shared.loadTransactions()
+//				}
+//
+//				guard nil == err else {
+//					self?.errorNotification.value = NotifiableError(title: "Can't send Transaction", text: nil)
+//					return
+//				}
+//			}
+//		}
 	}
 	
 }

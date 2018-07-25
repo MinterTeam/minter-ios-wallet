@@ -15,8 +15,6 @@ target 'MinterWallet' do
 		pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
 		pod 'TPKeyboardAvoiding'
 		pod 'ExpandableCell', :path => '../ExpandableCell'
-#		pod 'ExpyTableView'
-#		pod 'AEAccordion'
 		pod 'McPicker'
 		pod 'ImagePicker'
 		pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
@@ -35,6 +33,9 @@ target 'MinterWallet' do
 		pod 'Fabric'
 		pod 'Crashlytics'
 		pod 'ObjectMapper'
+		pod 'XLPagerTabStrip', '~> 8.0'
+		#pod 'AccordionMenuSwift', '~> 1.2.6'
+		pod 'FoldingCell'
 end
 
 target 'MinterWalletTests' do

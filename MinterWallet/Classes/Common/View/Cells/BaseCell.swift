@@ -85,6 +85,10 @@ class ExpandableCell : AccordionTableViewCell, Configurable {
 	
 	private func toggleCell() {
 		detailView?.isHidden = expanded
+		detailView?.alpha = expanded ? 0.0 : 1.0
+		
+		setNeedsLayout()
+		layoutIfNeeded()
 	}
 	
 	override func prepareForReuse() {

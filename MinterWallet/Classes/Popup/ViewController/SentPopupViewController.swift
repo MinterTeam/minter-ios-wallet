@@ -26,9 +26,9 @@ class SentPopupViewController: PopupViewController {
 	@IBOutlet weak var avatarImageView: UIImageView! {
 		didSet {
 			avatarImageView?.backgroundColor = .white
-			avatarImageView?.layer.cornerRadius = 25.0
+//			avatarImageView?.layer.cornerRadius = 25.0
 			
-			avatarImageView?.makeBorderWithCornerRadius(radius: 25, borderColor: .white, borderWidth: 4)
+			avatarImageView?.makeBorderWithCornerRadius(radius: 25, borderColor: .clear, borderWidth: 4)
 			
 		}
 	}

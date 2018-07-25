@@ -33,7 +33,7 @@ class CoinTableViewCell: BaseCell {
 	
 	@IBOutlet weak var coinImage: UIImageView! {
 		didSet {
-			coinImage.makeBorderWithCornerRadius(radius: 17, borderColor: .white, borderWidth: 2)
+			coinImage.makeBorderWithCornerRadius(radius: 17, borderColor: .clear, borderWidth: 2)
 		}
 	}
 	
@@ -43,12 +43,10 @@ class CoinTableViewCell: BaseCell {
 	
 	@IBOutlet weak var coinImageWrapper: UIView! {
 		didSet {
-			coinImageWrapper.layer.cornerRadius = 17
+			coinImageWrapper.backgroundColor = .clear
 			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
 		}
 	}
-	
-	//MARK: -
 	
 	//MARK: -
 	
@@ -71,7 +69,7 @@ class CoinTableViewCell: BaseCell {
 			title.text = transaction.title
 			coinImage.image = transaction.image
 			if let url = transaction.imageURL {
-				coinImage.af_setImage(withURL: url)
+				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 17.0))
 			}
 			else {
 				coinImage.image = transaction.image

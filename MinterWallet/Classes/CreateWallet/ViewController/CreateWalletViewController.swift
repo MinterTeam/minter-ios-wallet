@@ -20,7 +20,6 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 		didSet {
 			tableView.rowHeight = UITableViewAutomaticDimension
 			tableView.estimatedRowHeight = 70.0
-			tableView.contentInset = UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0)
 		}
 	}
 	@IBOutlet var footerView: UIView!
@@ -54,6 +53,14 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 		
 		//TableView
 		initializeTableView()
+		
+		if #available(iOS 11.0, *) {
+			tableView.contentInset = UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0)
+			//				tableView.contentInsetAdjustmentBehavior = .always
+		} else {
+			// Fallback on earlier versions
+			tableView.contentInset = UIEdgeInsetsMake(-20.0, 0.0, 0.0, 0.0)
+		}
 		
 		//Errors
 		self.viewModel.notifiableError.asObservable().subscribe(onNext: { (errorNotification) in

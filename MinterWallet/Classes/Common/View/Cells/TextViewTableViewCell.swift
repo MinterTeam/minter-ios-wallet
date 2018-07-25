@@ -55,7 +55,7 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 	
 	@IBOutlet weak var textView: GrowingDefaultTextView! {
 		didSet {
-			textView.contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 6, right: 16)
+			textView.contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 0, right: 20)
 		}
 	}
 	
@@ -75,6 +75,8 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 		activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 		activityIndicator?.backgroundColor = .white
 		activityIndicator?.translatesAutoresizingMaskIntoConstraints = false
+		
+//		textView.isScrollEnabled = false
 		
 	}
 

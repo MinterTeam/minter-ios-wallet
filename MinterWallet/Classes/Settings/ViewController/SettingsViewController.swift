@@ -151,26 +151,53 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 	
 	func showImagePicker() {
 		
-		let cropping = CroppingParameters(isEnabled: true, allowResizing: true, allowMoving: true, minimumSize: CGSize(width: 20, height: 20))
-		
-		let camera = CameraViewController(croppingParameters: cropping, allowsLibraryAccess: true, allowsSwapCameraOrientation: true, allowVolumeButtonCapture: true) { [weak self] (image, asset) in
-			
-			if let image = image {
-				self?.viewModel.updateAvatar(image)
+		let imagePickerController = UIImagePickerController()
+		imagePickerController.delegate = self
+		imagePickerController.mediaTypes = ["public.image", "public.movie"]
+		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { (action:UIAlertAction) in
+			if UIImagePickerController.isSourceTypeAvailable(.camera) {
+				imagePickerController.sourceType = .camera
+				self.present(imagePickerController, animated: true, completion: nil)
+			} else {
+//				self.showAlert(withTitle: "Missing camera", andMessage: "You can't take photo, there is no camera.")
 			}
-			
-			self?.dismiss(animated: true, completion: nil)
-		}
-
-		let imagePickerViewController = CameraViewController.imagePickerViewController(croppingParameters: cropping) { [weak self] image, asset in
-			if let image = image {
-				self?.viewModel.updateAvatar(image)
-			}
-			
-			self?.dismiss(animated: true, completion: nil)
-		}
+		}))
+		actionSheet.addAction(UIAlertAction(title: "Choose From Library", style: .default, handler: { (action:UIAlertAction) in
+			imagePickerController.sourceType = .photoLibrary
+			self.present(imagePickerController, animated: true, completion: nil)
+		}))
+		actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 		
-		present(imagePickerViewController, animated: true, completion: nil)
+//		if pictureView.image != nil {
+//			actionSheet.addAction(UIAlertAction(title: "Remove Photo", style: .destructive, handler: {(_ action: UIAlertAction) -> Void in
+//				self.pictureView.image = nil
+//			}))
+//		}
+		present(actionSheet, animated: true, completion: nil)
+		
+		
+		
+//		let cropping = CroppingParameters(isEnabled: true, allowResizing: true, allowMoving: true, minimumSize: CGSize(width: 20, height: 20))
+//
+//		let camera = CameraViewController(croppingParameters: cropping, allowsLibraryAccess: true, allowsSwapCameraOrientation: true, allowVolumeButtonCapture: true) { [weak self] (image, asset) in
+//
+//			if let image = image {
+//				self?.viewModel.updateAvatar(image)
+//			}
+//
+//			self?.dismiss(animated: true, completion: nil)
+//		}
+//
+//		let imagePickerViewController = CameraViewController.imagePickerViewController(croppingParameters: cropping) { [weak self] image, asset in
+//			if let image = image {
+//				self?.viewModel.updateAvatar(image)
+//			}
+//
+//			self?.dismiss(animated: true, completion: nil)
+//		}
+//
+//		present(imagePickerViewController, animated: true, completion: nil)
 		
 	}
 	
@@ -189,4 +216,35 @@ extension SettingsViewController : SettingsAvatarTableViewCellDelegate {
 		showImagePicker()
 	}
 	
+}
+
+
+extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+	
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+		print(info)
+		let mediaType = info["UIImagePickerControllerMediaType"] as? String ?? ""
+		switch mediaType {
+		case "public.movie":
+			// TODO: Load video
+			picker.dismiss(animated: true, completion: nil)
+			break
+			
+		case "public.image":
+			if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+				self.viewModel.updateAvatar(image)
+			}
+			
+			picker.dismiss(animated: true, completion: nil)
+			break
+			
+		default:
+			picker.dismiss(animated: true, completion: nil)
+			return
+		}
+	}
+	
+	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+		picker.dismiss(animated: true, completion: nil)
+	}
 }

@@ -47,7 +47,10 @@ class AddressTableViewCell: BaseCell {
 	
 	override func configure(item: BaseCellItem) {
 		if let addressItem = item as? AddressTableViewCellItem {
-			addressLabel.text = "Mx" + (addressItem.address ?? "")
+			
+			let address = "Mx" + (addressItem.address?.stripMinterHexPrefix() ?? "").lowercased()
+			
+			addressLabel.text = address
 			
 			actionButton.setTitle(addressItem.buttonTitle, for: .normal)
 		}

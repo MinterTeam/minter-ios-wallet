@@ -283,8 +283,8 @@ struct Storyboards {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
 
-        static func instantiateInitialViewController() -> ConvertViewController {
-            return self.storyboard.instantiateInitialViewController() as! ConvertViewController
+        static func instantiateInitialViewController() -> NewConvertViewController {
+            return self.storyboard.instantiateInitialViewController() as! NewConvertViewController
         }
 
         static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
@@ -293,6 +293,18 @@ struct Storyboards {
 
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
+        }
+
+        static func instantiateConvertViewController() -> ConvertViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "ConvertViewController") as! ConvertViewController
+        }
+
+        static func instantiateSpendCoinsViewController() -> SpendCoinsViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "SpendCoinsViewController") as! SpendCoinsViewController
+        }
+
+        static func instantiateGetCoinsViewController() -> GetCoinsViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "GetCoinsViewController") as! GetCoinsViewController
         }
     }
 
@@ -727,6 +739,30 @@ extension AddressViewController {
     }
 
 }
+extension AddressViewController {
+
+    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
+        case annotationCell = "annotationCell"
+
+        var kind: ReusableKind? {
+            switch self {
+            case .annotationCell:
+                return ReusableKind(rawValue: "tableViewCell")
+            }
+        }
+
+        var viewType: UIView.Type? {
+            switch self {
+            default:
+                return nil
+            }
+        }
+
+        var storyboardIdentifier: String? { return self.description }
+        var description: String { return self.rawValue }
+    }
+
+}
 
 // MARK: - AdvancedModeViewController
 extension UIStoryboardSegue {
@@ -814,6 +850,36 @@ extension HomeViewController {
 // MARK: - LoginViewController
 
 // MARK: - ConvertViewController
+protocol ConvertViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension ConvertViewController: ConvertViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: ConvertViewController {
+    var storyboardIdentifier: String? { return "ConvertViewController" }
+    static var storyboardIdentifier: String? { return "ConvertViewController" }
+}
+
+// MARK: - NewConvertViewController
+
+// MARK: - SpendCoinsViewController
+protocol SpendCoinsViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension SpendCoinsViewController: SpendCoinsViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: SpendCoinsViewController {
+    var storyboardIdentifier: String? { return "SpendCoinsViewController" }
+    static var storyboardIdentifier: String? { return "SpendCoinsViewController" }
+}
+
+// MARK: - GetCoinsViewController
+protocol GetCoinsViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension GetCoinsViewController: GetCoinsViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: GetCoinsViewController {
+    var storyboardIdentifier: String? { return "GetCoinsViewController" }
+    static var storyboardIdentifier: String? { return "GetCoinsViewController" }
+}
 
 // MARK: - TabBarController
 

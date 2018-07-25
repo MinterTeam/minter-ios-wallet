@@ -41,7 +41,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h1x-x3-p3z">
                                                     <rect key="frame" x="10" y="10" width="70" height="70"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AvatarPlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="SPb-JB-hBQ">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AvatarPlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="SPb-JB-hBQ">
                                                             <rect key="frame" x="10" y="10" width="50" height="50"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>

@@ -36,7 +36,7 @@ class PasswordEditViewModel: BaseViewModel {
 	
 	var title: String {
 		get {
-			return "Password".localized()
+			return "Change Password".localized()
 		}
 	}
 	
@@ -64,15 +64,15 @@ class PasswordEditViewModel: BaseViewModel {
 		var section = BaseTableSectionItem(header: "")
 		
 		let password = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_Password")
-		password.title = "CHOOSE PASSWORD".localized()
+		password.title = "NEW PASSWORD".localized()
 		password.isSecure = true
 		
 		let confirmPassword = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: "TextFieldTableViewCell_PasswordConfirm")
-		confirmPassword.title = "CONFIRM PASSWORD".localized()
+		confirmPassword.title = "REPEAT NEW PASSWORD".localized()
 		confirmPassword.isSecure = true
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell")
-		button.title = "Save"
+		button.title = "SAVE".localized()
 		button.buttonPattern = "purple"
 		button.isLoadingObserver = self.isLoading.asObservable()
 		button.isButtonEnabled = false
@@ -234,7 +234,7 @@ class PasswordEditViewModel: BaseViewModel {
 			}
 			else {
 				self.errorNotification.value = NotifiableError(title: "Password can't be changed. Please try again later".localized(), text: nil)
-				self.cleanUp()
+				try? self.cleanUp()
 			}
 		}
 	}
@@ -265,14 +265,14 @@ class PasswordEditViewModel: BaseViewModel {
 	func cleanUp() throws {
 		
 		accountManager?.deleteEncryptionKey()
-		guard let accounts = accountManager?.loadLocalAccounts() else {
-			throw PasswordChangeError.canNotGetLocalAccounts
-		}
-		
-		try? accounts.forEach { (account) in
-			
-			
-		}
+//		guard let accounts = accountManager?.loadLocalAccounts() else {
+//			throw PasswordChangeError.canNotGetLocalAccounts
+//		}
+//
+//		try? accounts.forEach { (account) in
+//
+//
+//		}
 	}
 
 }

@@ -42,7 +42,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="74" id="jVQ-nR-p2F"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>

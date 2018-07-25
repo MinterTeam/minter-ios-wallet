@@ -40,9 +40,10 @@ class SettingsAvatarTableViewCell: BaseCell {
 	
 	@IBOutlet weak var avatarImageView: UIImageView! {
 		didSet {
-			avatarImageView?.layer.cornerRadius = 25.0
+//			avatarImageView.layer.masksToBounds = true
+//			avatarImageView?.layer.cornerRadius = 25.0
 			avatarImageView.superview?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
-			avatarImageView.makeBorderWithCornerRadius(radius: 25, borderColor: .white, borderWidth: 4)
+			avatarImageView.makeBorderWithCornerRadius(radius: 25, borderColor: .clear, borderWidth: 4)
 		}
 	}
 	
@@ -80,29 +81,8 @@ class SettingsAvatarTableViewCell: BaseCell {
 	
 	//MARK: -
 	
-	func dropShadow() {
-		
-		shadowLayer.removeFromSuperlayer()
-		shadowLayer.frame = avatarImageView.frame
-		shadowLayer.path = UIBezierPath(roundedRect: CGRect(x: avatarImageView.bounds.origin.x, y: avatarImageView.bounds.origin.y, width: avatarImageView.bounds.width, height: avatarImageView.bounds.height), cornerRadius: 25.0).cgPath
-		
-//		shadowLayer.shadowOpacity = 1.0
-//		shadowLayer.shadowRadius = 18.0
-		shadowLayer.fillColor = UIColor.clear.cgColor
-//		shadowLayer.masksToBounds = false
-//		shadowLayer.shadowColor = UIColor(hex: 0x000000, alpha: 0.2)?.cgColor
-//		shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-//		shadowLayer.opacity = 1.0
-//		shadowLayer.shouldRasterize = true
-//		shadowLayer.rasterizationScale = UIScreen.main.scale
-		shadowLayer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 1)!, alpha: 0.2, x: 0, y: 2, blur: 18, spread: 0)
-		layer.insertSublayer(shadowLayer, at: 0)
-	}
-	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		
-//		dropShadow()
 	}
 
 }

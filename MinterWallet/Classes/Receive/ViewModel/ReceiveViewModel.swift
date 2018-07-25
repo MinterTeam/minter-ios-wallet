@@ -48,8 +48,10 @@ class ReceiveViewModel: BaseViewModel {
 			
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_1\(sectionId)")
 			
-			let address = ReceiveAddressTableViewCellItem(reuseIdentifier: "ReceiveAddressTableViewCell", identifier: "ReceiveAddressTableViewCell_" + sectionId)
+//			let address = ReceiveAddressTableViewCellItem(reuseIdentifier: "ReceiveAddressTableViewCell", identifier: "ReceiveAddressTableViewCell_" + sectionId)
+			let address = AddressTableViewCellItem(reuseIdentifier: "AddressTableViewCell", identifier: "AddressTableViewCell_" + sectionId)
 			address.address = "Mx" + account.address
+			address.buttonTitle = "Copy".localized()
 			
 			let qr = QRTableViewCellItem(reuseIdentifier: "QRTableViewCell", identifier: "QRTableViewCell")
 			qr.string = "Mx" + account.address

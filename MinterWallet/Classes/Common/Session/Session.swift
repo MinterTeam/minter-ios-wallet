@@ -274,7 +274,7 @@ class Session {
 				var newAllBalances = self?.allBalances.value
 				
 				var blncs = [String : Double]()
-				if let defaultCoin = Coin.defaultCoin().symbol {
+				if let defaultCoin = Coin.baseCoin().symbol {
 					blncs[defaultCoin] = 0.0
 				}
 				coins.forEach({ (dict) in

@@ -135,7 +135,8 @@ open class AutoGrowingTextView: UITextView {
 	
 	private func scrollToCorrectPosition() {
 		if self.isFirstResponder {
-			self.scrollRangeToVisible(NSMakeRange(-1, 0)) // Scroll to bottom
+//			self.scrollRangeToVisible(NSMakeRange(-1, 0)) // Scroll to bottom
+			self.setContentOffset(CGPoint.zero, animated: false)
 		} else {
 			self.scrollRangeToVisible(NSMakeRange(0, 0)) // Scroll to top
 		}

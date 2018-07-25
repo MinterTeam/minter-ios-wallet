@@ -18,7 +18,7 @@ class ConvertTransactionTableViewCellItem : BaseCellItem {
 	var from: String?
 	var to: String?
 	var coin: String?
-	var amount: Double?
+	var amount: Decimal?
 	var expandable: Bool?
 }
 	
@@ -47,7 +47,8 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 		}
 		@IBOutlet weak var coinImage: UIImageView! {
 			didSet {
-				coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .white, borderWidth: 2.0)
+				coinImage.layer.cornerRadius = 17.0
+				coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .clear, borderWidth: 2.0)
 			}
 		}
 		
@@ -90,7 +91,12 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 				if let image = transaction.image {
 					coinImage.image = image
 				}
-				amount.text = amountText(amount: transaction.amount ?? 0)
+				if nil == transaction.amount {
+					amount.text = ""
+				}
+				else {
+					amount.text = amountText(amount: transaction.amount ?? 0)
+				}
 				amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
 				
 				fromAddressLabel.text = transaction.from
@@ -105,7 +111,7 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 			}
 		}
 		
-		private func amountText(amount: Double) -> String {
+		private func amountText(amount: Decimal) -> String {
 			return formatter.string(from: amount as NSNumber) ?? ""
 		}
 		

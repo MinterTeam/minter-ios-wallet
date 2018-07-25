@@ -31,4 +31,12 @@ open class AccordionTableViewCell: UITableViewCell {
 	
 	open func willSetCollapsed(animated: Bool) {}
 	
+	open override func prepareForReuse() {
+		if self.expanded {
+			self.setExpanded(false, animated: false)
+			self.setNeedsLayout()
+			self.layoutIfNeeded()
+		}
+	}
+	
 }

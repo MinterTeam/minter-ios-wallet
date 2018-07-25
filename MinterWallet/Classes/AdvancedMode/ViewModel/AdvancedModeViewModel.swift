@@ -30,26 +30,27 @@ class AdvancedModeViewModel: AccountantBaseViewModel {
 	
 	//MARK: -
 	
-//	private let databaseStorage = RealmDatabaseStorage.shared
+	private let databaseStorage = RealmDatabaseStorage.shared
 	
 	//MARK: -
 	
 //	private let accountManager = AccountManager()
 	
-//	func saveAccount(mnemonic: String) {
-//
-//		guard
-//			let seed = accountManager.seed(mnemonic: mnemonic, passphrase: ""),
-//			let account = accountManager.account(seed: seed, encryptedBy: .me) else {
-//				return
-//		}
-//
-//		let dbModel = AccountDataBaseModel()
-//		dbModel.address = account.address
-//		dbModel.encryptedBy = account.encryptedBy.rawValue
-//
-//		databaseStorage.add(object: dbModel)
-//	}
+	func saveAccount(mnemonic: String) {
+
+		guard
+			let seed = accountManager.seed(mnemonic: mnemonic, passphrase: ""),
+			let account = accountManager.account(id: -1, seed: seed, encryptedBy: .me) else {
+				return
+		}
+
+		let dbModel = AccountDataBaseModel()
+		dbModel.id = account.id
+		dbModel.address = account.address
+		dbModel.encryptedBy = account.encryptedBy.rawValue
+
+		databaseStorage.add(object: dbModel)
+	}
 	
 	func validationText(for error: ValidationError) -> String {
 		switch error {

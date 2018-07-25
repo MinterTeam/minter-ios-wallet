@@ -21,8 +21,8 @@ class UsernameView: UIView {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
-		imageView.makeBorderWithCornerRadius(radius: 13, borderColor: .white, borderWidth: 2)
+//		imageView.layer.cornerRadius = 13.0
+		imageView.makeBorderWithCornerRadius(radius: 13, borderColor: .clear, borderWidth: 2)
 	}
 	
 	//MARK: -

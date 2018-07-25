@@ -88,32 +88,9 @@ class TransactionsViewModel: BaseViewModel {
 				return item.header == sectionName
 			})
 			
-			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(String.random(length: 20))")
-
+			let txn = item.transaction?.txn
 			
-//			var signMultiplier = 1.0
-//			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-//				account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
-//			})
-//
-//			var title = ""
-//			if hasAddress {
-//				title = user?.username != nil ? "@" + user!.username! : (transaction.to ?? "")
-//				signMultiplier = -1.0
-//			}
-//			else {
-//				title = user?.username != nil ? "@" + user!.username! : (transaction.from ?? "")
-//			}
-//
-//			let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(transaction.hash ?? String.random(length: 20))")
-//			transactionCellItem.txHash = transaction.hash
-//			transactionCellItem.title = title
-//			transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.to) ?? "")).url()
-//			transactionCellItem.date = transaction.date
-//			transactionCellItem.from = transaction.from
-//			transactionCellItem.to = transaction.to
-//			transactionCellItem.coin = transaction.coinSymbol
-//			transactionCellItem.amount = (transaction.value ?? 0) * signMultiplier
+			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_" + (nil == txn ? String.random(length: 20) : String(txn!)))
 			
 			
 			var section: BaseTableSectionItem?
@@ -130,12 +107,17 @@ class TransactionsViewModel: BaseViewModel {
 			}
 //			items[sectionName]?.append(transactionCellItem)
 			
-			if transaction.type == .sendCoin {
+			if transaction.type == .send {
 				if let transactionCellItem = self.sendTransactionItem(with: item) {
 					items[sectionName]?.append(transactionCellItem)
 				}
 			}
-			else if transaction.type == .convert {
+			else if transaction.type == .buy || transaction.type == .sell {
+				if let transactionCellItem = self.convertTransactionItem(with: item) {
+					items[sectionName]?.append(transactionCellItem)
+				}
+			}
+			else if transaction.type == .sellAllCoins {
 				if let transactionCellItem = self.convertTransactionItem(with: item) {
 					items[sectionName]?.append(transactionCellItem)
 				}
@@ -169,7 +151,7 @@ class TransactionsViewModel: BaseViewModel {
 			return nil
 		}
 		
-		let sectionId = (transaction.hash  ?? String.random(length: 20))
+		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
 		
 		var signMultiplier = 1.0
 		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
@@ -194,7 +176,7 @@ class TransactionsViewModel: BaseViewModel {
 		transactionCellItem.to = transaction.data?.to
 		if let data = transaction.data as? SendCoinTransactionData {
 			transactionCellItem.coin = data.coin
-			transactionCellItem.amount = (data.amount ?? 0) * signMultiplier
+			transactionCellItem.amount = (data.amount ?? 0) * Decimal(signMultiplier)
 		}
 		
 		return transactionCellItem
@@ -207,7 +189,7 @@ class TransactionsViewModel: BaseViewModel {
 			return nil
 		}
 		
-		let sectionId = (transaction.hash ?? String.random(length: 20))
+		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash ?? String.random(length: 20))
 		
 		var signMultiplier = 1.0
 		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
@@ -232,9 +214,14 @@ class TransactionsViewModel: BaseViewModel {
 		transactionCellItem.to = transaction.data?.to
 		if let data = transaction.data as? ConvertTransactionData {
 			transactionCellItem.coin = data.toCoin
-			transactionCellItem.amount = (data.value ?? 0) * signMultiplier
+			transactionCellItem.amount = (data.value ?? 0) * Decimal(signMultiplier)
 			transactionCellItem.title = (data.fromCoin ?? "") + "  ⟶  " + (data.toCoin ?? "")
 		}
+		else if let data = transaction.data as? SellAllCoinsTransactionData {
+			transactionCellItem.coin = data.toCoin
+			transactionCellItem.title = (data.fromCoin ?? "") + "  ⟶  " + (data.toCoin ?? "")
+		}
+
 		
 		return transactionCellItem
 		
@@ -358,6 +345,9 @@ class TransactionsViewModel: BaseViewModel {
 	
 	func explorerURL(section: Int, row: Int) -> URL? {
 		if let item = self.cellItem(section: section, row: row) as? TransactionTableViewCellItem {
+			return URL(string: MinterExplorerBaseURL + "/transactions/" + (item.txHash ?? ""))
+		}
+		else if let item = self.cellItem(section: section, row: row) as? ConvertTransactionTableViewCellItem {
 			return URL(string: MinterExplorerBaseURL + "/transactions/" + (item.txHash ?? ""))
 		}
 		return nil

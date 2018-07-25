@@ -51,5 +51,7 @@ class GrowingDefaultTextView: AutoGrowingTextView, Validatable {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 	}
+	
+	
 
 }

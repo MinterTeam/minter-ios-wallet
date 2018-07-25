@@ -19,6 +19,26 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 
 	//MARK: -
 	
+	lazy var refreshControl: UIRefreshControl = {
+		let refreshControl = UIRefreshControl()
+		refreshControl.addTarget(self, action:
+			#selector(CoinsViewController.handleRefresh(_:)),
+														 for: UIControlEvents.valueChanged)
+//		refreshControl.tintColor = UIColor.red
+		
+		return refreshControl
+	}()
+	
+	@objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+		
+		//TODO: move to VM
+		Session.shared.loadBalances()
+		Session.shared.loadTransactions()
+		
+		
+		refreshControl.endRefreshing()
+	}
+	
 	@IBOutlet weak var usernameBarItem: UIBarButtonItem!
 	
 	@IBOutlet weak var usernameButton: UIButton!
@@ -35,7 +55,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
-			tableView.contentInset = UIEdgeInsetsMake(70, 0, 0, 0)
+			tableView.contentInset = UIEdgeInsetsMake(95, 0, 0, 0)
 		}
 	}
 	
@@ -44,7 +64,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	@IBOutlet var tableHeaderTopConstraint: NSLayoutConstraint?
 	
 	var tableHeaderTopPadding: Double {
-		return -70
+		return -95
 	}
 	
 	//MARK: -
@@ -59,6 +79,8 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		super.viewDidLoad()
 		
 		registerCells()
+		
+		self.tableView.addSubview(self.refreshControl)
 		
 		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
 			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
@@ -75,6 +97,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 				
 				if let transactionCell = cell as? TransactionTableViewCell {
 					transactionCell.delegate = self
+				}
+				
+				if let convertCell = cell as? ConvertTransactionTableViewCell {
+					convertCell.delegate = self
 				}
 				
 				return cell
@@ -120,9 +146,9 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		let balanceString = Array(formatter.string(from: NSNumber(floatLiteral: balance))!.split(separator: "."))
 		
 		let string = NSMutableAttributedString()
-		string.append(NSAttributedString(string: String(balanceString[0]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 28.0)]))
+		string.append(NSAttributedString(string: String(balanceString[0]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 32.0)]))
 		string.append(NSAttributedString(string: ".", attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
-		string.append(NSAttributedString(string: String(balanceString[1]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
+		string.append(NSAttributedString(string: String(balanceString[1]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 20.0)]))
 		string.append(NSAttributedString(string: " " + viewModel.basicCoinSymbol, attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
 		
 		return string
@@ -142,10 +168,9 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	
 	func registerCells() {
 		
-		tableView.register(UINib(nibName: "DefaultHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "DefaultHeader")
+		tableView.register(UINib(nibName: "CoinsTableViewHeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "CoinsTableViewHeaderView")
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
 		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "ConvertTransactionTableViewCell")
-		
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 		tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil), forCellReuseIdentifier: "CoinTableViewCell")
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
@@ -189,8 +214,8 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 			return UIView()
 		}
 
-		let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DefaultHeader")
-		if let defaultHeader = header as? DefaultHeader {
+		let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CoinsTableViewHeaderView")
+		if let defaultHeader = header as? CoinsTableViewHeaderView {
 			defaultHeader.titleLabel.text = section.header
 		}
 
@@ -198,7 +223,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	}
 
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 52
+		return 62
 	}
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -226,7 +251,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 			}
 		}
 		
-		return expandedIndexPaths.contains(indexPath) ? 314 : 54
+		return expandedIndexPaths.contains(indexPath) ? 378 : 54
 	}
 	
 	//MARK: - ScreenHeaderProtocol
@@ -256,9 +281,16 @@ extension CoinsViewController : ButtonTableViewCellDelegate {
 	}
 }
 
-extension CoinsViewController : TransactionTableViewCellDelegate {
+extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate {
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
+		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			let vc = SFSafariViewController(url: url)
+			self.present(vc, animated: true) {}
+		}
+	}
+	
+	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			let vc = SFSafariViewController(url: url)
 			self.present(vc, animated: true) {}

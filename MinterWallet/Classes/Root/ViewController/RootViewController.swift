@@ -30,9 +30,9 @@ class RootViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		Observable.combineLatest(Session.shared.isLoggedIn.asObservable(), Session.shared.accounts.asObservable()).distinctUntilChanged({ (first, second) -> Bool in
+		Observable.combineLatest(Session.shared.isLoggedIn.asObservable(), Session.shared.accounts.asObservable())/*.distinctUntilChanged({ (first, second) -> Bool in
 			return first.0 == second.0 && first.1 == second.1
-		})
+		})*/
 		.subscribe(onNext: { (isLoggedIn, accounts) in
 			
 			if accounts.count > 0 || isLoggedIn {

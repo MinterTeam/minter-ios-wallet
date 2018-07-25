@@ -11,7 +11,7 @@ import RxSwift
 import RxDataSources
 
 
-class AddressViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+class AddressViewController: BaseViewController, UITableViewDelegate {
 	
 	let disposeBag = DisposeBag()
 	
@@ -27,6 +27,7 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 	
 	@IBOutlet var headerView: UIView!
 	
+	@IBOutlet weak var headerViewWrapper: UIView!
 	@IBOutlet weak var tableHeaderTitle: UILabel!
 	
 	@IBOutlet weak var tableView: UITableView! {
@@ -34,7 +35,7 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 			tableView?.tableFooterView = UIView()
 			tableView.rowHeight = UITableViewAutomaticDimension
 			tableView.estimatedRowHeight = 54.0
-//			tableView.tableHeaderView = headerView
+			tableView.tableHeaderView = UIView()
 		}
 	}
 	
@@ -63,14 +64,20 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 		
 		self.title = viewModel.title
 		
-		tableView.tableHeaderView = headerView
-//		headerView.addConstraint(NSLayoutConstraint(item: headerView, attribute: .width, relatedBy: .equal, toItem: tableView, attribute: .width, multiplier: 1.0, constant: 0.0))
-		
 		registerCells()
 		
 		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
 			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
-				guard let item = self?.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
+			guard
+				let item = self?.viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+					return UITableViewCell()
+			}
+			
+			guard let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
+				if let cll = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) {
+					return cll
+				}
+				
 				return UITableViewCell()
 			}
 
@@ -91,6 +98,8 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 		
 		self.navigationController?.navigationItem.rightBarButtonItem = nil
 		
+		tableView.contentInset = UIEdgeInsetsMake(-40, 0, 0, 0)
+		
 	}
 	
 	//MARK: -
@@ -105,31 +114,42 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 	}
 	
 	//MARK: -
+//
+//	func numberOfSections(in tableView: UITableView) -> Int {
+//		return viewModel.sectionsCount()
+//	}
+//
+//	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//		return viewModel.rowsCount(for: section)
+//	}
 	
-	func numberOfSections(in tableView: UITableView) -> Int {
-		return viewModel.sectionsCount()
-	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return viewModel.rowsCount(for: section)
-	}
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
-		guard
-			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row),
-			let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
-				return UITableViewCell()
-		}
-		
-		cell.configure(item: item)
-		
-		return cell
-	}
+//	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//
+//		guard
+//			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+//				return UITableViewCell()
+//		}
+//
+//		guard let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
+//			if let cll = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) {
+//				return cll
+//			}
+//
+//			return UITableViewCell()
+//		}
+//
+//		cell.configure(item: item)
+//
+//		return cell
+//	}
 	
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		
-		let sectionNum = section
+		if section == 0 {
+			return nil
+		}
+		
+		let sectionNum = section + 1
 		
 		guard let section = viewModel.section(index: section) else {
 			return UIView()
@@ -138,26 +158,38 @@ class AddressViewController: BaseViewController, UITableViewDataSource, UITableV
 		let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DefaultHeader")
 		if let defaultHeader = header as? DefaultHeader {
 			defaultHeader.titleLabel.text = "MAIN ADDRESS".localized()
-			if sectionNum > 0 {
+			if sectionNum > 1 {
 				defaultHeader.titleLabel.text = "ADDRESS #\(sectionNum)".localized()
 			}
 		}
-		
 		return header
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+		
+		
+		if section == 0 {
+			return
+		}
+		
 		let sectionNum = section
 		if let defaultHeader = view as? DefaultHeader {
 			defaultHeader.titleLabel.text = "MAIN ADDRESS".localized()
-			if sectionNum > 0 {
+			if sectionNum > 1 {
 				defaultHeader.titleLabel.text = "ADDRESS #\(sectionNum)".localized()
 			}
 		}
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		if section == 0 {
+			return 0.1
+		}
 		return 52
+	}
+	
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 0.1
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

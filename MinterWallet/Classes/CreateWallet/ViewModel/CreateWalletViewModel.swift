@@ -312,6 +312,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 				return
 		}
 		
+		
 		guard let passwordToEncrypt = accountManager.password(), let encryptedMnemonic = try? accountManager.encryptedMnemonic(mnemonic: mnemonic, password: passwordToEncrypt), let encrypted = encryptedMnemonic?.toHexString() else {
 			self.notifiableError.value = NotifiableError(title: "Can't encrypt mnemonic".localized(), text: nil)
 			//Error

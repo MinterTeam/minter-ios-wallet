@@ -101,20 +101,21 @@ class RootViewModel: BaseViewModel {
 		let token = tkn
 		
 		let creds = CentrifugeCredentials(token: token, user: user, timestamp: timestamp)
+//		let url = "wss://rtm.explorer.minter.network/connection/websocket"
 		let url = "ws://92.53.87.98:8000/connection/websocket"
 		client = Centrifuge.client(url: url, creds: creds, delegate: self)
 		
-		client?.connect { message, error in
-			
-			guard nil == error else {
-				self.isConnected = false
-				return
-			}
-			
-			self.isConnected = true
-			completion?()
-			
-		}
+//		client?.connect { message, error in
+//			
+//			guard nil == error else {
+//				self.isConnected = false
+//				return
+//			}
+//			
+//			self.isConnected = true
+//			completion?()
+//			
+//		}
 	}
 	
 	private func subscribeAccountBalanceChange() {

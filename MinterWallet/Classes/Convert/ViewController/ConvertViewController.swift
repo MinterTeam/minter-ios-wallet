@@ -10,9 +10,10 @@ import UIKit
 import RxSwift
 import McPicker
 import NotificationBannerSwift
+import XLPagerTabStrip
 
 
-class ConvertViewController: BaseViewController, UITextFieldDelegate {
+class ConvertViewController: BaseViewController, UITextFieldDelegate, IndicatorInfoProvider {
 	
 	//MARK: - IBOutlet
 	
@@ -260,6 +261,12 @@ class ConvertViewController: BaseViewController, UITextFieldDelegate {
 			self?.viewModel.spendCoin.value = coin
 			
 		}
+	}
+	
+	//MARK: -
+	
+	func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
+		return IndicatorInfo(title: "My Child title")
 	}
 
 }

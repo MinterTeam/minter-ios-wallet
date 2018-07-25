@@ -26,6 +26,8 @@ protocol PickerTableViewCellDataSource: class {
 
 protocol PickerTableViewCellDelegate: class where Self: UIViewController {
 	func didFinish(with item: PickerTableViewCellPickerItem?)
+	
+	func willShowPicker()
 }
 
 
@@ -87,6 +89,8 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 		guard nil != delegate as? UIViewController else {
 			return
 		}
+		
+		delegate?.willShowPicker()
 		
 		guard let items = dataSource?.pickerItems(for: self) else {
 			return

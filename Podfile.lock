@@ -18,6 +18,7 @@ PODS:
   - Differentiator (3.0.2)
   - ExpandableCell (1.2.2)
   - Fabric (1.7.8)
+  - FoldingCell (3.1.1)
   - IDZSwiftCommonCrypto (0.10.0)
   - ImagePicker (3.0.0)
   - KeychainSwift (11.0.0)
@@ -63,6 +64,7 @@ PODS:
   - SwiftValidator (4.0.0)
   - Toucan (1.0.0)
   - TPKeyboardAvoiding (1.3.2)
+  - XLPagerTabStrip (8.0.1)
 
 DEPENDENCIES:
   - AFDateHelper (~> 4.2.2)
@@ -76,6 +78,7 @@ DEPENDENCIES:
   - CryptoSwift
   - ExpandableCell (from `../ExpandableCell`)
   - Fabric
+  - FoldingCell
   - ImagePicker
   - KeychainSwift
   - McPicker
@@ -94,6 +97,7 @@ DEPENDENCIES:
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, branch `master`)
   - Toucan
   - TPKeyboardAvoiding
+  - XLPagerTabStrip (~> 8.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -109,6 +113,7 @@ SPEC REPOS:
     - CryptoSwift
     - Differentiator
     - Fabric
+    - FoldingCell
     - IDZSwiftCommonCrypto
     - ImagePicker
     - KeychainSwift
@@ -130,6 +135,7 @@ SPEC REPOS:
     - Starscream
     - Toucan
     - TPKeyboardAvoiding
+    - XLPagerTabStrip
 
 EXTERNAL SOURCES:
   ExpandableCell:
@@ -168,6 +174,7 @@ SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   ExpandableCell: 759ca4b0b7655e34f4b73c28eec5028e22c53c63
   Fabric: fba4684a95df789565b0b27fc5b6e68f1755af32
+  FoldingCell: 238c33ae8d9cd655090c9c4c5ff32596cfd18c6e
   IDZSwiftCommonCrypto: 4eef2c46e262dfbcbc1fd76365e066336680ad7d
   ImagePicker: 973953c25960fe04729a7082a56194321c6762d2
   KeychainSwift: bea6bd9f98af7b8d7ca4aa79fe105c00fab532db
@@ -194,7 +201,8 @@ SPEC CHECKSUMS:
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
   Toucan: 61867fb10948c02e9804280a95eb183e98eac97a
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
+  XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
 
-PODFILE CHECKSUM: f34e6912b0ee1eb7e25f7f5d9934f152815eaee0
+PODFILE CHECKSUM: b92974e19cd3fc5d591b3b3846f5c6d3d6b07f79
 
 COCOAPODS: 1.5.3
