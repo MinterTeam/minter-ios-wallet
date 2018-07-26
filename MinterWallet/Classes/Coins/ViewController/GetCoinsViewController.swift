@@ -37,13 +37,6 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 	@IBOutlet weak var spendCoinTextField: ValidatableTextField! {
 		didSet {
 			setAppearance(for: spendCoinTextField)
-			
-			let imageView = UIImageView(image: UIImage(named: "textFieldSelectIcon"))
-			let rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 5.0))
-			imageView.frame = CGRect(x: 0.0, y: 22.0, width: 10.0, height: 5.0)
-			rightView.addSubview(imageView)
-			spendCoinTextField?.rightView = rightView
-			spendCoinTextField?.rightViewMode = .always
 		}
 	}
 	
@@ -63,7 +56,17 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 	@IBOutlet weak var amountErrorLabel: UILabel!
 	
 	override func viewDidLoad() {
-		super.viewDidLoad()	
+		super.viewDidLoad()
+		
+		let imageView = UIImageView(image: UIImage(named: "textFieldSelectIcon"))
+		let rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 5.0))
+		imageView.frame = CGRect(x: 0.0, y: 22.0, width: 10.0, height: 5.0)
+		rightView.addSubview(imageView)
+		spendCoinTextField?.rightView = rightView
+		spendCoinTextField?.rightViewMode = .always
+		
+		scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
+		
 		viewModel.spendCoin.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (coin) in
 			self?.spendCoinTextField.text = self?.viewModel.spendCoinText
 		}).disposed(by: disposableBag)
@@ -122,6 +125,12 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 		
 		Session.shared.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
 			self?.spendCoinTextField.text = self?.viewModel.spendCoinText
+			if self?.viewModel.hasMultipleCoins ?? false {
+				self?.spendCoinTextField?.rightViewMode = .always
+			}
+			else {
+				self?.spendCoinTextField?.rightViewMode = .never
+			}
 		}).disposed(by: disposableBag)
 		
 		viewModel.amountError.asObservable().subscribe(onNext: { (val) in
@@ -185,8 +194,11 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 			return
 		}
 		
+		let formatter = CurrencyNumberFormatter.decimalFormatter
+		
 		let data: [[String]] = [items.map({ (item) -> String in
-			return (item.coin ?? "") + " (" + String(item.balance ?? 0) + ")"
+			let balanceString = formatter.string(from: (item.balance ?? 0) as NSNumber) ?? ""
+			return (item.coin ?? "") + " (" + balanceString + ")"
 		})]
 		
 		let picker = McPicker(data: data)
@@ -201,7 +213,8 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 			}
 			
 			if let item = items.filter({ (item) -> Bool in
-				return (item.coin ?? "") + " (" + String(item.balance ?? 0) + ")" == coin
+				let balanceString = (formatter.string(from: (item.balance ?? 0) as NSNumber) ?? "")
+				return (item.coin ?? "") + " (" + balanceString + ")" == coin
 			}).first {
 				self?.viewModel.selectedAddress = item.address
 				self?.viewModel.selectedCoin = item.coin

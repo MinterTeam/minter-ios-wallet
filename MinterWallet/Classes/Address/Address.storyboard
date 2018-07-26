@@ -68,7 +68,10 @@ All funds are received and sent from Main Address which is linked to your profil
                             <constraint firstItem="l7Q-eZ-ez1" firstAttribute="top" secondItem="H5d-7O-wHL" secondAttribute="top" id="rSB-1n-MZa"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="6hI-Ok-PIx"/>
+                    <navigationItem key="navigationItem" title="Title" id="6hI-Ok-PIx">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Hle-Ms-X0u"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="tableView" destination="l7Q-eZ-ez1" id="DI9-PA-EfX"/>
                         <segue destination="5RV-5V-HNQ" kind="show" identifier="showBalance" id="y8B-MW-yqr"/>

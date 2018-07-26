@@ -295,8 +295,8 @@ struct Storyboards {
             return self.storyboard.instantiateViewController(ofType: type)
         }
 
-        static func instantiateConvertViewController() -> ConvertViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: "ConvertViewController") as! ConvertViewController
+        static func instantiateConvertViewController() -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "ConvertViewController")
         }
 
         static func instantiateSpendCoinsViewController() -> SpendCoinsViewController {
@@ -848,16 +848,6 @@ extension HomeViewController {
 }
 
 // MARK: - LoginViewController
-
-// MARK: - ConvertViewController
-protocol ConvertViewControllerIdentifiableProtocol: IdentifiableProtocol { }
-
-extension ConvertViewController: ConvertViewControllerIdentifiableProtocol { }
-
-extension IdentifiableProtocol where Self: ConvertViewController {
-    var storyboardIdentifier: String? { return "ConvertViewController" }
-    static var storyboardIdentifier: String? { return "ConvertViewController" }
-}
 
 // MARK: - NewConvertViewController
 

@@ -74,6 +74,10 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 	private func registerCells() {
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "DisclosureTableViewCell", bundle: nil), forCellReuseIdentifier: "DisclosureTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
+		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil), forCellReuseIdentifier: "BlankTableViewCell")
+		
+		
 		tableView.register(UINib(nibName: "DefaultHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "DefaultHeader")
 	}
 	
@@ -94,6 +98,11 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		}
 		
 		cell.configure(item: item)
+		
+		if let buttonCell = cell as? ButtonTableViewCell {
+			buttonCell.delegate = self
+			buttonCell.backgroundColor = .clear
+		}
 		
 		let avatarCell = cell as? SettingsAvatarTableViewCell
 		avatarCell?.delegate = self
@@ -149,12 +158,17 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 	
 	//MARK: - ImagePicker
 	
-	func showImagePicker() {
+	func showImagePicker(sender: UIView?) {
 		
 		let imagePickerController = UIImagePickerController()
 		imagePickerController.delegate = self
 		imagePickerController.mediaTypes = ["public.image", "public.movie"]
 		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		if let popoverPresentationController = actionSheet.popoverPresentationController {
+			popoverPresentationController.sourceView = sender
+			popoverPresentationController.sourceRect = sender?.bounds ?? CGRect.zero
+		}
+		
 		actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { (action:UIAlertAction) in
 			if UIImagePickerController.isSourceTypeAvailable(.camera) {
 				imagePickerController.sourceType = .camera
@@ -213,7 +227,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 extension SettingsViewController : SettingsAvatarTableViewCellDelegate {
 	
 	func didTapChangeAvatar(cell: SettingsAvatarTableViewCell) {
-		showImagePicker()
+		showImagePicker(sender: cell)
 	}
 	
 }
@@ -247,4 +261,12 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
 	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
 		picker.dismiss(animated: true, completion: nil)
 	}
+}
+
+extension SettingsViewController : ButtonTableViewCellDelegate {
+	
+	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		viewModel.rightButtonTapped()
+	}
+	
 }

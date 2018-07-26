@@ -16,7 +16,7 @@ import BigInt
 struct ConvertPickerItem {
 	var coin: String?
 	var address: String?
-	var balance: Double?
+	var balance: Decimal?
 }
 
 

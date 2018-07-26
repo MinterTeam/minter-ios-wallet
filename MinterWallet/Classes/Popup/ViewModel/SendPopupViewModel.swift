@@ -11,7 +11,7 @@ import UIKit
 
 class SendPopupViewModel : PopupViewModel {
 	
-	var amount: Double?
+	var amount: Decimal?
 	
 	var coin: String?
 	

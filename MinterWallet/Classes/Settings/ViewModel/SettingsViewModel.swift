@@ -120,8 +120,15 @@ class SettingsViewModel: BaseViewModel {
 		addresses.value = nil
 		addresses.placeholder = "Manage"
 		
+		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Transactions")
+		button.buttonPattern = "blank"
+		button.title = "LOG OUT".localized()
+		
+		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: "BlankTableViewCell")
+		blank.color = .clear
+		
 		var section1 = BaseTableSectionItem(header: " ")
-		section1.items = [language, separator, addresses]
+		section1.items = [language, separator, addresses, separator, blank, button]
 		sctns.append(section1)
 		
 		sections = sctns

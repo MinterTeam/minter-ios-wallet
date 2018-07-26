@@ -52,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	//MARK: -
 	
 	func appearance() {
+		
 		UINavigationBar.appearance().tintColor = .white
 		UINavigationBar.appearance().barTintColor = UIColor(hex: 0x502EC2)
 		UINavigationBar.appearance().titleTextAttributes = [
@@ -68,9 +69,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.foregroundColor: UIColor.white
 			], for: .highlighted
 		)
-		UINavigationBar.appearance().backIndicatorTransitionMaskImage = UIImage(named: "BackIcon")
-		UINavigationBar.appearance().backIndicatorImage = UIImage(named: "BackIcon")
+		
+		let img = UIImage(named: "BackIcon")?.resizableImage(withCapInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0))
+		img?.stretchableImage(withLeftCapWidth: 0, topCapHeight: 20)
+		UINavigationBar.appearance().backIndicatorTransitionMaskImage = img
+		UINavigationBar.appearance().backIndicatorImage = img
 		UINavigationBar.appearance().isTranslucent = false
+		
 		
 		UITabBarItem.appearance().setTitleTextAttributes([
 			NSAttributedStringKey.foregroundColor : UIColor(hex: 0x8A8A8F)!,
@@ -80,6 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.foregroundColor : UIColor(hex: 0x502EC2)!,
 			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
 		], for: .selected)
+		
 		
 		
 	}

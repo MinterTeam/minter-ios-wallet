@@ -30,6 +30,8 @@ class AddressViewModel: BaseViewModel {
 	let accounts = Session.shared.accounts.value.sorted { (acc1, acc2) -> Bool in
 		return acc1.isMain && !acc2.isMain
 	}
+	
+	let formatter = CurrencyNumberFormatter.decimalFormatter
 
 	//MARK: -
 	
@@ -53,6 +55,7 @@ class AddressViewModel: BaseViewModel {
 	
 	private func createSections() {
 		
+		
 		let allBalances = Session.shared.allBalances.value
 		
 		var addressNum = 0
@@ -74,7 +77,8 @@ class AddressViewModel: BaseViewModel {
 			
 			let balance = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Balance_1\(sectionId)")
 			balance.title = "Balance".localized()
-			balance.value = String(coins[account.address] ?? 0.0)
+			
+			balance.value = formatter.string(from: (coins[account.address] ?? 0.0) as NSNumber)
 			balance.placeholder = ""
 			
 			let secured = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Secured_2\(sectionId)")

@@ -29,7 +29,7 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 	
 	//MARK: -
 	
-	var popupViewController: PopupViewController? //Storyboards.Popup.instantiateInitialViewController()
+	var popupViewController: PopupViewController?
 	
 	var viewModel = SendViewModel()
 	
@@ -71,16 +71,20 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 			banner.show()
 		}).disposed(by: disposeBag)
 		
-		viewModel.showPopup.asObservable().filter({ (popup) -> Bool in
-			return popup != nil
-		}).subscribe(onNext: { [weak self] (popup) in
+		viewModel.showPopup.asObservable().subscribe(onNext: { [weak self] (popup) in
+			if popup == nil {
+				self?.popupViewController?.dismiss(animated: true, completion: nil)
+				return
+			}
 			
 			if let countdown = popup as? CountdownPopupViewController {
 				countdown.delegate = self
 			}
+			
 			if let sent = popup as? SentPopupViewController {
 				sent.delegate = self
 			}
+			
 			if let send = popup as? SendPopupViewController {
 				self?.popupViewController = nil
 				send.delegate = self
@@ -114,6 +118,7 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 	
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
+		tableView.register(UINib(nibName: "AmountTextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "AmountTextFieldTableViewCell")
 		tableView.register(UINib(nibName: "AddressTextViewTableViewCell", bundle: nil), forCellReuseIdentifier: "AddressTextViewTableViewCell")
 		tableView.register(UINib(nibName: "PickerTableViewCell", bundle: nil), forCellReuseIdentifier: "PickerTableViewCell")
 		tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil), forCellReuseIdentifier: "SwitchTableViewCell")
@@ -144,6 +149,8 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		if let pickerCell = cell as? PickerTableViewCell {
 			pickerCell.dataSource = self
 			pickerCell.delegate = self
+			
+			pickerCell.updateRightViewMode()
 		}
 		
 		if let buttonCell = cell as? ButtonTableViewCell {
@@ -152,6 +159,10 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		
 		if let textViewCell = cell as? TextViewTableViewCell {
 			textViewCell.delegate = self
+		}
+		
+		if let textField = cell as? AmountTextFieldTableViewCell {
+			textField.amountDelegate = self
 		}
 		
 		if let addressCell = cell as? AddressTextViewTableViewCell {
@@ -293,7 +304,6 @@ extension SendViewController {
 		}
 		
 		viewModel.submitSendButtonTaped()
-		
 	}
 	
 	func didCancel(viewController: SendPopupViewController) {
@@ -410,4 +420,15 @@ extension SendViewController : QRCodeReaderViewControllerDelegate {
 	}
 }
 
+extension SendViewController : AmountTextFieldTableViewCellDelegate {
+	
+	func didTapUseMax() {
+		guard let amountCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? TextFieldTableViewCell else {
+				return
+		}
+		
+		amountCell.textField.text = viewModel.selectedBalanceText
+	}
+
+}
 

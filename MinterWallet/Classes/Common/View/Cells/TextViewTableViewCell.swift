@@ -55,7 +55,7 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 	
 	@IBOutlet weak var textView: GrowingDefaultTextView! {
 		didSet {
-			textView.contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 0, right: 20)
+			textView.contentInset = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 20)
 		}
 	}
 	

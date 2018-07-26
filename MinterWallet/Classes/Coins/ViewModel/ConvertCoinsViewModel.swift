@@ -39,25 +39,19 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	var successMessage = Variable<NotifiableSuccess?>(nil)
 	
-	let formatter = NumberFormatter()
+	let formatter = CurrencyNumberFormatter.decimalFormatter
 	
 	//MARK: -
 	
 	override init() {
 		super.init()
 		
-		formatter.generatesDecimalNumbers = true
-		formatter.minimumFractionDigits = 2
-		formatter.maximumFractionDigits = 100
-		formatter.minimumIntegerDigits = 1
-		formatter.maximumIntegerDigits = 1000
-		
 	}
 	
 	var selectedBalance: Decimal? {
 		let balances = Session.shared.allBalances.value
 		if let ads = selectedAddress, let cn = selectedCoin, let smt = balances[ads], let blnc = smt[cn] {
-			return Decimal(blnc)
+			return blnc
 		}
 		return nil
 	}
@@ -65,9 +59,19 @@ class ConvertCoinsViewModel : BaseViewModel {
 	var baseCoinBalance: Decimal {
 		let balances = Session.shared.allBalances.value
 		if let ads = selectedAddress, let cn = Coin.baseCoin().symbol, let smt = balances[ads], let blnc = smt[cn] {
-			return Decimal(blnc)
+			return blnc
 		}
 		return 0
+	}
+	
+	var hasMultipleCoins: Bool {
+		var coinCount = 1
+		Session.shared.allBalances.value.keys.forEach { (key) in
+			Session.shared.allBalances.value[key]?.forEach({ (val) in
+				coinCount += 1
+			})
+		}
+		return coinCount > 1
 	}
 	
 	func canPayComission() -> Bool {
@@ -129,6 +133,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 		
 		if coin == Coin.baseCoin().symbol {
 			hasCoin.value = true
+			self.validateErrors()
 			return
 		}
 		

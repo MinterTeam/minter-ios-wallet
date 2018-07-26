@@ -41,8 +41,6 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.title = viewModel.title
-		
 		registerCells()
 		
 		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(

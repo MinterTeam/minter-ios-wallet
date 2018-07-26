@@ -59,9 +59,12 @@ class RootViewModel: BaseViewModel {
 			})
 			
 			guard addresses.count > 0 else {
-				self?.unsubscribeAccountBalanceChange(completed: {
-					
-				})
+				if self?.isConnected == true {
+					self?.client?.disconnect()
+				}
+//				self?.unsubscribeAccountBalanceChange(completed: {
+//
+//				})
 				return
 			}
 			
@@ -79,11 +82,11 @@ class RootViewModel: BaseViewModel {
 				self?.timestamp = timestamp
 				self?.token = token
 				
-				self?.connect(completion: {
-					if self?.isConnected == true {
-						self?.subscribeAccountBalanceChange()
-					}
-				})
+//				self?.connect(completion: {
+//					if self?.isConnected == true {
+//						self?.subscribeAccountBalanceChange()
+//					}
+//				})
 			})
 			
 		}).disposed(by: disposeBag)
@@ -105,17 +108,17 @@ class RootViewModel: BaseViewModel {
 		let url = "ws://92.53.87.98:8000/connection/websocket"
 		client = Centrifuge.client(url: url, creds: creds, delegate: self)
 		
-//		client?.connect { message, error in
-//			
-//			guard nil == error else {
-//				self.isConnected = false
-//				return
-//			}
-//			
-//			self.isConnected = true
-//			completion?()
-//			
-//		}
+		client?.connect { message, error in
+			
+			guard nil == error else {
+				self.isConnected = false
+				return
+			}
+			
+			self.isConnected = true
+			completion?()
+			
+		}
 	}
 	
 	private func subscribeAccountBalanceChange() {
@@ -152,11 +155,11 @@ class RootViewModel: BaseViewModel {
 extension RootViewModel : CentrifugeClientDelegate, CentrifugeChannelDelegate {
 	
 	func client(_ client: CentrifugeClient, didReceiveRefreshMessage message: CentrifugeServerMessage) {
-		
+		self.isConnected = false
 	}
 
 	func client(_ client: CentrifugeClient, didDisconnectWithError error: Error) {
-		
+		self.isConnected = false
 	}
 	
 	//MARK: -

@@ -20,7 +20,7 @@ struct AccountPickerItem {
 	
 	var address: String?
 	
-	var balance: Double?
+	var balance: Decimal?
 	
 	var coin: String?
 	
@@ -33,7 +33,7 @@ class SendViewModel: BaseViewModel {
 	enum cellIdentifierPrefix : String {
 		case address = "TextFieldTableViewCell_Address"
 		case coin = "PickerTableViewCell_Coin"
-		case amount = "TextFieldTableViewCell_Amount"
+		case amount = "AmountTextFieldTableViewCell_Amount"
 		case fee = "TwoTitleTableViewCell_TransactionFee"
 		case separator = "SeparatorTableViewCell"
 		case blank = "BlankTableViewCell"
@@ -57,7 +57,7 @@ class SendViewModel: BaseViewModel {
 	
 	private var amountField: String? {
 		didSet {
-			self.amount.value = Double(amountField ?? "0.0")
+			self.amount.value = Decimal(string: amountField ?? "0.0")
 			
 			if isAmountValid(amount: self.amount.value ?? 0) {
 				amountStateObservable.value = .default
@@ -72,7 +72,7 @@ class SendViewModel: BaseViewModel {
 	//MARK: -
 	
 	var sections = Variable([BaseTableSectionItem]())
-	private let formatter = NumberFormatter()
+	private let formatter = CurrencyNumberFormatter.decimalFormatter
 	
 	
 	private var isLoadingAddress = Variable(false)
@@ -82,7 +82,7 @@ class SendViewModel: BaseViewModel {
 	private var amountStateObservable = Variable(TextFieldTableViewCell.State.default)
 	
 	private var selectedAddress: String?
-	private var selectedAddressBalance: Double? {
+	private var selectedAddressBalance: Decimal? {
 		guard nil != selectedAddress && nil != selectedCoin.value else {
 			return nil
 		}
@@ -94,10 +94,16 @@ class SendViewModel: BaseViewModel {
 		return balance[selectedAddress!]![selectedCoin.value!]
 	}
 	
+	var selectedBalanceText: String? {
+		return formatter.string(from: (selectedAddressBalance ?? 0.0) as NSNumber)
+	}
+	
+	
+	
 	var baseCoinBalance: Decimal {
 		let balances = Session.shared.allBalances.value
 		if let ads = selectedAddress, let cn = Coin.baseCoin().symbol, let smt = balances[ads], let blnc = smt[cn] {
-			return Decimal(blnc)
+			return blnc
 		}
 		return 0
 	}
@@ -115,7 +121,7 @@ class SendViewModel: BaseViewModel {
 	
 	private var to = Variable<String?>(nil)
 	private var toAddress = Variable<String?>(nil)
-	private var amount = Variable<Double?>(nil)
+	private var amount = Variable<Decimal?>(nil)
 	private var nonce = Variable<Int?>(nil)
 	
 	private let accountManager = AccountManager()
@@ -150,9 +156,6 @@ class SendViewModel: BaseViewModel {
 
 	override init() {
 		super.init()
-		
-		formatter.generatesDecimalNumbers = true
-		
 		
 		Session.shared.allBalances.asObservable().distinctUntilChanged().filter({ (_) -> Bool in
 			return true //nil == self.selectedAddress
@@ -193,8 +196,6 @@ class SendViewModel: BaseViewModel {
 		
 		let username = AddressTextViewTableViewCellItem(reuseIdentifier: "AddressTextViewTableViewCell", identifier: cellIdentifierPrefix.address.rawValue)
 		username.title = "TO (@USERNAME, EMAIL OR MX ADDRESS)".localized()
-		username.rules = [RegexRule(regex: "^Mx[a-zA-Z0-9]{40}$", message: "INCORRECT ADDRESS".localized())]
-		username.rules = [RegexRule(regex: "^@[a-zA-Z0-9_]{5,32}", message: "INCORRECT ADDRESS".localized())]
 		username.isLoadingObservable = isLoadingAddress.asObservable()
 		username.stateObservable = addressStateObservable.asObservable()
 		username.value = toField ?? ""
@@ -220,7 +221,7 @@ class SendViewModel: BaseViewModel {
 			}
 		}
 		
-		let amount = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.amount.rawValue)
+		let amount = AmountTextFieldTableViewCellItem(reuseIdentifier: "AmountTextFieldTableViewCell", identifier: cellIdentifierPrefix.amount.rawValue)
 		amount.title = "AMOUNT".localized()
 		amount.rules = [FloatRule(message: "INCORRECT AMOUNT".localized())]
 		amount.value = self.amountField ?? ""
@@ -229,15 +230,15 @@ class SendViewModel: BaseViewModel {
 		
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell", identifier: cellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
-		fee.subtitle = "0.00000001 BIP"
+		fee.subtitle = "0.1 " + (Coin.baseCoin().symbol ?? "")
 		
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: cellIdentifierPrefix.separator.rawValue)
 		
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: cellIdentifierPrefix.blank.rawValue)
 		
-		let sendForFree = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell", identifier: cellIdentifierPrefix.swtch.rawValue)
-		sendForFree.title = "Send for free!".localized()
-		sendForFree.isOn.value = isFreeTx.value
+//		let sendForFree = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell", identifier: cellIdentifierPrefix.swtch.rawValue)
+//		sendForFree.title = "Send for free!".localized()
+//		sendForFree.isOn.value = isFreeTx.value
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: cellIdentifierPrefix.button.rawValue)
 		button.title = "SEND!".localized()
@@ -247,7 +248,7 @@ class SendViewModel: BaseViewModel {
 		button.isButtonEnabledObservable = isSubmitButtonEnabledObservable.asObservable()
 		
 		var section = BaseTableSectionItem(header: "")
-		section.items = [coin, username, amount, fee, separator, blank, sendForFree, separator, blank, button]
+		section.items = [coin, username, amount, fee, separator, blank, button]
 		sections.value = [section]
 	}
 	
@@ -282,7 +283,7 @@ class SendViewModel: BaseViewModel {
 		else if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
 			self.amountField = value.replacingOccurrences(of: ",", with: ".")
 			
-			return isAmountValid(amount: Double(value) ?? 0)
+			return isAmountValid(amount: Decimal(string: value) ?? 0)
 		}
 		
 		assert(true)
@@ -321,7 +322,7 @@ class SendViewModel: BaseViewModel {
 		return usernameTest.evaluate(with: to) || usernameTest1.evaluate(with: to) || addressTest.evaluate(with: to) || to.isValidEmail()
 	}
 	
-	func isAmountValid(amount: Double) -> Bool {
+	func isAmountValid(amount: Decimal) -> Bool {
 		return amount <= (selectedAddressBalance ?? 0) && amount > 0
 	}
 	
@@ -415,7 +416,7 @@ class SendViewModel: BaseViewModel {
 				
 //				guard balance > 0 else { return }
 				
-				let title = coin + " (" + String(balance) + ")"
+				let title = coin + " (" + (formatter.string(from: balance as NSNumber) ?? "") + ")"
 				let item = AccountPickerItem(title: title, address: address, balance: balance, coin: coin)
 				ret.append(item)
 			})
@@ -435,7 +436,8 @@ class SendViewModel: BaseViewModel {
 			return nil
 		}
 		
-		let title = coin + " (" + String(balance) + ")"
+		let balanceString = (formatter.string(from: balance as NSNumber) ?? "")
+		let title = coin + " (" + balanceString + ")"
 		let item = AccountPickerItem(title: title, address: adrs, balance: balance, coin: coin)
 		return PickerTableViewCellPickerItem(title: item.title, object: item)
 	}
@@ -538,17 +540,23 @@ class SendViewModel: BaseViewModel {
 	
 	func sendTX() {
 		
-		guard let to = self.toAddress.value, let amount = self.amount.value, let selectedCoin = self.selectedCoin.value, let nonce = self.nonce.value else {
-			self.notifiableError.value = NotifiableError(title: "Transaction can't be sent", text: nil)
+		let amount = self.amount.value ?? 0.0
+		
+		guard let to = self.toAddress.value, let selectedCoin = self.selectedCoin.value, let nonce = self.nonce.value else {
+			self.notifiableError.value = NotifiableError(title: "Transaction can't be send", text: nil)
 			return
 		}
+		
+		let isMax = (amount == self.selectedAddressBalance ?? 0.0)
 		
 		DispatchQueue.global().async { [weak self] in
 			
 			guard let mnemonic = self?.accountManager.mnemonic(for: self!.selectedAddress!), let seed = self?.accountManager.seed(mnemonic: mnemonic) else {
 				//Error no Private key found
 				assert(true)
-				self?.notifiableError.value = NotifiableError(title: "No private key found", text: nil)
+				DispatchQueue.main.async {
+					self?.notifiableError.value = NotifiableError(title: "No private key found", text: nil)
+				}
 				return
 			}
 			
@@ -558,7 +566,20 @@ class SendViewModel: BaseViewModel {
 			
 			let toFld = self?.toField
 			
-			self?.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin, amount: amount) { [weak self, toFld] res in
+			var newAmount = amount * TransactionCoinFactorDouble
+			if isMax {
+				newAmount = newAmount - TransactionCommisionType.send.amount()
+			}
+			
+			if newAmount < TransactionCommisionType.send.amount() {
+				DispatchQueue.main.async {
+					self?.notifiableError.value = NotifiableError(title: "Not enough coins".localized(), text: nil)
+					self?.showPopup.value = nil
+				}
+				return
+			}
+			
+			self?.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin, amount: newAmount) { [weak self, toFld] res in
 				
 				if res == true {
 					
@@ -580,12 +601,15 @@ class SendViewModel: BaseViewModel {
 		}
 	}
 	
-	func sendTx(seed: Data, nonce: Int, to: String, coin: String, amount: Double, completion: ((Bool?) -> ())? = nil) {
+	func sendTx(seed: Data, nonce: Int, to: String, coin: String, amount: Decimal, completion: ((Bool?) -> ())? = nil) {
+		
+		let numberFormatter = NumberFormatter()
+		numberFormatter.generatesDecimalNumbers = true
 		
 		let newPk = self.accountManager.privateKey(from: seed)
 		let nonce = BigUInt(nonce)
 		
-		guard let str = formatter.string(from: (Decimal(amount) * pow(10, 18)) as NSNumber) else {
+		guard let str = numberFormatter.string(from: amount as NSNumber) else {
 			completion?(false)
 			return
 		}
@@ -597,7 +621,7 @@ class SendViewModel: BaseViewModel {
 			return
 		}
 		
-		let cn = (self.canPayComission() ?? false) ? Coin.baseCoin().symbol : coin
+		let cn = self.canPayComission() ? Coin.baseCoin().symbol : coin
 		let coinData = cn?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
 		
 		let tx = SendCoinRawTransaction(nonce: nonce, gasCoin: coinData, to: to, value: value, coin: coin.uppercased())
@@ -630,7 +654,7 @@ class SendViewModel: BaseViewModel {
 	
 	//MARK: -
 	
-	func sendPopupViewModel(to: String, address: String, amount: Double) -> SendPopupViewModel {
+	func sendPopupViewModel(to: String, address: String, amount: Decimal) -> SendPopupViewModel {
 		
 		let vm = SendPopupViewModel()
 		vm.amount = amount
@@ -661,7 +685,7 @@ class SendViewModel: BaseViewModel {
 		vm.unit = (one: "second", two: "seconds", other: "seconds")
 		vm.count = 13
 		vm.desc1 = "Coins will be received in".localized()
-		vm.desc2 = "Too long? You can make a faster transaction for 0.00000001 BIP".localized()
+		vm.desc2 = "Too long? You can make a faster transaction for 0.1 BIP".localized()
 		vm.buttonTitle = "Express transaction".localized()
 		return vm
 	}

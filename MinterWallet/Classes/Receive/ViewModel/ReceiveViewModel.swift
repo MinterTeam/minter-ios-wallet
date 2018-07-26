@@ -14,7 +14,7 @@ class ReceiveViewModel: BaseViewModel {
 
 	var title: String {
 		get {
-			return "Receive".localized()
+			return "Receive Coins".localized()
 		}
 	}
 	
@@ -80,7 +80,7 @@ class ReceiveViewModel: BaseViewModel {
 		
 		let qrCode = QRCode(address)
 		if let image = qrCode?.image {
-			return [address, image]
+			return [address]
 		}
 		
 		return [address]

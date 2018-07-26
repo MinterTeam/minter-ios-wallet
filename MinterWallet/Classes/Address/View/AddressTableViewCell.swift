@@ -37,10 +37,17 @@ class AddressTableViewCell: BaseCell {
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapAddress))
+		self.contentView.addGestureRecognizer(tapGesture)
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
+	}
+	
+	@objc func didTapAddress() {
+		
 	}
 	
 	//MARK: - BaseCell

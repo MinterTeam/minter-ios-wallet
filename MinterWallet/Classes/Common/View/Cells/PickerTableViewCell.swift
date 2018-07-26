@@ -68,6 +68,15 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 		super.setSelected(selected, animated: animated)
 	}
 	
+	func updateRightViewMode() {
+		if shouldShowPicker() {
+			selectField.rightViewMode = .always
+		}
+		else {
+			selectField.rightViewMode = .never
+		}
+	}
+	
 	//MARK: -
 	
 	override func configure(item: BaseCellItem) {

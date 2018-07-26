@@ -17,7 +17,7 @@ class CoinTableViewCellItem : BaseCellItem {
 	var imageURL: URL?
 	var date: Date?
 	var coin: String?
-	var amount: Double?
+	var amount: Decimal?
 }
 
 

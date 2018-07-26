@@ -14,10 +14,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Receive View Controller-->
+        <!--Receive Coins-->
         <scene sceneID="EHg-Hm-dIg">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" id="AOA-uS-VHB" customClass="ReceiveViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Receive Coins" extendedLayoutIncludesOpaqueBars="YES" id="AOA-uS-VHB" customClass="ReceiveViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L0H-y4-xgm"/>
                         <viewControllerLayoutGuide type="bottom" id="G59-i0-2ls"/>
@@ -72,14 +72,25 @@
                                                         <constraint firstAttribute="width" constant="140" id="t7y-aD-1yl"/>
                                                     </constraints>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="38s-tC-Z9h">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="182"/>
+                                                    <connections>
+                                                        <action selector="copyButtonDidTap:" destination="0r5-uD-Mvw" eventType="touchUpInside" id="SX0-Rw-3mw"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="38s-tC-Z9h" firstAttribute="leading" secondItem="DOX-x9-Eg1" secondAttribute="leading" id="N70-2J-gMJ"/>
                                                 <constraint firstItem="OMa-wU-Ld9" firstAttribute="centerX" secondItem="DOX-x9-Eg1" secondAttribute="centerX" id="Q34-c7-HH7"/>
                                                 <constraint firstItem="OMa-wU-Ld9" firstAttribute="top" secondItem="DOX-x9-Eg1" secondAttribute="top" constant="21" id="aoX-YU-Jad"/>
+                                                <constraint firstAttribute="bottom" secondItem="38s-tC-Z9h" secondAttribute="bottom" id="fiy-UF-HlV"/>
+                                                <constraint firstItem="38s-tC-Z9h" firstAttribute="top" secondItem="DOX-x9-Eg1" secondAttribute="top" id="n8l-5z-gfz"/>
                                                 <constraint firstAttribute="bottom" secondItem="OMa-wU-Ld9" secondAttribute="bottom" constant="20" id="new-lN-3GI"/>
+                                                <constraint firstAttribute="trailing" secondItem="38s-tC-Z9h" secondAttribute="trailing" id="vox-86-CQ2"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="copyBtn" destination="38s-tC-Z9h" id="FWw-Up-BDu"/>
                                             <outlet property="qrImageView" destination="OMa-wU-Ld9" id="bHB-FJ-wlu"/>
                                         </connections>
                                     </tableViewCell>
@@ -94,7 +105,7 @@
                             <constraint firstAttribute="trailing" secondItem="1S2-k1-emM" secondAttribute="trailing" id="kr4-0p-0RQ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="CcE-qa-Zc0"/>
+                    <navigationItem key="navigationItem" title="Receive Coins" id="CcE-qa-Zc0"/>
                     <connections>
                         <outlet property="footerView" destination="7Rj-Ao-rz5" id="r1y-zo-IhT"/>
                         <outlet property="tableView" destination="1S2-k1-emM" id="Q9d-cX-bGO"/>

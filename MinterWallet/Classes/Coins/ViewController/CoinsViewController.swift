@@ -24,7 +24,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		refreshControl.addTarget(self, action:
 			#selector(CoinsViewController.handleRefresh(_:)),
 														 for: UIControlEvents.valueChanged)
-//		refreshControl.tintColor = UIColor.red
 		
 		return refreshControl
 	}()
@@ -121,6 +120,8 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 		
 		self.navigationItem.rightBarButtonItems = [username]
 		
+		let usernameViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapUsernameView))
+		usernameView?.addGestureRecognizer(usernameViewTapGesture)
 		
 		//Move to viewModel
 		Session.shared.isLoggedIn.asObservable().map({ (val) -> Bool in
@@ -140,10 +141,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	
 	}
 	
-	func headerViewTitleText(with balance: Double) -> NSAttributedString {
+	func headerViewTitleText(with balance: Decimal) -> NSAttributedString {
 		
 		let formatter = CurrencyNumberFormatter.coinFormatter
-		let balanceString = Array(formatter.string(from: NSNumber(floatLiteral: balance))!.split(separator: "."))
+		let balanceString = Array(formatter.string(from: balance as NSNumber)!.split(separator: "."))
 		
 		let string = NSMutableAttributedString()
 		string.append(NSAttributedString(string: String(balanceString[0]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 32.0)]))
@@ -181,6 +182,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	
 	func updateUsernameView() {
 		usernameView.set(username: viewModel.rightButtonTitle, imageURL: viewModel.rightButtonImage)
+	}
+	
+	@objc func didTapUsernameView() {
+		self.tabBarController?.selectedIndex = 3
 	}
 	
 	//MARK: -

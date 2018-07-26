@@ -34,7 +34,7 @@ class CoinsViewModel: BaseViewModel {
 		return self.sections.asObservable()
 	}
 	
-	var totalBalanceObservable: Observable<Double> {
+	var totalBalanceObservable: Observable<Decimal> {
 		return Session.shared.mainCoinBalance.asObservable()
 	}
 	
@@ -57,6 +57,8 @@ class CoinsViewModel: BaseViewModel {
 		
 		return url
 	}
+	
+	let formatter = CurrencyNumberFormatter.decimalFormatter
 	
 	//MARK: -
 

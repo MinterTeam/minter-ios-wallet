@@ -46,13 +46,13 @@ class Session {
 	
 	var transactions = Variable([TransactionItem]())
 	
-	var baseCoinBalances = Variable([String : Double]())
+	var baseCoinBalances = Variable([String : Decimal]())
 	
-	var allBalances = Variable([String : [String : Double]]())
+	var allBalances = Variable([String : [String : Decimal]]())
 	
-	var balances = Variable([String : Double]())
+	var balances = Variable([String : Decimal]())
 	
-	var mainCoinBalance = Variable(0.0)
+	var mainCoinBalance = Variable(Decimal(0.0))
 	
 	var accessToken: String? {
 		didSet {
@@ -73,7 +73,7 @@ class Session {
 	private init() {
 		_ = self.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
 			
-			var newBalance = [String : Double]()
+			var newBalance = [String : Decimal]()
 			
 			val.values.forEach { (adr) in
 				adr.keys.forEach({ (key) in
@@ -255,7 +255,7 @@ class Session {
 				return
 			}
 			
-			var newMainCoinBalance = 0.0
+			var newMainCoinBalance = Decimal(0.0)
 			
 			response?.forEach({ (address) in
 				
@@ -263,8 +263,8 @@ class Session {
 					return
 				}
 				
-				let baseCoinBalance = coins.map({ (dict) -> Double in
-					return (dict["baseCoinAmount"] as? Double) ?? 0.0
+				let baseCoinBalance = coins.map({ (dict) -> Decimal in
+					return Decimal((dict["baseCoinAmount"] as? Double) ?? 0.0)
 				}).reduce(0, +)
 				
 				self?.baseCoinBalances.value[ads] = baseCoinBalance
@@ -273,13 +273,13 @@ class Session {
 				
 				var newAllBalances = self?.allBalances.value
 				
-				var blncs = [String : Double]()
+				var blncs = [String : Decimal]()
 				if let defaultCoin = Coin.baseCoin().symbol {
 					blncs[defaultCoin] = 0.0
 				}
 				coins.forEach({ (dict) in
 					if let key = dict["coin"] as? String {
-						blncs[key.uppercased()] = dict["amount"] as? Double ?? 0.0
+						blncs[key.uppercased()] = Decimal((dict["amount"] as? Double) ?? 0.0)
 					}
 				})
 				
