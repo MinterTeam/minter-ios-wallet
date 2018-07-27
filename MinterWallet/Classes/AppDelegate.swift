@@ -59,14 +59,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.foregroundColor : UIColor.white,
 			NSAttributedStringKey.font : UIFont.boldFont(of: 18.0)
 		]
+		
 		UIBarButtonItem.appearance().setTitleTextAttributes([
 				NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
-				NSAttributedStringKey.foregroundColor: UIColor.white
+				NSAttributedStringKey.foregroundColor: UIColor.white,
+				NSAttributedStringKey.baselineOffset : 1
 			], for: .normal
 		)
+		
 		UIBarButtonItem.appearance().setTitleTextAttributes([
 			NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
-			NSAttributedStringKey.foregroundColor: UIColor.white
+			NSAttributedStringKey.foregroundColor : UIColor.white,
+			NSAttributedStringKey.baselineOffset : 1
 			], for: .highlighted
 		)
 		
@@ -86,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
 		], for: .selected)
 		
-		
+//		UIBarButtonItem.appearance().
 		
 	}
 

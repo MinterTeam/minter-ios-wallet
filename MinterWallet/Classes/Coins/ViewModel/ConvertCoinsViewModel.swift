@@ -39,7 +39,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	var successMessage = Variable<NotifiableSuccess?>(nil)
 	
-	let formatter = CurrencyNumberFormatter.decimalFormatter
+	let formatter = CurrencyNumberFormatter.coinFormatter
 	
 	//MARK: -
 	

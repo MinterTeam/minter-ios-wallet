@@ -423,11 +423,18 @@ extension SendViewController : QRCodeReaderViewControllerDelegate {
 extension SendViewController : AmountTextFieldTableViewCellDelegate {
 	
 	func didTapUseMax() {
-		guard let amountCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? TextFieldTableViewCell else {
+		
+		let indexPath = IndexPath(row: 2, section: 0)
+		guard let amountCell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell else {
 				return
 		}
 		
-		amountCell.textField.text = viewModel.selectedBalanceText
+		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+		
+			amountCell.textField.text = viewModel.selectedBalanceText
+			
+			viewModel.validateField(item: item, value: amountCell.textField.text ?? "")
+		}
 	}
 
 }

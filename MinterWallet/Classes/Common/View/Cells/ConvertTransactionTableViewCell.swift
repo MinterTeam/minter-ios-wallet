@@ -31,6 +31,7 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 		//MARK: -
 		
 		let formatter = CurrencyNumberFormatter.transactionFormatter
+		let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 		let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 		let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
 		
@@ -101,7 +102,7 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 				
 				fromAddressLabel.text = transaction.from
 				toAddressLabel.text = transaction.to
-				expandedAmountLabel.text = amountText(amount: transaction.amount ?? 0)
+				expandedAmountLabel.text = decimalFormatter.string(from: (transaction.amount ?? 0) as NSNumber)
 				coinLabel.text = transaction.coin
 				dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 				timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())

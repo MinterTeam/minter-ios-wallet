@@ -92,7 +92,9 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 		if let item = item as? TextViewTableViewCellItem {
 			self.title.text = item.title
 			self.validatorRules = item.rules
-			self.textView.text = item.value
+			if let val = item.value {
+				self.textView.text = val
+			}
 			if let keyboard = item.keybordType {
 				self.textView.keyboardType = keyboard
 			}

@@ -256,7 +256,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 			}
 		}
 		
-		return expandedIndexPaths.contains(indexPath) ? 378 : 54
+		return expandedIndexPaths.contains(indexPath) ? 430 : 54
 	}
 	
 	//MARK: - ScreenHeaderProtocol

@@ -195,7 +195,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 			return
 		}
 		
-		let formatter = CurrencyNumberFormatter.decimalFormatter
+		let formatter = CurrencyNumberFormatter.decimalShortFormatter
 		
 		let data: [[String]] = [items.map({ (item) -> String in
 			return (item.coin ?? "") + " (" + (formatter.string(from: (item.balance ?? 0) as NSNumber) ?? "") + ")"
@@ -234,11 +234,12 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		
-		var txtAfterUpdate = textField.text! as NSString
-		txtAfterUpdate = txtAfterUpdate.replacingCharacters(in: range, with: string) as NSString
+		var txtAfterUpdate = textField.text ?? ""
+		txtAfterUpdate = (txtAfterUpdate as NSString).replacingCharacters(in: range, with: string).uppercased()
+		textField.text = txtAfterUpdate
 		
 		if textField == self.spendAmountTextField {
-			viewModel.spendAmount.value = txtAfterUpdate as String
+			viewModel.spendAmount.value = (txtAfterUpdate as String).replacingOccurrences(of: ",", with: ".")
 		}
 		else if textField == self.spendCoinTextField {
 			viewModel.spendCoin.value = txtAfterUpdate as String
@@ -247,7 +248,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 			viewModel.getCoin.value = txtAfterUpdate as String
 		}
 		viewModel.validateErrors()
-		return true
+		return false
 
 	}
 

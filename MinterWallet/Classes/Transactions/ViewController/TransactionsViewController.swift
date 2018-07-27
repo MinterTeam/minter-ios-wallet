@@ -82,7 +82,7 @@ class TransactionsViewController: BaseTableViewController {
 			return 1
 		}
 		
-		return expandedIndexPaths.contains(indexPath) ? 378 : 54
+		return expandedIndexPaths.contains(indexPath) ? 430 : 54
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

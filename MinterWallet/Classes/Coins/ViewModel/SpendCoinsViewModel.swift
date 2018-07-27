@@ -75,6 +75,9 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 	
 	private var fee: Decimal?
 	
+	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
+	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
+	
 	var isButtonEnabled: Observable<Bool> {
 		return Observable.combineLatest(hasCoin.asObservable(), getCoin.asObservable(), spendAmount.asObservable(), spendCoin.asObservable()).map({ (val) -> Bool in
 			
@@ -158,8 +161,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 				return
 		}
 		
-		let numberFormatter = NumberFormatter()
-		numberFormatter.generatesDecimalNumbers = true
+		let numberFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 		
 		guard let strVal = numberFormatter.string(from: amnt * TransactionCoinFactorDouble as NSNumber) else {
 			return
@@ -173,10 +175,10 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			return
 		}
 		
-		let convertedSelectedBalance = (selectedBalance ?? 0.0) * TransactionCoinFactorDouble
+		let maxComparableSelectedBalance = (Decimal(string: shortDecimalFormatter.string(from: (selectedBalance ?? 0.0) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDouble
 		
-		let selectedBalanceStr = numberFormatter.string(from: (convertedSelectedBalance as NSNumber))!
-		let isMax = (value > 0 && value == (BigUInt(selectedBalanceStr) ?? BigUInt(0)))
+		let maxComparableBalance = decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
+		let isMax = (value > 0 && value == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
 		let isFromBaseCoin = coinFrom == Coin.baseCoin().symbol!
 		
 		isLoading.value = true

@@ -136,9 +136,9 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		
 		guard let coinFrom = self.selectedCoin?.uppercased(),
 			let coinTo = self.getCoin.value?.uppercased(),
-			let amount = self.approximatelySum.value,
-			let selectedAddress = self.selectedAddress
-//			let amountString = self.getAmount.value, let amnt = Double(amountString)
+//			let amount = self.approximatelySum.value,
+			let selectedAddress = self.selectedAddress,
+			let amntString = self.getAmount.value, let amount = Decimal(string: amntString)
 			else {
 				return
 		}
@@ -146,18 +146,14 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		let frmttr = NumberFormatter()
 		frmttr.generatesDecimalNumbers = true
 		
-		let ammnt = amount * pow(10, 18)
+		let ammnt = amount * TransactionCoinFactorDouble
 		guard let amountString = frmttr.string(from: ammnt as NSNumber) else {
 			return
 		}
 		
 		let convertVal = (BigUInt(amountString) ?? BigUInt(0))
 		
-		//		guard convertVal > BigUInt(TransactionCommisionType.convert.amount()) else {
-		//			return
-		//		}
-		
-		let value = convertVal// - BigUInt(TransactionCommisionType.convert.amount())
+		let value = convertVal
 		
 		if value <= 0 {
 			return

@@ -43,8 +43,8 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIV-Gf-6Jf">
-                                        <rect key="frame" x="20" y="40" width="242" height="36"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIV-Gf-6Jf">
+                                        <rect key="frame" x="20" y="40" width="384" height="36"/>
                                         <attributedString key="attributedText">
                                             <fragment content="120 912">
                                                 <attributes>
@@ -74,6 +74,7 @@
                                 <color key="backgroundColor" red="0.25882352941176467" green="0.14509803921568626" blue="0.64313725490196072" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="1Tf-ya-4PI"/>
+                                    <constraint firstAttribute="trailing" secondItem="RIV-Gf-6Jf" secondAttribute="trailing" constant="10" id="DXV-zQ-jdf"/>
                                     <constraint firstItem="RIV-Gf-6Jf" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="40" id="PMt-ql-XFh"/>
                                     <constraint firstAttribute="bottom" secondItem="RIV-Gf-6Jf" secondAttribute="bottom" constant="20" id="Ul2-Jj-AnY"/>
                                     <constraint firstAttribute="trailing" secondItem="b7g-aO-BzU" secondAttribute="trailing" constant="16" id="dgu-16-Ocz"/>

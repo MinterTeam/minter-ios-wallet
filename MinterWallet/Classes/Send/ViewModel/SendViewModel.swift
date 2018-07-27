@@ -73,7 +73,8 @@ class SendViewModel: BaseViewModel {
 	
 	var sections = Variable([BaseTableSectionItem]())
 	private let formatter = CurrencyNumberFormatter.decimalFormatter
-	
+	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
+	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 	
 	private var isLoadingAddress = Variable(false)
 	private var isLoadingNonce = Variable(false)
@@ -95,10 +96,8 @@ class SendViewModel: BaseViewModel {
 	}
 	
 	var selectedBalanceText: String? {
-		return formatter.string(from: (selectedAddressBalance ?? 0.0) as NSNumber)
+		return shortDecimalFormatter.string(from: (selectedAddressBalance ?? 0.0) as NSNumber)
 	}
-	
-	
 	
 	var baseCoinBalance: Decimal {
 		let balances = Session.shared.allBalances.value
@@ -108,9 +107,46 @@ class SendViewModel: BaseViewModel {
 		return 0
 	}
 	
-	func canPayComission() -> Bool {
+	var isBaseCoin: Bool? {
+		
+		guard selectedCoin.value != nil else {
+			return nil
+		}
+		
+		return selectedCoin.value == Coin.baseCoin().symbol!
+	}
+	
+	func coinToPayComission(amount: Decimal) -> String? {
+		
+		guard let selectedCoin = self.selectedCoin.value else {
+			return nil
+		}
+		
+		if isBaseCoin == true {
+			let balance = self.baseCoinBalance
+			if balance >= amount + TransactionCommisionType.send.amount() {
+				return Coin.baseCoin().symbol!
+			}
+		}
+		else {
+			//If it's not base coin we try pay commission from base coin
+			if canPayCommissionWithBaseCoin() {
+				return Coin.baseCoin().symbol!
+			}
+			//If it's impossible we try to pay comission from the selected coin
+			guard let selectedBalance = self.selectedAddressBalance else {
+				return nil
+			}
+			if selectedBalance >= amount + (TransactionCommisionType.send.amount() / TransactionCoinFactorDouble) {
+				return selectedCoin
+			}
+		}
+		return nil
+	}
+	
+	func canPayCommissionWithBaseCoin() -> Bool {
 		let balance = self.baseCoinBalance
-		if balance >= TransactionCommisionType.send.amount() {
+		if balance >= (TransactionCommisionType.send.amount() / TransactionCoinFactorDouble) {
 			return true
 		}
 		return false
@@ -198,7 +234,7 @@ class SendViewModel: BaseViewModel {
 		username.title = "TO (@USERNAME, EMAIL OR MX ADDRESS)".localized()
 		username.isLoadingObservable = isLoadingAddress.asObservable()
 		username.stateObservable = addressStateObservable.asObservable()
-		username.value = toField ?? ""
+//		username.value = toField ?? ""
 		username.keybordType = .emailAddress
 		
 		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell", identifier: cellIdentifierPrefix.coin.rawValue)
@@ -224,13 +260,13 @@ class SendViewModel: BaseViewModel {
 		let amount = AmountTextFieldTableViewCellItem(reuseIdentifier: "AmountTextFieldTableViewCell", identifier: cellIdentifierPrefix.amount.rawValue)
 		amount.title = "AMOUNT".localized()
 		amount.rules = [FloatRule(message: "INCORRECT AMOUNT".localized())]
-		amount.value = self.amountField ?? ""
+//		amount.value = self.amountField ?? ""
 		amount.stateObservable = amountStateObservable.asObservable()
 		amount.keyboardType = .decimalPad
 		
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell", identifier: cellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
-		fee.subtitle = "0.1 " + (Coin.baseCoin().symbol ?? "")
+		fee.subtitle = "0.01 " + (Coin.baseCoin().symbol ?? "")
 		
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: cellIdentifierPrefix.separator.rawValue)
 		
@@ -241,7 +277,7 @@ class SendViewModel: BaseViewModel {
 //		sendForFree.isOn.value = isFreeTx.value
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: cellIdentifierPrefix.button.rawValue)
-		button.title = "SEND!".localized()
+		button.title = "SEND".localized()
 		button.buttonPattern = "purple"
 		button.isButtonEnabled = validate().count == 0
 		button.isLoadingObserver = isPrepearingObservable
@@ -416,7 +452,7 @@ class SendViewModel: BaseViewModel {
 				
 //				guard balance > 0 else { return }
 				
-				let title = coin + " (" + (formatter.string(from: balance as NSNumber) ?? "") + ")"
+				let title = coin + " (" + (shortDecimalFormatter.string(from: balance as NSNumber) ?? "") + ")"
 				let item = AccountPickerItem(title: title, address: address, balance: balance, coin: coin)
 				ret.append(item)
 			})
@@ -436,7 +472,7 @@ class SendViewModel: BaseViewModel {
 			return nil
 		}
 		
-		let balanceString = (formatter.string(from: balance as NSNumber) ?? "")
+		let balanceString = (shortDecimalFormatter.string(from: balance as NSNumber) ?? "")
 		let title = coin + " (" + balanceString + ")"
 		let item = AccountPickerItem(title: title, address: adrs, balance: balance, coin: coin)
 		return PickerTableViewCellPickerItem(title: item.title, object: item)
@@ -543,11 +579,24 @@ class SendViewModel: BaseViewModel {
 		let amount = self.amount.value ?? 0.0
 		
 		guard let to = self.toAddress.value, let selectedCoin = self.selectedCoin.value, let nonce = self.nonce.value else {
-			self.notifiableError.value = NotifiableError(title: "Transaction can't be send", text: nil)
+			self.notifiableError.value = NotifiableError(title: "Transaction can't be sent", text: nil)
 			return
 		}
 		
-		let isMax = (amount == self.selectedAddressBalance ?? 0.0)
+		guard let strVal = decimalsNoMantissaFormatter.string(from: amount * TransactionCoinFactorDouble as NSNumber) else {
+			return
+		}
+		
+		let value = (BigUInt(strVal) ?? BigUInt(0))
+		
+		let selectedBalance = self.selectedAddressBalance ?? 0.0
+
+		let maxComparableSelectedBalance = (Decimal(string: shortDecimalFormatter.string(from: (selectedBalance) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDouble
+		
+		let maxComparableBalance = decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
+		let isMax = (value > 0 && value == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
+		let isBaseCoin = selectedCoin == Coin.baseCoin().symbol!
+		
 		
 		DispatchQueue.global().async { [weak self] in
 			
@@ -568,10 +617,10 @@ class SendViewModel: BaseViewModel {
 			
 			var newAmount = amount * TransactionCoinFactorDouble
 			if isMax {
-				newAmount = newAmount - TransactionCommisionType.send.amount()
+				newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDouble
 			}
 			
-			if newAmount < TransactionCommisionType.send.amount() {
+			guard let commissionCoin = self?.coinToPayComission(amount: amount) else {
 				DispatchQueue.main.async {
 					self?.notifiableError.value = NotifiableError(title: "Not enough coins".localized(), text: nil)
 					self?.showPopup.value = nil
@@ -579,7 +628,7 @@ class SendViewModel: BaseViewModel {
 				return
 			}
 			
-			self?.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin, amount: newAmount) { [weak self, toFld] res in
+			self?.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin, commissionCoin: commissionCoin, amount: newAmount) { [weak self, toFld] res in
 				
 				if res == true {
 					
@@ -601,7 +650,7 @@ class SendViewModel: BaseViewModel {
 		}
 	}
 	
-	func sendTx(seed: Data, nonce: Int, to: String, coin: String, amount: Decimal, completion: ((Bool?) -> ())? = nil) {
+	func sendTx(seed: Data, nonce: Int, to: String, coin: String, commissionCoin: String, amount: Decimal, completion: ((Bool?) -> ())? = nil) {
 		
 		let numberFormatter = NumberFormatter()
 		numberFormatter.generatesDecimalNumbers = true
@@ -621,8 +670,8 @@ class SendViewModel: BaseViewModel {
 			return
 		}
 		
-		let cn = self.canPayComission() ? Coin.baseCoin().symbol : coin
-		let coinData = cn?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+		let cn = commissionCoin
+		let coinData = cn.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
 		
 		let tx = SendCoinRawTransaction(nonce: nonce, gasCoin: coinData, to: to, value: value, coin: coin.uppercased())
 		let pkString = newPk.raw.toHexString()
@@ -643,7 +692,15 @@ class SendViewModel: BaseViewModel {
 			}
 			
 			guard err == nil && nil != hash else {
-				self?.txError.value = NotifiableError(title: nil != status ? status : "Unable to send transaction".localized(), text: nil)
+				
+				if let error = err as? APIClient.APIClientResponseError {
+					if let errorMessage = error.userData?["message"] as? String {
+						self?.txError.value =  NotifiableError(title: "Tx Error", text: errorMessage)
+					}
+				}
+				else {
+					self?.txError.value = NotifiableError(title: nil != status ? status : "Unable to send transaction".localized(), text: nil)
+				}
 				res = false
 				return
 			}
@@ -662,7 +719,7 @@ class SendViewModel: BaseViewModel {
 		vm.username = to
 		vm.avatarImage = MinterMyAPIURL.avatarAddress(address: address).url()
 		vm.popupTitle = "You're Sending"
-		vm.buttonTitle = "BIP!".localized()
+		vm.buttonTitle = "SEND".localized()
 		vm.cancelTitle = "CANCEL".localized()
 		return vm
 	}

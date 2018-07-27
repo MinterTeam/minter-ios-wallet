@@ -22,12 +22,6 @@ class AddressTextViewTableViewCell: TextViewTableViewCell {
 	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
-		
-		
-		
-		self.constraints.forEach { (constraint) in
-			print(constraint)
-		}
 	}
 
 	override func awakeFromNib() {
