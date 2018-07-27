@@ -96,6 +96,18 @@ class TransactionsViewController: BaseTableViewController {
 	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		super.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
 		
+//		(cell as? ExpandableCell)?.expanded = expandedIndexPaths.contains(indexPath)
+		
+//		if expandedIndexPaths.contains(indexPath) {
+//			(cell as? ExpandableCell)?.toggle(true, animated: false)
+//		}
+//		else {
+//			(cell as? ExpandableCell)?.self.toggle(false, animated: false)
+//			print((cell as? ExpandableCell)?.detailView)
+//		}
+		
+		
+		
 		if viewModel.shouldLoadMore(indexPath) {
 			viewModel.loadData()
 		}

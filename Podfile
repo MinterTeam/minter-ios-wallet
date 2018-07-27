@@ -34,9 +34,6 @@ target 'MinterWallet' do
 		pod 'Crashlytics'
 		pod 'ObjectMapper'
 		pod 'XLPagerTabStrip', '~> 8.0'
-		#pod 'AccordionMenuSwift', '~> 1.2.6'
-#		pod 'FoldingCell'
-		 pod 'AEAccordion'
 end
 
 target 'MinterWalletTests' do

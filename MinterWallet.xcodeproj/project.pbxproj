@@ -50,6 +50,8 @@
 		FA04028F20FDD6B900F1689F /* ConvertCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04028E20FDD6B900F1689F /* ConvertCoinsViewModel.swift */; };
 		FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */; };
 		FA04029320FDD6E000F1689F /* GetCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */; };
+		FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */; };
+		FA2F56B8210B31E1002C72DC /* AccordionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */; };
 		FA3154AA20B5ABD1005D9F21 /* TransactionDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */; };
 		FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */; };
 		FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */; };
@@ -118,8 +120,6 @@
 		FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */; };
 		FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */; };
 		FA7D98F8207E16B900193B8A /* SuperExpandableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98F7207E16B900193B8A /* SuperExpandableTableView.swift */; };
-		FA7D98FD207F588A00193B8A /* AccordionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */; };
-		FA7D98FF207F58BD00193B8A /* AccordionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */; };
 		FA835CCC207630A100BFC35A /* ValidatableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA835CCB207630A100BFC35A /* ValidatableTextField.swift */; };
 		FA835CCE2077BC9200BFC35A /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */; };
 		FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA89A79820873A280019226D /* UIView+Roundify.swift */; };
@@ -1640,7 +1640,6 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MinterWallet/Pods-MinterWallet-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AEAccordion/AEAccordion.framework",
 				"${BUILT_PRODUCTS_DIR}/AFDateHelper/AFDateHelper.framework",
 				"${BUILT_PRODUCTS_DIR}/ALCameraViewController/ALCameraViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
@@ -1682,7 +1681,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AEAccordion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFDateHelper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ALCameraViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
@@ -1788,7 +1786,6 @@
 				FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */,
 				FA669BD32072601300AD110A /* UIColor+HEX.swift in Sources */,
 				FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */,
-				FA7D98FD207F588A00193B8A /* AccordionTableViewController.swift in Sources */,
 				FA670A3920E27352000A5169 /* ReceiveAddressTableViewCell.swift in Sources */,
 				FA669BD120724A1200AD110A /* UIFont+Default.swift in Sources */,
 				FA669BD9207267DA00AD110A /* BaseRouter.swift in Sources */,
@@ -1841,11 +1838,11 @@
 				FA670A3B20E291C0000A5169 /* TransactionItem.swift in Sources */,
 				D08EF152AB24CD864B6F2E40 /* RootViewController.swift in Sources */,
 				FAB85B4620DB980500782AFB /* URLRequst+NoCache.swift in Sources */,
+				FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */,
 				94B58309D085DACB65260018 /* RootViewModel.swift in Sources */,
 				FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */,
 				FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */,
 				FAA2607C209355BD009FF3DE /* GenerateAddressViewModel.swift in Sources */,
-				FA7D98FF207F58BD00193B8A /* AccordionTableViewCell.swift in Sources */,
 				FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */,
 				FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */,
 				833CF747F604B61E37401C11 /* TransactionsViewController.swift in Sources */,
@@ -1857,6 +1854,7 @@
 				FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */,
 				D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */,
 				EFCE6415FD145CE2E62EF813 /* SendViewModel.swift in Sources */,
+				FA2F56B8210B31E1002C72DC /* AccordionTableViewController.swift in Sources */,
 				FA79F5FE20C81A9E007876ED /* ValidatableCellProtocol.swift in Sources */,
 				FAA2606C20931A56009FF3DE /* EmailEditViewController.swift in Sources */,
 				FAC4BA1420DA49E2005A1B90 /* Notifiable.swift in Sources */,

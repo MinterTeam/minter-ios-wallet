@@ -1,10 +1,9 @@
-//
-//  AccordionTableViewCell.swift
-//  MinterWallet
-//
-//  Created by Alexey Sidorov on 12/04/2018.
-//  Copyright © 2018 Minter. All rights reserved.
-//
+
+/**
+*  https://github.com/tadija/AEAccordion
+*  Copyright (c) Marko Tadić 2015-2018
+*  Licensed under the MIT license. See LICENSE file.
+*/
 
 import UIKit
 
@@ -26,17 +25,11 @@ open class AccordionTableViewCell: UITableViewCell {
 	open func setExpanded(_ expanded: Bool, animated: Bool) {
 		self.expanded = expanded
 	}
+
+	open func willToggleCell(animated: Bool) {}
 	
-	open func willSetExpanded(animated: Bool) {}
+	open func didToggleCell(animated: Bool) {}
 	
-	open func willSetCollapsed(animated: Bool) {}
-	
-	open override func prepareForReuse() {
-		if self.expanded {
-			self.setExpanded(false, animated: false)
-			self.setNeedsLayout()
-			self.layoutIfNeeded()
-		}
-	}
+	func toggle(_ expanded: Bool, animated: Bool) {}
 	
 }

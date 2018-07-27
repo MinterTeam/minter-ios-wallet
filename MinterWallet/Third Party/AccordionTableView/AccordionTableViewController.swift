@@ -1,10 +1,8 @@
-//
-//  AccordionTableViewController.swift
-//  MinterWallet
-//
-//  Created by Alexey Sidorov on 12/04/2018.
-//  Copyright © 2018 Minter. All rights reserved.
-//
+/**
+*  https://github.com/tadija/AEAccordion
+*  Copyright (c) Marko Tadić 2015-2018
+*  Licensed under the MIT license. See LICENSE file.
+*/
 
 import UIKit
 
@@ -40,13 +38,14 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 	- parameter animated: If `true` action should be animated.
 	*/
 	open func toggleCell(_ cell: AccordionTableViewCell, animated: Bool) {
+		cell.willToggleCell(animated: animated)
 		if cell.expanded {
-			cell.willSetCollapsed(animated: animated)
 			collapseCell(cell, animated: animated)
+			
 		} else {
-			cell.willSetExpanded(animated: animated)
 			expandCell(cell, animated: animated)
 		}
+		cell.didToggleCell(animated: animated)
 	}
 	
 	// MARK: UITableViewDelegate
@@ -56,6 +55,7 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 															 willDisplay cell: UITableViewCell,
 															 forRowAt indexPath: IndexPath) {
 		if let cell = cell as? AccordionTableViewCell {
+			
 			let expanded = expandedIndexPaths.contains(indexPath)
 			cell.setExpanded(expanded, animated: false)
 		}
@@ -64,7 +64,10 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 	/// `AccordionTableViewController` will animate cell to be expanded or collapsed.
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if let cell = tableView.cellForRow(at: indexPath) as? AccordionTableViewCell {
+			
+			cell.toggle(!cell.expanded, animated: shouldAnimateCellToggle)
 			toggleCell(cell, animated: shouldAnimateCellToggle)
+			
 		}
 	}
 	

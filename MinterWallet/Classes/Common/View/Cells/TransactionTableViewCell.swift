@@ -75,10 +75,6 @@ class TransactionTableViewCell: ExpandableCell {
 	
 	//MARK: -
 	
-	var shadowLayer = CAShapeLayer()
-	
-	//MARK: -
-	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 	}
@@ -113,6 +109,10 @@ class TransactionTableViewCell: ExpandableCell {
 			coin.text = transaction.coin
 			expandable = transaction.expandable ?? false
 		}
+		
+		self.setNeedsUpdateConstraints()
+		self.setNeedsLayout()
+		self.layoutIfNeeded()
 	}
 	
 	private func amountText(amount: Decimal) -> String {
@@ -139,19 +139,10 @@ class TransactionTableViewCell: ExpandableCell {
 		
 		self.setNeedsLayout()
 		self.layoutIfNeeded()
-		
-		if expanded {
-//			setExpanded(false, animated: false)
-			
-		}
-		heightCoinstraint.isActive = !expanded
-		
 	}
 	
 	override func setExpanded(_ expanded: Bool, animated: Bool) {
 		super.setExpanded(expanded, animated: animated)
-		
-		heightCoinstraint.isActive = !expanded
 	}
 
 }
