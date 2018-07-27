@@ -159,13 +159,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.55" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pco-d0-X2b">
-                                <rect key="frame" x="353" y="189" width="36" height="18"/>
+                                <rect key="frame" x="20" y="238" width="36" height="18"/>
                                 <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LAv-Wi-Zbt" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="10" y="223.5" width="626" height="50"/>
+                                <rect key="frame" x="10" y="272.5" width="626" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="0bU-3e-NbL"/>
                                 </constraints>

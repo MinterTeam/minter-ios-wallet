@@ -178,6 +178,7 @@
                             <constraint firstItem="Ihi-fg-pO4" firstAttribute="top" secondItem="GnC-WK-naU" secondAttribute="bottom" constant="0.5" id="Gia-TC-gLU"/>
                             <constraint firstItem="PiN-if-Tc6" firstAttribute="top" secondItem="D6F-fZ-xAm" secondAttribute="bottom" constant="4" id="HSf-hj-RGo"/>
                             <constraint firstItem="SvH-5w-0eX" firstAttribute="leading" secondItem="D6F-fZ-xAm" secondAttribute="leading" id="I5D-xu-GWL"/>
+                            <constraint firstAttribute="height" id="NUu-HM-SLH"/>
                             <constraint firstItem="vPZ-3A-S6I" firstAttribute="leading" secondItem="SvH-5w-0eX" secondAttribute="leading" id="Pkv-EZ-4kl"/>
                             <constraint firstItem="eun-Fx-e9f" firstAttribute="leading" secondItem="1ET-1I-DW9" secondAttribute="leading" id="PpT-02-c8Z"/>
                             <constraint firstItem="eun-Fx-e9f" firstAttribute="top" secondItem="waT-d7-hOy" secondAttribute="bottom" constant="16" id="Riv-g6-QoY"/>
@@ -198,11 +199,15 @@
                             <constraint firstItem="GnC-WK-naU" firstAttribute="centerY" secondItem="1ET-1I-DW9" secondAttribute="centerY" id="u48-C4-cTN"/>
                             <constraint firstItem="waT-d7-hOy" firstAttribute="top" secondItem="1ET-1I-DW9" secondAttribute="bottom" constant="0.5" id="xHl-JS-O8d"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="NUu-HM-SLH"/>
+                            </mask>
+                        </variation>
                     </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="pW1-3w-baO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="54" id="3mJ-p1-sZP"/>
-                    <constraint firstAttribute="bottom" secondItem="pW1-3w-baO" secondAttribute="bottom" id="90d-bv-YS5"/>
                     <constraint firstAttribute="bottom" secondItem="pW1-3w-baO" secondAttribute="bottom" id="AZe-2l-ayG"/>
                     <constraint firstItem="VdJ-MF-v99" firstAttribute="top" secondItem="AfG-gP-YIc" secondAttribute="bottom" constant="4" id="DuG-Pj-bQu"/>
                     <constraint firstItem="CG0-tJ-3Pr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="OaV-qv-TTZ"/>
@@ -216,11 +221,6 @@
                     <constraint firstItem="pW1-3w-baO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ppw-4D-wiP"/>
                     <constraint firstAttribute="trailing" secondItem="VdJ-MF-v99" secondAttribute="trailing" constant="10" id="xac-Qc-9WH"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="90d-bv-YS5"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
@@ -233,6 +233,7 @@
                 <outlet property="detailView" destination="pW1-3w-baO" id="qqh-W1-HXJ"/>
                 <outlet property="expandedAmountLabel" destination="LGm-mH-vX2" id="MS4-Oi-us5"/>
                 <outlet property="fromAddressLabel" destination="PiN-if-Tc6" id="k8q-Wi-cKI"/>
+                <outlet property="heightCoinstraint" destination="NUu-HM-SLH" id="gQH-pH-Xih"/>
                 <outlet property="timeLabel" destination="Ihi-fg-pO4" id="Cao-E3-Sxw"/>
                 <outlet property="title" destination="QCK-HX-lCr" id="1YS-TV-HvE"/>
                 <outlet property="toAddressLabel" destination="vPZ-3A-S6I" id="uiK-mq-nfu"/>

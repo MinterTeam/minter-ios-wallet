@@ -71,6 +71,7 @@ class TransactionTableViewCell: ExpandableCell {
 	
 	@IBOutlet weak var timeLabel: UILabel!
 	
+	@IBOutlet weak var heightCoinstraint: NSLayoutConstraint!
 	
 	//MARK: -
 	
@@ -140,9 +141,17 @@ class TransactionTableViewCell: ExpandableCell {
 		self.layoutIfNeeded()
 		
 		if expanded {
-			setExpanded(false, animated: false)
+//			setExpanded(false, animated: false)
+			
 		}
+		heightCoinstraint.isActive = !expanded
 		
+	}
+	
+	override func setExpanded(_ expanded: Bool, animated: Bool) {
+		super.setExpanded(expanded, animated: animated)
+		
+		heightCoinstraint.isActive = !expanded
 	}
 
 }
