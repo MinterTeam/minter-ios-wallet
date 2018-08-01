@@ -13,6 +13,7 @@ class TransactionDateFormatter : DateFormatter {
 	class var transactionDateFormatter : DateFormatter {
 		let formatter = DateFormatter()
 		formatter.dateFormat = "dd MMM yyyy"
+		formatter.timeZone = TimeZone.current
 		
 		return formatter
 	}
@@ -20,7 +21,7 @@ class TransactionDateFormatter : DateFormatter {
 	class var transactionTimeFormatter : DateFormatter {
 		let formatter = DateFormatter()
 		formatter.dateFormat = "HH:mm:ss"
-		
+		formatter.timeZone = TimeZone.current
 		return formatter
 	}
 	

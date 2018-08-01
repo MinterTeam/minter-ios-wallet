@@ -13,7 +13,7 @@ import MinterExplorer
 import ObjectMapper
 
 
-class TransactionManager {
+class WalletTransactionManager {
 	
 	
 	let transactionManager = MinterExplorer.TransactionManager.default

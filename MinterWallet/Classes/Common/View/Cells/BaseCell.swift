@@ -63,7 +63,7 @@ class ExpandableCell : AccordionTableViewCell, Configurable {
 		}
 	}
 	
-	var toggling = false
+//	var toggling = false
 	
 	override func toggle(_ expanded: Bool, animated: Bool) {
 		guard detailView != nil && !toggling else {

@@ -38,6 +38,7 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 	lazy var readerVC: QRCodeReaderViewController = {
 		let builder = QRCodeReaderViewControllerBuilder {
 			$0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
+			$0.showSwitchCameraButton = false
 		}
 		
 		return QRCodeReaderViewController(builder: builder)
@@ -114,12 +115,18 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		viewModel.createSections()
+	}
+	
 	//MARK: -
 	
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
 		tableView.register(UINib(nibName: "AmountTextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "AmountTextFieldTableViewCell")
-		tableView.register(UINib(nibName: "AddressTextViewTableViewCell", bundle: nil), forCellReuseIdentifier: "AddressTextViewTableViewCell")
+		tableView.register(UINib(nibName: "AddressTextViewTableViewCell1", bundle: nil), forCellReuseIdentifier: "AddressTextViewTableViewCell1")
 		tableView.register(UINib(nibName: "PickerTableViewCell", bundle: nil), forCellReuseIdentifier: "PickerTableViewCell")
 		tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil), forCellReuseIdentifier: "SwitchTableViewCell")
 		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil), forCellReuseIdentifier: "TwoTitleTableViewCell")
@@ -159,13 +166,18 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		
 		if let textViewCell = cell as? TextViewTableViewCell {
 			textViewCell.delegate = self
+			textViewCell.textView.rx.text.subscribe { newText in
+				print(newText)
+			}
+			
+			
 		}
 		
 		if let textField = cell as? AmountTextFieldTableViewCell {
 			textField.amountDelegate = self
 		}
 		
-		if let addressCell = cell as? AddressTextViewTableViewCell {
+		if let addressCell = cell as? AddressTextViewTableViewCell1 {
 			addressCell.addressDelegate = self
 		}
 		
@@ -315,7 +327,7 @@ extension SendViewController {
 	func didTapActionButton(viewController: SentPopupViewController) {
 		viewController.dismiss(animated: true) { [weak self] in
 			if let url = self?.viewModel.lastTransactionExplorerURL() {
-				let vc = SFSafariViewController(url: url)
+				let vc = BaseSafariViewController(url: url)
 				self?.present(vc, animated: true) {}
 			}
 		}

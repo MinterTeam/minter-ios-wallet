@@ -29,7 +29,7 @@ class Session {
 	private let transactionManager = MinterExplorer.TransactionManager.default
 	private let addressManager = MinterExplorer.AddressManager.default
 	private var profileManager: MinterMy.ProfileManager?
-	private let transactionManger = MinterWallet.TransactionManager()
+	private let transactionManger = WalletTransactionManager()
 	private let syncer = SessionAddressSyncer()
 	
 	private var disposeBag = DisposeBag()
@@ -264,7 +264,7 @@ class Session {
 				}
 				
 				let baseCoinBalance = coins.map({ (dict) -> Decimal in
-					return Decimal((dict["baseCoinAmount"] as? Double) ?? 0.0)
+					return Decimal(string: (dict["baseCoinAmount"] as? String) ?? "0.0") ?? 0.0
 				}).reduce(0, +)
 				
 				self?.baseCoinBalances.value[ads] = baseCoinBalance
@@ -279,7 +279,10 @@ class Session {
 				}
 				coins.forEach({ (dict) in
 					if let key = dict["coin"] as? String {
-						blncs[key.uppercased()] = Decimal((dict["amount"] as? Double) ?? 0.0)
+						let amnt = Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
+						if amnt > Decimal(0.0) {
+							blncs[key.uppercased()] = amnt
+						}
 					}
 				})
 				

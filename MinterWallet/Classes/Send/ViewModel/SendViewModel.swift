@@ -62,10 +62,6 @@ class SendViewModel: BaseViewModel {
 			if isAmountValid(amount: self.amount.value ?? 0) {
 				amountStateObservable.value = .default
 			}
-//			else {
-//				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
-//			}
-			
 		}
 	}
 	
@@ -92,7 +88,7 @@ class SendViewModel: BaseViewModel {
 			
 			return (nil != val.value[selectedCoin.value!])
 		}
-		return balance[selectedAddress!]![selectedCoin.value!]
+		return balance[selectedAddress!]?[selectedCoin.value!]
 	}
 	
 	var selectedBalanceText: String? {
@@ -123,7 +119,7 @@ class SendViewModel: BaseViewModel {
 		}
 		
 		if isBaseCoin == true {
-			let balance = self.baseCoinBalance
+			let balance = self.baseCoinBalance * TransactionCoinFactorDecimal
 			if balance >= amount + TransactionCommisionType.send.amount() {
 				return Coin.baseCoin().symbol!
 			}
@@ -134,10 +130,8 @@ class SendViewModel: BaseViewModel {
 				return Coin.baseCoin().symbol!
 			}
 			//If it's impossible we try to pay comission from the selected coin
-			guard let selectedBalance = self.selectedAddressBalance else {
-				return nil
-			}
-			if selectedBalance >= amount + (TransactionCommisionType.send.amount() / TransactionCoinFactorDouble) {
+			let selectedBalance = (self.selectedAddressBalance ?? 0.0) * TransactionCoinFactorDecimal
+			if selectedBalance >= amount + (TransactionCommisionType.send.amount()) {
 				return selectedCoin
 			}
 		}
@@ -146,7 +140,7 @@ class SendViewModel: BaseViewModel {
 	
 	func canPayCommissionWithBaseCoin() -> Bool {
 		let balance = self.baseCoinBalance
-		if balance >= (TransactionCommisionType.send.amount() / TransactionCoinFactorDouble) {
+		if balance >= (TransactionCommisionType.send.amount() / TransactionCoinFactorDecimal) {
 			return true
 		}
 		return false
@@ -196,6 +190,8 @@ class SendViewModel: BaseViewModel {
 		Session.shared.allBalances.asObservable().distinctUntilChanged().filter({ (_) -> Bool in
 			return true //nil == self.selectedAddress
 		}).subscribe(onNext: { [weak self] (val) in
+			self?.selectedAddress = nil
+			self?.selectedCoin.value = nil
 			self?.createSections()
 		}).disposed(by: disposeBag)
 		
@@ -230,14 +226,14 @@ class SendViewModel: BaseViewModel {
 	
 	func createSections() {
 		
-		let username = AddressTextViewTableViewCellItem(reuseIdentifier: "AddressTextViewTableViewCell", identifier: cellIdentifierPrefix.address.rawValue)
+		let username = AddressTextViewTableViewCellItem(reuseIdentifier: "AddressTextViewTableViewCell1", identifier: cellIdentifierPrefix.address.rawValue)
 		username.title = "TO (@USERNAME, EMAIL OR MX ADDRESS)".localized()
 		username.isLoadingObservable = isLoadingAddress.asObservable()
 		username.stateObservable = addressStateObservable.asObservable()
-//		username.value = toField ?? ""
+		username.value = toField ?? ""
 		username.keybordType = .emailAddress
 		
-		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell", identifier: cellIdentifierPrefix.coin.rawValue)
+		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell", identifier: cellIdentifierPrefix.coin.rawValue + (selectedBalanceText ?? ""))
 		coin.title = "COIN".localized()
 		if nil != self.selectedAddress && nil != self.selectedCoin.value {
 			let item = accountPickerItems().filter { (item) -> Bool in
@@ -260,7 +256,7 @@ class SendViewModel: BaseViewModel {
 		let amount = AmountTextFieldTableViewCellItem(reuseIdentifier: "AmountTextFieldTableViewCell", identifier: cellIdentifierPrefix.amount.rawValue)
 		amount.title = "AMOUNT".localized()
 		amount.rules = [FloatRule(message: "INCORRECT AMOUNT".localized())]
-//		amount.value = self.amountField ?? ""
+		amount.value = self.amountField ?? ""
 		amount.stateObservable = amountStateObservable.asObservable()
 		amount.keyboardType = .decimalPad
 		
@@ -328,17 +324,6 @@ class SendViewModel: BaseViewModel {
 	
 	func submitField(item: BaseCellItem, value: String) {
 		
-//		if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) {
-//			self.toField = value
-//
-//			if isAmountValid(amount: self.amount.value ?? 0) {
-//				amountStateObservable.value = .default
-//			}
-//			else {
-//				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
-//			}
-//		}
-//		else
 		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
 			self.amountField = value.replacingOccurrences(of: ",", with: ".")
 			
@@ -352,6 +337,9 @@ class SendViewModel: BaseViewModel {
 	}
 	
 	func isToValid(to: String) -> Bool {
+		if to.count > 65 {
+			return false
+		}
 		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^@[a-zA-Z0-9_]{5,32}")
 		let usernameTest1 = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,32}")
 		let addressTest = NSPredicate(format:"SELF MATCHES %@", "^Mx[a-zA-Z0-9]{40}$")
@@ -368,6 +356,18 @@ class SendViewModel: BaseViewModel {
 		let to = (toField ?? "")
 		
 		guard isToValid(to: to) else {
+			
+			if to.count >= 65 {
+				self.addressStateObservable.value = .invalid(error: "TOO MANY SYMBOLS".localized())
+				return
+			}
+			else if to == "" {
+				self.addressStateObservable.value = .default
+			}
+			else {
+				self.addressStateObservable.value = .invalid(error: "INVALID VALUE".localized())
+			}
+			
 			return
 		}
 		
@@ -555,7 +555,7 @@ class SendViewModel: BaseViewModel {
 		}
 		isLoadingNonce.value = true
 		
-		MinterCore.TransactionManagerr.default.transactionCount(address: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
+		MinterCore.CoreTransactionManager.default.transactionCount(address: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
 			
 			var success = false
 			
@@ -583,7 +583,7 @@ class SendViewModel: BaseViewModel {
 			return
 		}
 		
-		guard let strVal = decimalsNoMantissaFormatter.string(from: amount * TransactionCoinFactorDouble as NSNumber) else {
+		guard let strVal = decimalsNoMantissaFormatter.string(from: amount * TransactionCoinFactorDecimal as NSNumber) else {
 			return
 		}
 		
@@ -591,7 +591,7 @@ class SendViewModel: BaseViewModel {
 		
 		let selectedBalance = self.selectedAddressBalance ?? 0.0
 
-		let maxComparableSelectedBalance = (Decimal(string: shortDecimalFormatter.string(from: (selectedBalance) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDouble
+		let maxComparableSelectedBalance = (Decimal(string: shortDecimalFormatter.string(from: (selectedBalance) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
 		
 		let maxComparableBalance = decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
 		let isMax = (value > 0 && value == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
@@ -615,42 +615,65 @@ class SendViewModel: BaseViewModel {
 			
 			let toFld = self?.toField
 			
-			var newAmount = amount * TransactionCoinFactorDouble
+			var newAmount = amount * TransactionCoinFactorDecimal
 			if isMax {
-				newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDouble
-			}
-			
-			guard let commissionCoin = self?.coinToPayComission(amount: amount) else {
-				DispatchQueue.main.async {
-					self?.notifiableError.value = NotifiableError(title: "Not enough coins".localized(), text: nil)
-					self?.showPopup.value = nil
+				//if we want to send all coins at first we check if can pay comission with the base coin
+				//if so we subtract commission amount from the requested amount
+				if isBaseCoin {
+					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal - TransactionCommisionType.send.amount()
+					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
 				}
-				return
-			}
-			
-			self?.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin, commissionCoin: commissionCoin, amount: newAmount) { [weak self, toFld] res in
-				
-				if res == true {
-					
-					self?.clear()
-					
-					self?.createSections()
-					
-					DispatchQueue.main.async {
-						self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: toFld ?? to, address: to))
-					}
-					
-					DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
-						Session.shared.loadTransactions()
-						SessionHelper.reloadAccounts()
+				else if !(self?.canPayCommissionWithBaseCoin() ?? true) {
+					self?.getComission(forCoin: selectedCoin, completion: { [weak self] (commission) in
+						
+						let amountWithComission = newAmount - (commission ?? 0) * TransactionCoinFactorDecimal
+						
+						self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: selectedCoin, amount: amountWithComission)
 					})
-
-				}	
+				}
+				//otherwise just multiply decimal amount to factor (10^18)
+				else {
+					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal
+					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
+				}
+			}
+			else {
+				self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
 			}
 		}
 	}
 	
-	func sendTx(seed: Data, nonce: Int, to: String, coin: String, commissionCoin: String, amount: Decimal, completion: ((Bool?) -> ())? = nil) {
+	private func proceedSend(seed: Data, nonce: Int, to: String, toFld: String?, commissionCoin: String, amount: Decimal) {
+		
+//		guard let commissionCoin = self.coinToPayComission(amount: amount) else {
+//			DispatchQueue.main.async {
+//				self.notifiableError.value = NotifiableError(title: "Not enough coins".localized(), text: nil)
+//				self.showPopup.value = nil
+//			}
+//			return
+//		}
+		
+		self.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin.value!, commissionCoin: commissionCoin, amount: amount) { [weak self, toFld] res in
+			
+			if res == true {
+				
+				self?.clear()
+				
+				self?.createSections()
+				
+				DispatchQueue.main.async {
+					self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: toFld ?? to, address: to))
+				}
+				
+				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
+					Session.shared.loadTransactions()
+					SessionHelper.reloadAccounts()
+				})
+			}
+		}
+	}
+	
+	private func sendTx(seed: Data, nonce: Int, to: String, coin: String, commissionCoin: String, amount: Decimal, completion: ((Bool?) -> ())? = nil) {
 		
 		let numberFormatter = NumberFormatter()
 		numberFormatter.generatesDecimalNumbers = true
@@ -680,10 +703,11 @@ class SendViewModel: BaseViewModel {
 			completion?(false)
 			return
 		}
+
 		
 		self.nonce.value = nil
 		
-		MinterCore.TransactionManagerr.default.send(tx: signedTx) { [weak self] (hash, status, err) in
+		MinterCore.CoreTransactionManager.default.send(tx: signedTx) { [weak self] (hash, status, err) in
 			
 			var res = false
 			
@@ -706,6 +730,22 @@ class SendViewModel: BaseViewModel {
 			}
 			res = true
 			self?.lastSentTransactionHash = hash
+		}
+	}
+	
+	private func getComission(forCoin: String, completion: ((Decimal?) -> ())?) {
+		
+		let comission = TransactionCommisionType.send.amount() / TransactionCoinFactorDecimal
+		
+		MinterCore.CoinManager.default.estimateCoinSell(from: forCoin, to: Coin.baseCoin().symbol!, amount: comission) { (result, commission, error) in
+			
+			guard error == nil, let result = result, let commission = commission else {
+				completion?(nil)
+				return
+			}
+			
+			completion?(result + comission)
+			
 		}
 	}
 	

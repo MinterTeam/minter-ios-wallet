@@ -27,14 +27,15 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 	override init() {
 		super.init()
 		
-		let val = pickerItems().first
-		let ads = val?.address
-		let cn = val?.coin
-		
-		self.spendCoin.value = cn
-		
-		self.selectedCoin = cn
-		self.selectedAddress = ads
+		Session.shared.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
+			let val = self?.pickerItems().first
+			let ads = val?.address
+			let cn = val?.coin
+			
+			self?.spendCoin.value = cn
+			self?.selectedCoin = cn
+			self?.selectedAddress = ads
+		}).disposed(by: disposeBag)
 		
 		Observable.combineLatest(spendCoin.asObservable(), spendAmount.asObservable(), getCoin.asObservable()).filter { (val) -> Bool in
 			return true
@@ -163,7 +164,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		
 		let numberFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 		
-		guard let strVal = numberFormatter.string(from: amnt * TransactionCoinFactorDouble as NSNumber) else {
+		guard let strVal = numberFormatter.string(from: amnt * TransactionCoinFactorDecimal as NSNumber) else {
 			return
 		}
 		
@@ -175,7 +176,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			return
 		}
 		
-		let maxComparableSelectedBalance = (Decimal(string: shortDecimalFormatter.string(from: (selectedBalance ?? 0.0) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDouble
+		let maxComparableSelectedBalance = (Decimal(string: shortDecimalFormatter.string(from: (selectedBalance ?? 0.0) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
 		
 		let maxComparableBalance = decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
 		let isMax = (value > 0 && value == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
@@ -194,7 +195,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		
 		let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
 		
-		MinterCore.TransactionManagerr.default.transactionCount(address: "Mx" + selectedAddress) { [weak self] (count, err) in
+		MinterCore.CoreTransactionManager.default.transactionCount(address: "Mx" + selectedAddress) { [weak self] (count, err) in
 			
 			guard err == nil, let nnce = count else {
 				self?.isLoading.value = false
@@ -220,10 +221,15 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			
 			let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
 			
-			MinterCore.TransactionManagerr.default.send(tx: signedTx!) { (hash, status, err) in
+			MinterCore.CoreTransactionManager.default.send(tx: signedTx!) { (hash, status, err) in
 				self?.isLoading.value = false
 				
 				defer {
+					DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+						Session.shared.loadBalances()
+						Session.shared.loadTransactions()
+					})
+					
 					Session.shared.loadBalances()
 					Session.shared.loadTransactions()
 				}

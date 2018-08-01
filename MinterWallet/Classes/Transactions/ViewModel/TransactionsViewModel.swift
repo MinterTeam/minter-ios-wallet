@@ -247,7 +247,7 @@ class TransactionsViewModel: BaseViewModel {
 		}
 	}
 	
-	let manager = MinterWallet.TransactionManager()
+	let manager = WalletTransactionManager()
 	
 	//MARK: -
 	

@@ -14,6 +14,8 @@ open class AccordionTableViewCell: UITableViewCell {
 	/// Flag which tells if the cell is expanded.
 	open private(set) var expanded = false
 	
+	open var toggling = false
+	
 	// MARK: Actions
 	
 	/**

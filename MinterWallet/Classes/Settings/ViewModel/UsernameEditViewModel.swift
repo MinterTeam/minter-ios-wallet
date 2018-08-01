@@ -84,7 +84,7 @@ class UsernameEditViewModel : BaseViewModel {
 	
 	var buttonObservable: Observable<Bool> {
 		return Observable.combineLatest(isTaken.asObservable(), isLoading.asObservable(), isTakenLoading.asObservable()).map({ (val) -> Bool in
-			return !val.0 && !val.1 && !val.2
+			return !val.0 && !val.1 && !val.2 && (self.username.value ?? "") != (Session.shared.user.value?.username ?? "")
 		})
 	}
 	

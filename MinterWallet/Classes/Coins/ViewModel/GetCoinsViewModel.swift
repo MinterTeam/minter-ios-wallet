@@ -146,7 +146,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		let frmttr = NumberFormatter()
 		frmttr.generatesDecimalNumbers = true
 		
-		let ammnt = amount * TransactionCoinFactorDouble
+		let ammnt = amount * TransactionCoinFactorDecimal
 		guard let amountString = frmttr.string(from: ammnt as NSNumber) else {
 			return
 		}
@@ -172,7 +172,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			
 			let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
 			
-			MinterCore.TransactionManagerr.default.transactionCount(address: "Mx" + selectedAddress) { [weak self] (count, err) in
+			MinterCore.CoreTransactionManager.default.transactionCount(address: "Mx" + selectedAddress) { [weak self] (count, err) in
 				
 				guard err == nil, let nnce = count else {
 					self?.isLoading.value = false
@@ -188,10 +188,16 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 				let tx = BuyCoinRawTransaction(nonce: BigUInt(nonce), gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value)
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
 				
-				MinterCore.TransactionManagerr.default.send(tx: signedTx!) { (hash, status, err) in
+				MinterCore.CoreTransactionManager.default.send(tx: signedTx!) { (hash, status, err) in
+					
 					self?.isLoading.value = false
 					
 					defer {
+						DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+							Session.shared.loadBalances()
+							Session.shared.loadTransactions()
+						})
+						
 						Session.shared.loadBalances()
 						Session.shared.loadTransactions()
 					}

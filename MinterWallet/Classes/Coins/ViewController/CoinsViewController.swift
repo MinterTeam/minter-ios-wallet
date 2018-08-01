@@ -14,7 +14,7 @@ import AlamofireImage
 
 
 
-class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITableViewDataSource {
+class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	
 
 	//MARK: -
@@ -190,28 +190,28 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, UITabl
 	
 	//MARK: -
 	
-	func numberOfSections(in tableView: UITableView) -> Int {
-		return viewModel.sectionsCount()
-	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return viewModel.rowsCount(for: section)
-	}
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
-			return UITableViewCell()
-		}
-		
-		cell.configure(item: item)
-		
-		if let buttonCell = cell as? ButtonTableViewCell {
-			buttonCell.delegate = self
-		}
-		
-		return cell
-	}
+//	func numberOfSections(in tableView: UITableView) -> Int {
+//		return viewModel.sectionsCount()
+//	}
+//
+//	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//		return viewModel.rowsCount(for: section)
+//	}
+//
+//	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//
+//		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
+//			return UITableViewCell()
+//		}
+//
+//		cell.configure(item: item)
+//
+//		if let buttonCell = cell as? ButtonTableViewCell {
+//			buttonCell.delegate = self
+//		}
+//
+//		return cell
+//	}
 	
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
@@ -290,14 +290,14 @@ extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransac
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
-			let vc = SFSafariViewController(url: url)
+			let vc = BaseSafariViewController(url: url)
 			self.present(vc, animated: true) {}
 		}
 	}
 	
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
-			let vc = SFSafariViewController(url: url)
+			let vc = BaseSafariViewController(url: url)
 			self.present(vc, animated: true) {}
 		}
 	}

@@ -121,8 +121,9 @@ class CoinsViewModel: BaseViewModel {
 		Session.shared.balances.value.keys.forEach { (key) in
 			
 			let bal = Session.shared.balances.value
-				
-			let cellAdditionalId = "\(key)"
+			
+			let balanceKey = CurrencyNumberFormatter.decimalShortFormatter.string(from: (bal[key] ?? 0) as NSNumber)
+			let cellAdditionalId = "\(key)_\(balanceKey ?? "")"
 			
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_\(cellAdditionalId)")
 			

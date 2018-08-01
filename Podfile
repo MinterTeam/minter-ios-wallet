@@ -19,6 +19,7 @@ target 'MinterWallet' do
 		pod 'ImagePicker'
 		pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 #		pod 'GrowingTextView', '~> 0.5.5'
+		pod 'NextGrowingTextView'
 		pod 'CKMnemonic'
 		pod 'KeychainSwift'
 		pod 'RealmSwift'

@@ -59,6 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.foregroundColor : UIColor.white,
 			NSAttributedStringKey.font : UIFont.boldFont(of: 18.0)
 		]
+		UINavigationBar.appearance().setTitleVerticalPositionAdjustment(-2, for: .default)
 		
 		UIBarButtonItem.appearance().setTitleTextAttributes([
 				NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
@@ -89,8 +90,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.foregroundColor : UIColor(hex: 0x502EC2)!,
 			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
 		], for: .selected)
-		
-//		UIBarButtonItem.appearance().
 		
 	}
 

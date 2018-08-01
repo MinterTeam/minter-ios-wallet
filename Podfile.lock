@@ -34,6 +34,7 @@ PODS:
     - MinterCore
   - MinterMy (0.1.2):
     - MinterCore
+  - NextGrowingTextView (1.2.2)
   - NotificationBannerSwift (1.6.3):
     - MarqueeLabel/Swift
     - SnapKit (~> 4.0)
@@ -83,6 +84,7 @@ DEPENDENCIES:
   - MinterCore (from `../MinterCore`)
   - MinterExplorer (from `../MinterExplorer`)
   - MinterMy (from `../MinterMy`)
+  - NextGrowingTextView
   - NotificationBannerSwift
   - ObjectMapper
   - QRCode
@@ -116,6 +118,7 @@ SPEC REPOS:
     - KeychainSwift
     - MarqueeLabel
     - McPicker
+    - NextGrowingTextView
     - NotificationBannerSwift
     - ObjectMapper
     - QRCode
@@ -179,6 +182,7 @@ SPEC CHECKSUMS:
   MinterCore: 696e84a3e27a51dfed47564143789f8706139a6c
   MinterExplorer: d5784ab4fb1636fde9e3bae29c81525b2092307f
   MinterMy: a58b68a346872f7cee0524d879e31cd9214dc45b
+  NextGrowingTextView: 78c8b96f7ac6dc845f5babb27dcf7c18dd3210ec
   NotificationBannerSwift: b231e4c3244848ef300e1c53ce027b9756b9b06f
   ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
   QRCode: f98a1886c8f37523704a7512a4c0cd45b34c18a4
@@ -199,6 +203,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
 
-PODFILE CHECKSUM: 374e94118ad02362fc1c856696520a94ca543b94
+PODFILE CHECKSUM: e97521c007ada34904ddf2ef688eca9a514ea3df
 
 COCOAPODS: 1.5.3

@@ -55,7 +55,6 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 															 willDisplay cell: UITableViewCell,
 															 forRowAt indexPath: IndexPath) {
 		if let cell = cell as? AccordionTableViewCell {
-			
 			let expanded = expandedIndexPaths.contains(indexPath)
 			cell.setExpanded(expanded, animated: false)
 		}
@@ -64,9 +63,10 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 	/// `AccordionTableViewController` will animate cell to be expanded or collapsed.
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if let cell = tableView.cellForRow(at: indexPath) as? AccordionTableViewCell {
-			
-			cell.toggle(!cell.expanded, animated: shouldAnimateCellToggle)
-			toggleCell(cell, animated: shouldAnimateCellToggle)
+			if !cell.toggling {
+				cell.toggle(!cell.expanded, animated: shouldAnimateCellToggle)
+				toggleCell(cell, animated: shouldAnimateCellToggle)
+			}
 			
 		}
 	}

@@ -160,10 +160,11 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 	
 	func showImagePicker(sender: UIView?) {
 		
-		let imagePickerController = UIImagePickerController()
+		let imagePickerController = BaseImagePickerController()
 		imagePickerController.delegate = self
-		imagePickerController.mediaTypes = ["public.image", "public.movie"]
-		let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		imagePickerController.mediaTypes = ["public.image"]
+		let actionSheet = BaseAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		actionSheet.modalPresentationStyle = .overCurrentContext
 		if let popoverPresentationController = actionSheet.popoverPresentationController {
 			popoverPresentationController.sourceView = sender
 			popoverPresentationController.sourceRect = sender?.bounds ?? CGRect.zero

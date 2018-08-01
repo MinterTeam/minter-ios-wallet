@@ -53,15 +53,15 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 	
 	@IBOutlet weak var errorTitle: UILabel!
 	
-	@IBOutlet weak var textView: GrowingDefaultTextView! {
+	@IBOutlet weak var textView: UITextView! {
 		didSet {
-			textView.contentInset = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 20)
+//			textView.contentInset = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 20)
 		}
 	}
 	
 	var activityIndicator: UIActivityIndicatorView? {
 		didSet {
-			self.addSubview(activityIndicator!)
+//			self.addSubview(activityIndicator!)
 		}
 	}
 	
@@ -73,7 +73,7 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 		super.awakeFromNib()
 		
 		activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-		activityIndicator?.backgroundColor = .white
+		activityIndicator?.backgroundColor = .clear
 		activityIndicator?.translatesAutoresizingMaskIntoConstraints = false
 		
 //		textView.isScrollEnabled = false
@@ -91,7 +91,7 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 		
 		if let item = item as? TextViewTableViewCellItem {
 			self.title.text = item.title
-			self.validatorRules = item.rules
+//			self.validatorRules = item.rules
 			if let val = item.value {
 				self.textView.text = val
 			}
@@ -147,29 +147,7 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 		return textView.text ?? ""
 	}
 	
-	var validatorRules: [Rule] = [] {
-		didSet {
-			validator.registerField(self.textView, errorLabel: self.errorTitle, rules: validatorRules)
-		}
-	}
-	
 	//MARK: -
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		if !hasSetConstraints {
-			
-			hasSetConstraints = true
-			
-			self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[activityIndicator(20)]-(20)-|", options: [], metrics: nil, views: ["activityIndicator" : activityIndicator!]))
-			self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(37)-[activityIndicator(20)]", options: [], metrics: nil, views: ["activityIndicator" : activityIndicator!]))
-			
-			activityIndicator?.layoutIfNeeded()
-			
-		}
-		
-	}
 
 }
 
@@ -177,7 +155,6 @@ extension TextViewTableViewCell : UITextViewDelegate {
 	
 	func textViewDidEndEditing(_ textView: UITextView) {
 		
-
 	}
 
 }

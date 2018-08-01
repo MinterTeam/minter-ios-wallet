@@ -56,6 +56,10 @@ class TransactionsViewController: BaseTableViewController {
 					transactionCell.delegate = self
 				}
 				
+				if let convertCell = cell as? ConvertTransactionTableViewCell {
+					convertCell.delegate = self
+				}
+				
 				return cell
 		})
 		
@@ -137,14 +141,14 @@ extension TransactionsViewController : TransactionTableViewCellDelegate, Convert
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
-			let vc = SFSafariViewController(url: url)
+			let vc = BaseSafariViewController(url: url)
 			self.present(vc, animated: true) {}
 		}
 	}
 	
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
-			let vc = SFSafariViewController(url: url)
+			let vc = BaseSafariViewController(url: url)
 			self.present(vc, animated: true) {}
 		}
 	}

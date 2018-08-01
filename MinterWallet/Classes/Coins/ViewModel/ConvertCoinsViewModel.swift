@@ -65,7 +65,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	}
 	
 	var hasMultipleCoins: Bool {
-		var coinCount = 1
+		var coinCount = 0
 		Session.shared.allBalances.value.keys.forEach { (key) in
 			Session.shared.allBalances.value[key]?.forEach({ (val) in
 				coinCount += 1

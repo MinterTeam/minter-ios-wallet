@@ -41,6 +41,7 @@ class EmailEditViewModel: BaseViewModel {
 		createSection()
 		
 		email.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+			
 			if val?.isValidEmail() == true {
 				self?.isButtonEnabled.value = true
 				self?.state.value = .default
@@ -52,6 +53,10 @@ class EmailEditViewModel: BaseViewModel {
 				else {
 					self?.state.value = .invalid(error: "EMAIL IS INCORRECT".localized())
 				}
+				self?.isButtonEnabled.value = false
+			}
+			
+			if (self?.email.value ?? "") == (Session.shared.user.value?.email ?? "") {
 				self?.isButtonEnabled.value = false
 			}
 		}).disposed(by: disposeBag)
