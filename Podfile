@@ -35,6 +35,7 @@ target 'MinterWallet' do
 		pod 'Crashlytics'
 		pod 'ObjectMapper'
 		pod 'XLPagerTabStrip', '~> 8.0'
+		pod 'ReachabilitySwift'
 end
 
 target 'MinterWalletTests' do

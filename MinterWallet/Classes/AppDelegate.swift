@@ -59,7 +59,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.foregroundColor : UIColor.white,
 			NSAttributedStringKey.font : UIFont.boldFont(of: 18.0)
 		]
-		UINavigationBar.appearance().setTitleVerticalPositionAdjustment(-2, for: .default)
+		if #available(iOS 11.0, *) {
+			UINavigationBar.appearance().setTitleVerticalPositionAdjustment(-2, for: .default)
+		}
 		
 		UIBarButtonItem.appearance().setTitleTextAttributes([
 				NSAttributedStringKey.font: UIFont.defaultFont(of: 14),

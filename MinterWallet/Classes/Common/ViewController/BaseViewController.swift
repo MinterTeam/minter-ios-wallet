@@ -8,6 +8,9 @@
 
 import UIKit
 import SafariServices
+import RxSwift
+import NotificationBannerSwift
+import Reachability
 
 
 class BaseViewController : UIViewController {
@@ -18,6 +21,15 @@ class BaseViewController : UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+//		try? DefaultReachabilityService().reachability.distinctUntilChanged({ (status1, status2) -> Bool in
+//			return status1.reachable == status2.reachable
+//		}).asObservable().subscribe(onNext: { (status) in
+//			if !status.reachable {
+//				let banner = NotificationBanner(title: "Network is not reachable".localized())
+//				banner.show()
+//			}
+//		})
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -27,6 +39,8 @@ class BaseViewController : UIViewController {
 	}
 
 }
+
+
 
 class BaseTableViewController : AccordionTableViewController {
 	

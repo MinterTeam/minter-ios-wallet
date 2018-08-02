@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="qYw-04-4Gc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14087.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="qYw-04-4Gc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14075.4"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Ubuntu-R.ttf">
+            <string>Ubuntu</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Settings View Controller-->
         <scene sceneID="YBr-Jz-oHy">
@@ -101,6 +106,8 @@
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="bottomView" destination="gmK-3E-a5f" id="e2T-y5-zvn"/>
+                        <outlet property="infoLabel" destination="TgG-1O-N9k" id="nv8-Ca-5ag"/>
                         <outlet property="tableView" destination="2eP-vt-FlI" id="ZXP-o1-QmM"/>
                         <segue destination="bKa-GG-0Vs" kind="show" identifier="showAddress" id="jRI-ge-VRH"/>
                         <segue destination="qHc-qd-YGz" kind="show" identifier="showUsername" id="tAG-S4-nrC"/>
@@ -110,6 +117,24 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bNW-24-diw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="gmK-3E-a5f">
+                    <rect key="frame" x="0.0" y="0.0" width="377" height="53"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TgG-1O-N9k">
+                            <rect key="frame" x="10" y="19" width="357" height="15"/>
+                            <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="13"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="TgG-1O-N9k" secondAttribute="trailing" constant="10" id="NBJ-ha-jq6"/>
+                        <constraint firstItem="TgG-1O-N9k" firstAttribute="leading" secondItem="gmK-3E-a5f" secondAttribute="leading" constant="10" id="RLM-MA-cWa"/>
+                        <constraint firstItem="TgG-1O-N9k" firstAttribute="centerY" secondItem="gmK-3E-a5f" secondAttribute="centerY" id="dXR-6w-3ej"/>
+                    </constraints>
+                </view>
             </objects>
             <point key="canvasLocation" x="1096.8" y="169.56521739130437"/>
         </scene>

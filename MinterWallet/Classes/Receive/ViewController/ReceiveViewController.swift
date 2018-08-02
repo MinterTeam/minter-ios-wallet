@@ -23,6 +23,7 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 	@IBAction func shareButtonDidTap(_ sender: Any) {
 		if let activities = viewModel.activities() {
 			let vc = UIActivityViewController(activityItems: activities, applicationActivities: [])
+			vc.popoverPresentationController?.sourceView = sender as? UIButton
 			present(vc, animated: true)
 		}
 	}

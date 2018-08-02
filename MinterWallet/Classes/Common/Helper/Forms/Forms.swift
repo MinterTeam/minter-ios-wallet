@@ -11,7 +11,7 @@ import Foundation
 class LoginForm {
 	
 	class func isUsernameValid(username: String) -> Bool {
-		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,32}")
+		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,16}")
 		return usernameTest.evaluate(with: username)
 	}
 	

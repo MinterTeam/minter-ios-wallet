@@ -8,6 +8,9 @@
 
 import UIKit
 import RxSwift
+import Reachability
+import NotificationBannerSwift
+
 
 class RootViewController: UIViewController {
 	
@@ -23,12 +26,23 @@ class RootViewController: UIViewController {
 
 	var viewModel = RootViewModel()
 	
+	let reachability = Reachability()!
+	
 	private let disposeBag = DisposeBag()
 
 	// MARK: Life cycle
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(RootViewController.reachabilityChanged(_:)), name: Notification.Name.reachabilityChanged, object: nil)
+		
+		do {
+			try reachability.startNotifier()
+		} catch {
+			print("could not start reachability notifier")
+		}
+	
 		
 		Observable.combineLatest(Session.shared.isLoggedIn.asObservable(), Session.shared.accounts.asObservable())/*.distinctUntilChanged({ (first, second) -> Bool in
 			return first.0 == second.0 && first.1 == second.1
@@ -53,6 +67,22 @@ class RootViewController: UIViewController {
 		}).disposed(by: disposeBag)
 		
 	}
+
+@objc func reachabilityChanged(_ note: Notification) {
+	
+	let reachability = note.object as! Reachability
+	
+	switch reachability.connection {
+	case .wifi:
+		print("Reachable via WiFi")
+	case .cellular:
+		print("Reachable via Cellular")
+	case .none:
+//		print("Network not reachable")
+		let banner = NotificationBanner(title: "Network is not reachable".localized(), subtitle: nil, style: .danger)
+		banner.show()
+	}
+}
 
 	func showViewControllerWith(_ newViewController: UIViewController, usingAnimation animationType: AnimationType, completion: (() -> ())?) {
 		if animationStart {

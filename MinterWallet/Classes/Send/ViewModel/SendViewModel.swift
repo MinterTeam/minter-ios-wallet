@@ -68,6 +68,8 @@ class SendViewModel: BaseViewModel {
 	//MARK: -
 	
 	var sections = Variable([BaseTableSectionItem]())
+	private var _sections = Variable([BaseTableSectionItem]())
+	
 	private let formatter = CurrencyNumberFormatter.decimalFormatter
 	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
 	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
@@ -192,7 +194,7 @@ class SendViewModel: BaseViewModel {
 		}).subscribe(onNext: { [weak self] (val) in
 			self?.selectedAddress = nil
 			self?.selectedCoin.value = nil
-			self?.createSections()
+			self?.sections.value = self?.createSections() ?? []
 		}).disposed(by: disposeBag)
 		
 		fakeCountdownFinished.asObservable().filter({ (val) -> Bool in
@@ -219,12 +221,16 @@ class SendViewModel: BaseViewModel {
 				SessionHelper.reloadAccounts()
 			})
 		}.disposed(by: disposeBag)
+		
+		sections.asObservable().subscribe(onNext: { [weak self] (items) in
+				self?._sections.value = items
+		}).disposed(by: disposeBag)
 
 	}
 	
 	//MARK: - Sections
 	
-	func createSections() {
+	func createSections() -> [BaseTableSectionItem] {
 		
 		let username = AddressTextViewTableViewCellItem(reuseIdentifier: "AddressTextViewTableViewCell1", identifier: cellIdentifierPrefix.address.rawValue)
 		username.title = "TO (@USERNAME, EMAIL OR MX ADDRESS)".localized()
@@ -281,7 +287,7 @@ class SendViewModel: BaseViewModel {
 		
 		var section = BaseTableSectionItem(header: "")
 		section.items = [coin, username, amount, fee, separator, blank, button]
-		sections.value = [section]
+		return [section]
 	}
 	
 	//MARK: - Validation
@@ -307,6 +313,10 @@ class SendViewModel: BaseViewModel {
 	
 	func validateField(item: BaseCellItem, value: String) -> Bool {
 		
+		defer {
+			self._sections.value = self.createSections()
+		}
+		
 		if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) {
 			self.toField = value
 			
@@ -327,21 +337,23 @@ class SendViewModel: BaseViewModel {
 		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
 			self.amountField = value.replacingOccurrences(of: ",", with: ".")
 			
-			if isAmountValid(amount: self.amount.value ?? 0) {
+			if isAmountValid(amount: self.amount.value ?? 0) || self.amountField == "" 	 {
 				amountStateObservable.value = .default
 			}
 			else {
 				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
 			}
 		}
+		
+		self._sections.value = self.createSections()
 	}
 	
 	func isToValid(to: String) -> Bool {
 		if to.count > 65 {
 			return false
 		}
-		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^@[a-zA-Z0-9_]{5,32}")
-		let usernameTest1 = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,32}")
+		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^@[a-zA-Z0-9_]{5,16}")
+		let usernameTest1 = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,16}")
 		let addressTest = NSPredicate(format:"SELF MATCHES %@", "^Mx[a-zA-Z0-9]{40}$")
 		return usernameTest.evaluate(with: to) || usernameTest1.evaluate(with: to) || addressTest.evaluate(with: to) || to.isValidEmail()
 	}
@@ -433,11 +445,11 @@ class SendViewModel: BaseViewModel {
 	//MARK: - Rows
 
 	func rowsCount(for section: Int) -> Int {
-		return sections.value[safe: section]?.items.count ?? 0
+		return _sections.value[safe: section]?.items.count ?? 0
 	}
 
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
-		return sections.value[safe: section]?.items[safe: row]
+		return _sections.value[safe: section]?.items[safe: row]
 	}
 	
 	//MARK: -
@@ -659,7 +671,7 @@ class SendViewModel: BaseViewModel {
 				
 				self?.clear()
 				
-				self?.createSections()
+				self?.sections.value = self?.createSections() ?? []
 				
 				DispatchQueue.main.async {
 					self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: toFld ?? to, address: to))

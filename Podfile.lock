@@ -41,6 +41,7 @@ PODS:
   - ObjectMapper (3.3.0)
   - QRCode (2.0)
   - QRCodeReader.swift (8.2.0)
+  - ReachabilitySwift (4.1.0)
   - Realm (3.7.4):
     - Realm/Headers (= 3.7.4)
   - Realm/Headers (3.7.4)
@@ -89,6 +90,7 @@ DEPENDENCIES:
   - ObjectMapper
   - QRCode
   - QRCodeReader.swift (~> 8.2.0)
+  - ReachabilitySwift
   - RealmSwift
   - RxAppState
   - RxDataSources
@@ -123,6 +125,7 @@ SPEC REPOS:
     - ObjectMapper
     - QRCode
     - QRCodeReader.swift
+    - ReachabilitySwift
     - Realm
     - RealmSwift
     - RxAppState
@@ -187,6 +190,7 @@ SPEC CHECKSUMS:
   ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
   QRCode: f98a1886c8f37523704a7512a4c0cd45b34c18a4
   QRCodeReader.swift: 003eb32f18a5a675b936ec82ba0ff368cddbff45
+  ReachabilitySwift: 6849231cd4e06559f3b9ef4a97a0a0f96d41e09f
   Realm: a469bb59e33f9926102ccaea4349822c53b9117e
   RealmSwift: a45861b21c180f5cf0f122144b9759fa8dde3e9e
   RxAppState: 0238d65c304725fa815a4b3758be210d48f4db82
@@ -203,6 +207,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
 
-PODFILE CHECKSUM: e97521c007ada34904ddf2ef688eca9a514ea3df
+PODFILE CHECKSUM: 7fbdb7398f3425570f8b4c004b485fae6d0d4492
 
 COCOAPODS: 1.5.3

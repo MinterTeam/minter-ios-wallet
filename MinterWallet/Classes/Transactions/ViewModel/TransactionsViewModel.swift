@@ -212,14 +212,20 @@ class TransactionsViewModel: BaseViewModel {
 		transactionCellItem.date = transaction.date
 		transactionCellItem.from = transaction.data?.from
 		transactionCellItem.to = transaction.data?.to
+		
+		var arrowSign = " > "
+		if #available(iOS 11.0, *) {
+			arrowSign = "  ⟶  "
+		}
+		
 		if let data = transaction.data as? ConvertTransactionData {
 			transactionCellItem.coin = data.toCoin
 			transactionCellItem.amount = (data.value ?? 0) * Decimal(signMultiplier)
-			transactionCellItem.title = (data.fromCoin ?? "") + "  ⟶  " + (data.toCoin ?? "")
+			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 		}
 		else if let data = transaction.data as? SellAllCoinsTransactionData {
 			transactionCellItem.coin = data.toCoin
-			transactionCellItem.title = (data.fromCoin ?? "") + "  ⟶  " + (data.toCoin ?? "")
+			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 		}
 
 		

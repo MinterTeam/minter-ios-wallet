@@ -8,7 +8,6 @@
 
 import UIKit
 import RxSwift
-//import AEAccordion
 
 
 protocol Configurable where Self : UITableViewCell {
@@ -62,8 +61,6 @@ class ExpandableCell : AccordionTableViewCell, Configurable {
 			self.toggle(expanded, animated: animated)
 		}
 	}
-	
-//	var toggling = false
 	
 	override func toggle(_ expanded: Bool, animated: Bool) {
 		guard detailView != nil && !toggling else {

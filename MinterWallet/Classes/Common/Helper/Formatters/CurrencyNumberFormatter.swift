@@ -11,6 +11,27 @@ import Foundation
 
 class CurrencyNumberFormatter : NumberFormatter {
 	
+	class func formattedDecimal(with number: Decimal, formatter: NumberFormatter) -> String {
+		let newNF = formatter
+		let amount = number
+		for _ in 0...18 {
+			
+			guard var str = newNF.string(from: amount as NSNumber) else {
+				continue
+			}
+			str = str.replacingOccurrences(of: " ", with: "")
+			
+			let lh = Decimal(string: str) ?? 0.0
+			if lh != Decimal(0.0) {
+				return newNF.string(from: lh as NSNumber) ?? ""
+			}
+			newNF.maximumFractionDigits += 1
+		}
+		
+		return formatter.string(from: amount as NSNumber) ?? ""
+	}
+	
+	
 	class var transactionFormatter : NumberFormatter {
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .decimal

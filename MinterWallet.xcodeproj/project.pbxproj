@@ -167,6 +167,7 @@
 		FAA2608620946456009FF3DE /* UIViewController+HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608520946456009FF3DE /* UIViewController+HideKeyboard.swift */; };
 		FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */; };
 		FAA2608B2094ABA7009FF3DE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */; };
+		FAA3DD09211358BF0054D27E /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3DD08211358BF0054D27E /* ReachabilityService.swift */; };
 		FAB7AA1720F600230003D0DE /* ConvertTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB7AA1520F600230003D0DE /* ConvertTransactionTableViewCell.swift */; };
 		FAB7AA1820F600230003D0DE /* ConvertTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB7AA1620F600230003D0DE /* ConvertTransactionTableViewCell.xib */; };
 		FAB85B4620DB980500782AFB /* URLRequst+NoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB85B4520DB980500782AFB /* URLRequst+NoCache.swift */; };
@@ -387,6 +388,8 @@
 		FAA2608520946456009FF3DE /* UIViewController+HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+HideKeyboard.swift"; sourceTree = "<group>"; };
 		FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyNumberFormatter.swift; sourceTree = "<group>"; };
 		FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		FAA3DD06211358600054D27E /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		FAA3DD08211358BF0054D27E /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
 		FAB7AA1520F600230003D0DE /* ConvertTransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertTransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FAB7AA1620F600230003D0DE /* ConvertTransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConvertTransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FAB85B4520DB980500782AFB /* URLRequst+NoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequst+NoCache.swift"; sourceTree = "<group>"; };
@@ -1308,6 +1311,8 @@
 			children = (
 				FAA2605820920989009FF3DE /* PlayNDrop */,
 				FA7D98FB207F586F00193B8A /* AccordionTableView */,
+				FAA3DD06211358600054D27E /* Reachability.swift */,
+				FAA3DD08211358BF0054D27E /* ReachabilityService.swift */,
 			);
 			path = "Third Party";
 			sourceTree = "<group>";
@@ -1668,6 +1673,7 @@
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/QRCode/QRCode.framework",
 				"${BUILT_PRODUCTS_DIR}/QRCodeReader.swift/QRCodeReader.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxAppState/RxAppState.framework",
@@ -1710,6 +1716,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCode.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCodeReader.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAppState.framework",
@@ -1889,6 +1896,7 @@
 				FA04029320FDD6E000F1689F /* GetCoinsViewModel.swift in Sources */,
 				FAA26055208F7A37009FF3DE /* CountdownPopupViewController.swift in Sources */,
 				FAA2606620930C68009FF3DE /* UsernameEditViewModel.swift in Sources */,
+				FAA3DD09211358BF0054D27E /* ReachabilityService.swift in Sources */,
 				FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */,
 				FA8AE85820AAD3E900F26E11 /* Session.swift in Sources */,
 				932D4DBEAAA04834E8868AAF /* AdvancedModeViewController.swift in Sources */,

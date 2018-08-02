@@ -15,7 +15,9 @@ import QRCodeReader
 import AVFoundation
 
 
+
 class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate, CountdownPopupViewControllerDelegate, TextViewTableViewCellDelegate, AddressTextViewTableViewCellDelegate {
+	
 	
 	//MARK: - IBOutlet
 	
@@ -117,8 +119,6 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		viewModel.createSections()
 	}
 	
 	//MARK: -
@@ -166,11 +166,6 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		
 		if let textViewCell = cell as? TextViewTableViewCell {
 			textViewCell.delegate = self
-			textViewCell.textView.rx.text.subscribe { newText in
-				print(newText)
-			}
-			
-			
 		}
 		
 		if let textField = cell as? AmountTextFieldTableViewCell {
@@ -361,14 +356,20 @@ extension SendViewController {
 		UIView.setAnimationsEnabled(true)
 	}
 	
-	func didTapScanButton() {
+	func didTapScanButton(cell: AddressTextViewTableViewCell1?) {
 		// Retrieve the QRCode content
 		// By using the delegate pattern
 		readerVC.delegate = self
-		
 		// Or by using the closure pattern
+		cell?.textViewScroll.textView.becomeFirstResponder()
 		readerVC.completionBlock = { (result: QRCodeReaderResult?) in
-			print(result)
+			
+			if let indexPath = self.tableView.indexPath(for: cell!), let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+			
+				cell?.textViewScroll.textView.text = result?.value
+				self.viewModel.validateField(item: item, value: result?.value ?? "")
+			}
+			
 		}
 		
 		// Presents the readerVC as modal form sheet
@@ -411,9 +412,9 @@ extension SendViewController : QRCodeReaderViewControllerDelegate {
 	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
 		reader.stopScanning()
 		
-		let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextViewTableViewCell
-		addressCell?.textView.text = result.value
-		addressCell?.textView.becomeFirstResponder()
+//		let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextViewTableViewCell
+//		addressCell?.textView.becomeFirstResponder()
+//		addressCell?.textView.text = result.value
 		
 		dismiss(animated: true, completion: nil)
 	}

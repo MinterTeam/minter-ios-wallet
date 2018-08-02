@@ -27,6 +27,10 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		viewModel.rightButtonTapped()
 	}
 	
+	@IBOutlet var bottomView: UIView!
+	
+	@IBOutlet weak var infoLabel: UILabel!
+	
 	//MARK: -
 	
 	var viewModel = SettingsViewModel()
@@ -62,6 +66,14 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		}).subscribe(onNext: { [weak self] (val) in
 			self?.tableView.reloadData()
 		}).disposed(by: disposeBag)
+		
+		let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+		let build = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
+
+		
+		infoLabel.text = "Version: \(version) (\(build))"
+		tableView.tableFooterView = bottomView
+		
 
 	}
 	

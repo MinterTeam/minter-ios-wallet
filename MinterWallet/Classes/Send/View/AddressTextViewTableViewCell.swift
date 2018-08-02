@@ -13,54 +13,54 @@ import NextGrowingTextView
 class AddressTextViewTableViewCellItem : TextViewTableViewCellItem {}
 
 protocol AddressTextViewTableViewCellDelegate : class {
-	func didTapScanButton()
+	func didTapScanButton(cell: AddressTextViewTableViewCell1?)
 }
 
 
-class AddressTextViewTableViewCell: TextViewTableViewCell {
-	
-	weak var addressDelegate: AddressTextViewTableViewCellDelegate?
-	
-	required init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
-	}
-
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		
-		self.textView.contentInset = UIEdgeInsets(top: self.textView.contentInset.top, left: self.textView.contentInset.left, bottom: self.textView.contentInset.bottom, right: 52)
-	}
-
-	override func setSelected(_ selected: Bool, animated: Bool) {
-		super.setSelected(selected, animated: animated)
-	}
-    
-	@IBOutlet weak var scanButton: UIButton!
-	
-	@IBAction func scanButtonDidTap(_ sender: Any) {
-		addressDelegate?.didTapScanButton()
-	}
-	
-	//MARK: -
-	
-	private var hasModifiedConstraints = false
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		if !hasModifiedConstraints {
-			
-			hasModifiedConstraints = true
-			
-			self.constraints.forEach { (constraint) in
-				
-				if let _ = constraint.secondItem as? UIActivityIndicatorView, constraint.firstAttribute == NSLayoutAttribute.trailing {
-					constraint.constant = 47
-				}
-			}
-		}
-	}
-}
+//class AddressTextViewTableViewCell: TextViewTableViewCell {
+//
+//	weak var addressDelegate: AddressTextViewTableViewCellDelegate?
+//
+//	required init?(coder aDecoder: NSCoder) {
+//		super.init(coder: aDecoder)
+//	}
+//
+//	override func awakeFromNib() {
+//		super.awakeFromNib()
+//
+//		self.textView.contentInset = UIEdgeInsets(top: self.textView.contentInset.top, left: self.textView.contentInset.left, bottom: self.textView.contentInset.bottom, right: 52)
+//	}
+//
+//	override func setSelected(_ selected: Bool, animated: Bool) {
+//		super.setSelected(selected, animated: animated)
+//	}
+//
+//	@IBOutlet weak var scanButton: UIButton!
+//
+//	@IBAction func scanButtonDidTap(_ sender: Any) {
+//		addressDelegate?.didTapScanButton(cell: self)
+//	}
+//
+//	//MARK: -
+//
+//	private var hasModifiedConstraints = false
+//
+//	override func layoutSubviews() {
+//		super.layoutSubviews()
+//
+//		if !hasModifiedConstraints {
+//
+//			hasModifiedConstraints = true
+//
+//			self.constraints.forEach { (constraint) in
+//
+//				if let _ = constraint.secondItem as? UIActivityIndicatorView, constraint.firstAttribute == NSLayoutAttribute.trailing {
+//					constraint.constant = 47
+//				}
+//			}
+//		}
+//	}
+//}
 
 class AddressTextViewTableViewCell1: TextViewTableViewCell {
 	
@@ -72,25 +72,7 @@ class AddressTextViewTableViewCell1: TextViewTableViewCell {
 		}
 		set {}
 	}
-	
-//	func setValid() {
-//		setDefault()
-//	}
-	
-//	func setInvalid() {
-//		self.layer.cornerRadius = 8.0
-//		self.layer.borderWidth = 2
-//		self.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
-//	}
-	
-	//MARK: -
-	
-//	func setDefault() {
-//		self.layer.cornerRadius = 8.0
-//		self.layer.borderWidth = 2
-//		self.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
-//	}
-	
+
 	@IBOutlet weak var textViewScroll: NextGrowingTextView! {
 		didSet {
 			self.textViewScroll.isScrollEnabled = false
@@ -102,7 +84,7 @@ class AddressTextViewTableViewCell1: TextViewTableViewCell {
 			self.textViewScroll.textView.showsHorizontalScrollIndicator = false
 			
 			self.textViewScroll.minNumberOfLines = 1
-			self.textViewScroll.maxNumberOfLines = 5
+			self.textViewScroll.maxNumberOfLines = 100
 			self.textViewScroll.textView.font = UIFont.mediumFont(of: 16.0)
 			self.textViewScroll.textView.textContainerInset = UIEdgeInsetsMake(16, 10, 14, 60)
 			
@@ -141,7 +123,7 @@ class AddressTextViewTableViewCell1: TextViewTableViewCell {
 	@IBOutlet weak var scanButton: UIButton!
 	
 	@IBAction func scanButtonDidTap(_ sender: Any) {
-		addressDelegate?.didTapScanButton()
+		addressDelegate?.didTapScanButton(cell: self)
 	}
 	
 	//MARK: -
@@ -157,14 +139,14 @@ class AddressTextViewTableViewCell1: TextViewTableViewCell {
 		
 		if text.contains(UIPasteboard.general.string ?? "") {
 			textViewScroll.layoutSubviews()
-//			textView.text = txtAfterUpdate
 			return true
 		}
 		
-//		guard txtAfterUpdate.count <= self.maxLength else {
-//			return false
-//		}
 		return true
+	}
+	
+	override func textViewDidEndEditing(_ textView: UITextView) {
+		validateDelegate?.didValidateField(field: self)
 	}
 	
 }
