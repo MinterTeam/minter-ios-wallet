@@ -1,11 +1,17 @@
+
 # MinterWallet-iOS
 
-##Installation
-//Generamba
-$ gem install generamba
+**Installation**
+Install generamba
 
-//Natalie
-$ brew install natalie
+    $ gem install generamba
 
-//Cocoapods
-$ sudo gem install cocoapods
+Install Natalie
+
+    $ brew install natalie
+
+Install Cocoapods
+
+    $ sudo gem install cocoapods
+
+Clone this repo and run `pod install` inside the project's directory
