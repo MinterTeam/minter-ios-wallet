@@ -38,6 +38,7 @@ class ScreenHeader: UIView {
 			delegate?.tableHeaderTopConstraint?.constant = staticPosition
 		}
 		//если скролим хедер вниз
+			
 		else {
 			//значение констрейнта при оффсете меньше чем высота хедера
 			let halfWayConstraint = -contentOffset.y - self.bounds.height - CGFloat(tableHeaderTopPadding) + topConstraintAdditionPadding
