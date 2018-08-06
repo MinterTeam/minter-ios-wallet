@@ -188,6 +188,8 @@
 		FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA694520D7C717006F173F /* MnemonicTests.swift */; };
 		FAD0F6C220FCAFB2009A5936 /* NewConvertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */; };
 		FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB3E3B20A9C30000EB6CD7 /* Storage.swift */; };
+		FAE5548C2118442800D4872C /* CoinsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5548B2118442800D4872C /* CoinsRouter.swift */; };
+		FAE5548E2118472800D4872C /* ReceiveRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5548D2118472800D4872C /* ReceiveRouter.swift */; };
 		FAE794502088C38F0006CB0B /* DisclosureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */; };
 		FAE794522088DC010006CB0B /* SettingsAvatarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE794512088DC010006CB0B /* SettingsAvatarTableViewCell.swift */; };
 		FAE794542089F5170006CB0B /* DisclosureTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE794532089F5170006CB0B /* DisclosureTableViewCell.xib */; };
@@ -410,6 +412,8 @@
 		FACA694520D7C717006F173F /* MnemonicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTests.swift; sourceTree = "<group>"; };
 		FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConvertViewController.swift; sourceTree = "<group>"; };
 		FADB3E3B20A9C30000EB6CD7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		FAE5548B2118442800D4872C /* CoinsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsRouter.swift; sourceTree = "<group>"; };
+		FAE5548D2118472800D4872C /* ReceiveRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveRouter.swift; sourceTree = "<group>"; };
 		FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureTableViewCell.swift; sourceTree = "<group>"; };
 		FAE794512088DC010006CB0B /* SettingsAvatarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAvatarTableViewCell.swift; sourceTree = "<group>"; };
 		FAE794532089F5170006CB0B /* DisclosureTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DisclosureTableViewCell.xib; sourceTree = "<group>"; };
@@ -478,6 +482,7 @@
 		121C118012CF1F899DD1C11E /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				FAE5548B2118442800D4872C /* CoinsRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1302,6 +1307,7 @@
 		FA7AD19A206437F1B24DD542 /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				FAE5548D2118472800D4872C /* ReceiveRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1771,11 +1777,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAE5548C2118442800D4872C /* CoinsRouter.swift in Sources */,
 				FA669BD6207265D800AD110A /* Storyboards.swift in Sources */,
 				FAA2606420930B8A009FF3DE /* UsernameEditViewController.swift in Sources */,
 				FAB85B4820DBADD900782AFB /* CALayer+Shadow.swift in Sources */,
 				FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */,
 				FA670A3E20E63431000A5169 /* AddressTextViewTableViewCell.swift in Sources */,
+				FAE5548E2118472800D4872C /* ReceiveRouter.swift in Sources */,
 				FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */,
 				FAE7945A208DDC3F0006CB0B /* ActionBarButtonItem.swift in Sources */,
 				FA505ADD20E24D7C00DA90C0 /* QRTableViewCell.swift in Sources */,

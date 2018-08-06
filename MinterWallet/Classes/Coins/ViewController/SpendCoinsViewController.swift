@@ -32,7 +32,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 			let rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 5.0))
 			imageView.frame = CGRect(x: 0.0, y: 22.0, width: 10.0, height: 5.0)
 			rightView.addSubview(imageView)
-			
+			rightView.isUserInteractionEnabled = false
 			spendCoinTextField?.rightView = rightView
 			spendCoinTextField?.rightViewMode = .always
 		}

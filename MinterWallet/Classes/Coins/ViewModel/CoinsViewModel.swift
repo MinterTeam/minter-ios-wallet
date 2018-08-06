@@ -14,6 +14,12 @@ import MinterMy
 
 class CoinsViewModel: BaseViewModel {
 	
+	enum cellIdentifierPrefix : String {
+	 case transactions = "ButtonTableViewCell_Transactions"
+	 case convert = "ButtonTableViewCell_Convert"
+	}
+	
+	
 	//MARK: -
 
 	var title: String {
@@ -118,7 +124,9 @@ class CoinsViewModel: BaseViewModel {
 		var section1 = BaseTableSectionItem(header: "My Coins".localized())
 		section1.identifier = "BaseTableSectionItem_2"
 
-		Session.shared.balances.value.keys.forEach { (key) in
+		Session.shared.balances.value.keys.sorted(by: { (key1, key2) -> Bool in
+			return key1 < key2
+		}).forEach { (key) in
 			
 			let bal = Session.shared.balances.value
 			
@@ -290,6 +298,23 @@ class CoinsViewModel: BaseViewModel {
 	@objc func updateBalance() {
 		Session.shared.loadAccounts()
 		Session.shared.loadTransactions()
+	}
+	
+	//MARK: -
+	
+	
+	func headerViewTitleText(with balance: Decimal) -> NSAttributedString {
+		
+		let formatter = CurrencyNumberFormatter.coinFormatter
+		let balanceString = Array((formatter.string(from: balance as NSNumber) ?? "").split(separator: "."))
+		
+		let string = NSMutableAttributedString()
+		string.append(NSAttributedString(string: String(balanceString[0]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 32.0)]))
+		string.append(NSAttributedString(string: ".", attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
+		string.append(NSAttributedString(string: String(balanceString[1]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 20.0)]))
+		string.append(NSAttributedString(string: " " + self.basicCoinSymbol, attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
+		
+		return string
 	}
 	
 }

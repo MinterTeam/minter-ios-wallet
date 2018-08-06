@@ -31,7 +31,7 @@ class AddressViewModel: BaseViewModel {
 		return acc1.isMain && !acc2.isMain
 	}
 	
-	let formatter = CurrencyNumberFormatter.decimalFormatter
+	let formatter = CurrencyNumberFormatter.decimalShortFormatter
 
 	//MARK: -
 	
@@ -54,9 +54,6 @@ class AddressViewModel: BaseViewModel {
 	//MARK: -
 	
 	private func createSections() {
-		
-		
-		let allBalances = Session.shared.allBalances.value
 		
 		var addressNum = 0
 		var sctns = accounts.map { (account) -> BaseTableSectionItem in
@@ -166,8 +163,6 @@ class AddressViewModel: BaseViewModel {
 		//Set the main and make it first
 		var mainAccount = Session.shared.accounts.value[idx!]
 		mainAccount.isMain = true
-		
-//		Session.shared.accounts.value =
 		
 	}
 	

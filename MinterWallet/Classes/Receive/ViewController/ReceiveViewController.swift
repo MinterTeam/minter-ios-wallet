@@ -20,10 +20,9 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 	
 	//MARK: -
 	
-	@IBAction func shareButtonDidTap(_ sender: Any) {
+	@IBAction func shareButtonDidTap(_ sender: UIButton) {
 		if let activities = viewModel.activities() {
-			let vc = UIActivityViewController(activityItems: activities, applicationActivities: [])
-			vc.popoverPresentationController?.sourceView = sender as? UIButton
+			let vc = ReceiveRouter.activityViewController(activities: activities, sourceView: sender)
 			present(vc, animated: true)
 		}
 	}

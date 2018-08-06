@@ -103,7 +103,9 @@ class ConvertCoinsViewModel : BaseViewModel {
 		
 		let balances = Session.shared.allBalances.value
 		balances.keys.forEach { (address) in
-			balances[address]?.keys.forEach({ (coin) in
+			balances[address]?.keys.sorted(by: { (val1, val2) -> Bool in
+				return val1 < val2
+			}).forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
 				
 				let item = ConvertPickerItem(coin: coin, address: address, balance: balance)

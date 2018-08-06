@@ -117,10 +117,6 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-	}
-	
 	//MARK: -
 	
 	private func registerCells() {
@@ -299,14 +295,14 @@ extension SendViewController {
 	
 	func didFinish(viewController: SendPopupViewController) {
 		guard let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextViewTableViewCell,
-			let toAddress = addressCell.textView.text
+			nil != addressCell.textView.text
 			else {
 				//error
 				return
 		}
 		
 		guard let amountCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? TextFieldTableViewCell,
-			let amount = Double(amountCell.textField.text?.replacingOccurrences(of: ",", with: ".") ?? "0") else {
+			nil != Double(amountCell.textField.text?.replacingOccurrences(of: ",", with: ".") ?? "0") else {
 				return
 		}
 		
@@ -367,7 +363,7 @@ extension SendViewController {
 			if let indexPath = self.tableView.indexPath(for: cell!), let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 			
 				cell?.textViewScroll.textView.text = result?.value
-				self.viewModel.validateField(item: item, value: result?.value ?? "")
+				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
 			}
 			
 		}
@@ -407,14 +403,11 @@ extension SendViewController : ValidatableCellDelegate {
 
 
 extension SendViewController : QRCodeReaderViewControllerDelegate {
+	
 	// MARK: - QRCodeReaderViewController Delegate Methods
 	
 	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
 		reader.stopScanning()
-		
-//		let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextViewTableViewCell
-//		addressCell?.textView.becomeFirstResponder()
-//		addressCell?.textView.text = result.value
 		
 		dismiss(animated: true, completion: nil)
 	}
@@ -446,7 +439,7 @@ extension SendViewController : AmountTextFieldTableViewCellDelegate {
 		
 			amountCell.textField.text = viewModel.selectedBalanceText
 			
-			viewModel.validateField(item: item, value: amountCell.textField.text ?? "")
+			_ = viewModel.validateField(item: item, value: amountCell.textField.text ?? "")
 		}
 	}
 

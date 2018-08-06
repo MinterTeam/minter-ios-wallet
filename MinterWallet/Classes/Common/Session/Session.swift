@@ -263,7 +263,9 @@ class Session {
 					return
 				}
 				
-				let baseCoinBalance = coins.map({ (dict) -> Decimal in
+				let baseCoinBalance = coins.filter({ (dict) -> Bool in
+					return ((dict["coin"] as? String) ?? "").uppercased() == Coin.baseCoin().symbol!.uppercased()
+				}).map({ (dict) -> Decimal in
 					return Decimal(string: (dict["baseCoinAmount"] as? String) ?? "0.0") ?? 0.0
 				}).reduce(0, +)
 				
@@ -280,9 +282,7 @@ class Session {
 				coins.forEach({ (dict) in
 					if let key = dict["coin"] as? String {
 						let amnt = Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
-						if amnt > Decimal(0.0) {
-							blncs[key.uppercased()] = amnt
-						}
+						blncs[key.uppercased()] = amnt
 					}
 				})
 				

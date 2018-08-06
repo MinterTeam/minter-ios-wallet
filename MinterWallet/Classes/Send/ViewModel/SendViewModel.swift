@@ -459,7 +459,9 @@ class SendViewModel: BaseViewModel {
 
 		let balances = Session.shared.allBalances.value
 		balances.keys.forEach { (address) in
-			balances[address]?.keys.forEach({ (coin) in
+			balances[address]?.keys.sorted(by: { (val1, val2) -> Bool in
+				return val1 < val2
+			}).forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
 				
 //				guard balance > 0 else { return }
@@ -591,7 +593,7 @@ class SendViewModel: BaseViewModel {
 		let amount = self.amount.value ?? 0.0
 		
 		guard let to = self.toAddress.value, let selectedCoin = self.selectedCoin.value, let nonce = self.nonce.value else {
-			self.notifiableError.value = NotifiableError(title: "Transaction can't be sent", text: nil)
+			self.notifiableError.value = NotifiableError(title: "Transaction can't be sent".localized(), text: nil)
 			return
 		}
 		
@@ -616,7 +618,7 @@ class SendViewModel: BaseViewModel {
 				//Error no Private key found
 				assert(true)
 				DispatchQueue.main.async {
-					self?.notifiableError.value = NotifiableError(title: "No private key found", text: nil)
+					self?.notifiableError.value = NotifiableError(title: "No private key found".localized(), text: nil)
 				}
 				return
 			}
@@ -679,7 +681,7 @@ class SendViewModel: BaseViewModel {
 				
 				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
 					Session.shared.loadTransactions()
-					SessionHelper.reloadAccounts()
+					Session.shared.loadBalances()
 				})
 			}
 		}
@@ -715,7 +717,6 @@ class SendViewModel: BaseViewModel {
 			completion?(false)
 			return
 		}
-
 		
 		self.nonce.value = nil
 		

@@ -49,6 +49,7 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 			let rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 5.0))
 			imageView.frame = CGRect(x: 0.0, y: 22.0, width: 10.0, height: 5.0)
 			rightView.addSubview(imageView)
+			rightView.isUserInteractionEnabled = false
 			
 			selectField.layer.cornerRadius = 8.0
 			selectField.layer.borderWidth = 2

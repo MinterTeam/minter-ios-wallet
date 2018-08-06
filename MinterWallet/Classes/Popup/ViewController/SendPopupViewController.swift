@@ -35,8 +35,6 @@ class SendPopupViewController: PopupViewController {
 	@IBOutlet weak var avatarImage: UIImageView! {
 		didSet {
 			avatarImage.backgroundColor = .white
-//			avatarImage.layer.cornerRadius = 25.0
-
 			avatarImage.makeBorderWithCornerRadius(radius: 25, borderColor: .clear, borderWidth: 4)		
 		}
 	}
@@ -60,10 +58,6 @@ class SendPopupViewController: PopupViewController {
 
 		self.delegate?.didFinish(viewController: self)
 	}
-	
-	//MARK: -
-	
-	var shadowLayer = CAShapeLayer()
 	
 	//MARK: -
 	
@@ -96,7 +90,7 @@ class SendPopupViewController: PopupViewController {
 		let sendViewModel = viewModel as? SendPopupViewModel
 		
 		popupTitle.text = sendViewModel?.popupTitle
-		let cur = CurrencyNumberFormatter.coinFormatter.string(from: (sendViewModel?.amount ?? 0) as NSNumber) ?? ""
+		let cur = CurrencyNumberFormatter.formattedDecimal(with: (sendViewModel?.amount ?? 0), formatter: CurrencyNumberFormatter.coinFormatter)
 		amountTitle.text = String(cur + " " + (sendViewModel?.coin ?? "")).uppercased()
 		avatarImage.image = UIImage(named: "AvatarPlaceholderImage")
 		if let avatarURL = sendViewModel?.avatarImage {
@@ -107,25 +101,8 @@ class SendPopupViewController: PopupViewController {
 		cancelButton.setTitle(sendViewModel?.cancelTitle ?? "", for: .normal)
 	}
 	
-	func dropShadow() {
-		shadowLayer.removeFromSuperlayer()
-		shadowLayer.frame = avatarImage.frame
-		shadowLayer.path = UIBezierPath(roundedRect: avatarImage.bounds, cornerRadius: 25.0).cgPath
-		shadowLayer.shadowOpacity = 1.0
-		shadowLayer.shadowRadius = 18.0
-		shadowLayer.masksToBounds = false
-		shadowLayer.shadowColor = UIColor(hex: 0x000000, alpha: 0.2)?.cgColor
-		shadowLayer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-		shadowLayer.opacity = 1.0
-		shadowLayer.shouldRasterize = true
-		shadowLayer.rasterizationScale = UIScreen.main.scale
-		avatarImage.superview?.layer.insertSublayer(shadowLayer, at: 0)
-	}
-	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		
-//		dropShadow()
 	}
 
 }

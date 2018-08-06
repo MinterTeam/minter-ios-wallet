@@ -16,7 +16,6 @@ import AlamofireImage
 
 class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	
-
 	//MARK: -
 	
 	lazy var refreshControl: UIRefreshControl = {
@@ -133,32 +132,20 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		}).disposed(by: disposeBag)
 		
 		
-		viewModel.totalBalanceObservable.subscribe(onNext: { (balance) in
-			let title = self.headerViewTitleText(with: balance)
-			
-			self.headerViewTitleLabel.attributedText = title
+		viewModel.totalBalanceObservable.subscribe(onNext: { [weak self] (balance) in
+			self?.headerViewTitleLabel.attributedText = self?.viewModel.headerViewTitleText(with: balance)
 		}).disposed(by: disposeBag)
 	
 	}
-	
-	func headerViewTitleText(with balance: Decimal) -> NSAttributedString {
-		
-		let formatter = CurrencyNumberFormatter.coinFormatter
-		let balanceString = Array(formatter.string(from: balance as NSNumber)!.split(separator: "."))
-		
-		let string = NSMutableAttributedString()
-		string.append(NSAttributedString(string: String(balanceString[0]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 32.0)]))
-		string.append(NSAttributedString(string: ".", attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
-		string.append(NSAttributedString(string: String(balanceString[1]), attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 20.0)]))
-		string.append(NSAttributedString(string: " " + viewModel.basicCoinSymbol, attributes: [.foregroundColor : UIColor.white, .font : UIFont.boldFont(of: 18.0)]))
-		
-		return string
-	}
+
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		updateUsernameView()
+		
+		tableView.reloadData()
+		
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -190,29 +177,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	
 	//MARK: -
 	
-//	func numberOfSections(in tableView: UITableView) -> Int {
-//		return viewModel.sectionsCount()
-//	}
-//
-//	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//		return viewModel.rowsCount(for: section)
-//	}
-//
-//	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
-//			return UITableViewCell()
-//		}
-//
-//		cell.configure(item: item)
-//
-//		if let buttonCell = cell as? ButtonTableViewCell {
-//			buttonCell.delegate = self
-//		}
-//
-//		return cell
-//	}
-	
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
 		guard let section = viewModel.section(index: section) else {
@@ -232,17 +196,13 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	}
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
 		super.tableView(tableView, didSelectRowAt: indexPath)
 		
 		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
 			return
 		}
 
-		if item.identifier == "ButtonTableViewCell_Transactions" {
-			//Move to router?
-			performSegue(withIdentifier: "showTransactions", sender: nil)
-		}
+		performSegue(for: item.identifier)
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -268,6 +228,30 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		headerView?.updateHeaderViewFromScrollEvent(scrollView)
 	}
+	
+	//MARK: - Segues
+	
+	func performSegue(for cellIdentifier: String) {
+		let vm = type(of: self.viewModel)
+		
+		//Move to router?
+		switch cellIdentifier {
+		case vm.cellIdentifierPrefix.convert.rawValue:
+			perform(segue: CoinsViewController.Segue.showConvert)
+			break
+			
+		case vm.cellIdentifierPrefix.transactions.rawValue:
+			perform(segue: CoinsViewController.Segue.showTransactions)
+			break
+			
+		default:
+			break
+		}
+	}
+	
+	func presentExplorerController(with url: URL) {
+		self.present(CoinsRouter.explorerViewController(url: url), animated: true) {}
+	}
 
 }
 
@@ -277,12 +261,7 @@ extension CoinsViewController : ButtonTableViewCellDelegate {
 		
 		guard let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else { return }
 		
-		if item.identifier == "ButtonTableViewCell_Transactions" {
-			performSegue(withIdentifier: "showTransactions", sender: nil)
-		}
-		else if item.identifier == "ButtonTableViewCell_Convert" {
-			performSegue(withIdentifier: Segue.showConvert.rawValue, sender: self)
-		}
+		self.performSegue(for: item.identifier)
 	}
 }
 
@@ -290,15 +269,13 @@ extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransac
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
-			let vc = BaseSafariViewController(url: url)
-			self.present(vc, animated: true) {}
+			presentExplorerController(with: url)
 		}
 	}
 	
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
-			let vc = BaseSafariViewController(url: url)
-			self.present(vc, animated: true) {}
+			presentExplorerController(with: url)
 		}
 	}
 	

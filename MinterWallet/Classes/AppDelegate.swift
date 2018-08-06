@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		Fabric.with([Crashlytics.self])
 
-		
 		appearance()
 		
 		return true
