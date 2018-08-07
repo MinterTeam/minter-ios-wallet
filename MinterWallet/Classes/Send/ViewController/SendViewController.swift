@@ -294,17 +294,6 @@ extension SendViewController {
 	//MARK: - SendPopupViewControllerDelegate
 	
 	func didFinish(viewController: SendPopupViewController) {
-		guard let addressCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextViewTableViewCell,
-			nil != addressCell.textView.text
-			else {
-				//error
-				return
-		}
-		
-		guard let amountCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? TextFieldTableViewCell,
-			nil != Double(amountCell.textField.text?.replacingOccurrences(of: ",", with: ".") ?? "0") else {
-				return
-		}
 		
 		viewModel.submitSendButtonTaped()
 	}

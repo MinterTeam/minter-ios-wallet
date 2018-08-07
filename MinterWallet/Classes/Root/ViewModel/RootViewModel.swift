@@ -27,7 +27,7 @@ class RootViewModel: BaseViewModel {
 	
 	var channel: String? {
 		didSet {
-			print("CHANNEL: " + (channel ?? "****"))
+//			print("CHANNEL: " + (channel ?? "****"))
 		}
 	}
 	
@@ -52,7 +52,9 @@ class RootViewModel: BaseViewModel {
 			Session.shared.loadUser()
 		}).disposed(by: disposeBag)
 		
-		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable()).subscribe(onNext: { [weak self] (state, accounts) in
+		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable()).distinctUntilChanged({ (val1, val2) -> Bool in
+			return val1.1 == val2.1
+		}).subscribe(onNext: { [weak self] (state, accounts) in
 			
 			let addresses = accounts.map({ (account) -> String in
 				return "Mx" + account.address
@@ -82,11 +84,11 @@ class RootViewModel: BaseViewModel {
 				self?.timestamp = timestamp
 				self?.token = token
 				
-//				self?.connect(completion: {
-//					if self?.isConnected == true {
-//						self?.subscribeAccountBalanceChange()
-//					}
-//				})
+				self?.connect(completion: {
+					if self?.isConnected == true {
+						self?.subscribeAccountBalanceChange()
+					}
+				})
 			})
 			
 		}).disposed(by: disposeBag)
@@ -104,8 +106,7 @@ class RootViewModel: BaseViewModel {
 		let token = tkn
 		
 		let creds = CentrifugeCredentials(token: token, user: user, timestamp: timestamp)
-//		let url = "wss://rtm.explorer.minter.network/connection/websocket"
-		let url = "ws://92.53.87.98:8000/connection/websocket"
+		let url = MinterExplorerWebSocketURL
 		client = Centrifuge.client(url: url, creds: creds, delegate: self)
 		
 		client?.connect { message, error in

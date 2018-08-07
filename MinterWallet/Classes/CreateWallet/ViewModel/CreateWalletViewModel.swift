@@ -178,7 +178,12 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 				completion?(false, registerFormError.passwordTooShort)
 			}
 			else {
-				completion?(true, nil)
+				if nil != self.confirmPassword.value && self.confirmPassword.value != self.password.value {
+					completion?(false, registerFormError.passwordsAreNotEqual)
+				}
+				else {
+					completion?(true, nil)
+				}
 			}
 		}
 		else if item.identifier.hasPrefix(cellIdentifierPrefix.confirmPassword.rawValue) {

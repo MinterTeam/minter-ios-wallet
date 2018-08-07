@@ -87,7 +87,7 @@ class AddressViewModel: BaseViewModel {
 				break
 				
 			case .me:
-				secured.value = "Me".localized()
+				secured.value = "You".localized()
 				break
 			}
 			secured.placeholder = "Change".localized()

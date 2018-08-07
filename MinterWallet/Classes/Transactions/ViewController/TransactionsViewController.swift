@@ -17,6 +17,10 @@ class TransactionsViewController: BaseTableViewController {
 	
 	//MARK: -
 	
+	@IBOutlet var noTransactionsLabel: UILabel!
+	
+	//MARK: -
+	
 	var viewModel = TransactionsViewModel()
 	
 	//MARK: -
@@ -68,6 +72,16 @@ class TransactionsViewController: BaseTableViewController {
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)
 		
 		viewModel.sectionsObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
+		
+		viewModel.noTransactionsObservable.asObservable().subscribe(onNext: { (val) in
+			if val {
+				self.tableView.backgroundView = self.noTransactionsLabel
+			}
+			else {
+				self.tableView.backgroundView = nil
+			}
+		}).disposed(by: disposeBag)
+
 	}
 	
 	func registerViews() {

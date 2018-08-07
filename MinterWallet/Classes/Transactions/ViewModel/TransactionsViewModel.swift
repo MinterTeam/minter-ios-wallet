@@ -70,6 +70,12 @@ class TransactionsViewModel: BaseViewModel {
 	
 	private var canLoadMore = true
 	
+	var noTransactionsObservable: Observable<Bool> {
+		return Observable.combineLatest(self.isLoading.asObservable(), sections.asObservable()).map({ (val) -> Bool in
+			return !self.isLoading.value && self.canLoadMore == false && self.transactions.count == 0
+		})
+	}
+	
 	
 	func createSections(with transactions: [TransactionItem]?) {
 		
@@ -81,7 +87,6 @@ class TransactionsViewModel: BaseViewModel {
 			guard let transaction = item.transaction else {
 				return
 			}
-//			let user = item.user
 			
 			let sectionName = sectionTitle(for: transaction.date)
 			let sectionCandidate = newSections.index(where: { (item) -> Bool in

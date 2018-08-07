@@ -301,7 +301,7 @@ class SendViewModel: BaseViewModel {
 			errs[cellIdentifierPrefix.address.rawValue] = "ADDRESS OR USERNAME IS INCORRECT".localized()
 		}
 		
-		if let amnt = self.amount.value, amnt > 0 {
+		if let amnt = self.amount.value {
 			
 		}
 		else {
@@ -359,7 +359,9 @@ class SendViewModel: BaseViewModel {
 	}
 	
 	func isAmountValid(amount: Decimal) -> Bool {
-		return amount <= (selectedAddressBalance ?? 0) && amount > 0
+		return true
+		
+//		return amount <= (selectedAddressBalance ?? 0) && amount > 0
 	}
 	
 	func getAddress() {
@@ -532,8 +534,8 @@ class SendViewModel: BaseViewModel {
 			
 			//Get difficulty hash?
 			DispatchQueue.main.async {
-				
-				guard let address = self?.toAddress.value, let amount = self?.amount.value else {
+				let amount = self?.amount.value ?? 0.0
+				guard let address = self?.toAddress.value else {
 					//Show error?
 					return
 				}
@@ -623,7 +625,7 @@ class SendViewModel: BaseViewModel {
 				return
 			}
 			
-			guard let nonce = self?.nonce.value, let to = self?.toAddress.value, let selectedCoin = self?.selectedCoin.value, let amount = self?.amount.value else {
+			guard let nonce = self?.nonce.value, let to = self?.toAddress.value, let selectedCoin = self?.selectedCoin.value else {
 				return
 			}
 			

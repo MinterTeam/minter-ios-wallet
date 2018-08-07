@@ -108,12 +108,12 @@ class SettingsViewModel: BaseViewModel {
 			section.items = items
 			sctns.append(section)
 		}
-		
-		let language = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Language")
-		language.title = "Language".localized()
-		language.value = "English"
-		language.placeholder = "Change"
-		language.showIndicator = false
+
+//		let language = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Language")
+//		language.title = "Language".localized()
+//		language.value = "English"
+//		language.placeholder = "Change"
+//		language.showIndicator = false
 
 		let addresses = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell", identifier: "DisclosureTableViewCell_Addresses")
 		addresses.title = "My Addresses".localized()
@@ -128,7 +128,7 @@ class SettingsViewModel: BaseViewModel {
 		blank.color = .clear
 		
 		var section1 = BaseTableSectionItem(header: " ")
-		section1.items = [language, separator, addresses, separator, blank, button]
+		section1.items = [addresses, separator, blank, button]
 		sctns.append(section1)
 		
 		sections = sctns
