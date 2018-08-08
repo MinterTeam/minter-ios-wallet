@@ -104,12 +104,31 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			return
 		}
 		
+		let numberFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
+		
+		guard let strVal = numberFormatter.string(from: amnt * TransactionCoinFactorDecimal as NSNumber) else {
+			return
+		}
+		
+		var value = Decimal(string: strVal) ?? Decimal(0)
+		
+		let maxComparableSelectedBalance = (Decimal(string: shortDecimalFormatter.string(from: (selectedBalance ?? 0.0) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
+		
+		let maxComparableBalance = decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
+		let isMax = (value > 0 && value == (Decimal(string: maxComparableBalance) ?? Decimal(0)))
+		
+		if isMax {
+			value = selectedBalance ?? Decimal(0.0)
+		}
+		
 		//TODO: isCoinValid
 		if to.count < 3 {
 			return
 		}
 		
-		CoinManager.default.estimateCoinSell(from: from, to: to, amount: amnt) { [weak self] (val, commission, error) in
+		value *= TransactionCoinFactorDecimal
+		
+		CoinManager.default.estimateCoinSell(from: from, to: to, amount: value) { [weak self] (val, commission, error) in
 			
 			guard nil == error, let ammnt = val else {
 				return

@@ -114,7 +114,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		
 		isApproximatelyLoading.value = true
 		
-		CoinManager.default.estimateCoinBuy(from: from, to: to, amount: amnt) { [weak self] (val, commission, error) in
+		CoinManager.default.estimateCoinBuy(from: from, to: to, amount: amnt * TransactionCoinFactorDecimal) { [weak self] (val, commission, error) in
 			
 			self?.isApproximatelyLoading.value = false
 			
