@@ -179,7 +179,7 @@ class TransactionsViewModel: BaseViewModel {
 		transactionCellItem.date = transaction.date
 		transactionCellItem.from = transaction.data?.from
 		transactionCellItem.to = transaction.data?.to
-		if let data = transaction.data as? SendCoinTransactionData {
+		if let data = transaction.data as? MinterExplorer.SendCoinTransactionData {
 			transactionCellItem.coin = data.coin
 			transactionCellItem.amount = (data.amount ?? 0) * Decimal(signMultiplier)
 		}
@@ -223,12 +223,12 @@ class TransactionsViewModel: BaseViewModel {
 			arrowSign = "  ⟶  "
 		}
 		
-		if let data = transaction.data as? ConvertTransactionData {
+		if let data = transaction.data as? MinterExplorer.ConvertTransactionData {
 			transactionCellItem.coin = data.toCoin
 			transactionCellItem.amount = (data.value ?? 0) * Decimal(signMultiplier)
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 		}
-		else if let data = transaction.data as? SellAllCoinsTransactionData {
+		else if let data = transaction.data as? MinterExplorer.SellAllCoinsTransactionData {
 			transactionCellItem.coin = data.toCoin
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 		}

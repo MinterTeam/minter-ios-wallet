@@ -122,7 +122,7 @@ class SendViewModel: BaseViewModel {
 		
 		if isBaseCoin == true {
 			let balance = self.baseCoinBalance * TransactionCoinFactorDecimal
-			if balance >= amount + TransactionCommisionType.send.amount() {
+			if balance >= amount + RawTransactionType.sendCoin.commission() {
 				return Coin.baseCoin().symbol!
 			}
 		}
@@ -133,7 +133,7 @@ class SendViewModel: BaseViewModel {
 			}
 			//If it's impossible we try to pay comission from the selected coin
 			let selectedBalance = (self.selectedAddressBalance ?? 0.0) * TransactionCoinFactorDecimal
-			if selectedBalance >= amount + (TransactionCommisionType.send.amount()) {
+			if selectedBalance >= amount + (RawTransactionType.sendCoin.commission()) {
 				return selectedCoin
 			}
 		}
@@ -142,7 +142,7 @@ class SendViewModel: BaseViewModel {
 	
 	func canPayCommissionWithBaseCoin() -> Bool {
 		let balance = self.baseCoinBalance
-		if balance >= (TransactionCommisionType.send.amount() / TransactionCoinFactorDecimal) {
+		if balance >= (RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal) {
 			return true
 		}
 		return false
@@ -636,7 +636,7 @@ class SendViewModel: BaseViewModel {
 				//if we want to send all coins at first we check if can pay comission with the base coin
 				//if so we subtract commission amount from the requested amount
 				if isBaseCoin {
-					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal - TransactionCommisionType.send.amount()
+					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal - RawTransactionType.sendCoin.commission()
 					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
 				}
 				else if !(self?.canPayCommissionWithBaseCoin() ?? true) {
@@ -750,7 +750,7 @@ class SendViewModel: BaseViewModel {
 	
 	private func getComission(forCoin: String, completion: ((Decimal?) -> ())?) {
 		
-		let comission = TransactionCommisionType.send.amount() / TransactionCoinFactorDecimal
+		let comission = RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal
 		
 		MinterCore.CoinManager.default.estimateCoinSell(from: forCoin, to: Coin.baseCoin().symbol!, amount: comission) { (result, commission, error) in
 			
@@ -759,7 +759,10 @@ class SendViewModel: BaseViewModel {
 				return
 			}
 			
-			completion?(result + comission)
+			let val = result / TransactionCoinFactorDecimal
+			let com = comission / TransactionCoinFactorDecimal
+			
+			completion?(val + com)
 			
 		}
 	}

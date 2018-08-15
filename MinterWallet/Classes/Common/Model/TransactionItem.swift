@@ -7,13 +7,14 @@
 //
 
 import Foundation
-import MinterCore
+import MinterExplorer
+
 import MinterMy
 
 
 class TransactionItem {
 	
-	var transaction: Transaction?
+	var transaction: MinterExplorer.Transaction?
 	
 	var user: User?
 	

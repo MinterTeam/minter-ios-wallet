@@ -122,9 +122,11 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 				return
 			}
 			
-			self?.approximately.value = (self?.formatter.string(from: ammnt as NSNumber) ?? "") + " " + from
+			let val = ammnt / TransactionCoinFactorDecimal
 			
-			self?.approximatelySum.value = ammnt
+			self?.approximately.value = CurrencyNumberFormatter.formattedDecimal(with: val, formatter: self!.formatter) + " " + from
+			
+			self?.approximatelySum.value = val
 			
 			if to == self?.getCoin.value {
 				self?.approximatelyReady.value = true

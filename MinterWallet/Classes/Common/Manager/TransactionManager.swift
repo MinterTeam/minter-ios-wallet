@@ -19,7 +19,7 @@ class WalletTransactionManager {
 	let transactionManager = MinterExplorer.TransactionManager.default
 	let infoManager = MinterMy.InfoManager.default
 	
-	func transactions(addresses: [String]? = nil, page: Int = 0, completion: (([Transaction]?, [String : User]?, Error?) -> ())?) {
+	func transactions(addresses: [String]? = nil, page: Int = 0, completion: (([MinterExplorer.Transaction]?, [String : User]?, Error?) -> ())?) {
 		
 		var ads: [String]? = addresses
 		if nil == ads {

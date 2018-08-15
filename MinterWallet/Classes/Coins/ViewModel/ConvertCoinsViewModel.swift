@@ -76,7 +76,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	func canPayComission() -> Bool {
 		let balance = self.baseCoinBalance
-		if balance >= TransactionCommisionType.send.amount() {
+		if balance >= RawTransactionType.sendCoin.commission() {
 			return true
 		}
 		return false

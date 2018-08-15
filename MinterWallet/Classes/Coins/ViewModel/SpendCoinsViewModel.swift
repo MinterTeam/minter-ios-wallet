@@ -118,7 +118,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		let isMax = (value > 0 && value == (Decimal(string: maxComparableBalance) ?? Decimal(0)))
 		
 		if isMax {
-			value = selectedBalance ?? Decimal(0.0)
+			value = (selectedBalance ?? Decimal(0.0)) * TransactionCoinFactorDecimal
 		}
 		
 		//TODO: isCoinValid
@@ -126,15 +126,15 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			return
 		}
 		
-		value *= TransactionCoinFactorDecimal
-		
 		CoinManager.default.estimateCoinSell(from: from, to: to, amount: value) { [weak self] (val, commission, error) in
 			
 			guard nil == error, let ammnt = val else {
 				return
 			}
 			
-			self?.approximately.value = (self?.formatter.string(from: ammnt as NSNumber) ?? "") + " " + to
+			let val = ammnt / TransactionCoinFactorDecimal
+			
+			self?.approximately.value = (CurrencyNumberFormatter.formattedDecimal(with: val, formatter: self!.formatter)) + " " + to
 			self?.fee = commission
 			
 			if to == self?.getCoin.value {
