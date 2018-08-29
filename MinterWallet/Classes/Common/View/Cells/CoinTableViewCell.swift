@@ -74,7 +74,10 @@ class CoinTableViewCell: BaseCell {
 			else {
 				coinImage.image = transaction.image
 			}
-			amount.text = formatter.string(from: (transaction.amount ?? 0) as NSNumber)
+			
+//			formatter.string(from: (transaction.amount ?? 0) as NSNumber)
+			
+			amount.text = CurrencyNumberFormatter.formattedDecimal(with: transaction.amount ?? 0, formatter: formatter)
 			coin.text = transaction.coin
 		}
 	}

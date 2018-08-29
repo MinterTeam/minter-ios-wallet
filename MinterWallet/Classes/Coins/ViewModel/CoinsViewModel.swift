@@ -98,20 +98,21 @@ class CoinsViewModel: BaseViewModel {
 			if transaction.type == .send {
 				if let transactionCellItem = self.sendTransactionItem(with: transactionItem) {
 					section.items.append(transactionCellItem)
+					section.items.append(separator)
 				}
 			}
 			else if transaction.type == .buy || transaction.type == .sell {
 				if let transactionCellItem = self.convertTransactionItem(with: transactionItem) {
 					section.items.append(transactionCellItem)
+					section.items.append(separator)
 				}
 			}
 			else if transaction.type == .sellAllCoins {
 				if let transactionCellItem = self.convertTransactionItem(with: transactionItem) {
 					section.items.append(transactionCellItem)
+					section.items.append(separator)
 				}
 			}
-			
-			section.items.append(separator)
 		}
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Transactions")
@@ -245,15 +246,11 @@ class CoinsViewModel: BaseViewModel {
 			arrowSign = "  ⟶  "
 		}
 		
+		//TODO: move to common
 		if let data = transaction.data as? MinterExplorer.ConvertTransactionData {
 			transactionCellItem.toCoin = data.toCoin
 			transactionCellItem.fromCoin = data.fromCoin
-			if transaction.type == .buy {
-				transactionCellItem.amount = (data.valueToBuy ?? 0)
-			}
-			else {
-				transactionCellItem.amount = (data.valueToBuy ?? 0)
-			}
+			transactionCellItem.amount = (data.valueToBuy ?? 0)
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 		}
 		else if let data = transaction.data as? MinterExplorer.SellAllCoinsTransactionData {

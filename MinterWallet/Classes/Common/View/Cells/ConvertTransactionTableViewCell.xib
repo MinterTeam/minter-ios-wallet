@@ -17,7 +17,7 @@
         <array key="Ubuntu-M.ttf">
             <string>Ubuntu-Medium</string>
         </array>
-        <array key="Ubuntu-MI.ttf">
+        <array key="Ubuntu-R.ttf">
             <string>Ubuntu</string>
         </array>
         <array key="UbuntuMono-B.ttf">
@@ -141,7 +141,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ry-0s-WvR">
-                                <rect key="frame" x="20" y="175" width="24" height="14"/>
+                                <rect key="frame" x="20" y="175" width="25" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
