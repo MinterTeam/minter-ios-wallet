@@ -109,7 +109,7 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 				dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 				timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
 				
-				coin.text = transaction.fromCoin
+				coin.text = transaction.toCoin
 				expandable = transaction.expandable ?? false
 			}
 		}
