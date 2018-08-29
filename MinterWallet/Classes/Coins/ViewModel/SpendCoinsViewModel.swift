@@ -32,9 +32,15 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			let ads = val?.address
 			let cn = val?.coin
 			
-			self?.spendCoin.value = cn
-			self?.selectedCoin = cn
-			self?.selectedAddress = ads
+			if nil == self?.spendCoin.value {
+				self?.spendCoin.value = cn
+			}
+			if nil == self?.selectedCoin {
+				self?.selectedCoin = cn
+			}
+			if nil == self?.selectedAddress {
+				self?.selectedAddress = ads
+			}
 		}).disposed(by: disposeBag)
 		
 		Observable.combineLatest(spendCoin.asObservable(), spendAmount.asObservable(), getCoin.asObservable()).filter { (val) -> Bool in
@@ -90,7 +96,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 				return false
 			}
 			
-			return val.0 == true && (val.1 ?? "").count >= 3 && amnt <= (self.selectedBalance ?? 0) && (val.3 ?? "").count >= 3
+			return val.0 == true && (val.1 ?? "").count >= 3 /*&& amnt <= (self.selectedBalance ?? 0)*/ && (val.3 ?? "").count >= 3
 		})
 	}
 	
@@ -100,7 +106,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		
 		approximatelyReady.value = false
 		
-		guard let from = selectedCoin?.uppercased(), let to = self.getCoin.value?.uppercased(), let amountString = self.spendAmount.value, let amnt = Decimal(string: amountString), amnt > 0 else {
+		guard let from = selectedCoin?.uppercased(), let to = self.getCoin.value?.uppercased(), let amountString = self.spendAmount.value?.replacingOccurrences(of: " ", with: ""), let amnt = Decimal(string: amountString), amnt > 0 else {
 			return
 		}
 		
@@ -128,13 +134,14 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		
 		CoinManager.default.estimateCoinSell(from: from, to: to, amount: value) { [weak self] (val, commission, error) in
 			
-			guard nil == error, let ammnt = val else {
+			guard nil == error, let ammnt = val, let commission = commission else {
 				return
 			}
 			
-			let val = ammnt / TransactionCoinFactorDecimal
+			let normalizedCommission = commission / TransactionCoinFactorDecimal
+			let val = (ammnt / TransactionCoinFactorDecimal) - normalizedCommission
 			
-			self?.approximately.value = (CurrencyNumberFormatter.formattedDecimal(with: val, formatter: self!.formatter)) + " " + to
+			self?.approximately.value = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0, formatter: self!.formatter)) + " " + to
 			self?.fee = commission
 			
 			if to == self?.getCoin.value {
@@ -178,7 +185,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			let selectedAddress = self.selectedAddress,
 			let amountString = self.spendAmount.value, let amnt = Decimal(string: amountString)
 		else {
-				return
+			return
 		}
 		
 		let numberFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter

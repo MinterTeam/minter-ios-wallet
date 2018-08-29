@@ -172,6 +172,10 @@ class AccountManager {
 		return decryptMnemonic(encrypted: encryptedMnemonic, password: password)
 	}
 	
+	func encryptedMnemonic(for address: String) -> Data? {
+		return secureStorage.object(forKey: address) as? Data
+	}
+	
 	func decryptMnemonic(encrypted: Data, password: Data) -> String? {
 		
 		let key = password

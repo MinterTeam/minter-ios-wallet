@@ -224,12 +224,14 @@ class TransactionsViewModel: BaseViewModel {
 		}
 		
 		if let data = transaction.data as? MinterExplorer.ConvertTransactionData {
-			transactionCellItem.coin = data.toCoin
+			transactionCellItem.toCoin = data.toCoin
+			transactionCellItem.fromCoin = data.fromCoin
 			transactionCellItem.amount = (data.value ?? 0) * Decimal(signMultiplier)
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 		}
 		else if let data = transaction.data as? MinterExplorer.SellAllCoinsTransactionData {
-			transactionCellItem.coin = data.toCoin
+			transactionCellItem.toCoin = data.toCoin
+			transactionCellItem.fromCoin = data.fromCoin
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 		}
 

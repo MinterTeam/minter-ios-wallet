@@ -70,7 +70,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			
 			let amnt = (val.1 ?? 0)
 
-			return amnt > 0 && amnt <= (self.selectedBalance ?? 0) && self.hasCoin.value
+			return amnt > 0 /*&& amnt <= (self.selectedBalance ?? 0)*/ && self.hasCoin.value
 		})
 	}
 	
@@ -118,13 +118,14 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			
 			self?.isApproximatelyLoading.value = false
 			
-			guard nil == error, let ammnt = val else {
+			guard nil == error, let ammnt = val, let commission = commission else {
 				return
 			}
 			
-			let val = ammnt / TransactionCoinFactorDecimal
+			let normalizedCommission = commission / TransactionCoinFactorDecimal
+			let val = (ammnt / TransactionCoinFactorDecimal) + normalizedCommission
 			
-			self?.approximately.value = CurrencyNumberFormatter.formattedDecimal(with: val, formatter: self!.formatter) + " " + from
+			self?.approximately.value = CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0 , formatter: self!.formatter) + " " + from
 			
 			self?.approximatelySum.value = val
 			

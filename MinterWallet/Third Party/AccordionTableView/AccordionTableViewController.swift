@@ -20,7 +20,8 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 	
 	
 	/// Array of `IndexPath` objects for all of the expanded cells.
-	open var expandedIndexPaths = [IndexPath]()
+//	open var expandedIndexPaths = [IndexPath]()
+	open var expandedIdentifiers = [String]()
 	
 	/// Flag that indicates if cell toggle should be animated. Defaults to `true`.
 	open var shouldAnimateCellToggle = true
@@ -55,8 +56,10 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 															 willDisplay cell: UITableViewCell,
 															 forRowAt indexPath: IndexPath) {
 		if let cell = cell as? AccordionTableViewCell {
-			let expanded = expandedIndexPaths.contains(indexPath)
-			cell.setExpanded(expanded, animated: false)
+//			let expanded = expandedIndexPaths.contains(indexPath)
+			let expanded1 = expandedIdentifiers.contains(cell.identifier)
+			print(expanded1)
+			cell.setExpanded(expanded1, animated: false)
 		}
 	}
 	
@@ -78,7 +81,11 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 			
 			if !animated {
 				cell.setExpanded(true, animated: false)
-				addToExpandedIndexPaths(indexPath)
+				
+//				addToExpandedIndexPaths(indexPath)
+				
+				expandedIdentifiers.append(cell.identifier)
+				
 				tableView.reloadData()
 				scrollIfNeededAfterExpandingCell(at: indexPath)
 			} else {
@@ -93,7 +100,11 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 				
 				// 1. expand cell height
 				tableView.beginUpdates()
-				addToExpandedIndexPaths(indexPath)
+				
+//				addToExpandedIndexPaths(indexPath)
+				
+				expandedIdentifiers.append(cell.identifier)
+				
 				tableView.endUpdates()
 				
 				CATransaction.commit()
@@ -106,7 +117,14 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 			
 			if !animated {
 				cell.setExpanded(false, animated: false)
-				removeFromExpandedIndexPaths(indexPath)
+				
+//				removeFromExpandedIndexPaths(indexPath)
+				
+				if let idx = (expandedIdentifiers.index { (id) -> Bool in
+					return id == cell.identifier
+				}) {
+					expandedIdentifiers.remove(at: idx)
+				}
 				tableView.reloadData()
 			} else {
 				CATransaction.begin()
@@ -114,7 +132,15 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 				CATransaction.setCompletionBlock({ () -> Void in
 					// 2. collapse cell height
 					self.tableView.beginUpdates()
-					self.removeFromExpandedIndexPaths(indexPath)
+					
+//					self.removeFromExpandedIndexPaths(indexPath)
+					
+					if let idx = (self.expandedIdentifiers.index { (id) -> Bool in
+						return id == cell.identifier
+					}) {
+						self.expandedIdentifiers.remove(at: idx)
+					}
+					
 					self.tableView.endUpdates()
 				})
 				
@@ -126,15 +152,15 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
-	private func addToExpandedIndexPaths(_ indexPath: IndexPath) {
-		expandedIndexPaths.append(indexPath)
-	}
+//	private func addToExpandedIndexPaths(_ indexPath: IndexPath) {
+//		expandedIndexPaths.append(indexPath)
+//	}
 	
-	private func removeFromExpandedIndexPaths(_ indexPath: IndexPath) {
-		if let index = expandedIndexPaths.index(of: indexPath) {
-			expandedIndexPaths.remove(at: index)
-		}
-	}
+//	private func removeFromExpandedIndexPaths(_ indexPath: IndexPath) {
+//		if let index = expandedIndexPaths.index(of: indexPath) {
+//			expandedIndexPaths.remove(at: index)
+//		}
+//	}
 	
 	private func scrollIfNeededAfterExpandingCell(at indexPath: IndexPath) {
 		guard shouldScrollIfNeededAfterCellExpand,
@@ -147,5 +173,14 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 			tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
 		}
 	}
+	
+	//MARK: - 
+	
+//	public func shiftIndexPaths(number: Int) {
+//		let newExpanded = expandedIndexPaths.map { (indexPath) -> IndexPath in
+//			return IndexPath(row: indexPath.row + number, section: indexPath.section)
+//		}
+//		expandedIndexPaths = newExpanded
+//	}
 	
 }

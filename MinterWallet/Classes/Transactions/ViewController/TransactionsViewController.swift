@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ExpandableCell
+//import ExpandableCell
 import RxDataSources
 import RxSwift
 import SafariServices
@@ -100,7 +100,11 @@ class TransactionsViewController: BaseTableViewController {
 			return 1
 		}
 		
-		return expandedIndexPaths.contains(indexPath) ? 430 : 54
+		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
+		
+			return expandedIdentifiers.contains(cell.identifier) ? 430 : 54
+		}
+		return 0.1
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

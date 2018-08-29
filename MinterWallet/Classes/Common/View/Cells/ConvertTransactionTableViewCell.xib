@@ -17,7 +17,7 @@
         <array key="Ubuntu-M.ttf">
             <string>Ubuntu-Medium</string>
         </array>
-        <array key="Ubuntu-R.ttf">
+        <array key="Ubuntu-MI.ttf">
             <string>Ubuntu</string>
         </array>
         <array key="UbuntuMono-B.ttf">
@@ -102,7 +102,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHv-Ji-VVA">
-                                <rect key="frame" x="20" y="73" width="13.5" height="13"/>
+                                <rect key="frame" x="20" y="73" width="13" height="13"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="13" id="XD3-Fh-dUR"/>
                                 </constraints>
@@ -141,7 +141,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ry-0s-WvR">
-                                <rect key="frame" x="20" y="175" width="25" height="14"/>
+                                <rect key="frame" x="20" y="175" width="24" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -152,8 +152,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14C-I7-O2a">
-                                <rect key="frame" x="353" y="224.5" width="44" height="14"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14C-I7-O2a">
+                                <rect key="frame" x="20" y="223.5" width="44" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

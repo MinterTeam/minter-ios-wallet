@@ -61,8 +61,9 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	@IBOutlet weak var getCoinErrorLabel: UILabel!
 	
 	@IBAction func didTapUseMax(_ sender: Any) {
-		self.spendAmountTextField.text = viewModel.selectedBalanceString
-		viewModel.spendAmount.value = viewModel.selectedBalanceString
+		let balanceString = viewModel.selectedBalanceString?.replacingOccurrences(of: " ", with: "")
+		self.spendAmountTextField.text = balanceString
+		viewModel.spendAmount.value = balanceString
 	}
 	
 	//MARK: -

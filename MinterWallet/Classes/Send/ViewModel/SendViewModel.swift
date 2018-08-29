@@ -73,6 +73,7 @@ class SendViewModel: BaseViewModel {
 	private let formatter = CurrencyNumberFormatter.decimalFormatter
 	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
 	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
+	private let coinFormatter = CurrencyNumberFormatter.coinFormatter
 	
 	private var isLoadingAddress = Variable(false)
 	private var isLoadingNonce = Variable(false)
@@ -192,8 +193,8 @@ class SendViewModel: BaseViewModel {
 		Session.shared.allBalances.asObservable().distinctUntilChanged().filter({ (_) -> Bool in
 			return true //nil == self.selectedAddress
 		}).subscribe(onNext: { [weak self] (val) in
-			self?.selectedAddress = nil
-			self?.selectedCoin.value = nil
+//			self?.selectedAddress = nil
+//			self?.selectedCoin.value = nil
 			self?.sections.value = self?.createSections() ?? []
 		}).disposed(by: disposeBag)
 		
@@ -468,7 +469,7 @@ class SendViewModel: BaseViewModel {
 				
 //				guard balance > 0 else { return }
 				
-				let title = coin + " (" + (shortDecimalFormatter.string(from: balance as NSNumber) ?? "") + ")"
+				let title = coin + " (" + (coinFormatter.string(from: balance as NSNumber) ?? "") + ")"
 				let item = AccountPickerItem(title: title, address: address, balance: balance, coin: coin)
 				ret.append(item)
 			})
@@ -488,7 +489,7 @@ class SendViewModel: BaseViewModel {
 			return nil
 		}
 		
-		let balanceString = (shortDecimalFormatter.string(from: balance as NSNumber) ?? "")
+		let balanceString = coinFormatter.string(from: balance as NSNumber) ?? ""
 		let title = coin + " (" + balanceString + ")"
 		let item = AccountPickerItem(title: title, address: adrs, balance: balance, coin: coin)
 		return PickerTableViewCellPickerItem(title: item.title, object: item)
@@ -626,6 +627,9 @@ class SendViewModel: BaseViewModel {
 			}
 			
 			guard let nonce = self?.nonce.value, let to = self?.toAddress.value, let selectedCoin = self?.selectedCoin.value else {
+				DispatchQueue.main.async {
+					self?.notifiableError.value = NotifiableError(title: "Can't get nonce".localized(), text: nil)
+				}
 				return
 			}
 			
@@ -636,38 +640,62 @@ class SendViewModel: BaseViewModel {
 				//if we want to send all coins at first we check if can pay comission with the base coin
 				//if so we subtract commission amount from the requested amount
 				if isBaseCoin {
+					//In case of base coin just subtract static commission
+					/// - SeeAlso: https://minter-go-node.readthedocs.io/en/docs/commissions.html
 					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal - RawTransactionType.sendCoin.commission()
 					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
 				}
+				/// In case if we send not a base (e.g. BELTCOIN) coin we try to pay commission with base coin
 				else if !(self?.canPayCommissionWithBaseCoin() ?? true) {
-					self?.getComission(forCoin: selectedCoin, completion: { [weak self] (commission) in
+					//we make fake tx to get it's commission
+					guard let tx = self?.rawTransaction(nonce: BigUInt(nonce), gasCoin: self!.selectedCoin.value!, to: to, value: BigUInt(decimal: newAmount)!, coin: self!.selectedCoin.value!), let pk = self?.accountManager.privateKey(from: seed), let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk.raw.toHexString()) else {
+
+						DispatchQueue.main.async {
+							self?.notifiableError.value = NotifiableError(title: "Can't check tx".localized(), text: nil)
+							self?.showPopup.value = nil
+						}
+						return
+					}
+					
+					/// Checking commission for the following tx
+					MinterCore.CoinManager.default.estimateTxCommission(rawTx: signedTx) { [weak self] (commission, error) in
 						
-						let amountWithComission = newAmount - (commission ?? 0) * TransactionCoinFactorDecimal
+						guard error == nil, nil != commission else {
+							return
+						}
+						let normalizedCommission = commission! / TransactionCoinFactorDecimal
 						
-						self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: selectedCoin, amount: amountWithComission)
-					})
+						let normalizedAmount = amount - normalizedCommission
+						
+						//if new amount less than 0 - show error
+						if normalizedAmount < 0  {
+							//error
+							let needs = self?.formatter.string(from: (amount + normalizedCommission) as NSNumber) ?? ""
+							self?.notifiableError.value = NotifiableError(title: "Not enough coins.", text: "Needs " + needs)
+							self?.showPopup.value = nil
+							return
+						}
+						
+						self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: selectedCoin, amount: normalizedAmount)
+						
+					}
 				}
-				//otherwise just multiply decimal amount to factor (10^18)
+				//otherwise just multiply decimal amount to factor
 				else {
 					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal
 					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
 				}
 			}
 			else {
-				self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
+				
+				let commissionCoin = (self?.canPayCommissionWithBaseCoin() ?? false) ? Coin.baseCoin().symbol! : selectedCoin
+				
+				self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: commissionCoin, amount: newAmount)
 			}
 		}
 	}
 	
 	private func proceedSend(seed: Data, nonce: Int, to: String, toFld: String?, commissionCoin: String, amount: Decimal) {
-		
-//		guard let commissionCoin = self.coinToPayComission(amount: amount) else {
-//			DispatchQueue.main.async {
-//				self.notifiableError.value = NotifiableError(title: "Not enough coins".localized(), text: nil)
-//				self.showPopup.value = nil
-//			}
-//			return
-//		}
 		
 		self.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin.value!, commissionCoin: commissionCoin, amount: amount) { [weak self, toFld] res in
 			
@@ -709,10 +737,12 @@ class SendViewModel: BaseViewModel {
 			return
 		}
 		
-		let cn = commissionCoin
-		let coinData = cn.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+		let tx = self.rawTransaction(nonce: nonce, gasCoin: commissionCoin, to: to, value: value, coin: coin)
 		
-		let tx = SendCoinRawTransaction(nonce: nonce, gasCoin: coinData, to: to, value: value, coin: coin.uppercased())
+//		let cn = commissionCoin
+//		let coinData = cn.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+//
+//		let tx = SendCoinRawTransaction(nonce: nonce, gasCoin: coinData, to: to, value: value, coin: coin.uppercased())
 		let pkString = newPk.raw.toHexString()
 		
 		guard let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pkString) else {
@@ -765,6 +795,12 @@ class SendViewModel: BaseViewModel {
 			completion?(val + com)
 			
 		}
+	}
+	
+	private func rawTransaction(nonce: BigUInt, gasCoin: String, to: String, value: BigUInt, coin: String) -> RawTransaction {
+		let cn = gasCoin
+		let coinData = cn.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+		return SendCoinRawTransaction(nonce: nonce, gasCoin: coinData, to: to, value: value, coin: coin.uppercased())
 	}
 	
 	//MARK: -

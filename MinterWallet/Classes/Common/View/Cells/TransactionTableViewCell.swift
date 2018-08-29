@@ -91,6 +91,7 @@ class TransactionTableViewCell: ExpandableCell {
 	
 	override func configure(item: BaseCellItem) {
 		if let transaction = item as? TransactionTableViewCellItem {
+			identifier = item.identifier
 			title.text = transaction.title
 			coinImage.image = UIImage(named: "AvatarPlaceholderImage")
 			if let url = transaction.image {

@@ -11,6 +11,8 @@ open class AccordionTableViewCell: UITableViewCell {
 	
 	// MARK: Properties
 	
+	var identifier: String = String.random(length: 32)
+	
 	/// Flag which tells if the cell is expanded.
 	open private(set) var expanded = false
 	

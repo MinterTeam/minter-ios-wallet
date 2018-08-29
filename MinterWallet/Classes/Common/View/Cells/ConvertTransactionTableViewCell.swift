@@ -17,7 +17,8 @@ class ConvertTransactionTableViewCellItem : BaseCellItem {
 	var date: Date?
 	var from: String?
 	var to: String?
-	var coin: String?
+	var fromCoin: String?
+	var toCoin: String?
 	var amount: Decimal?
 	var expandable: Bool?
 }
@@ -87,6 +88,7 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 		
 		override func configure(item: BaseCellItem) {
 			if let transaction = item as? ConvertTransactionTableViewCellItem {
+				identifier = item.identifier
 				title.text = transaction.title
 				coinImage.image = UIImage(named: "convertImage")
 				if let image = transaction.image {
@@ -103,11 +105,11 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 				fromAddressLabel.text = transaction.from
 				toAddressLabel.text = transaction.to
 				expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0), formatter: CurrencyNumberFormatter.coinFormatter)
-				coinLabel.text = transaction.coin
+				coinLabel.text = transaction.toCoin
 				dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 				timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
 				
-				coin.text = transaction.coin
+				coin.text = transaction.fromCoin
 				expandable = transaction.expandable ?? false
 			}
 		}

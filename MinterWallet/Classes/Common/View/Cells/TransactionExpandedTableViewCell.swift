@@ -31,7 +31,6 @@ class TransactionExpandedTableViewCell: BaseCell {
 		
 	}
 	
-	
 	//MARK: -
 	
 	override func awakeFromNib() {
@@ -53,8 +52,7 @@ class TransactionExpandedTableViewCell: BaseCell {
 			timeLabel.text = transactionItem.date?.description
 			coinLabel.text = transactionItem.coin
 			amountLabel.text = "\(transactionItem.amount)"
-			
 		}
 	}
-	
+
 }

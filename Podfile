@@ -1,12 +1,12 @@
-source 'https://github.com/MinterTeam/Minter_iOS_Specs'
 source 'https://github.com/Cocoapods/Specs'
-
 use_frameworks!
 
+platform :ios, '10.0'
+
 target 'MinterWallet' do
-    pod 'MinterCore', :path => '../MinterCore'
-		pod 'MinterMy', :path => '../MinterMy'
-		pod 'MinterExplorer', :path => '../MinterExplorer'
+    pod 'MinterCore'
+		pod 'MinterMy'
+		pod 'MinterExplorer'
     pod 'Alamofire'
 		pod 'AlamofireImage'
 		pod 'RxSwift'
@@ -14,7 +14,6 @@ target 'MinterWallet' do
 		pod 'RxAppState'
 		pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
 		pod 'TPKeyboardAvoiding'
-		pod 'ExpandableCell', :path => '../ExpandableCell'
 		pod 'McPicker'
 		pod 'ImagePicker'
 		pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'

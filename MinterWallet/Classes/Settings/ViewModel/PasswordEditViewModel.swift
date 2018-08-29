@@ -189,16 +189,23 @@ class PasswordEditViewModel: BaseViewModel {
 		}
 		
 		//password to be sent to MyMinter
-		guard let newPwd = accountManager?.accountPassword(pwd) else {
-			throw PasswordChangeError.canNotGetAccountPassword
-		}
+//		guard let newPwd = accountManager?.accountPassword(pwd) else {
+//			throw PasswordChangeError.canNotGetAccountPassword
+//		}
+		let newPwd = pwd
 		
 		var mnemonics: [(id: Int, mnemonic: String)] = []
+		
+		var oldMnemonics: [(id: Int, mnemonic: String)] = []
 		
 		try? accounts.forEach { (account) in
 			
 			guard let mnemonic = oldAccountManager.mnemonic(for: account.address) else {
 				throw PasswordChangeError.canNotGetMnemonic
+			}
+			
+			if let oldEncryptedMnemonic = oldAccountManager.encryptedMnemonic(for: account.address) {
+				oldMnemonics.append((id: account.id, mnemonic: oldEncryptedMnemonic.toHexString()))
 			}
 			
 			guard let encryptedMnemonic = try self.accountManager?.encryptedMnemonic(mnemonic: mnemonic, password: newEncryptionKey)?.toHexString() else {
@@ -216,27 +223,56 @@ class PasswordEditViewModel: BaseViewModel {
 		}
 		
 		self.authManager = AuthManager(httpClient: client)
-		self.authManager?.changePassword(newPassword: newPwd, encryptedMnemonics: mnemonics) { (succeed, error) in
+		
+		
+		do {
+			try self.authManager?.changePassword(oldEncryptedMnemoics: oldMnemonics, encryptionKey: oldEncryptionKey, newPassword: newPwd, completion: { (succeed, error) in
 			
-			self.isLoading.value = false
+						self.isLoading.value = false
 			
-			if succeed == true {
-				
-				self.successMessage.value = NotifiableSuccess(title: "Password has been changed".localized(), text: nil)
-				
-				do {
-					try self.finish()
-				}
-				catch {
-					//logout if can't finish PKs recovery
-					Session.shared.logout()
-				}
-			}
-			else {
-				self.errorNotification.value = NotifiableError(title: "Password can't be changed. Please try again later".localized(), text: nil)
-				try? self.cleanUp()
-			}
+						if succeed == true {
+			
+							self.successMessage.value = NotifiableSuccess(title: "Password has been changed".localized(), text: nil)
+			
+							do {
+								try self.finish()
+							}
+							catch {
+								//logout if can't finish PKs recovery
+								Session.shared.logout()
+							}
+						}
+						else {
+							self.errorNotification.value = NotifiableError(title: "Password can't be changed. Please try again later".localized(), text: nil)
+							try? self.cleanUp()
+						}
+			})
+		} catch {
+			self.errorNotification.value = NotifiableError(title: "Password can't be changed. Please try again later".localized(), text: nil)
 		}
+		
+		
+//		self.authManager?.changePassword(newPassword: newPwd, encryptedMnemonics: mnemonics) { (succeed, error) in
+//
+//			self.isLoading.value = false
+//
+//			if succeed == true {
+//
+//				self.successMessage.value = NotifiableSuccess(title: "Password has been changed".localized(), text: nil)
+//
+//				do {
+//					try self.finish()
+//				}
+//				catch {
+//					//logout if can't finish PKs recovery
+//					Session.shared.logout()
+//				}
+//			}
+//			else {
+//				self.errorNotification.value = NotifiableError(title: "Password can't be changed. Please try again later".localized(), text: nil)
+//				try? self.cleanUp()
+//			}
+//		}
 	}
 	
 	func finish() throws {

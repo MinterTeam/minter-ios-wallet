@@ -120,7 +120,6 @@
 		FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */; };
 		FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */; };
 		FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */; };
-		FA7D98F8207E16B900193B8A /* SuperExpandableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98F7207E16B900193B8A /* SuperExpandableTableView.swift */; };
 		FA835CCC207630A100BFC35A /* ValidatableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA835CCB207630A100BFC35A /* ValidatableTextField.swift */; };
 		FA835CCE2077BC9200BFC35A /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */; };
 		FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA89A79820873A280019226D /* UIView+Roundify.swift */; };
@@ -341,7 +340,6 @@
 		FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonTableViewCell.xib; sourceTree = "<group>"; };
 		FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionExpandedTableViewCell.swift; sourceTree = "<group>"; };
 		FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionExpandedTableViewCell.xib; sourceTree = "<group>"; };
-		FA7D98F7207E16B900193B8A /* SuperExpandableTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperExpandableTableView.swift; sourceTree = "<group>"; };
 		FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewController.swift; sourceTree = "<group>"; };
 		FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewCell.swift; sourceTree = "<group>"; };
 		FA835CCB207630A100BFC35A /* ValidatableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatableTextField.swift; sourceTree = "<group>"; };
@@ -1249,7 +1247,6 @@
 				FA669BCE207249D300AD110A /* DefaultButton.swift */,
 				FA835CCB207630A100BFC35A /* ValidatableTextField.swift */,
 				FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */,
-				FA7D98F7207E16B900193B8A /* SuperExpandableTableView.swift */,
 				FA89A79A20888D470019226D /* ShadowView.swift */,
 				FAE79459208DDC3F0006CB0B /* ActionBarButtonItem.swift */,
 				FAA2605D209209DE009FF3DE /* DroppableView.swift */,
@@ -1601,7 +1598,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CryptoSwift-iOS11.2/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1663,9 +1660,8 @@
 				"${BUILT_PRODUCTS_DIR}/CKMnemonic/CKMnemonic.framework",
 				"${BUILT_PRODUCTS_DIR}/CentrifugeiOS/CentrifugeiOS.framework",
 				"${BUILT_PRODUCTS_DIR}/CountdownLabel/CountdownLabel.framework",
-				"${BUILT_PRODUCTS_DIR}/CryptoSwift-iOS10.0/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
-				"${BUILT_PRODUCTS_DIR}/ExpandableCell/ExpandableCell.framework",
 				"${BUILT_PRODUCTS_DIR}/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
@@ -1708,7 +1704,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountdownLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ExpandableCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IDZSwiftCommonCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
@@ -1871,7 +1866,6 @@
 				1091290DC26B4D7128B4DA92 /* TransactionsViewModel.swift in Sources */,
 				FAA2607820933984009FF3DE /* GrowingDefaultTextView.swift in Sources */,
 				FA7935FB20D30B710012642E /* SessionAddressSyncer.swift in Sources */,
-				FA7D98F8207E16B900193B8A /* SuperExpandableTableView.swift in Sources */,
 				FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */,
 				D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */,
 				EFCE6415FD145CE2E62EF813 /* SendViewModel.swift in Sources */,

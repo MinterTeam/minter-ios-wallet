@@ -216,7 +216,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 			}
 		}
 		
-		return expandedIndexPaths.contains(indexPath) ? 430 : 54
+		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
+			return expandedIdentifiers.contains(cell.identifier) ? 430 : 54
+		}
+		return 54
 	}
 	
 	//MARK: - ScreenHeaderProtocol

@@ -246,13 +246,21 @@ class CoinsViewModel: BaseViewModel {
 		}
 		
 		if let data = transaction.data as? MinterExplorer.ConvertTransactionData {
-			transactionCellItem.coin = data.toCoin
-			transactionCellItem.amount = (data.value ?? 0) * Decimal(signMultiplier)
+			transactionCellItem.toCoin = data.toCoin
+			transactionCellItem.fromCoin = data.fromCoin
+			if transaction.type == .buy {
+				transactionCellItem.amount = (data.valueToBuy ?? 0)
+			}
+			else {
+				transactionCellItem.amount = (data.valueToBuy ?? 0)
+			}
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 		}
 		else if let data = transaction.data as? MinterExplorer.SellAllCoinsTransactionData {
-			transactionCellItem.coin = data.toCoin
+			transactionCellItem.toCoin = data.toCoin
+			transactionCellItem.fromCoin = data.fromCoin
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
+			transactionCellItem.amount = (data.value ?? 0)
 		}
 		
 		return transactionCellItem

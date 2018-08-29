@@ -16,23 +16,21 @@ PODS:
     - Fabric (~> 1.7.8)
   - CryptoSwift (0.10.0)
   - Differentiator (3.0.2)
-  - ExpandableCell (1.2.2)
   - Fabric (1.7.8)
   - IDZSwiftCommonCrypto (0.10.0)
   - ImagePicker (3.0.0)
   - KeychainSwift (11.0.0)
   - MarqueeLabel/Swift (3.1.6)
   - McPicker (1.0.0)
-  - MinterCore (0.1.1):
+  - MinterCore (0.1.6):
     - Alamofire (~> 4.6)
-    - BigInt
-    - CKMnemonic
-    - CryptoSwift
+    - BigInt (~> 3.0)
+    - CryptoSwift (~> 0.9)
     - ObjectMapper (~> 3.1)
-    - secp256k1.swift
-  - MinterExplorer (0.1.0):
+    - secp256k1.swift (~> 0.1)
+  - MinterExplorer (0.1.5):
     - MinterCore
-  - MinterMy (0.1.2):
+  - MinterMy (0.1.4):
     - MinterCore
   - NextGrowingTextView (1.2.2)
   - NotificationBannerSwift (1.6.3):
@@ -77,14 +75,13 @@ DEPENDENCIES:
   - CountdownLabel
   - Crashlytics
   - CryptoSwift
-  - ExpandableCell (from `../ExpandableCell`)
   - Fabric
   - ImagePicker
   - KeychainSwift
   - McPicker
-  - MinterCore (from `../MinterCore`)
-  - MinterExplorer (from `../MinterExplorer`)
-  - MinterMy (from `../MinterMy`)
+  - MinterCore
+  - MinterExplorer
+  - MinterMy
   - NextGrowingTextView
   - NotificationBannerSwift
   - ObjectMapper
@@ -120,6 +117,9 @@ SPEC REPOS:
     - KeychainSwift
     - MarqueeLabel
     - McPicker
+    - MinterCore
+    - MinterExplorer
+    - MinterMy
     - NextGrowingTextView
     - NotificationBannerSwift
     - ObjectMapper
@@ -141,14 +141,6 @@ SPEC REPOS:
     - XLPagerTabStrip
 
 EXTERNAL SOURCES:
-  ExpandableCell:
-    :path: "../ExpandableCell"
-  MinterCore:
-    :path: "../MinterCore"
-  MinterExplorer:
-    :path: "../MinterExplorer"
-  MinterMy:
-    :path: "../MinterMy"
   SVProgressHUD:
     :git: https://github.com/SVProgressHUD/SVProgressHUD.git
   SwiftValidator:
@@ -175,16 +167,15 @@ SPEC CHECKSUMS:
   Crashlytics: 2aea305161a2122492698c75af27f2b98aa49a25
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
-  ExpandableCell: 759ca4b0b7655e34f4b73c28eec5028e22c53c63
   Fabric: fba4684a95df789565b0b27fc5b6e68f1755af32
   IDZSwiftCommonCrypto: 4eef2c46e262dfbcbc1fd76365e066336680ad7d
   ImagePicker: 973953c25960fe04729a7082a56194321c6762d2
   KeychainSwift: bea6bd9f98af7b8d7ca4aa79fe105c00fab532db
   MarqueeLabel: 0c41f08ef5773e29c0f71064a8fa788a2fd8b365
   McPicker: 130183cd3d22fc6933ea9e63c5a0d0d1becc0122
-  MinterCore: 696e84a3e27a51dfed47564143789f8706139a6c
-  MinterExplorer: d5784ab4fb1636fde9e3bae29c81525b2092307f
-  MinterMy: a58b68a346872f7cee0524d879e31cd9214dc45b
+  MinterCore: b52006fc8aa616180b08201688cfab28d3714219
+  MinterExplorer: 02afb57a3553613130c54fdf6d6f6abb686ad5e2
+  MinterMy: 82f1ce5f3a6747a4610976c3ae34dbb3f1b8f5d3
   NextGrowingTextView: 78c8b96f7ac6dc845f5babb27dcf7c18dd3210ec
   NotificationBannerSwift: b231e4c3244848ef300e1c53ce027b9756b9b06f
   ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
@@ -207,6 +198,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
 
-PODFILE CHECKSUM: a20961ef8c8c1e0e8f1cd493aef6cd880c1a8149
+PODFILE CHECKSUM: d904422d9226973e5df1e9a14f197597c6b27e1b
 
 COCOAPODS: 1.5.3
