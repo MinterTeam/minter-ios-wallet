@@ -199,7 +199,8 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		let formatter = CurrencyNumberFormatter.decimalShortFormatter
 		
 		let data: [[String]] = [items.map({ (item) -> String in
-			return (item.coin ?? "") + " (" + (formatter.string(from: (item.balance ?? 0) as NSNumber) ?? "") + ")"
+			let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: formatter)
+			return (item.coin ?? "") + " (" + balanceString + ")"
 		})]
 		
 		let picker = McPicker(data: data)

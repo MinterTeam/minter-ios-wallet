@@ -468,8 +468,8 @@ class SendViewModel: BaseViewModel {
 				let balance = (balances[address]?[coin] ?? 0.0)
 				
 //				guard balance > 0 else { return }
-				
-				let title = coin + " (" + (coinFormatter.string(from: balance as NSNumber) ?? "") + ")"
+				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: coinFormatter)
+				let title = coin + " (" + balanceString + ")"
 				let item = AccountPickerItem(title: title, address: address, balance: balance, coin: coin)
 				ret.append(item)
 			})

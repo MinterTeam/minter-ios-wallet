@@ -80,7 +80,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 	
 	var approximatelyReady = Variable<Bool>(false)
 	
-	private var fee: Decimal?
+//	private var fee: Decimal?
 	
 	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
 	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
@@ -138,11 +138,11 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 				return
 			}
 			
-			let normalizedCommission = commission / TransactionCoinFactorDecimal
-			let val = (ammnt / TransactionCoinFactorDecimal) - normalizedCommission
+//			let normalizedCommission = commission / TransactionCoinFactorDecimal
+			let val = (ammnt / TransactionCoinFactorDecimal)// - ((self?.canPayComission() ?? false) ? 0 : normalizedCommission)
 			
 			self?.approximately.value = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0, formatter: self!.formatter)) + " " + to
-			self?.fee = commission
+//			self?.fee = commission
 			
 			if to == self?.getCoin.value {
 				self?.approximatelyReady.value = true
