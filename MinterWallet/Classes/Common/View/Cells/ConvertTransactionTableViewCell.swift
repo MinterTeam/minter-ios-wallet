@@ -105,6 +105,7 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 				fromAddressLabel.text = transaction.from
 				toAddressLabel.text = transaction.to
 				expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0), formatter: CurrencyNumberFormatter.coinFormatter)
+				
 				coinLabel.text = transaction.toCoin
 				dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 				timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())

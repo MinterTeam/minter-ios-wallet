@@ -12,6 +12,8 @@ import RxSwift
 
 class ConvertCoinsViewController: BaseViewController {
 	
+	let coinFormatter = CurrencyNumberFormatter.coinFormatter
+	
 	//MARK: - 
 	
 	@IBOutlet weak var approximately: UILabel!

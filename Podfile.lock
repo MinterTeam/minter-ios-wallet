@@ -28,7 +28,7 @@ PODS:
     - CryptoSwift (~> 0.9)
     - ObjectMapper (~> 3.1)
     - secp256k1.swift (~> 0.1)
-  - MinterExplorer (0.1.5):
+  - MinterExplorer (0.1.6):
     - MinterCore
   - MinterMy (0.1.4):
     - MinterCore
@@ -64,6 +64,7 @@ PODS:
   - Toucan (1.0.0)
   - TPKeyboardAvoiding (1.3.2)
   - XLPagerTabStrip (8.0.1)
+  - YandexMobileMetrica/Dynamic (3.2.0)
 
 DEPENDENCIES:
   - AFDateHelper (~> 4.2.2)
@@ -97,6 +98,7 @@ DEPENDENCIES:
   - Toucan
   - TPKeyboardAvoiding
   - XLPagerTabStrip (~> 8.0)
+  - YandexMobileMetrica/Dynamic (= 3.2.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -139,6 +141,7 @@ SPEC REPOS:
     - Toucan
     - TPKeyboardAvoiding
     - XLPagerTabStrip
+    - YandexMobileMetrica
 
 EXTERNAL SOURCES:
   SVProgressHUD:
@@ -174,7 +177,7 @@ SPEC CHECKSUMS:
   MarqueeLabel: 0c41f08ef5773e29c0f71064a8fa788a2fd8b365
   McPicker: 130183cd3d22fc6933ea9e63c5a0d0d1becc0122
   MinterCore: b52006fc8aa616180b08201688cfab28d3714219
-  MinterExplorer: 02afb57a3553613130c54fdf6d6f6abb686ad5e2
+  MinterExplorer: f02984ade144fabb688c57acd3455c41c46b475e
   MinterMy: 82f1ce5f3a6747a4610976c3ae34dbb3f1b8f5d3
   NextGrowingTextView: 78c8b96f7ac6dc845f5babb27dcf7c18dd3210ec
   NotificationBannerSwift: b231e4c3244848ef300e1c53ce027b9756b9b06f
@@ -197,7 +200,8 @@ SPEC CHECKSUMS:
   Toucan: 61867fb10948c02e9804280a95eb183e98eac97a
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
+  YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: d904422d9226973e5df1e9a14f197597c6b27e1b
+PODFILE CHECKSUM: 38b9448e863443b8d6cd7efce98adb8a9f1878b2
 
 COCOAPODS: 1.5.3

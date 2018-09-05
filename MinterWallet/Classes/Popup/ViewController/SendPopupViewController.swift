@@ -73,6 +73,12 @@ class SendPopupViewController: PopupViewController {
 		super.viewDidLoad()
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupScreen, params: nil)
+	}
+	
 	override func loadView() {
 		super.loadView()
 		
@@ -90,8 +96,8 @@ class SendPopupViewController: PopupViewController {
 		let sendViewModel = viewModel as? SendPopupViewModel
 		
 		popupTitle.text = sendViewModel?.popupTitle
-		let cur = CurrencyNumberFormatter.formattedDecimal(with: (sendViewModel?.amount ?? 0), formatter: CurrencyNumberFormatter.coinFormatter)
-		amountTitle.text = String(cur + " " + (sendViewModel?.coin ?? "")).uppercased()
+		
+		amountTitle.text = String((sendViewModel?.amountString ?? "") + " " + (sendViewModel?.coin ?? "")).uppercased()
 		avatarImage.image = UIImage(named: "AvatarPlaceholderImage")
 		if let avatarURL = sendViewModel?.avatarImage {
 			avatarImage.af_setImage(withURL: avatarURL, filter: RoundedCornersFilter(radius: 25.0))

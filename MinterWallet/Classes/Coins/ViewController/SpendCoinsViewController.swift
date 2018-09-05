@@ -20,6 +20,8 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	
 	var viewModel = SpendCoinsViewModel()
 	
+	private var formatter = CurrencyNumberFormatter.coinFormatter
+	
 	//MARK: - IBOutlet
 
 	@IBOutlet weak var scrollView: TPKeyboardAvoidingScrollView!
@@ -53,6 +55,9 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	@IBOutlet weak var getCoinActivityIndicator: UIActivityIndicatorView!
 	
 	@IBAction func didTapExchange(_ sender: Any) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .CovertSpendExchangeButton, params: nil)
+		
 		viewModel.exchange()
 	}
 	
@@ -61,6 +66,9 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	@IBOutlet weak var getCoinErrorLabel: UILabel!
 	
 	@IBAction func didTapUseMax(_ sender: Any) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .CovertSpendUseMaxButton, params: nil)
+		
 		let balanceString = viewModel.selectedBalanceString?.replacingOccurrences(of: " ", with: "")
 		self.spendAmountTextField.text = balanceString
 		viewModel.spendAmount.value = balanceString
@@ -159,6 +167,14 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		}).disposed(by: disposableBag)
 
 	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendScreen, params: nil)
+		
+	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
@@ -196,10 +212,10 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 			return
 		}
 		
-		let formatter = CurrencyNumberFormatter.decimalShortFormatter
+//		let formatter = CurrencyNumberFormatter.decimalShortFormatter
 		
 		let data: [[String]] = [items.map({ (item) -> String in
-			let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: formatter)
+			let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: self.formatter)
 			return (item.coin ?? "") + " (" + balanceString + ")"
 		})]
 		
@@ -215,8 +231,8 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 			}
 			
 			if let item = items.filter({ (item) -> Bool in
-				let balanceText = (formatter.string(from: (item.balance ?? 0) as NSNumber) ?? "")
-				return (item.coin ?? "") + " (" + balanceText + ")" == coin
+				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: self!.formatter)
+				return (item.coin ?? "") + " (" + balanceString + ")" == coin
 			}).first {
 				self?.viewModel.selectedAddress = item.address
 				self?.viewModel.selectedCoin = item.coin

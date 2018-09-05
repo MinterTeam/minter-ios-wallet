@@ -58,6 +58,8 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 		super.viewDidAppear(animated)
 		
 		showKeyboard()
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .PasswordEditScreen, params: nil)
 	}
 	
 	

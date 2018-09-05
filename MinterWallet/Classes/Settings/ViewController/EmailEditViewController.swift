@@ -56,6 +56,8 @@ class EmailEditViewController: BaseViewController, UITableViewDelegate, UITableV
 		super.viewDidAppear(animated)
 		
 		showKeyboard()
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .EmailEditScreen, params: nil)
 	}
 	
 	override func didReceiveMemoryWarning() {

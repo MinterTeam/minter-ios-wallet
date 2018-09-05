@@ -28,6 +28,9 @@ class AddressTableViewCell: BaseCell {
 	@IBOutlet weak var actionButton: UIButton!
 	
 	@IBAction func didTapActionButton(_ sender: Any) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .AddressesCopyButton, params: nil)
+		
 		UIPasteboard.general.string = addressLabel.text
 		
 		SVProgressHUD.showSuccess(withStatus: "Copied".localized())

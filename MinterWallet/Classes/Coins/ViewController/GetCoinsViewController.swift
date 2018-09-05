@@ -46,6 +46,9 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 	}
 	
 	@IBAction func didTapExchangeButton(_ sender: Any) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .CovertGetExchangeButton, params: nil)
+		
 		viewModel.exchange()
 	}
 	
@@ -198,7 +201,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 		let formatter = CurrencyNumberFormatter.decimalShortFormatter
 		
 		let data: [[String]] = [items.map({ (item) -> String in
-			let balanceString = formatter.string(from: (item.balance ?? 0) as NSNumber) ?? ""
+			let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: coinFormatter)
 			return (item.coin ?? "") + " (" + balanceString + ")"
 		})]
 		
@@ -214,7 +217,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 			}
 			
 			if let item = items.filter({ (item) -> Bool in
-				let balanceString = (formatter.string(from: (item.balance ?? 0) as NSNumber) ?? "")
+				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: self!.coinFormatter)
 				return (item.coin ?? "") + " (" + balanceString + ")" == coin
 			}).first {
 				self?.viewModel.selectedAddress = item.address

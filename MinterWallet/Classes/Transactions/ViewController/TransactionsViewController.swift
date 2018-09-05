@@ -84,6 +84,13 @@ class TransactionsViewController: BaseTableViewController {
 
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionsScreen, params: nil)
+	}
+	
+	
 	func registerViews() {
 		tableView.register(UINib(nibName: "DefaultHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "DefaultHeader")
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
@@ -158,6 +165,9 @@ class TransactionsViewController: BaseTableViewController {
 extension TransactionsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate {
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			let vc = BaseSafariViewController(url: url)
 			self.present(vc, animated: true) {}
@@ -165,6 +175,9 @@ extension TransactionsViewController : TransactionTableViewCellDelegate, Convert
 	}
 	
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			let vc = BaseSafariViewController(url: url)
 			self.present(vc, animated: true) {}

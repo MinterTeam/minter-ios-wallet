@@ -11,6 +11,7 @@ import SafariServices
 import RxSwift
 import NotificationBannerSwift
 import Reachability
+import YandexMobileMetrica
 
 
 class BaseViewController : UIViewController {
@@ -36,6 +37,9 @@ class BaseViewController : UIViewController {
 		super.viewWillAppear(animated)
 		
 		self.setNeedsStatusBarAppearanceUpdate()
+		
+		
+		
 	}
 
 }

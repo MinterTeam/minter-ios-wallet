@@ -11,9 +11,20 @@ import UIKit
 
 class SendPopupViewModel : PopupViewModel {
 	
+	private var formatter = CurrencyNumberFormatter.coinFormatter
+	
+	override init() {
+		super.init()
+		formatter.maximumFractionDigits = 100
+	}
+	
 	var amount: Decimal?
 	
 	var coin: String?
+	
+	var amountString: String? {
+		return formatter.string(from: (amount ?? 0) as NSNumber)
+	}
 	
 	var avatarImage: URL?
 	

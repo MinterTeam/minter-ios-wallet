@@ -25,7 +25,7 @@ class CoinTableViewCell: BaseCell {
 	
 	//MARK: -
 	
-	let formatter = CurrencyNumberFormatter.coinFormatter
+	private let formatter = CurrencyNumberFormatter.coinFormatter
 	
 	//MARK: - IBOutlets
 
@@ -41,11 +41,53 @@ class CoinTableViewCell: BaseCell {
 	
 	@IBOutlet weak var coin: UILabel!
 	
+	@IBOutlet weak var amountLeadingConstraint: NSLayoutConstraint! {
+		didSet {
+			amountLeadingConstraints = amountLeadingConstraint
+		}
+	}
+	var amountLeadingConstraints: NSLayoutConstraint?
+	
+	@IBOutlet weak var amountBottomConstraint: NSLayoutConstraint!
+	
 	@IBOutlet weak var coinImageWrapper: UIView! {
 		didSet {
 			coinImageWrapper.backgroundColor = .clear
 			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
 		}
+	}
+	
+	
+	private var isShowingCoin = false
+	
+	@IBAction func didTapCell(_ sender: Any) {
+		
+		if self.title.frame.width > self.amount.frame.width {
+			return
+		}
+		
+		self.amountLeadingConstraint?.isActive = false
+		self.amountLeadingConstraints?.isActive = false
+		
+		if !isShowingCoin {
+			UIView.animate(withDuration: 0.2, animations: { [weak self] in
+				self?.title.alpha = 0.0
+				self?.layoutIfNeeded()
+			}) { [weak self] (finished) in
+				self?.isShowingCoin = true
+			}
+		}
+		else {
+				self.amountLeadingConstraint?.isActive = true
+				UIView.animate(withDuration: 0.2, animations: { [weak self] in
+					self?.title.alpha = 1.0
+					self?.layoutIfNeeded()
+				}) {  [weak self] (finished) in
+					self?.isShowingCoin = false
+				}
+		}
+		
+		
 	}
 	
 	//MARK: -
@@ -74,8 +116,6 @@ class CoinTableViewCell: BaseCell {
 			else {
 				coinImage.image = transaction.image
 			}
-			
-//			formatter.string(from: (transaction.amount ?? 0) as NSNumber)
 			
 			amount.text = CurrencyNumberFormatter.formattedDecimal(with: transaction.amount ?? 0, formatter: formatter)
 			coin.text = transaction.coin

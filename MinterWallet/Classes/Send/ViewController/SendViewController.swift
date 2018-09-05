@@ -117,6 +117,12 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 		
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SendScreen, params: nil)
+	}
+	
 	//MARK: -
 	
 	private func registerCells() {
@@ -194,6 +200,8 @@ extension SendViewController: PickerTableViewCellDelegate {
 	
 	func willShowPicker() {
 		tableView.endEditing(true)
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsChooseCoinButton, params: nil)
 	}
 }
 
@@ -207,6 +215,8 @@ extension SendViewController: PickerTableViewCellDataSource {
 extension SendViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsSendButton, params: nil)
 		
 		tableView.endEditing(true)
 		
@@ -295,16 +305,24 @@ extension SendViewController {
 	
 	func didFinish(viewController: SendPopupViewController) {
 		
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupSendButton, params: nil)
+		
 		viewModel.submitSendButtonTaped()
 	}
 	
 	func didCancel(viewController: SendPopupViewController) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupCancelButton, params: nil)
+		
 		viewController.dismiss(animated: true, completion: nil)
 	}
 	
 	//MARK: - SentPopupViewControllerDelegate
 	
 	func didTapActionButton(viewController: SentPopupViewController) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupViewTransactionButton, params: nil)
+		
 		viewController.dismiss(animated: true) { [weak self] in
 			if let url = self?.viewModel.lastTransactionExplorerURL() {
 				let vc = BaseSafariViewController(url: url)
@@ -314,6 +332,9 @@ extension SendViewController {
 	}
 	
 	func didTapSecondButton(viewController: SentPopupViewController) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupCloseButton, params: nil)
+		
 		viewController.dismiss(animated: true, completion: nil)
 	}
 
@@ -342,6 +363,9 @@ extension SendViewController {
 	}
 	
 	func didTapScanButton(cell: AddressTextViewTableViewCell1?) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsQRButton, params: nil)
+		
 		// Retrieve the QRCode content
 		// By using the delegate pattern
 		readerVC.delegate = self
@@ -418,6 +442,8 @@ extension SendViewController : QRCodeReaderViewControllerDelegate {
 extension SendViewController : AmountTextFieldTableViewCellDelegate {
 	
 	func didTapUseMax() {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsUseMaxButton, params: nil)
 		
 		let indexPath = IndexPath(row: 2, section: 0)
 		guard let amountCell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell else {

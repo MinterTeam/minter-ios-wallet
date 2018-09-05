@@ -41,6 +41,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	let formatter = CurrencyNumberFormatter.coinFormatter
 	
+	
 	//MARK: -
 	
 	override init() {
@@ -84,14 +85,14 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	var selectedBalanceString: String? {
 		if let balance = selectedBalance {
-			return formatter.string(from: balance as NSNumber)
+			return CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: CurrencyNumberFormatter.decimalFormatter)
 		}
 		return nil
 	}
 	
 	var spendCoinText: String {
 		let selected = (selectedCoin ?? "")
-		let bal = formatter.string(from: (selectedBalance ?? 0.0) as NSDecimalNumber) ?? ""
+		let bal = CurrencyNumberFormatter.formattedDecimal(with: (selectedBalance ?? 0.0), formatter: formatter) //formatter.string(from: (selectedBalance ?? 0.0) as NSDecimalNumber) ?? ""
 		return selected + " (" + bal + ")"
 	}
 	

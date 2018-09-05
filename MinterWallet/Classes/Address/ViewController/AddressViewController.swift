@@ -102,6 +102,12 @@ class AddressViewController: BaseViewController, UITableViewDelegate {
 		
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .AddressesScreen, params: nil)
+	}
+	
 	//MARK: -
 	
 	private func registerCells() {

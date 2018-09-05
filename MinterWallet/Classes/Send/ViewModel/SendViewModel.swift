@@ -95,7 +95,7 @@ class SendViewModel: BaseViewModel {
 	}
 	
 	var selectedBalanceText: String? {
-		return shortDecimalFormatter.string(from: (selectedAddressBalance ?? 0.0) as NSNumber)
+		return formatter.string(from: (selectedAddressBalance ?? 0.0) as NSNumber)
 	}
 	
 	var baseCoinBalance: Decimal {
@@ -269,7 +269,7 @@ class SendViewModel: BaseViewModel {
 		
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell", identifier: cellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
-		fee.subtitle = "0.01 " + (Coin.baseCoin().symbol ?? "")
+		fee.subtitle = "0.0100 " + (Coin.baseCoin().symbol ?? "")
 		
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: cellIdentifierPrefix.separator.rawValue)
 		
@@ -608,10 +608,11 @@ class SendViewModel: BaseViewModel {
 		
 		let selectedBalance = self.selectedAddressBalance ?? 0.0
 
-		let maxComparableSelectedBalance = (Decimal(string: shortDecimalFormatter.string(from: (selectedBalance) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
+		let maxComparableSelectedBalance = (Decimal(string: formatter.string(from: (selectedBalance) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
 		
 		let maxComparableBalance = decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
 		let isMax = (value > 0 && value == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
+		
 		let isBaseCoin = selectedCoin == Coin.baseCoin().symbol!
 		
 		

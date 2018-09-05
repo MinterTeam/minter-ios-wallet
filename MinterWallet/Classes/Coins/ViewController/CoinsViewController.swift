@@ -150,6 +150,9 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen, params: nil)
+		
 	}
 	
 	//MARK: -
@@ -173,6 +176,9 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	
 	@objc func didTapUsernameView() {
 		self.tabBarController?.selectedIndex = 3
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .CoinsUsernameButton, params: nil)
+		
 	}
 	
 	//MARK: -
@@ -271,12 +277,18 @@ extension CoinsViewController : ButtonTableViewCellDelegate {
 extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate {
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			presentExplorerController(with: url)
 		}
 	}
 	
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			presentExplorerController(with: url)
 		}

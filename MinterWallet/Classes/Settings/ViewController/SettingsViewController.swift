@@ -81,6 +81,9 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		super.viewWillAppear(animated)
 		
 		viewModel.viewWillAppear()
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SettingsScreen, params: nil)
+
 	}
 	
 	private func registerCells() {
@@ -240,6 +243,9 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 extension SettingsViewController : SettingsAvatarTableViewCellDelegate {
 	
 	func didTapChangeAvatar(cell: SettingsAvatarTableViewCell) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SettingsChangeUserpicButton, params: nil)
+		
 		showImagePicker(sender: cell)
 	}
 	
@@ -249,7 +255,7 @@ extension SettingsViewController : SettingsAvatarTableViewCellDelegate {
 extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-		print(info)
+		
 		let mediaType = info["UIImagePickerControllerMediaType"] as? String ?? ""
 		switch mediaType {
 		case "public.movie":
@@ -279,6 +285,9 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
 extension SettingsViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .SettingsLogoutButton, params: nil)
+		
 		viewModel.rightButtonTapped()
 	}
 	

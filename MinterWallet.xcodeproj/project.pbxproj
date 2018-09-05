@@ -128,6 +128,8 @@
 		FA8AE85B20AC196800F26E11 /* SessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85A20AC196800F26E11 /* SessionHelper.swift */; };
 		FA8AE85D20AC638900F26E11 /* String+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85C20AC638900F26E11 /* String+Random.swift */; };
 		FA9A6E51209B1D5D0012AC96 /* SHA3+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */; };
+		FA9BE30B213FE7E0002160F3 /* AnalyticsEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BE30A213FE7E0002160F3 /* AnalyticsEvents.swift */; };
+		FA9BE30D214006A5002160F3 /* AnalyticsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */; };
 		FAA234DE20848EC900F999DE /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */; };
 		FAA234DF20848EC900F999DE /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA234DD20848EC900F999DE /* SwitchTableViewCell.xib */; };
 		FAA234E2208495B900F999DE /* TwoTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234E0208495B900F999DE /* TwoTitleTableViewCell.swift */; };
@@ -167,6 +169,7 @@
 		FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */; };
 		FAA2608B2094ABA7009FF3DE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */; };
 		FAA3DD09211358BF0054D27E /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3DD08211358BF0054D27E /* ReachabilityService.swift */; };
+		FAB61CFA213D341F002762A7 /* Decimal+Fractional.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB61CF8213D3396002762A7 /* Decimal+Fractional.swift */; };
 		FAB7AA1720F600230003D0DE /* ConvertTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB7AA1520F600230003D0DE /* ConvertTransactionTableViewCell.swift */; };
 		FAB7AA1820F600230003D0DE /* ConvertTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB7AA1620F600230003D0DE /* ConvertTransactionTableViewCell.xib */; };
 		FAB85B4620DB980500782AFB /* URLRequst+NoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB85B4520DB980500782AFB /* URLRequst+NoCache.swift */; };
@@ -350,6 +353,8 @@
 		FA8AE85A20AC196800F26E11 /* SessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHelper.swift; sourceTree = "<group>"; };
 		FA8AE85C20AC638900F26E11 /* String+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Random.swift"; sourceTree = "<group>"; };
 		FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SHA3+String.swift"; sourceTree = "<group>"; };
+		FA9BE30A213FE7E0002160F3 /* AnalyticsEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEvents.swift; sourceTree = "<group>"; };
+		FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsHelper.swift; sourceTree = "<group>"; };
 		FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		FAA234DD20848EC900F999DE /* SwitchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchTableViewCell.xib; sourceTree = "<group>"; };
 		FAA234E0208495B900F999DE /* TwoTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoTitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -390,6 +395,7 @@
 		FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		FAA3DD06211358600054D27E /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		FAA3DD08211358BF0054D27E /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
+		FAB61CF8213D3396002762A7 /* Decimal+Fractional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Fractional.swift"; sourceTree = "<group>"; };
 		FAB7AA1520F600230003D0DE /* ConvertTransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertTransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FAB7AA1620F600230003D0DE /* ConvertTransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConvertTransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FAB85B4520DB980500782AFB /* URLRequst+NoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequst+NoCache.swift"; sourceTree = "<group>"; };
@@ -1179,6 +1185,7 @@
 		FA669B982072448B00AD110A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FA9BE309213FE7CE002160F3 /* Analytics */,
 				FA79F5FC20C81A85007876ED /* Protocol */,
 				FA8AE85620AAD3DC00F26E11 /* Session */,
 				FADB3E3A20A9C25C00EB6CD7 /* Storage */,
@@ -1235,6 +1242,8 @@
 				FAC4BA1120D94604005A1B90 /* String+Validation.swift */,
 				FAB85B4520DB980500782AFB /* URLRequst+NoCache.swift */,
 				FAB85B4720DBADD900782AFB /* CALayer+Shadow.swift */,
+				FAB61CF8213D3396002762A7 /* Decimal+Fractional.swift */,
+				FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1345,6 +1354,14 @@
 				FA7935FA20D30B710012642E /* SessionAddressSyncer.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		FA9BE309213FE7CE002160F3 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				FA9BE30A213FE7E0002160F3 /* AnalyticsEvents.swift */,
+			);
+			path = Analytics;
 			sourceTree = "<group>";
 		};
 		FAA2605820920989009FF3DE /* PlayNDrop */ = {
@@ -1690,6 +1707,7 @@
 				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
 				"${BUILT_PRODUCTS_DIR}/Toucan/Toucan.framework",
 				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
+				"${PODS_ROOT}/YandexMobileMetrica/dynamic/YandexMobileMetrica.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1732,6 +1750,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toucan.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YandexMobileMetrica.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1792,9 +1811,11 @@
 				FAA2605E209209DE009FF3DE /* DroppableView.swift in Sources */,
 				FAA2607A20935201009FF3DE /* GenerateAddressViewController.swift in Sources */,
 				FAE794522088DC010006CB0B /* SettingsAvatarTableViewCell.swift in Sources */,
+				FAB61CFA213D341F002762A7 /* Decimal+Fractional.swift in Sources */,
 				FA669B69207239F200AD110A /* AppDelegate.swift in Sources */,
 				FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */,
 				FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */,
+				FA9BE30D214006A5002160F3 /* AnalyticsHelper.swift in Sources */,
 				FA6760AA20A9E90900F970E7 /* DatabaseStorage.swift in Sources */,
 				FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */,
 				FA669BA12072461700AD110A /* String+Localized.swift in Sources */,
@@ -1821,6 +1842,7 @@
 				FAA234ED20872BD000F999DE /* SendPopupViewController.swift in Sources */,
 				FAB865F520C68236002568A4 /* SendValidationRules.swift in Sources */,
 				FAC4BA1220D94604005A1B90 /* String+Validation.swift in Sources */,
+				FA9BE30B213FE7E0002160F3 /* AnalyticsEvents.swift in Sources */,
 				FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */,
 				2177DA1D3DFAC5A28E961357 /* LoginViewController.swift in Sources */,
 				FAB865F120BEE9D5002568A4 /* AdvancedModeBaseViewModel.swift in Sources */,

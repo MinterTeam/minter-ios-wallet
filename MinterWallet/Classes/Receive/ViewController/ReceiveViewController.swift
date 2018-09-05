@@ -21,6 +21,9 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 	//MARK: -
 	
 	@IBAction func shareButtonDidTap(_ sender: UIButton) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .ReceiveShareButton, params: nil)
+		
 		if let activities = viewModel.activities() {
 			let vc = ReceiveRouter.activityViewController(activities: activities, sourceView: sender)
 			present(vc, animated: true)
@@ -58,6 +61,13 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)
 		
 		viewModel.sectionsObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .ReceiveScreen, params: nil)
+		
 	}
 	
 	

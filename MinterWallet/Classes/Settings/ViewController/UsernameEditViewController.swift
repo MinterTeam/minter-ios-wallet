@@ -57,6 +57,8 @@ class UsernameEditViewController: BaseViewController, UITableViewDelegate, UITab
 		super.viewDidAppear(animated)
 		
 		showKeyboard()
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .UsernameEditScreen, params: nil)
 	}
 
 	override func didReceiveMemoryWarning() {
