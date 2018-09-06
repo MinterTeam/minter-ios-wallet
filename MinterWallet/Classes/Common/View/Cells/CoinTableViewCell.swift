@@ -66,10 +66,11 @@ class CoinTableViewCell: BaseCell {
 			return
 		}
 		
-		self.amountLeadingConstraint?.isActive = false
-		self.amountLeadingConstraints?.isActive = false
-		
 		if !isShowingCoin {
+			self.amountLeadingConstraint?.isActive = false
+			self.amountLeadingConstraints?.isActive = false
+			amount.adjustsFontSizeToFitWidth = true
+			
 			UIView.animate(withDuration: 0.2, animations: { [weak self] in
 				self?.title.alpha = 0.0
 				self?.layoutIfNeeded()
@@ -78,6 +79,8 @@ class CoinTableViewCell: BaseCell {
 			}
 		}
 		else {
+			
+				amount.adjustsFontSizeToFitWidth = false
 				self.amountLeadingConstraint?.isActive = true
 				UIView.animate(withDuration: 0.2, animations: { [weak self] in
 					self?.title.alpha = 1.0
