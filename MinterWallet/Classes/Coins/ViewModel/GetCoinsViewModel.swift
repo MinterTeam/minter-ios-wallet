@@ -119,6 +119,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			self?.isApproximatelyLoading.value = false
 			
 			guard nil == error, let ammnt = val, let commission = commission else {
+				self?.approximately.value = "Estimate can't be calculated at the moment".localized()
 				return
 			}
 			

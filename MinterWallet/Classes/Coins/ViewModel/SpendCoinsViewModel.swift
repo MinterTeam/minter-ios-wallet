@@ -136,6 +136,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		CoinManager.default.estimateCoinSell(from: from, to: to, amount: value) { [weak self] (val, commission, error) in
 			
 			guard nil == error, let ammnt = val, let commission = commission else {
+				self?.approximately.value = "Estimate can't be calculated at the moment".localized()
 				return
 			}
 			
