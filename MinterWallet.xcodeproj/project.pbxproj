@@ -53,6 +53,7 @@
 		FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */; };
 		FA2F56B8210B31E1002C72DC /* AccordionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */; };
 		FA2F56BA210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */; };
+		FA3114BF2146899800A17907 /* UIImage+AlamofireCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */; };
 		FA3154AA20B5ABD1005D9F21 /* TransactionDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */; };
 		FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */; };
 		FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */; };
@@ -267,6 +268,7 @@
 		FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTextViewTableViewCell1.xib; sourceTree = "<group>"; };
+		FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AlamofireCache.swift"; sourceTree = "<group>"; };
 		FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDateFormatter.swift; sourceTree = "<group>"; };
 		FA3154AD20B851F7005D9F21 /* GroupedPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedPickerView.swift; sourceTree = "<group>"; };
 		FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDataBaseModel.swift; sourceTree = "<group>"; };
@@ -1244,6 +1246,7 @@
 				FAB85B4720DBADD900782AFB /* CALayer+Shadow.swift */,
 				FAB61CF8213D3396002762A7 /* Decimal+Fractional.swift */,
 				FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */,
+				FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1824,6 +1827,7 @@
 				FA669BD32072601300AD110A /* UIColor+HEX.swift in Sources */,
 				FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */,
 				FA670A3920E27352000A5169 /* ReceiveAddressTableViewCell.swift in Sources */,
+				FA3114BF2146899800A17907 /* UIImage+AlamofireCache.swift in Sources */,
 				FA669BD120724A1200AD110A /* UIFont+Default.swift in Sources */,
 				FA669BD9207267DA00AD110A /* BaseRouter.swift in Sources */,
 				FA669BE120727CB300AD110A /* TabBarController.swift in Sources */,

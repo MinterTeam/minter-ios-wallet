@@ -44,9 +44,7 @@ class UsernameView: UIView {
 		imageView.image = placeholderImage
 		
 		if let imageURL = imageURL {
-			imageView.af_setImage(withURL: imageURL, placeholderImage: placeholderImage, filter: nil, progress: nil, progressQueue: DispatchQueue.main, imageTransition: UIImageView.ImageTransition.crossDissolve(0.3), runImageTransitionIfCached: false) { (response) in
-				
-			}
+			imageView.af_setImageIgnoreCache(string: imageURL.absoluteString)
 		}
 	}
 	
