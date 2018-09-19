@@ -46,3 +46,13 @@ public extension MinterMy.InfoManager {
 	}
 	
 }
+
+public extension MinterExplorer.CoinManager {
+	class var `default`: MinterExplorer.CoinManager {
+		get {
+			let httpClient = APIClient.shared
+			let manager = self.init(httpClient: httpClient)
+			return manager
+		}
+	}
+}

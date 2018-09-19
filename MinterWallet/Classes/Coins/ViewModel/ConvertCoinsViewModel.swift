@@ -9,11 +9,14 @@
 import Foundation
 import RxSwift
 import MinterCore
+import MinterExplorer
 
 
 class ConvertCoinsViewModel : BaseViewModel {
 	
 	var accountManager = AccountManager()
+	
+	let coinManager = MinterExplorer.CoinManager.default
 	
 	var disposeBag = DisposeBag()
 	
@@ -114,6 +117,20 @@ class ConvertCoinsViewModel : BaseViewModel {
 			})
 		}
 		return ret
+	}
+	
+	func coinNames(by term: String, completion: (([String]) -> ())?) {
+		coinManager.coins(term: term) { (coins, error) in
+			
+			let res = coins?.map({ (coin) -> String in
+				return coin.symbol ?? ""
+			}).filter({ (symbol) -> Bool in
+				symbol != ""
+			}) ?? [String]()
+			
+			completion?(Array(res[safe: 0..<3] ?? []))
+			
+		}
 	}
 	
 	//MARK: -

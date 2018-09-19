@@ -32,12 +32,12 @@ extension CALayer {
 }
 
 protocol CornerRadius {
-	func makeBorderWithCornerRadius(radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat)
+	func makeBorderWithCornerRadius(radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat, sublayerIndex: UInt32)
 }
 
 extension UIView: CornerRadius {
 
-	func makeBorderWithCornerRadius(radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat) {
+	func makeBorderWithCornerRadius(radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat, sublayerIndex: UInt32 = 1) {
 		let rect = self.bounds;
 		
 		let maskPath = UIBezierPath(roundedRect: rect, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: radius, height: radius))
@@ -63,7 +63,7 @@ extension UIView: CornerRadius {
 		borderLayer.lineWidth   = borderWidth * UIScreen.main.scale
 		
 		//Add this layer to give border.
-		self.layer.insertSublayer(borderLayer, at: 1)
+		self.layer.insertSublayer(borderLayer, at: sublayerIndex)
 	}
 	
 }

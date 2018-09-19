@@ -36,7 +36,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU GET" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lX5-si-G9R">
-                                        <rect key="frame" x="40" y="42" width="48" height="13"/>
+                                        <rect key="frame" x="40" y="42" width="46" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -70,7 +70,7 @@
                                         <rect key="frame" x="335" y="76.5" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU SPEND" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVm-Vc-YX1">
-                                        <rect key="frame" x="40" y="129.5" width="63.5" height="13"/>
+                                        <rect key="frame" x="40" y="129.5" width="61" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -245,7 +245,7 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="COIN YOU HAVE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HE-nT-beU">
-                                        <rect key="frame" x="20" y="18" width="85" height="13"/>
+                                        <rect key="frame" x="20" y="18" width="84" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -272,7 +272,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LYq-Jk-u2q">
-                                        <rect key="frame" x="278" y="124.5" width="71" height="31"/>
+                                        <rect key="frame" x="277" y="125" width="72" height="30"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="16"/>
                                         <state key="normal" title="USE MAX">
                                             <color key="titleColor" red="0.31372549019607843" green="0.1803921568627451" blue="0.76078431372549016" alpha="1" colorSpace="deviceRGB"/>
@@ -282,7 +282,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AMOUNT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q3i-Ht-noE">
-                                        <rect key="frame" x="20" y="95.5" width="47.5" height="13"/>
+                                        <rect key="frame" x="20" y="95.5" width="48.5" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -297,7 +297,7 @@
                                         </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="COIN YOU WANT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7D6-9F-0iS">
-                                        <rect key="frame" x="20" y="217" width="305.5" height="13"/>
+                                        <rect key="frame" x="20" y="217" width="304.5" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -327,19 +327,19 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wO2-pp-gKK">
-                                        <rect key="frame" x="77.5" y="95" width="287.5" height="14"/>
+                                        <rect key="frame" x="78.5" y="95" width="286.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                                         <color key="textColor" red="0.93333333333333335" green="0.13725490196078433" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2WZ-9i-Lk0">
-                                        <rect key="frame" x="335.5" y="217" width="29.5" height="14"/>
+                                        <rect key="frame" x="334.5" y="217" width="30.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                                         <color key="textColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="axC-Ce-LpR">
-                                        <rect key="frame" x="10" y="294" width="355" height="78"/>
+                                        <rect key="frame" x="10" y="294" width="355" height="77"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU WILL GET APPROXIMATELY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WN-TG-cHe">
                                                 <rect key="frame" x="10" y="16" width="335" height="13"/>
@@ -348,13 +348,13 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9oO-ro-9QR">
-                                                <rect key="frame" x="10" y="37" width="335" height="26"/>
+                                                <rect key="frame" x="10" y="37" width="335" height="25"/>
                                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xsH-Cd-1fF">
-                                                <rect key="frame" x="325" y="29.5" width="20" height="20"/>
+                                                <rect key="frame" x="325" y="29" width="20" height="20"/>
                                             </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="deviceRGB"/>
@@ -376,13 +376,13 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The final amount depends on the exchange rate at the moment of transaction." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mbm-G6-RzB">
-                                        <rect key="frame" x="20" y="388" width="335" height="33"/>
+                                        <rect key="frame" x="20" y="387" width="335" height="31.5"/>
                                         <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFm-Om-pVV" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="437" width="355" height="50"/>
+                                        <rect key="frame" x="10" y="434.5" width="355" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="iuv-KQ-Wkm"/>
                                         </constraints>
@@ -396,8 +396,25 @@
                                         </connections>
                                     </button>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="KDg-1q-0rV">
-                                        <rect key="frame" x="177" y="452" width="20" height="20"/>
+                                        <rect key="frame" x="177" y="449.5" width="20" height="20"/>
                                     </activityIndicatorView>
+                                    <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zvp-UN-eHT">
+                                        <rect key="frame" x="10" y="292.5" width="355" height="300"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ucv-gD-Usa" customClass="LUAutocompleteView" customModule="MinterWallet" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="355" height="100"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" secondItem="Ucv-gD-Usa" secondAttribute="height" constant="2" id="3ot-z9-fZg"/>
+                                            <constraint firstAttribute="trailing" secondItem="Ucv-gD-Usa" secondAttribute="trailing" constant="2" id="Rah-pY-zlN"/>
+                                            <constraint firstItem="Ucv-gD-Usa" firstAttribute="top" secondItem="Zvp-UN-eHT" secondAttribute="top" id="UZh-gn-VHl"/>
+                                            <constraint firstAttribute="bottom" secondItem="Ucv-gD-Usa" secondAttribute="bottom" constant="2" id="qsN-RJ-R1H"/>
+                                            <constraint firstItem="Ucv-gD-Usa" firstAttribute="leading" secondItem="Zvp-UN-eHT" secondAttribute="leading" constant="2" id="vAz-HW-jav"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Xng-dO-2VT" firstAttribute="height" secondItem="KlA-XB-YRc" secondAttribute="height" id="06Y-Gt-Eue"/>
@@ -411,6 +428,7 @@
                                     <constraint firstItem="Xng-dO-2VT" firstAttribute="leading" secondItem="KlA-XB-YRc" secondAttribute="leading" id="7TD-Zt-LqO"/>
                                     <constraint firstItem="wO2-pp-gKK" firstAttribute="centerY" secondItem="Q3i-Ht-noE" secondAttribute="centerY" id="96D-Oa-Hn4"/>
                                     <constraint firstAttribute="trailing" secondItem="pFm-Om-pVV" secondAttribute="trailing" constant="10" id="AA0-HQ-dko"/>
+                                    <constraint firstItem="pFm-Om-pVV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Ucv-gD-Usa" secondAttribute="bottom" constant="5" id="AeW-y5-u3e"/>
                                     <constraint firstItem="DTd-9N-LWO" firstAttribute="width" secondItem="KlA-XB-YRc" secondAttribute="width" id="BdO-th-fut"/>
                                     <constraint firstItem="axC-Ce-LpR" firstAttribute="top" secondItem="Xng-dO-2VT" secondAttribute="bottom" constant="10" id="CNG-oz-zSf"/>
                                     <constraint firstAttribute="trailing" secondItem="axC-Ce-LpR" secondAttribute="trailing" constant="10" id="Db3-s4-Neg"/>
@@ -428,6 +446,7 @@
                                     <constraint firstItem="tnd-qZ-n89" firstAttribute="centerY" secondItem="yT3-xb-Wev" secondAttribute="centerY" id="XQl-fa-kLK"/>
                                     <constraint firstItem="IHi-13-hSG" firstAttribute="leading" secondItem="yT3-xb-Wev" secondAttribute="trailing" constant="11" id="Ym8-Vr-LDy"/>
                                     <constraint firstItem="1HE-nT-beU" firstAttribute="leading" secondItem="KlA-XB-YRc" secondAttribute="leading" constant="10" id="ZHi-to-I3N"/>
+                                    <constraint firstItem="Ucv-gD-Usa" firstAttribute="top" secondItem="Xng-dO-2VT" secondAttribute="bottom" constant="8" id="ZmD-0C-eDR"/>
                                     <constraint firstItem="wO2-pp-gKK" firstAttribute="trailing" secondItem="DTd-9N-LWO" secondAttribute="trailing" id="ZyW-Fn-cDQ"/>
                                     <constraint firstItem="IHi-13-hSG" firstAttribute="centerX" secondItem="fWF-q3-jXc" secondAttribute="centerX" id="bxS-Ys-dZr"/>
                                     <constraint firstItem="DTd-9N-LWO" firstAttribute="top" secondItem="Q3i-Ht-noE" secondAttribute="bottom" constant="8" id="geR-qa-e3s"/>
@@ -437,6 +456,7 @@
                                     <constraint firstItem="2WZ-9i-Lk0" firstAttribute="centerY" secondItem="7D6-9F-0iS" secondAttribute="centerY" id="k3O-6t-1yi"/>
                                     <constraint firstItem="Xng-dO-2VT" firstAttribute="trailing" secondItem="bLU-27-sln" secondAttribute="trailing" constant="10" id="la3-bY-2bj"/>
                                     <constraint firstItem="1HE-nT-beU" firstAttribute="top" secondItem="fWF-q3-jXc" secondAttribute="top" constant="18" id="loz-05-Llj"/>
+                                    <constraint firstItem="Ucv-gD-Usa" firstAttribute="trailing" secondItem="Xng-dO-2VT" secondAttribute="trailing" id="mqO-Cn-fvg"/>
                                     <constraint firstItem="IHi-13-hSG" firstAttribute="centerY" secondItem="yT3-xb-Wev" secondAttribute="centerY" id="mwv-Me-yBe"/>
                                     <constraint firstItem="Mbm-G6-RzB" firstAttribute="leading" secondItem="fWF-q3-jXc" secondAttribute="leading" constant="20" id="nB1-Kc-gIK"/>
                                     <constraint firstItem="KlA-XB-YRc" firstAttribute="trailing" secondItem="LYq-Jk-u2q" secondAttribute="trailing" constant="16" id="nNq-95-fmE"/>
@@ -447,7 +467,13 @@
                                     <constraint firstItem="7D6-9F-0iS" firstAttribute="top" secondItem="DTd-9N-LWO" secondAttribute="bottom" constant="54" id="vhc-xu-xBt"/>
                                     <constraint firstItem="bLU-27-sln" firstAttribute="centerY" secondItem="Xng-dO-2VT" secondAttribute="centerY" id="wjY-6L-SU6"/>
                                     <constraint firstItem="7D6-9F-0iS" firstAttribute="leading" secondItem="Xng-dO-2VT" secondAttribute="leading" constant="10" id="yfa-Z9-8RE"/>
+                                    <constraint firstItem="Ucv-gD-Usa" firstAttribute="leading" secondItem="Xng-dO-2VT" secondAttribute="leading" id="zeo-jm-QGe"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="AeW-y5-u3e"/>
+                                    </mask>
+                                </variation>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -462,6 +488,8 @@
                     <connections>
                         <outlet property="amountErrorLabel" destination="wO2-pp-gKK" id="ybP-Cv-cee"/>
                         <outlet property="approximately" destination="9oO-ro-9QR" id="rbL-sA-auV"/>
+                        <outlet property="autocompleteView" destination="Ucv-gD-Usa" id="Hjc-rm-PL0"/>
+                        <outlet property="autocompleteViewWrapper" destination="Zvp-UN-eHT" id="oem-96-7Wd"/>
                         <outlet property="buttonActivityIndicator" destination="KDg-1q-0rV" id="LwD-tf-qhy"/>
                         <outlet property="exchangeButton" destination="pFm-Om-pVV" id="SRa-GQ-gNN"/>
                         <outlet property="getActivityIndicator" destination="xsH-Cd-1fF" id="FB7-U4-i7D"/>
@@ -493,7 +521,7 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="COIN YOU WANT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QM6-7l-CVw">
-                                        <rect key="frame" x="20" y="18" width="305.5" height="13"/>
+                                        <rect key="frame" x="20" y="18" width="304.5" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -511,7 +539,7 @@
                                         </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pql-Jb-1eA">
-                                        <rect key="frame" x="335.5" y="18" width="29.5" height="14"/>
+                                        <rect key="frame" x="334.5" y="18" width="30.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                                         <color key="textColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
@@ -520,7 +548,7 @@
                                         <rect key="frame" x="335" y="52" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HsT-Oy-UFW">
-                                        <rect key="frame" x="335" y="95" width="29.5" height="14"/>
+                                        <rect key="frame" x="334" y="95" width="30.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                                         <color key="textColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
@@ -535,7 +563,7 @@
                                         </connections>
                                     </textField>
                                     <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIT-dB-z8X">
-                                        <rect key="frame" x="278" y="124.5" width="71" height="31"/>
+                                        <rect key="frame" x="277" y="125" width="72" height="30"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="16"/>
                                         <state key="normal" title="USE MAX">
                                             <color key="titleColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
@@ -546,7 +574,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="AMOUNT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FsE-fQ-AXg">
-                                        <rect key="frame" x="20" y="95.5" width="305.5" height="13"/>
+                                        <rect key="frame" x="20" y="95.5" width="304.5" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -597,13 +625,13 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wgo-jy-crs">
-                                                <rect key="frame" x="10" y="37" width="335" height="26"/>
+                                                <rect key="frame" x="10" y="37" width="335" height="25"/>
                                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="GQx-XK-4eX">
-                                                <rect key="frame" x="325" y="29" width="20" height="20"/>
+                                                <rect key="frame" x="325" y="28.5" width="20" height="20"/>
                                             </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="deviceRGB"/>
@@ -645,8 +673,25 @@
                                         </connections>
                                     </button>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VqN-EM-pSz">
-                                        <rect key="frame" x="177" y="452" width="20" height="20"/>
+                                        <rect key="frame" x="177" y="449.5" width="20" height="20"/>
                                     </activityIndicatorView>
+                                    <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="V8P-l1-8Qq">
+                                        <rect key="frame" x="10" y="161" width="355" height="300"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="fWc-5V-dH9" customClass="LUAutocompleteView" customModule="MinterWallet" customModuleProvider="target">
+                                                <rect key="frame" x="2" y="0.0" width="351" height="298"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" secondItem="fWc-5V-dH9" secondAttribute="height" constant="2" id="FPr-fN-7km"/>
+                                            <constraint firstAttribute="bottom" secondItem="fWc-5V-dH9" secondAttribute="bottom" constant="2" id="b7O-pq-sV9"/>
+                                            <constraint firstItem="fWc-5V-dH9" firstAttribute="leading" secondItem="V8P-l1-8Qq" secondAttribute="leading" constant="2" id="efe-ve-ecc"/>
+                                            <constraint firstAttribute="trailing" secondItem="fWc-5V-dH9" secondAttribute="trailing" constant="2" id="kB7-4F-waM"/>
+                                            <constraint firstItem="fWc-5V-dH9" firstAttribute="top" secondItem="V8P-l1-8Qq" secondAttribute="top" id="vlL-6x-JcD"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="6TH-rv-FC6" secondAttribute="trailing" constant="10" id="0OJ-uR-4U9"/>
@@ -664,6 +709,7 @@
                                     <constraint firstAttribute="trailing" secondItem="prN-Gb-04U" secondAttribute="trailing" id="Di0-qT-hRx"/>
                                     <constraint firstItem="SV9-8c-Anc" firstAttribute="height" secondItem="1c8-xC-IUA" secondAttribute="height" id="Hrn-oy-IAb"/>
                                     <constraint firstItem="VqN-EM-pSz" firstAttribute="centerY" secondItem="6TH-rv-FC6" secondAttribute="centerY" id="I2c-6Q-47u"/>
+                                    <constraint firstItem="fWc-5V-dH9" firstAttribute="trailing" secondItem="1c8-xC-IUA" secondAttribute="trailing" id="IQg-qa-oMc"/>
                                     <constraint firstItem="SV9-8c-Anc" firstAttribute="leading" secondItem="1c8-xC-IUA" secondAttribute="leading" id="J4k-dC-fyK"/>
                                     <constraint firstItem="HsT-Oy-UFW" firstAttribute="centerY" secondItem="FsE-fQ-AXg" secondAttribute="centerY" id="LWu-hW-x2D"/>
                                     <constraint firstItem="4wZ-hD-tU1" firstAttribute="top" secondItem="SV9-8c-Anc" secondAttribute="bottom" constant="54" id="OIg-ez-ZiP"/>
@@ -686,6 +732,7 @@
                                     <constraint firstItem="pql-Jb-1eA" firstAttribute="leading" secondItem="QM6-7l-CVw" secondAttribute="trailing" constant="10" id="gqJ-td-tuy"/>
                                     <constraint firstAttribute="trailing" secondItem="o41-2C-brs" secondAttribute="trailing" constant="20" id="mM2-TT-VgT"/>
                                     <constraint firstItem="1c8-xC-IUA" firstAttribute="trailing" secondItem="2E5-uS-hI6" secondAttribute="trailing" constant="10" id="mOc-i6-phf"/>
+                                    <constraint firstItem="fWc-5V-dH9" firstAttribute="top" secondItem="1c8-xC-IUA" secondAttribute="bottom" constant="8" id="o1H-4Z-Kex"/>
                                     <constraint firstItem="kuF-du-8xW" firstAttribute="leading" secondItem="bfh-lP-3wA" secondAttribute="leading" id="oUo-5S-8Zx"/>
                                     <constraint firstItem="1c8-xC-IUA" firstAttribute="leading" secondItem="bfh-lP-3wA" secondAttribute="leading" constant="10" id="om8-Oo-XXB"/>
                                     <constraint firstItem="FsE-fQ-AXg" firstAttribute="leading" secondItem="SV9-8c-Anc" secondAttribute="leading" constant="10" id="pea-BN-avI"/>
@@ -695,6 +742,7 @@
                                     <constraint firstItem="ybN-up-uXn" firstAttribute="height" secondItem="1c8-xC-IUA" secondAttribute="height" id="vSd-Uu-HTO"/>
                                     <constraint firstItem="1c8-xC-IUA" firstAttribute="top" secondItem="QM6-7l-CVw" secondAttribute="bottom" constant="8" id="xs3-qM-BpV"/>
                                     <constraint firstItem="HsT-Oy-UFW" firstAttribute="leading" secondItem="FsE-fQ-AXg" secondAttribute="trailing" constant="10" id="ywK-7W-g4i"/>
+                                    <constraint firstItem="fWc-5V-dH9" firstAttribute="leading" secondItem="1c8-xC-IUA" secondAttribute="leading" id="z7h-2q-Gbl"/>
                                     <constraint firstItem="4wZ-hD-tU1" firstAttribute="leading" secondItem="ybN-up-uXn" secondAttribute="leading" constant="10" id="zHS-Yg-iI4"/>
                                 </constraints>
                             </scrollView>
@@ -711,6 +759,8 @@
                     <connections>
                         <outlet property="amountErrorLabel" destination="HsT-Oy-UFW" id="xr2-xp-LYh"/>
                         <outlet property="approximately" destination="Wgo-jy-crs" id="hzD-ff-ou4"/>
+                        <outlet property="autocompleteView" destination="fWc-5V-dH9" id="JlP-lP-O1q"/>
+                        <outlet property="autocompleteViewWrapper" destination="V8P-l1-8Qq" id="e3Y-JV-aqY"/>
                         <outlet property="buttonActivityIndicator" destination="VqN-EM-pSz" id="L0t-35-E8u"/>
                         <outlet property="exchangeButton" destination="6TH-rv-FC6" id="fZR-oE-cZF"/>
                         <outlet property="getActivityIndicator" destination="GQx-XK-4eX" id="5IM-k5-Ord"/>

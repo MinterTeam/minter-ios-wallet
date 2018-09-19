@@ -133,7 +133,7 @@ class Session {
 		dataBaseStorage.update {
 			res.substitute(with: user)
 		}
-}
+	}
 	
 	func restore() {
 		if let accessToken = secureStorage.object(forKey: SessionAccessTokenKey) as? String {

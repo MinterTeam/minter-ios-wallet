@@ -12,6 +12,8 @@ import RxSwift
 
 class ConvertCoinsViewController: BaseViewController {
 	
+	var viewModel: ConvertCoinsViewModel?
+	
 	let coinFormatter = CurrencyNumberFormatter.coinFormatter
 	
 	//MARK: - 
@@ -24,6 +26,20 @@ class ConvertCoinsViewController: BaseViewController {
 	
 	@IBOutlet weak var exchangeButton: DefaultButton!
 	
+	@IBOutlet weak var autocompleteViewWrapper: UIView!
+	
+	@IBOutlet weak var autocompleteView: LUAutocompleteView! {
+		didSet {
+			autocompleteView.autocompleteCellNibName = "CoinAutocompleteCell"
+		}
+	}
+	
+	@IBOutlet weak var getCoinTextField: ValidatableTextField! {
+		didSet {
+			setAppearance(for: getCoinTextField)
+		}
+	}
+	
 	//MARK: -
 	
 	var disposableBag = DisposeBag()
@@ -32,6 +48,12 @@ class ConvertCoinsViewController: BaseViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		
+		autocompleteView.textField = getCoinTextField
+		
+		autocompleteView.dataSource = self
+		autocompleteView.delegate = self
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -63,6 +85,25 @@ class ConvertCoinsViewController: BaseViewController {
 				self?.toggleTextFieldBorder(textField: textField)
 			}).disposed(by: disposableBag)
 	}
-	
 
+}
+
+// MARK: - LUAutocompleteViewDataSource
+
+extension ConvertCoinsViewController: LUAutocompleteViewDataSource {
+	func autocompleteView(_ autocompleteView: LUAutocompleteView, elementsFor text: String, completion: @escaping ([String]) -> Void) {
+		
+		viewModel?.coinNames(by: text) { (coins) in
+			completion(coins)
+		}
+	}
+}
+
+// MARK: - LUAutocompleteViewDelegate
+
+extension ConvertCoinsViewController: LUAutocompleteViewDelegate {
+	
+	func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: String) {
+		//		print(text + " was selected from autocomplete view")
+	}
 }

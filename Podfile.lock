@@ -22,13 +22,13 @@ PODS:
   - KeychainSwift (11.0.0)
   - MarqueeLabel/Swift (3.1.6)
   - McPicker (1.0.0)
-  - MinterCore (0.1.6):
+  - MinterCore (0.1.7):
     - Alamofire (~> 4.6)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 0.9)
     - ObjectMapper (~> 3.1)
     - secp256k1.swift (~> 0.1)
-  - MinterExplorer (0.1.6):
+  - MinterExplorer (0.1.8):
     - MinterCore
   - MinterMy (0.1.4):
     - MinterCore
@@ -176,8 +176,8 @@ SPEC CHECKSUMS:
   KeychainSwift: bea6bd9f98af7b8d7ca4aa79fe105c00fab532db
   MarqueeLabel: 0c41f08ef5773e29c0f71064a8fa788a2fd8b365
   McPicker: 130183cd3d22fc6933ea9e63c5a0d0d1becc0122
-  MinterCore: b52006fc8aa616180b08201688cfab28d3714219
-  MinterExplorer: f02984ade144fabb688c57acd3455c41c46b475e
+  MinterCore: 23e4847d0c14d8e0ce15d5469a23b58dee79a621
+  MinterExplorer: e7cf0a7414be6ca4bfc4063a588045d14fe067ac
   MinterMy: 82f1ce5f3a6747a4610976c3ae34dbb3f1b8f5d3
   NextGrowingTextView: 78c8b96f7ac6dc845f5babb27dcf7c18dd3210ec
   NotificationBannerSwift: b231e4c3244848ef300e1c53ce027b9756b9b06f

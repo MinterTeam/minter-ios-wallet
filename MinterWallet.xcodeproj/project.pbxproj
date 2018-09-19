@@ -50,6 +50,8 @@
 		FA04028F20FDD6B900F1689F /* ConvertCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04028E20FDD6B900F1689F /* ConvertCoinsViewModel.swift */; };
 		FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */; };
 		FA04029320FDD6E000F1689F /* GetCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */; };
+		FA11EA62214ABFB300C8DFB0 /* CoinAutocompleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */; };
+		FA11EA64214ABFD300C8DFB0 /* CoinAutocompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */; };
 		FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */; };
 		FA2F56B8210B31E1002C72DC /* AccordionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */; };
 		FA2F56BA210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */; };
@@ -199,6 +201,10 @@
 		FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE79455208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift */; };
 		FAE79458208DC73A0006CB0B /* SettingsSwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE79457208DC7390006CB0B /* SettingsSwitchTableViewCell.xib */; };
 		FAE7945A208DDC3F0006CB0B /* ActionBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE79459208DDC3F0006CB0B /* ActionBarButtonItem.swift */; };
+		FAF5FDAF214949CB00911619 /* LUAutocompleteViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5FDAB214949CA00911619 /* LUAutocompleteViewDelegate.swift */; };
+		FAF5FDB0214949CB00911619 /* LUAutocompleteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5FDAC214949CA00911619 /* LUAutocompleteTableViewCell.swift */; };
+		FAF5FDB1214949CB00911619 /* LUAutocompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5FDAD214949CB00911619 /* LUAutocompleteView.swift */; };
+		FAF5FDB2214949CB00911619 /* LUAutocompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5FDAE214949CB00911619 /* LUAutocompleteViewDataSource.swift */; };
 		FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */; };
 		FAF70FF920E791390067B5E0 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */; };
 /* End PBXBuildFile section */
@@ -267,6 +273,8 @@
 		FA04028E20FDD6B900F1689F /* ConvertCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCoinsViewModel.swift; sourceTree = "<group>"; };
+		FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinAutocompleteCell.swift; sourceTree = "<group>"; };
+		FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoinAutocompleteCell.xib; sourceTree = "<group>"; };
 		FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTextViewTableViewCell1.xib; sourceTree = "<group>"; };
 		FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AlamofireCache.swift"; sourceTree = "<group>"; };
 		FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDateFormatter.swift; sourceTree = "<group>"; };
@@ -428,6 +436,10 @@
 		FAE79459208DDC3F0006CB0B /* ActionBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBarButtonItem.swift; sourceTree = "<group>"; };
 		FAE7945B208E17BE0006CB0B /* CoinTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoinTableViewCell.swift; sourceTree = "<group>"; };
 		FAE7945C208E17BE0006CB0B /* CoinTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoinTableViewCell.xib; sourceTree = "<group>"; };
+		FAF5FDAB214949CA00911619 /* LUAutocompleteViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LUAutocompleteViewDelegate.swift; sourceTree = "<group>"; };
+		FAF5FDAC214949CA00911619 /* LUAutocompleteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LUAutocompleteTableViewCell.swift; sourceTree = "<group>"; };
+		FAF5FDAD214949CB00911619 /* LUAutocompleteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LUAutocompleteView.swift; sourceTree = "<group>"; };
+		FAF5FDAE214949CB00911619 /* LUAutocompleteViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LUAutocompleteViewDataSource.swift; sourceTree = "<group>"; };
 		FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
 		FE933B2B31E592FF04BA244B /* CoinsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoinsViewModel.swift; sourceTree = "<group>"; };
@@ -1094,6 +1106,8 @@
 				FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */,
 				FAB7AA1520F600230003D0DE /* ConvertTransactionTableViewCell.swift */,
 				FAB7AA1620F600230003D0DE /* ConvertTransactionTableViewCell.xib */,
+				FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */,
+				FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1324,10 +1338,10 @@
 		FA7D98F9207F584700193B8A /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				FAF5FDA92149499D00911619 /* LUAutocomplete */,
+				FAF5FDA82149468000911619 /* Reachability */,
 				FAA2605820920989009FF3DE /* PlayNDrop */,
 				FA7D98FB207F586F00193B8A /* AccordionTableView */,
-				FAA3DD06211358600054D27E /* Reachability.swift */,
-				FAA3DD08211358BF0054D27E /* ReachabilityService.swift */,
 			);
 			path = "Third Party";
 			sourceTree = "<group>";
@@ -1423,6 +1437,26 @@
 				FAE79457208DC7390006CB0B /* SettingsSwitchTableViewCell.xib */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		FAF5FDA82149468000911619 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				FAA3DD06211358600054D27E /* Reachability.swift */,
+				FAA3DD08211358BF0054D27E /* ReachabilityService.swift */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
+		FAF5FDA92149499D00911619 /* LUAutocomplete */ = {
+			isa = PBXGroup;
+			children = (
+				FAF5FDAC214949CA00911619 /* LUAutocompleteTableViewCell.swift */,
+				FAF5FDAD214949CB00911619 /* LUAutocompleteView.swift */,
+				FAF5FDAE214949CB00911619 /* LUAutocompleteViewDataSource.swift */,
+				FAF5FDAB214949CA00911619 /* LUAutocompleteViewDelegate.swift */,
+			);
+			path = LUAutocomplete;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1588,6 +1622,7 @@
 				FAE794542089F5170006CB0B /* DisclosureTableViewCell.xib in Resources */,
 				9C6DD4F4A99B7274AF32C13A /* Receive.storyboard in Resources */,
 				DF95C2FD52E1D7EB13A9336F /* Settings.storyboard in Resources */,
+				FA11EA64214ABFD300C8DFB0 /* CoinAutocompleteCell.xib in Resources */,
 				7E3C7A1AC5554EB64E0510A3 /* Address.storyboard in Resources */,
 				87C18150AF076473B806044A /* AdvancedMode.storyboard in Resources */,
 				3A2FF1E94AD830202FF84725 /* Convert.storyboard in Resources */,
@@ -1830,6 +1865,7 @@
 				FA3114BF2146899800A17907 /* UIImage+AlamofireCache.swift in Sources */,
 				FA669BD120724A1200AD110A /* UIFont+Default.swift in Sources */,
 				FA669BD9207267DA00AD110A /* BaseRouter.swift in Sources */,
+				FAF5FDB2214949CB00911619 /* LUAutocompleteViewDataSource.swift in Sources */,
 				FA669BE120727CB300AD110A /* TabBarController.swift in Sources */,
 				FA481BA120DE4104004E1D26 /* UsernameView.swift in Sources */,
 				FAA2608B2094ABA7009FF3DE /* HomeViewController.swift in Sources */,
@@ -1854,6 +1890,7 @@
 				FA835CCC207630A100BFC35A /* ValidatableTextField.swift in Sources */,
 				FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */,
 				FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */,
+				FAF5FDB0214949CB00911619 /* LUAutocompleteTableViewCell.swift in Sources */,
 				FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */,
 				FA79F60720D06D3D007876ED /* String+Email.swift in Sources */,
 				FAA2607220931D41009FF3DE /* PasswordEditViewModel.swift in Sources */,
@@ -1874,8 +1911,10 @@
 				D1CAF56CB50CFF293A1D7F1A /* CoinsViewModel.swift in Sources */,
 				2B4873CFE9E2F66FBBAADC30 /* CreateWalletViewController.swift in Sources */,
 				35C28F738CF2110198FBDD3C /* CreateWalletViewModel.swift in Sources */,
+				FAF5FDB1214949CB00911619 /* LUAutocompleteView.swift in Sources */,
 				FAA234E2208495B900F999DE /* TwoTitleTableViewCell.swift in Sources */,
 				FA01601F20B2CF3700746B51 /* UIColor+Sugar.swift in Sources */,
+				FAF5FDAF214949CB00911619 /* LUAutocompleteViewDelegate.swift in Sources */,
 				FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */,
 				FA670A3B20E291C0000A5169 /* TransactionItem.swift in Sources */,
 				D08EF152AB24CD864B6F2E40 /* RootViewController.swift in Sources */,
@@ -1928,6 +1967,7 @@
 				FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */,
 				FA8AE85820AAD3E900F26E11 /* Session.swift in Sources */,
 				932D4DBEAAA04834E8868AAF /* AdvancedModeViewController.swift in Sources */,
+				FA11EA62214ABFB300C8DFB0 /* CoinAutocompleteCell.swift in Sources */,
 				FA4DF4B02108FA1500E64F1B /* AmountTextFieldTableViewCell.swift in Sources */,
 				FAA2606120923634009FF3DE /* AddressTableViewCell.swift in Sources */,
 				65174A2CD47A619B9407EE4A /* AdvancedModeViewModel.swift in Sources */,

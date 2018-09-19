@@ -18,7 +18,11 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	
 	//MARK: -
 	
-	var viewModel = SpendCoinsViewModel()
+	// MARK: -
+	
+	var vm: SpendCoinsViewModel {
+		return viewModel as! SpendCoinsViewModel
+	}
 	
 	private var formatter = CurrencyNumberFormatter.coinFormatter
 	
@@ -46,11 +50,11 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		}
 	}
 	
-	@IBOutlet weak var getCoinTextField: ValidatableTextField! {
-		didSet {
-			setAppearance(for: getCoinTextField)
-		}
-	}
+//	@IBOutlet weak var getCoinTextField: ValidatableTextField! {
+//		didSet {
+//			setAppearance(for: getCoinTextField)
+//		}
+//	}
 	
 	@IBOutlet weak var getCoinActivityIndicator: UIActivityIndicatorView!
 	
@@ -58,7 +62,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .CovertSpendExchangeButton, params: nil)
 		
-		viewModel.exchange()
+		vm.exchange()
 	}
 	
 	@IBOutlet weak var amountErrorLabel: UILabel!
@@ -69,9 +73,9 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .CovertSpendUseMaxButton, params: nil)
 		
-		let balanceString = viewModel.selectedBalanceString?.replacingOccurrences(of: " ", with: "")
+		let balanceString = vm.selectedBalanceString?.replacingOccurrences(of: " ", with: "")
 		self.spendAmountTextField.text = balanceString
-		viewModel.spendAmount.value = balanceString
+		vm.spendAmount.value = balanceString
 	}
 	
 	//MARK: -
@@ -79,11 +83,13 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		viewModel.spendCoin.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (coin) in
-			self?.spendCoinTextField.text = self?.viewModel.spendCoinText
+		viewModel = SpendCoinsViewModel()
+		
+		vm.spendCoin.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (coin) in
+			self?.spendCoinTextField.text = self?.vm.spendCoinText
 		}).disposed(by: disposableBag)
 		
-		viewModel.isApproximatelyLoading.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+		vm.isApproximatelyLoading.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
 			if val {
 				self?.getActivityIndicator.isHidden = false
 				self?.getActivityIndicator.startAnimating()
@@ -94,12 +100,12 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 			}
 		}).disposed(by: disposableBag)
 		
-		viewModel.approximately.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+		vm.approximately.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
 			self?.approximately.text = val
 			
 		}).disposed(by: disposableBag)
 		
-		viewModel.isLoading.asObservable().subscribe(onNext: { [weak self] (val) in
+		vm.isLoading.asObservable().subscribe(onNext: { [weak self] (val) in
 			if val {
 				self?.exchangeButton.isEnabled = false
 				self?.buttonActivityIndicator.startAnimating()
@@ -112,34 +118,34 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 			}
 		}).disposed(by: disposableBag)
 		
-		viewModel.isButtonEnabled.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+		vm.isButtonEnabled.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
 			self?.exchangeButton.isEnabled = val
 		}).disposed(by: disposableBag)
 		
-		viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
+		vm.errorNotification.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
 		}).subscribe(onNext: { (notification) in
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
 			banner.show()
 		}).disposed(by: disposableBag)
 		
-		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
+		vm.successMessage.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
 		}).subscribe(onNext: { (notification) in
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
 			banner.show()
 		}).disposed(by: disposableBag)
 		
-		viewModel.shouldClearForm.asObservable().filter({ (val) -> Bool in
+		vm.shouldClearForm.asObservable().filter({ (val) -> Bool in
 			return val
 		}).subscribe(onNext: { [weak self] (val) in
 			self?.clearForm()
 		}).disposed(by: disposableBag)
 		
 		Session.shared.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
-			self?.spendCoinTextField.text = self?.viewModel.spendCoinText
+			self?.spendCoinTextField.text = self?.vm.spendCoinText
 			
-			if self?.viewModel.hasMultipleCoins ?? false {
+			if self?.vm.hasMultipleCoins ?? false {
 				self?.spendCoinTextField?.rightViewMode = .always
 			}
 			else {
@@ -147,15 +153,15 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 			}
 		}).disposed(by: disposableBag)
 		
-		viewModel.amountError.asObservable().subscribe(onNext: { (val) in
+		vm.amountError.asObservable().subscribe(onNext: { (val) in
 			self.amountErrorLabel.text = val
 		}).disposed(by: disposableBag)
 		
-		viewModel.getCoinError.asObservable().subscribe(onNext: { (val) in
+		vm.getCoinError.asObservable().subscribe(onNext: { (val) in
 			self.getCoinErrorLabel.text = val
 		}).disposed(by: disposableBag)
 		
-		viewModel.coinIsLoading.asObservable().subscribe(onNext: { (val) in
+		vm.coinIsLoading.asObservable().subscribe(onNext: { (val) in
 			if val {
 				self.getCoinActivityIndicator.startAnimating()
 				self.getCoinActivityIndicator.isHidden = false
@@ -165,12 +171,10 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 				self.getCoinActivityIndicator.isHidden = true
 			}
 		}).disposed(by: disposableBag)
-
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendScreen, params: nil)
 		
@@ -194,7 +198,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	}
 	
 	private func shouldShowPicker() -> Bool {
-		return (viewModel.pickerItems().count) > 1
+		return (vm.pickerItems().count) > 1
 	}
 	
 	//MARK: -
@@ -206,7 +210,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	
 	func showPicker() {
 		
-		let items = viewModel.pickerItems()
+		let items = vm.pickerItems()
 		
 		guard items.count > 0 else {
 			return
@@ -234,11 +238,11 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: self!.formatter)
 				return (item.coin ?? "") + " (" + balanceString + ")" == coin
 			}).first {
-				self?.viewModel.selectedAddress = item.address
-				self?.viewModel.selectedCoin = item.coin
+				self?.vm.selectedAddress = item.address
+				self?.vm.selectedCoin = item.coin
 			}
 			
-			self?.viewModel.spendCoin.value = coin
+			self?.vm.spendCoin.value = coin
 		}
 	}
 	
@@ -257,17 +261,16 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		textField.text = txtAfterUpdate
 		
 		if textField == self.spendAmountTextField {
-			viewModel.spendAmount.value = (txtAfterUpdate as String).replacingOccurrences(of: ",", with: ".")
+			vm.spendAmount.value = (txtAfterUpdate as String).replacingOccurrences(of: ",", with: ".")
 		}
 		else if textField == self.spendCoinTextField {
-			viewModel.spendCoin.value = txtAfterUpdate as String
+			vm.spendCoin.value = txtAfterUpdate as String
 		}
 		else if textField == getCoinTextField {
-			viewModel.getCoin.value = txtAfterUpdate as String
+			vm.getCoin.value = txtAfterUpdate as String
+			autocompleteView.perform("textFieldEditingChanged")
 		}
-		viewModel.validateErrors()
+		vm.validateErrors()
 		return false
-
 	}
-
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Ubuntu-R.ttf">
+            <string>Ubuntu</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AutocompleteCellIdentifier" rowHeight="43" id="W0N-Y8-Nd9" customClass="CoinAutocompleteCell" customModule="MinterWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="424" height="46"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="W0N-Y8-Nd9" id="XP3-Ak-1iE">
+                <rect key="frame" x="0.0" y="0.0" width="424" height="45.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dhK-86-I1p">
+                        <rect key="frame" x="16" y="14" width="398" height="18"/>
+                        <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="dhK-86-I1p" secondAttribute="bottom" constant="13.5" id="6AG-aG-WEf"/>
+                    <constraint firstItem="dhK-86-I1p" firstAttribute="top" secondItem="XP3-Ak-1iE" secondAttribute="top" constant="14" id="Hul-CZ-m8z"/>
+                    <constraint firstAttribute="trailing" secondItem="dhK-86-I1p" secondAttribute="trailing" constant="10" id="RPu-cc-4sl"/>
+                    <constraint firstItem="dhK-86-I1p" firstAttribute="leading" secondItem="XP3-Ak-1iE" secondAttribute="leading" constant="16" id="yJz-Tk-TOB"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="coinTitleLabel" destination="dhK-86-I1p" id="E2b-V8-pHl"/>
+            </connections>
+            <point key="canvasLocation" x="48" y="-71"/>
+        </tableViewCell>
+    </objects>
+</document>
