@@ -189,7 +189,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		else {
 			return
 		}
-		
+		//TODO: move to BigInt(decimal: ..)
 		let numberFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 		
 		guard let strVal = numberFormatter.string(from: amnt * TransactionCoinFactorDecimal as NSNumber) else {

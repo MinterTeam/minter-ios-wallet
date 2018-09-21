@@ -22,13 +22,13 @@ PODS:
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
   - McPicker (1.0.0)
-  - MinterCore (0.1.7):
+  - MinterCore (0.1.8):
     - Alamofire (~> 4.6)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 0.9)
     - ObjectMapper (~> 3.1)
     - secp256k1.swift (~> 0.1)
-  - MinterExplorer (0.1.8):
+  - MinterExplorer (0.1.9):
     - MinterCore
   - MinterMy (0.1.4):
     - MinterCore
@@ -80,8 +80,8 @@ DEPENDENCIES:
   - ImagePicker
   - KeychainSwift
   - McPicker
-  - MinterCore
-  - MinterExplorer (from `../MinterExplorer`)
+  - MinterCore (from `../MinterCore`)
+  - MinterExplorer
   - MinterMy
   - NextGrowingTextView
   - NotificationBannerSwift
@@ -119,7 +119,7 @@ SPEC REPOS:
     - KeychainSwift
     - MarqueeLabel
     - McPicker
-    - MinterCore
+    - MinterExplorer
     - MinterMy
     - NextGrowingTextView
     - NotificationBannerSwift
@@ -143,8 +143,8 @@ SPEC REPOS:
     - YandexMobileMetrica
 
 EXTERNAL SOURCES:
-  MinterExplorer:
-    :path: "../MinterExplorer"
+  MinterCore:
+    :path: "../MinterCore"
   SVProgressHUD:
     :git: https://github.com/SVProgressHUD/SVProgressHUD.git
   SwiftValidator:
@@ -177,8 +177,8 @@ SPEC CHECKSUMS:
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   McPicker: 130183cd3d22fc6933ea9e63c5a0d0d1becc0122
-  MinterCore: 23e4847d0c14d8e0ce15d5469a23b58dee79a621
-  MinterExplorer: 21e7b3e87486205590aeeb92e4371b3e43db15c4
+  MinterCore: d8d980e0be86dcc0e87488132f83650ec2e69421
+  MinterExplorer: 1143271d54cae6d9cffd6b77573c8462e8b78257
   MinterMy: 82f1ce5f3a6747a4610976c3ae34dbb3f1b8f5d3
   NextGrowingTextView: 6612417168300cbd7fb09089348f063e242b7713
   NotificationBannerSwift: 5d0191ae57c4b38e484dab4912e32d1ed99fce61
@@ -203,6 +203,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: fbca111c5991328e58f0ac38a050b44a4b356481
+PODFILE CHECKSUM: 06337d51b37b1383c4410639b86049f2254304d6
 
 COCOAPODS: 1.5.3

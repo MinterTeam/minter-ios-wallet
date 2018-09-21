@@ -677,7 +677,7 @@ class SendViewModel: BaseViewModel {
 							return
 						}
 						
-						self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: selectedCoin, amount: normalizedAmount)
+						self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: selectedCoin, amount: normalizedAmount * TransactionCoinFactorDecimal)
 						
 					}
 				}
@@ -722,11 +722,6 @@ class SendViewModel: BaseViewModel {
 		
 		let newPk = self.accountManager.privateKey(from: seed)
 		let nonce = BigUInt(nonce)
-//
-//		guard let str = numberFormatter.string(from: amount as NSNumber) else {
-//			completion?(false)
-//			return
-//		}
 		
 		let decimalAmount = BigUInt(decimal: amount)
 		
@@ -736,11 +731,6 @@ class SendViewModel: BaseViewModel {
 		}
 		
 		let tx = self.rawTransaction(nonce: nonce, gasCoin: commissionCoin, to: to, value: value, coin: coin)
-		
-//		let cn = commissionCoin
-//		let coinData = cn.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
-//
-//		let tx = SendCoinRawTransaction(nonce: nonce, gasCoin: coinData, to: to, value: value, coin: coin.uppercased())
 		let pkString = newPk.raw.toHexString()
 		
 		guard let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pkString) else {
