@@ -193,6 +193,8 @@
 		FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA694520D7C717006F173F /* MnemonicTests.swift */; };
 		FAD0F6C220FCAFB2009A5936 /* NewConvertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */; };
 		FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB3E3B20A9C30000EB6CD7 /* Storage.swift */; };
+		FAE43C9321539F2A002027D4 /* DelegateTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE43C9121539F2A002027D4 /* DelegateTransactionTableViewCell.swift */; };
+		FAE43C9421539F2A002027D4 /* DelegateTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE43C9221539F2A002027D4 /* DelegateTransactionTableViewCell.xib */; };
 		FAE5548C2118442800D4872C /* CoinsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5548B2118442800D4872C /* CoinsRouter.swift */; };
 		FAE5548E2118472800D4872C /* ReceiveRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5548D2118472800D4872C /* ReceiveRouter.swift */; };
 		FAE794502088C38F0006CB0B /* DisclosureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */; };
@@ -426,6 +428,8 @@
 		FACA694520D7C717006F173F /* MnemonicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTests.swift; sourceTree = "<group>"; };
 		FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConvertViewController.swift; sourceTree = "<group>"; };
 		FADB3E3B20A9C30000EB6CD7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		FAE43C9121539F2A002027D4 /* DelegateTransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateTransactionTableViewCell.swift; sourceTree = "<group>"; };
+		FAE43C9221539F2A002027D4 /* DelegateTransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DelegateTransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FAE5548B2118442800D4872C /* CoinsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsRouter.swift; sourceTree = "<group>"; };
 		FAE5548D2118472800D4872C /* ReceiveRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveRouter.swift; sourceTree = "<group>"; };
 		FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureTableViewCell.swift; sourceTree = "<group>"; };
@@ -1108,6 +1112,8 @@
 				FAB7AA1620F600230003D0DE /* ConvertTransactionTableViewCell.xib */,
 				FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */,
 				FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */,
+				FAE43C9121539F2A002027D4 /* DelegateTransactionTableViewCell.swift */,
+				FAE43C9221539F2A002027D4 /* DelegateTransactionTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1586,6 +1592,7 @@
 				FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */,
 				FAA234E72084A26900F999DE /* SeparatorTableViewCell.xib in Resources */,
 				FAA2607620932641009FF3DE /* BlankTableViewCell.xib in Resources */,
+				FAE43C9421539F2A002027D4 /* DelegateTransactionTableViewCell.xib in Resources */,
 				FAB8660020C7D0B3002568A4 /* TextViewTableViewCell.xib in Resources */,
 				FA45427A2106106200DB6634 /* CoinsTableViewHeaderView.xib in Resources */,
 				FA670A3F20E63431000A5169 /* AddressTextViewTableViewCell.xib in Resources */,
@@ -1919,6 +1926,7 @@
 				FA670A3B20E291C0000A5169 /* TransactionItem.swift in Sources */,
 				D08EF152AB24CD864B6F2E40 /* RootViewController.swift in Sources */,
 				FAB85B4620DB980500782AFB /* URLRequst+NoCache.swift in Sources */,
+				FAE43C9321539F2A002027D4 /* DelegateTransactionTableViewCell.swift in Sources */,
 				FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */,
 				94B58309D085DACB65260018 /* RootViewModel.swift in Sources */,
 				FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */,

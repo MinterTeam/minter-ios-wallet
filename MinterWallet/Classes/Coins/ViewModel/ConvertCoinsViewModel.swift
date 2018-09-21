@@ -16,7 +16,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	var accountManager = AccountManager()
 	
-	let coinManager = MinterExplorer.CoinManager.default
+	let coinManager = MinterExplorer.ExplorerCoinManager.default
 	
 	var disposeBag = DisposeBag()
 	
@@ -128,7 +128,9 @@ class ConvertCoinsViewModel : BaseViewModel {
 				symbol != ""
 			}) ?? [String]()
 			
-			completion?(Array(res[safe: 0..<3] ?? []))
+			let resCoins = Array(res[safe: 0..<3] ?? [])
+			print(resCoins)
+			completion?(resCoins)
 			
 		}
 	}

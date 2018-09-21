@@ -175,7 +175,7 @@ open class LUAutocompleteView: UIView {
 			self.addConstraint(heightConstraint!)
     }
 
-    @objc private func textFieldEditingChanged() {
+    @objc func textFieldEditingChanged() {
         NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(getElements), object: nil)
         perform(#selector(getElements), with: nil, afterDelay: throttleTime)
     }

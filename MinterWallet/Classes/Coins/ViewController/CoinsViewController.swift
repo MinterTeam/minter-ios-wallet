@@ -101,6 +101,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 					convertCell.delegate = self
 				}
 				
+				if let delegateCell = cell as? DelegateTransactionTableViewCell {
+					delegateCell.delegate = self
+				}
+				
 				return cell
 		})
 		
@@ -166,6 +170,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil), forCellReuseIdentifier: "CoinTableViewCell")
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingTableViewCell")
+		tableView.register(UINib(nibName: "DelegateTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "DelegateTransactionTableViewCell")
 	}
 	
 	//MARK: -
@@ -274,7 +279,7 @@ extension CoinsViewController : ButtonTableViewCellDelegate {
 	}
 }
 
-extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate {
+extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate, DelegateTransactionTableViewCellDelegate {
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		
@@ -286,6 +291,15 @@ extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransac
 	}
 	
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		
+		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			presentExplorerController(with: url)
+		}
+	}
+	
+	func didTapExpandedButton(cell: DelegateTransactionTableViewCell) {
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
 		

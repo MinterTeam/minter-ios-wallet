@@ -268,7 +268,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		}
 		else if textField == getCoinTextField {
 			vm.getCoin.value = txtAfterUpdate as String
-			autocompleteView.perform("textFieldEditingChanged")
+			autocompleteView.perform(#selector(LUAutocompleteView.textFieldEditingChanged))
 		}
 		vm.validateErrors()
 		return false

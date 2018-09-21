@@ -720,18 +720,15 @@ class SendViewModel: BaseViewModel {
 	
 	private func sendTx(seed: Data, nonce: Int, to: String, coin: String, commissionCoin: String, amount: Decimal, completion: ((Bool?) -> ())? = nil) {
 		
-		let numberFormatter = NumberFormatter()
-		numberFormatter.generatesDecimalNumbers = true
-		
 		let newPk = self.accountManager.privateKey(from: seed)
 		let nonce = BigUInt(nonce)
+//
+//		guard let str = numberFormatter.string(from: amount as NSNumber) else {
+//			completion?(false)
+//			return
+//		}
 		
-		guard let str = numberFormatter.string(from: amount as NSNumber) else {
-			completion?(false)
-			return
-		}
-		
-		let decimalAmount = BigUInt(str)
+		let decimalAmount = BigUInt(decimal: amount)
 		
 		guard let value = decimalAmount else {
 			completion?(false)

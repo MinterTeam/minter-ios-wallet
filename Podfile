@@ -4,7 +4,7 @@ use_frameworks!
 platform :ios, '10.0'
 
 target 'MinterWallet' do
-    pod 'MinterCore'
+		pod 'MinterCore', :path => '../MinterCore'
 		pod 'MinterMy'
 		pod 'MinterExplorer'
     pod 'Alamofire'

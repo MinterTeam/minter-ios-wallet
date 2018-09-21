@@ -147,15 +147,9 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 				return
 		}
 		
-		let frmttr = NumberFormatter()
-		frmttr.generatesDecimalNumbers = true
-		
 		let ammnt = amount * TransactionCoinFactorDecimal
-		guard let amountString = frmttr.string(from: ammnt as NSNumber) else {
-			return
-		}
 		
-		let convertVal = (BigUInt(amountString) ?? BigUInt(0))
+		let convertVal = (BigUInt(decimal: ammnt) ?? BigUInt(0))
 		
 		let value = convertVal
 		

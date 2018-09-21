@@ -399,10 +399,10 @@
                                         <rect key="frame" x="177" y="449.5" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zvp-UN-eHT">
-                                        <rect key="frame" x="10" y="292.5" width="355" height="300"/>
+                                        <rect key="frame" x="8" y="292.5" width="359" height="300"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ucv-gD-Usa" customClass="LUAutocompleteView" customModule="MinterWallet" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="355" height="100"/>
+                                                <rect key="frame" x="2" y="0.0" width="355" height="100"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
@@ -675,11 +675,11 @@
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VqN-EM-pSz">
                                         <rect key="frame" x="177" y="449.5" width="20" height="20"/>
                                     </activityIndicatorView>
-                                    <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="V8P-l1-8Qq">
-                                        <rect key="frame" x="10" y="161" width="355" height="300"/>
+                                    <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V8P-l1-8Qq">
+                                        <rect key="frame" x="8" y="161" width="359" height="300"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="fWc-5V-dH9" customClass="LUAutocompleteView" customModule="MinterWallet" customModuleProvider="target">
-                                                <rect key="frame" x="2" y="0.0" width="351" height="298"/>
+                                            <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWc-5V-dH9" customClass="LUAutocompleteView" customModule="MinterWallet" customModuleProvider="target">
+                                                <rect key="frame" x="2" y="0.0" width="355" height="298"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>

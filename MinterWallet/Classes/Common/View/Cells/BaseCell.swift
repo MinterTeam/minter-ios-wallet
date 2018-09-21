@@ -77,7 +77,7 @@ class ExpandableCell : AccordionTableViewCell, Configurable {
 			let collapsedOptions: UIViewAnimationOptions = [.curveEaseInOut]
 			let options = expanded ? alwaysOptions.union(expandedOptions) : alwaysOptions.union(collapsedOptions)
 			
-			UIView.transition(with: detailView!, duration: 0.2, options: options, animations: { [weak self] in
+			UIView.transition(with: detailView!, duration: 0.3, options: options, animations: { [weak self] in
 				self?.toggleCell(expanded)
 				}, completion: { (completed) in
 					self.toggling = false
@@ -91,7 +91,9 @@ class ExpandableCell : AccordionTableViewCell, Configurable {
 	// MARK: Helpers
 	
 	private func toggleCell(_ val: Bool) {
-		detailView?.isHidden = !val
+//		detailView?.isHidden = !val
+		detailView?.isHidden = false
+		detailView?.alpha = val ? 1.0 : 0.0
 	}
 	
 	override func prepareForReuse() {

@@ -130,8 +130,12 @@ class TransactionsViewModel: BaseViewModel {
 					items[sectionName]?.append(separator)
 				}
 			}
-			
-
+			else if transaction.type == .delegate || transaction.type == .unbond {
+				if let transactionCellItem = self.delegateTransactionItem(with: item) {
+					items[sectionName]?.append(transactionCellItem)
+					items[sectionName]?.append(separator)
+				}
+			}
 		})
 		
 		var sctns = newSections.map({ (item) -> BaseTableSectionItem in
@@ -244,6 +248,34 @@ class TransactionsViewModel: BaseViewModel {
 		
 	}
 	
+	func delegateTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
+		
+		guard let transaction = transactionItem.transaction else {
+			return nil
+		}
+		
+		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
+		
+		let transactionCellItem = DelegateTransactionTableViewCellItem(reuseIdentifier: "DelegateTransactionTableViewCell", identifier: "DelegateTransactionTableViewCell_\(sectionId)")
+		transactionCellItem.txHash = transaction.hash
+		transactionCellItem.date = transaction.date
+		
+		let signMultiplier = transaction.type == .unbond ? 1.0 : -1.0
+		//TODO: move to common
+		if let data = transaction.data as? MinterExplorer.DelegateTransactionData {
+			transactionCellItem.coin = data.coin
+			transactionCellItem.amount = Decimal(signMultiplier) * (data.stake ?? 0)
+			transactionCellItem.title = data.coin ?? ""
+			transactionCellItem.to = data.pubKey ?? ""
+			transactionCellItem.from = data.from ?? ""
+			transactionCellItem.type = transaction.type == .unbond ? "Unbond".localized() : "Delegate".localized()
+			transactionCellItem.image = transaction.type == .unbond ? UIImage(named: "unbondImage") : UIImage(named: "delegateImage")
+			
+		}
+		
+		return transactionCellItem
+		
+	}
 	private func sectionTitle(for date: Date?) -> String {
 		
 		guard nil != date else {
@@ -365,6 +397,9 @@ class TransactionsViewModel: BaseViewModel {
 			return URL(string: MinterExplorerBaseURL + "/transactions/" + (item.txHash ?? ""))
 		}
 		else if let item = self.cellItem(section: section, row: row) as? ConvertTransactionTableViewCellItem {
+			return URL(string: MinterExplorerBaseURL + "/transactions/" + (item.txHash ?? ""))
+		}
+		else	if let item = self.cellItem(section: section, row: row) as? DelegateTransactionTableViewCellItem {
 			return URL(string: MinterExplorerBaseURL + "/transactions/" + (item.txHash ?? ""))
 		}
 		return nil

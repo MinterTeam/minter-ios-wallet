@@ -198,7 +198,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 			return
 		}
 		
-		let formatter = CurrencyNumberFormatter.decimalShortFormatter
+//		let formatter = CurrencyNumberFormatter.decimalShortFormatter
 		
 		let data: [[String]] = [items.map({ (item) -> String in
 			let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: coinFormatter)
@@ -250,7 +250,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 		}
 		else if textField == getCoinTextField {
 			vm.getCoin.value = txtAfterUpdate as String
-			autocompleteView.perform("textFieldEditingChanged")
+			autocompleteView.perform(#selector(LUAutocompleteView.textFieldEditingChanged))
 		}
 		
 		return false

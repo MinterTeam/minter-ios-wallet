@@ -100,11 +100,11 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		confirmPassword.value = self.confirmPassword.value
 		confirmPassword.state = .default
 		
-		let email = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.email.rawValue)
-		email.title = "EMAIL (OPTIONAL *)".localized()
-		email.value = self.email.value
-		email.state = .default
-		email.keyboardType = .emailAddress
+//		let email = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.email.rawValue)
+//		email.title = "EMAIL (OPTIONAL *)".localized()
+//		email.value = self.email.value
+//		email.state = .default
+//		email.keyboardType = .emailAddress
 		
 //		let mobile = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.mobile.rawValue)
 //		mobile.title = "MOBILE NUMBER (OPTIONAL *)".localized()
@@ -113,7 +113,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		
 		var section = BaseTableSectionItem(header: "")
 		section.identifier = "CreateWalletSection"
-		section.items = [username, password, confirmPassword, email]
+		section.items = [username, password, confirmPassword/*, email*/]
 		sctns.append(section)
 		
 		sections.value = sctns

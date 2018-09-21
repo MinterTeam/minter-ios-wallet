@@ -64,6 +64,10 @@ class TransactionsViewController: BaseTableViewController {
 					convertCell.delegate = self
 				}
 				
+				if let delegateCell = cell as? DelegateTransactionTableViewCell {
+					delegateCell.delegate = self
+				}
+				
 				return cell
 		})
 		
@@ -97,6 +101,7 @@ class TransactionsViewController: BaseTableViewController {
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
 		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingTableViewCell")
 		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "ConvertTransactionTableViewCell")
+		tableView.register(UINib(nibName: "DelegateTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "DelegateTransactionTableViewCell")
 	}
 	
 	//MARK: - Expandable
@@ -162,7 +167,7 @@ class TransactionsViewController: BaseTableViewController {
 
 }
 
-extension TransactionsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate {
+extension TransactionsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate, DelegateTransactionTableViewCellDelegate {
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		
@@ -184,4 +189,14 @@ extension TransactionsViewController : TransactionTableViewCellDelegate, Convert
 		}
 	}
 	
+	func didTapExpandedButton(cell: DelegateTransactionTableViewCell) {
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		
+		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			let vc = BaseSafariViewController(url: url)
+			self.present(vc, animated: true) {}
+		}
+	}
+
 }
