@@ -39,7 +39,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 	
 	@IBAction func didTapExchangeButton(_ sender: Any) {
 		
-		AnalyticsHelper.defaultAnalytics.track(event: .CovertGetExchangeButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .ConvertGetExchangeButton, params: nil)
 		
 		vm.exchange()
 	}

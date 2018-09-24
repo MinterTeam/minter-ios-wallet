@@ -60,7 +60,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	
 	@IBAction func didTapExchange(_ sender: Any) {
 		
-		AnalyticsHelper.defaultAnalytics.track(event: .CovertSpendExchangeButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendExchangeButton, params: nil)
 		
 		vm.exchange()
 	}
@@ -71,7 +71,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	
 	@IBAction func didTapUseMax(_ sender: Any) {
 		
-		AnalyticsHelper.defaultAnalytics.track(event: .CovertSpendUseMaxButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendUseMaxButton, params: nil)
 		
 		let balanceString = vm.selectedBalanceString?.replacingOccurrences(of: " ", with: "")
 		self.spendAmountTextField.text = balanceString

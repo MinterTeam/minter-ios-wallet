@@ -63,12 +63,12 @@ class Analytics {
 		//Addresses
 		case AddressesCopyButton
 		
-		//CovertSpend
-		case CovertSpendUseMaxButton
-		case CovertSpendExchangeButton
+		//ConvertSpend
+		case ConvertSpendUseMaxButton
+		case ConvertSpendExchangeButton
 		
-		//CovertGet
-		case CovertGetExchangeButton
+		//ConvertGet
+		case ConvertGetExchangeButton
 		
 	}
 	
