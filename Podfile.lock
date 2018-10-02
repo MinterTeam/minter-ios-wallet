@@ -81,8 +81,8 @@ DEPENDENCIES:
   - KeychainSwift
   - McPicker
   - MinterCore (from `../MinterCore`)
-  - MinterExplorer
-  - MinterMy
+  - MinterExplorer (from `../MinterExplorer`)
+  - MinterMy (from `../MinterMy`)
   - NextGrowingTextView
   - NotificationBannerSwift
   - ObjectMapper
@@ -119,8 +119,6 @@ SPEC REPOS:
     - KeychainSwift
     - MarqueeLabel
     - McPicker
-    - MinterExplorer
-    - MinterMy
     - NextGrowingTextView
     - NotificationBannerSwift
     - ObjectMapper
@@ -145,6 +143,10 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   MinterCore:
     :path: "../MinterCore"
+  MinterExplorer:
+    :path: "../MinterExplorer"
+  MinterMy:
+    :path: "../MinterMy"
   SVProgressHUD:
     :git: https://github.com/SVProgressHUD/SVProgressHUD.git
   SwiftValidator:
@@ -178,8 +180,8 @@ SPEC CHECKSUMS:
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   McPicker: 130183cd3d22fc6933ea9e63c5a0d0d1becc0122
   MinterCore: d8d980e0be86dcc0e87488132f83650ec2e69421
-  MinterExplorer: 1143271d54cae6d9cffd6b77573c8462e8b78257
-  MinterMy: 82f1ce5f3a6747a4610976c3ae34dbb3f1b8f5d3
+  MinterExplorer: 39fffb050772598913cd9d5459fee06ec09c9cf5
+  MinterMy: 99a32a3b0b914f73509715f9c0f7952715808591
   NextGrowingTextView: 6612417168300cbd7fb09089348f063e242b7713
   NotificationBannerSwift: 5d0191ae57c4b38e484dab4912e32d1ed99fce61
   ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
@@ -203,6 +205,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 06337d51b37b1383c4410639b86049f2254304d6
+PODFILE CHECKSUM: 42082168c91b5110ee2d08a7ec2e6e69b6d585ce
 
 COCOAPODS: 1.5.3

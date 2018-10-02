@@ -58,7 +58,6 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 		if let cell = cell as? AccordionTableViewCell {
 //			let expanded = expandedIndexPaths.contains(indexPath)
 			let expanded1 = expandedIdentifiers.contains(cell.identifier)
-			print(expanded1)
 			cell.setExpanded(expanded1, animated: false)
 		}
 	}

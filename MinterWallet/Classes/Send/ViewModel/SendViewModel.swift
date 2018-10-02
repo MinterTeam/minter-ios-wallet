@@ -95,7 +95,7 @@ class SendViewModel: BaseViewModel {
 	}
 	
 	var selectedBalanceText: String? {
-		return formatter.string(from: (selectedAddressBalance ?? 0.0) as NSNumber)
+		return CurrencyNumberFormatter.formattedDecimal(with: selectedAddressBalance ?? 0, formatter: formatter) //formatter.string(from: (selectedAddressBalance ?? 0.0) as NSNumber)
 	}
 	
 	var baseCoinBalance: Decimal {
@@ -193,8 +193,10 @@ class SendViewModel: BaseViewModel {
 		Session.shared.allBalances.asObservable().distinctUntilChanged().filter({ (_) -> Bool in
 			return true //nil == self.selectedAddress
 		}).subscribe(onNext: { [weak self] (val) in
-//			self?.selectedAddress = nil
-//			self?.selectedCoin.value = nil
+			if let addr = self?.selectedAddress, let selCoin = self?.selectedCoin.value, nil == val[addr]?[selCoin] {
+				self?.selectedAddress = nil
+				self?.selectedCoin.value = nil
+			}
 			self?.sections.value = self?.createSections() ?? []
 		}).disposed(by: disposeBag)
 		
@@ -489,7 +491,7 @@ class SendViewModel: BaseViewModel {
 			return nil
 		}
 		
-		let balanceString = coinFormatter.string(from: balance as NSNumber) ?? ""
+		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: coinFormatter)
 		let title = coin + " (" + balanceString + ")"
 		let item = AccountPickerItem(title: title, address: adrs, balance: balance, coin: coin)
 		return PickerTableViewCellPickerItem(title: item.title, object: item)

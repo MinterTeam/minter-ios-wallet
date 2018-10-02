@@ -18,11 +18,11 @@ struct BaseTableSectionItem : AnimatableSectionModelType, IdentifiableType, Equa
 	
 	var identifier = String.random(length: 20)
 	
-	var header: String = ""
+	var header: String? = ""
 	
 	var items: [BaseCellItem]
 	
-	init(header: String, items: [BaseCellItem] = []) {
+	init(header: String? = "", items: [BaseCellItem] = []) {
 		self.header = header
 		self.items = items
 	}

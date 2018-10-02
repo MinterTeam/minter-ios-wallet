@@ -129,7 +129,6 @@ class ConvertCoinsViewModel : BaseViewModel {
 			}) ?? [String]()
 			
 			let resCoins = Array(res[safe: 0..<3] ?? [])
-			print(resCoins)
 			completion?(resCoins)
 			
 		}

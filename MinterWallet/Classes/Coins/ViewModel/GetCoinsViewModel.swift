@@ -124,7 +124,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			}
 			
 			let normalizedCommission = commission / TransactionCoinFactorDecimal
-			let val = (ammnt / TransactionCoinFactorDecimal) + ((self?.canPayComission() ?? false) ? 0 : normalizedCommission)
+			let val = (ammnt / TransactionCoinFactorDecimal) + normalizedCommission
 			
 			self?.approximately.value = CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0 , formatter: self!.formatter) + " " + from
 			

@@ -41,6 +41,13 @@ class TransactionsViewModel: BaseViewModel {
 			self.addresses = addresses ?? []
 		}
 		
+		
+		let loadingItem = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell", identifier: "LoadingTableViewCell")
+		loadingItem.isLoadingObservable = isLoading.asObservable()
+		var section = BaseTableSectionItem(header: "", items: [loadingItem])
+		section.identifier = "LoadingTableViewSection"
+		self.sections.value.append(section)
+		
 		loadData()
 		
 		createSections(with: [])
@@ -82,13 +89,18 @@ class TransactionsViewModel: BaseViewModel {
 		var newSections = [BaseTableSectionItem]()
 		var items = [String : [BaseCellItem]]()
 		
-		self.transactions.forEach({ (item) in
+		transactions?.forEach({ (item) in
 			
 			guard let transaction = item.transaction else {
 				return
 			}
 			
-			let sectionName = sectionTitle(for: transaction.date)
+			let existingSections = self.sections.value.filter({ (section) -> Bool in
+				return section.header == self.sectionTitle(for: transaction.date)
+			})
+			
+			let sectionName = existingSections.count > 0 ? "" : sectionTitle(for: transaction.date)
+			let sectionIdentifier: String!
 			let sectionCandidate = newSections.index(where: { (item) -> Bool in
 				return item.header == sectionName
 			})
@@ -97,63 +109,63 @@ class TransactionsViewModel: BaseViewModel {
 			
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_" + (nil == txn ? String.random(length: 20) : String(txn!)))
 			
-			
 			var section: BaseTableSectionItem?
 			if let idx = sectionCandidate, let sctn = newSections[safe: idx] {
 				section = sctn
+				sectionIdentifier = sctn.identifier
 			}
 			else {
+				sectionIdentifier = String.random(length: 20)
 				section = BaseTableSectionItem(header: sectionName)
-				section?.identifier = sectionName
+				section?.identifier = sectionIdentifier
 				newSections.append(section!)
 			}
-			if nil == items[sectionName] {
-				items[sectionName] = []
+			
+			if nil == items[sectionIdentifier] {
+				items[sectionIdentifier] = []
 			}
-//			items[sectionName]?.append(transactionCellItem)
 			
 			if transaction.type == .send {
 				if let transactionCellItem = self.sendTransactionItem(with: item) {
-					items[sectionName]?.append(transactionCellItem)
-					items[sectionName]?.append(separator)
+					items[sectionIdentifier]?.append(transactionCellItem)
+					items[sectionIdentifier]?.append(separator)
 				}
 			}
 			else if transaction.type == .buy || transaction.type == .sell {
 				if let transactionCellItem = self.convertTransactionItem(with: item) {
-					items[sectionName]?.append(transactionCellItem)
-					items[sectionName]?.append(separator)
+					items[sectionIdentifier]?.append(transactionCellItem)
+					items[sectionIdentifier]?.append(separator)
 				}
 			}
 			else if transaction.type == .sellAllCoins {
 				if let transactionCellItem = self.convertTransactionItem(with: item) {
-					items[sectionName]?.append(transactionCellItem)
-					items[sectionName]?.append(separator)
+					items[sectionIdentifier]?.append(transactionCellItem)
+					items[sectionIdentifier]?.append(separator)
 				}
 			}
 			else if transaction.type == .delegate || transaction.type == .unbond {
 				if let transactionCellItem = self.delegateTransactionItem(with: item) {
-					items[sectionName]?.append(transactionCellItem)
-					items[sectionName]?.append(separator)
+					items[sectionIdentifier]?.append(transactionCellItem)
+					items[sectionIdentifier]?.append(separator)
 				}
 			}
 		})
 		
-		var sctns = newSections.map({ (item) -> BaseTableSectionItem in
-			return BaseTableSectionItem(header: item.header, items: (items[item.header] ?? []))
+		let sctns = newSections.map({ (item) -> BaseTableSectionItem in
+			return BaseTableSectionItem(header: item.header, items: (items[item.identifier] ?? []))
 		})
 		
-		let loadingItem = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell", identifier: "LoadingTableViewCell")
-		loadingItem.isLoadingObservable = isLoading.asObservable()
-		
-		if var lastSection = sctns.last {
-			lastSection.items.append(loadingItem)
+		//Should be loading section
+		if let loadingIndex = self.sections.value.firstIndex(where: { (item) -> Bool in
+			return item.identifier == "LoadingTableViewSection"
+		}) {
+			let loadingSection = self.sections.value[safe: loadingIndex]
+			self.sections.value.remove(at: loadingIndex)
+			self.sections.value = self.sections.value + sctns
+			if nil != loadingSection {
+				self.sections.value.append(loadingSection!)
+			}
 		}
-		else {
-			let section = BaseTableSectionItem(header: "", items: [loadingItem])
-			sctns.append(section)
-		}
-		
-		self.sections.value = sctns
 	}
 	
 	

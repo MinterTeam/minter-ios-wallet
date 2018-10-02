@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SafariServices
+
 
 class HomeViewController: BaseViewController {
 	
@@ -30,6 +32,13 @@ class HomeViewController: BaseViewController {
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
+	}
+	
+	@IBAction func didTapHelpButton(_ sender: Any) {
+		//TODO: Move somewhere
+		let url = URL(string: "https://help.minter.network")!
+		let vc = SFSafariViewController(url: url)
+		self.present(vc, animated: true, completion: nil)
 	}
 	
 	//MARK: -

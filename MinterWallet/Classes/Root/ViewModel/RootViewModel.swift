@@ -128,8 +128,8 @@ class RootViewModel: BaseViewModel {
 		}
 		
 		self.client?.subscribe(toChannel: cnl, delegate: self, completion: { (mes, err) in
-			print(mes)
-			print(err)
+//			print(mes)
+//			print(err)
 		})
 
 	}

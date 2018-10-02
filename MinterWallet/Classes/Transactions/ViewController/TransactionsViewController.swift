@@ -7,7 +7,6 @@
 //
 
 import UIKit
-//import ExpandableCell
 import RxDataSources
 import RxSwift
 import SafariServices
@@ -44,6 +43,7 @@ class TransactionsViewController: BaseTableViewController {
 		
 		self.tableView.tableFooterView = UIView()
 		self.tableView.contentInset = UIEdgeInsets(top: -37, left: 0, bottom: 0, right: 0)
+		self.automaticallyAdjustsScrollViewInsets = true
 		
 		registerViews()
 		
@@ -116,31 +116,24 @@ class TransactionsViewController: BaseTableViewController {
 		
 			return expandedIdentifiers.contains(cell.identifier) ? 430 : 54
 		}
+		
+		if (viewModel.cellItem(section: indexPath.section, row: indexPath.row) as? LoadingTableViewCellItem) != nil {
+			return 52
+		}
+		
 		return 0.1
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		super.tableView(tableView, didSelectRowAt: indexPath)
 		
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+		guard viewModel.cellItem(section: indexPath.section, row: indexPath.row) != nil else {
 			return
 		}
 	}
 	
 	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		super.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
-		
-//		(cell as? ExpandableCell)?.expanded = expandedIndexPaths.contains(indexPath)
-		
-//		if expandedIndexPaths.contains(indexPath) {
-//			(cell as? ExpandableCell)?.toggle(true, animated: false)
-//		}
-//		else {
-//			(cell as? ExpandableCell)?.self.toggle(false, animated: false)
-//			print((cell as? ExpandableCell)?.detailView)
-//		}
-		
-		
 		
 		if viewModel.shouldLoadMore(indexPath) {
 			viewModel.loadData()
@@ -153,6 +146,10 @@ class TransactionsViewController: BaseTableViewController {
 			return UIView()
 		}
 		
+		if section.header == "" {
+			return UIView()
+		}
+		
 		let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DefaultHeader")
 		if let defaultHeader = header as? DefaultHeader {
 			defaultHeader.titleLabel.text = section.header
@@ -162,7 +159,19 @@ class TransactionsViewController: BaseTableViewController {
 	}
 
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 52
+		guard let section = viewModel.section(index: section) else {
+			return 0.1
+		}
+		
+		if section.header == nil || section.header == "" {
+			return 0.1
+		}
+		
+		return 52.0
+	}
+	
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 0.1
 	}
 
 }
