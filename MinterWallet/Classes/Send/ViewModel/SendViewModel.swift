@@ -574,8 +574,8 @@ class SendViewModel: BaseViewModel {
 		}
 		isLoadingNonce.value = true
 		
-		MinterCore.CoreTransactionManager.default.transactionCount(address: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
-			
+		MinterExplorer.TransactionManager.default.count(for: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
+		
 			var success = false
 			
 			defer {
@@ -588,7 +588,7 @@ class SendViewModel: BaseViewModel {
 				return
 			}
 			
-			self?.nonce.value = (count ?? 0) + 1
+			self?.nonce.value = NSDecimalNumber(decimal: count ?? 0).intValue + 1
 			success = true
 		}
 	}
@@ -661,7 +661,7 @@ class SendViewModel: BaseViewModel {
 					}
 					
 					/// Checking commission for the following tx
-					MinterCore.CoinManager.default.estimateTxCommission(rawTx: signedTx) { [weak self] (commission, error) in
+					MinterExplorer.TransactionManager.default.estimateTx(tx: signedTx, completion: { [weak self] (commission, error) in
 						
 						guard error == nil, nil != commission else {
 							return
@@ -681,7 +681,7 @@ class SendViewModel: BaseViewModel {
 						
 						self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: selectedCoin, amount: normalizedAmount * TransactionCoinFactorDecimal)
 						
-					}
+					})
 				}
 				//otherwise just multiply decimal amount to factor
 				else {
@@ -742,7 +742,7 @@ class SendViewModel: BaseViewModel {
 		
 		self.nonce.value = nil
 		
-		MinterCore.CoreTransactionManager.default.send(tx: signedTx) { [weak self] (hash, status, err) in
+		MinterExplorer.TransactionManager.default.sendRawTransaction(rawTransaction: signedTx) { [weak self] (hash, err) in
 			
 			var res = false
 			
@@ -753,13 +753,14 @@ class SendViewModel: BaseViewModel {
 			guard err == nil && nil != hash else {
 				
 				if let error = err as? APIClient.APIClientResponseError {
-					if let errorMessage = error.userData?["message"] as? String {
+					if let errorMessage = error.userData?["log"] as? String {
 						self?.txError.value =  NotifiableError(title: "Tx Error", text: errorMessage)
 					}
 				}
 				else {
-					self?.txError.value = NotifiableError(title: nil != status ? status : "Unable to send transaction".localized(), text: nil)
+					self?.txError.value = NotifiableError(title: "Unable to send transaction".localized(), text: nil)
 				}
+				
 				res = false
 				return
 			}
@@ -772,8 +773,7 @@ class SendViewModel: BaseViewModel {
 		
 		let comission = RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal
 		
-		MinterCore.CoinManager.default.estimateCoinSell(from: forCoin, to: Coin.baseCoin().symbol!, amount: comission) { (result, commission, error) in
-			
+		MinterExplorer.TransactionManager.default.estimateCoinSell(coinFrom: forCoin, coinTo: Coin.baseCoin().symbol!, value: comission) { (result, commission, error) in
 			guard error == nil, let result = result, let commission = commission else {
 				completion?(nil)
 				return

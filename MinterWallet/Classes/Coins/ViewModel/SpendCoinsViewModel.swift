@@ -133,7 +133,8 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			return
 		}
 		
-		CoinManager.default.estimateCoinSell(from: from, to: to, amount: value) { [weak self] (val, commission, error) in
+		MinterExplorer.TransactionManager.default.estimateCoinSell(coinFrom: from, coinTo: to, value: value) { [weak self] (val, commission, error) in
+//		CoinManager.default.estimateCoinSell(from: from, to: to, amount: value) { [weak self] (val, commission, error) in
 			
 			guard nil == error, let ammnt = val, let commission = commission else {
 				self?.approximately.value = "Estimate can't be calculated at the moment".localized()
@@ -213,81 +214,81 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		isLoading.value = true
 		
 		DispatchQueue.global(qos: .userInitiated).async {
-		guard let mnemonic = self.accountManager.mnemonic(for: selectedAddress), let seed = self.accountManager.seed(mnemonic: mnemonic) else {
-			self.isLoading.value = false
-			//Error no Private key found
-			assert(true)
-			self.errorNotification.value = NotifiableError(title: "No private key found", text: nil)
-			return
-		}
-		
-		let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
-		
-		MinterCore.CoreTransactionManager.default.transactionCount(address: "Mx" + selectedAddress) { [weak self] (count, err) in
-			
-			guard err == nil, let nnce = count else {
-				self?.isLoading.value = false
-				self?.errorNotification.value = NotifiableError(title: "Can't get nonce", text: nil)
+			guard let mnemonic = self.accountManager.mnemonic(for: selectedAddress), let seed = self.accountManager.seed(mnemonic: mnemonic) else {
+				self.isLoading.value = false
+				//Error no Private key found
+				assert(true)
+				self.errorNotification.value = NotifiableError(title: "No private key found", text: nil)
 				return
 			}
 			
-			let nonce = nnce + 1
+			let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
 			
-			var tx: RawTransaction!
-			if isMax {
-				let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
-				let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+			MinterExplorer.TransactionManager.default.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
 				
-				tx = SellAllCoinsRawTransaction(nonce: BigUInt(nonce), gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo)
-			}
-			else {
-				let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
-				let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
-				
-				tx = SellCoinRawTransaction(nonce: BigUInt(nonce), gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value)
-			}
-			
-			let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
-			
-			MinterCore.CoreTransactionManager.default.send(tx: signedTx!) { (hash, status, err) in
-				self?.isLoading.value = false
-				
-				defer {
-					DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 2, execute: {
-						Session.shared.loadBalances()
-						Session.shared.loadTransactions()
-					})
-					
-					Session.shared.loadBalances()
-					Session.shared.loadTransactions()
-				}
-				
-				guard nil == err else {
-					if let apiError = err as? APIClient.APIClientResponseError, let errorCode = apiError.userData?["code"] as? Int {
-						if errorCode == 107 {
-							self?.errorNotification.value = NotifiableError(title: "Not enough coins to spend".localized(), text: nil)
-						}
-						else if errorCode == 103 {
-							self?.errorNotification.value = NotifiableError(title: "Coin reserve balance is not sufficient for transaction".localized(), text: nil)
-						}
-						else {
-							if let msg = apiError.userData?["log"] as? String {
-								self?.errorNotification.value = NotifiableError(title: msg, text: nil)
-							}
-							else {
-								self?.errorNotification.value = NotifiableError(title: "An error occured".localized(), text: nil)
-							}
-						}
-						return
-					}
-					self?.errorNotification.value = NotifiableError(title: "Can't send Transaction", text: nil)
+				guard err == nil, let nnce = count else {
+					self?.isLoading.value = false
+					self?.errorNotification.value = NotifiableError(title: "Can't get nonce", text: nil)
 					return
 				}
 				
-				self?.shouldClearForm.value = true
-				self?.successMessage.value = NotifiableSuccess(title: "Coins have been successfully spent".localized(), text: nil)
-			}
-		}
+				let nonce = nnce + 1
+				
+				var tx: RawTransaction!
+				if isMax {
+					let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
+					let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+					
+					tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo)
+				}
+				else {
+					let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
+					let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+					
+					tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value)
+				}
+				
+				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
+				
+				MinterExplorer.TransactionManager.default.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
+					self?.isLoading.value = false
+					
+					defer {
+						DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 2, execute: {
+							Session.shared.loadBalances()
+							Session.shared.loadTransactions()
+						})
+						
+						Session.shared.loadBalances()
+						Session.shared.loadTransactions()
+					}
+					
+					guard nil == err else {
+						if let apiError = err as? APIClient.APIClientResponseError, let errorCode = apiError.userData?["code"] as? Int {
+							if errorCode == 107 {
+								self?.errorNotification.value = NotifiableError(title: "Not enough coins to spend".localized(), text: nil)
+							}
+							else if errorCode == 103 {
+								self?.errorNotification.value = NotifiableError(title: "Coin reserve balance is not sufficient for transaction".localized(), text: nil)
+							}
+							else {
+								if let msg = apiError.userData?["log"] as? String {
+									self?.errorNotification.value = NotifiableError(title: msg, text: nil)
+								}
+								else {
+									self?.errorNotification.value = NotifiableError(title: "An error occured".localized(), text: nil)
+								}
+							}
+							return
+						}
+						self?.errorNotification.value = NotifiableError(title: "Can't send Transaction", text: nil)
+						return
+					}
+					
+					self?.shouldClearForm.value = true
+					self?.successMessage.value = NotifiableSuccess(title: "Coins have been successfully spent".localized(), text: nil)
+				})
+			})
 		}
 	}
 

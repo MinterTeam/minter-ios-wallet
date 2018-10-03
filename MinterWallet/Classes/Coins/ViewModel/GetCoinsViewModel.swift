@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 import MinterCore
+import MinterExplorer
 import BigInt
 
 
@@ -114,7 +115,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		
 		isApproximatelyLoading.value = true
 		
-		CoinManager.default.estimateCoinBuy(from: from, to: to, amount: amnt * TransactionCoinFactorDecimal) { [weak self] (val, commission, error) in
+		MinterExplorer.TransactionManager.default.estimateCoinBuy(coinFrom: from, coinTo: to, value: amnt * TransactionCoinFactorDecimal) { [weak self] (val, commission, error) in
 			
 			self?.isApproximatelyLoading.value = false
 			
@@ -170,7 +171,8 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			
 			let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
 			
-			MinterCore.CoreTransactionManager.default.transactionCount(address: "Mx" + selectedAddress) { [weak self] (count, err) in
+			
+			MinterExplorer.TransactionManager.default.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
 				
 				guard err == nil, let nnce = count else {
 					self?.isLoading.value = false
@@ -183,10 +185,10 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 				let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
 				let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
 				
-				let tx = BuyCoinRawTransaction(nonce: BigUInt(nonce), gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value)
+				let tx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value)
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
 				
-				MinterCore.CoreTransactionManager.default.send(tx: signedTx!) { (hash, status, err) in
+				MinterExplorer.TransactionManager.default.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
 					
 					self?.isLoading.value = false
 					
@@ -224,8 +226,8 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 					
 					self?.shouldClearForm.value = true
 					self?.successMessage.value = NotifiableSuccess(title: "Coins have been successfully bought".localized(), text: nil)
-				}
-			}
+				})
+			})
 		}
 	}
 	

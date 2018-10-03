@@ -94,7 +94,12 @@ extension ConvertCoinsViewController: LUAutocompleteViewDataSource {
 	func autocompleteView(_ autocompleteView: LUAutocompleteView, elementsFor text: String, completion: @escaping ([String]) -> Void) {
 		
 		viewModel?.coinNames(by: text) { (coins) in
-			completion(coins)
+			if coins.count == 1 && (coins.first ?? "") == text {
+				completion([])
+			}
+			else {
+				completion(coins)
+			}
 		}
 	}
 }
