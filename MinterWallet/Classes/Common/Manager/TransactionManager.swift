@@ -16,7 +16,7 @@ import ObjectMapper
 class WalletTransactionManager {
 	
 	
-	let transactionManager = MinterExplorer.TransactionManager.default
+	let transactionManager = MinterExplorer.ExplorerTransactionManager.default
 	let infoManager = MinterMy.InfoManager.default
 	
 	func transactions(addresses: [String]? = nil, page: Int = 0, completion: (([MinterExplorer.Transaction]?, [String : User]?, Error?) -> ())?) {

@@ -133,8 +133,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			return
 		}
 		
-		MinterExplorer.TransactionManager.default.estimateCoinSell(coinFrom: from, coinTo: to, value: value) { [weak self] (val, commission, error) in
-//		CoinManager.default.estimateCoinSell(from: from, to: to, amount: value) { [weak self] (val, commission, error) in
+		MinterExplorer.ExplorerTransactionManager.default.estimateCoinSell(coinFrom: from, coinTo: to, value: value) { [weak self] (val, commission, error) in
 			
 			guard nil == error, let ammnt = val, let commission = commission else {
 				self?.approximately.value = "Estimate can't be calculated at the moment".localized()
@@ -224,7 +223,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			
 			let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
 			
-			MinterExplorer.TransactionManager.default.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
+			MinterExplorer.ExplorerTransactionManager.default.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
 				
 				guard err == nil, let nnce = count else {
 					self?.isLoading.value = false
@@ -250,7 +249,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 				
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
 				
-				MinterExplorer.TransactionManager.default.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
+				MinterExplorer.ExplorerTransactionManager.default.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
 					self?.isLoading.value = false
 					
 					defer {

@@ -37,7 +37,7 @@ class RootViewModel: BaseViewModel {
 	var client: CentrifugeClient?
 	var isConnected: Bool = false
 	
-	var addressManager = AddressManager.default
+	var addressManager = ExplorerAddressManager.default
 
 	override init() {
 		super.init()

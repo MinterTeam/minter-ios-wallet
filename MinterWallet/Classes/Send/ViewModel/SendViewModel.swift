@@ -574,7 +574,7 @@ class SendViewModel: BaseViewModel {
 		}
 		isLoadingNonce.value = true
 		
-		MinterExplorer.TransactionManager.default.count(for: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
+		MinterExplorer.ExplorerTransactionManager.default.count(for: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
 		
 			var success = false
 			
@@ -661,7 +661,7 @@ class SendViewModel: BaseViewModel {
 					}
 					
 					/// Checking commission for the following tx
-					MinterExplorer.TransactionManager.default.estimateTx(tx: signedTx, completion: { [weak self] (commission, error) in
+					MinterExplorer.ExplorerTransactionManager.default.estimateCommission(for: signedTx, completion: { [weak self] (commission, error) in
 						
 						guard error == nil, nil != commission else {
 							return
@@ -742,7 +742,7 @@ class SendViewModel: BaseViewModel {
 		
 		self.nonce.value = nil
 		
-		MinterExplorer.TransactionManager.default.sendRawTransaction(rawTransaction: signedTx) { [weak self] (hash, err) in
+		MinterExplorer.ExplorerTransactionManager.default.sendRawTransaction(rawTransaction: signedTx) { [weak self] (hash, err) in
 			
 			var res = false
 			
@@ -773,7 +773,7 @@ class SendViewModel: BaseViewModel {
 		
 		let comission = RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal
 		
-		MinterExplorer.TransactionManager.default.estimateCoinSell(coinFrom: forCoin, coinTo: Coin.baseCoin().symbol!, value: comission) { (result, commission, error) in
+		MinterExplorer.ExplorerTransactionManager.default.estimateCoinSell(coinFrom: forCoin, coinTo: Coin.baseCoin().symbol!, value: comission) { (result, commission, error) in
 			guard error == nil, let result = result, let commission = commission else {
 				completion?(nil)
 				return

@@ -12,9 +12,9 @@ import MinterExplorer
 import MinterMy
 
 
-public extension MinterExplorer.TransactionManager {
+public extension MinterExplorer.ExplorerTransactionManager {
 
-	class var `default`: MinterExplorer.TransactionManager {
+	class var `default`: MinterExplorer.ExplorerTransactionManager {
 		get {
 			let httpClient = APIClient.shared
 			let manager = self.init(httpClient: httpClient)
@@ -24,9 +24,9 @@ public extension MinterExplorer.TransactionManager {
 
 }
 
-public extension MinterExplorer.AddressManager {
+public extension MinterExplorer.ExplorerAddressManager {
 	
-	class var `default`: MinterExplorer.AddressManager {
+	class var `default`: MinterExplorer.ExplorerAddressManager {
 		get {
 			let httpClient = APIClient.shared
 			let manager = self.init(httpClient: httpClient)

@@ -26,8 +26,8 @@ class Session {
 	
 	private let accountManager = AccountManager()
 	private let minterAccountManager = MinterCore.AccountManager.default
-	private let transactionManager = MinterExplorer.TransactionManager.default
-	private let addressManager = MinterExplorer.AddressManager.default
+	private let transactionManager = MinterExplorer.ExplorerTransactionManager.default
+	private let addressManager = MinterExplorer.ExplorerAddressManager.default
 	private var profileManager: MinterMy.ProfileManager?
 	private let transactionManger = WalletTransactionManager()
 	private let syncer = SessionAddressSyncer()

@@ -115,7 +115,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		
 		isApproximatelyLoading.value = true
 		
-		MinterExplorer.TransactionManager.default.estimateCoinBuy(coinFrom: from, coinTo: to, value: amnt * TransactionCoinFactorDecimal) { [weak self] (val, commission, error) in
+		MinterExplorer.ExplorerTransactionManager.default.estimateCoinBuy(coinFrom: from, coinTo: to, value: amnt * TransactionCoinFactorDecimal) { [weak self] (val, commission, error) in
 			
 			self?.isApproximatelyLoading.value = false
 			
@@ -172,7 +172,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
 			
 			
-			MinterExplorer.TransactionManager.default.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
+			MinterExplorer.ExplorerTransactionManager.default.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
 				
 				guard err == nil, let nnce = count else {
 					self?.isLoading.value = false
@@ -188,7 +188,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 				let tx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value)
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
 				
-				MinterExplorer.TransactionManager.default.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
+				MinterExplorer.ExplorerTransactionManager.default.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
 					
 					self?.isLoading.value = false
 					
