@@ -1,5 +1,6 @@
+[![Download](https://linkmaker.itunes.apple.com/assets/shared/badges/en-us/appstore-lrg.svg)](https://itunes.apple.com/us/app/bip-wallet-testnet/id1436988091?mt=8)
 
-# MinterWallet-iOS
+# Bip Wallet
 
 **Installation**
 
