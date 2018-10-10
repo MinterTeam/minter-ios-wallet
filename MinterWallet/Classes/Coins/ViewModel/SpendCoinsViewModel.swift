@@ -24,6 +24,8 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 	
 	//MARK: -
 	
+	let transactionManager = MinterExplorer.ExplorerTransactionManager.default
+	
 	override init() {
 		super.init()
 		
@@ -223,7 +225,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			
 			let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
 			
-			MinterExplorer.ExplorerTransactionManager.default.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
+			self.transactionManager.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
 				
 				guard err == nil, let nnce = count else {
 					self?.isLoading.value = false
@@ -249,7 +251,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 				
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
 				
-				MinterExplorer.ExplorerTransactionManager.default.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
+				self?.transactionManager.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
 					self?.isLoading.value = false
 					
 					defer {

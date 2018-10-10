@@ -9,21 +9,19 @@ PODS:
   - CentrifugeiOS (5.0.1):
     - IDZSwiftCommonCrypto (~> 0.10.0)
     - Starscream (~> 3.0.4)
-  - CKMnemonic (0.1.7):
-    - CryptoSwift
-  - CountdownLabel (3.0.0)
-  - Crashlytics (3.10.7):
-    - Fabric (~> 1.7.11)
+  - CountdownLabel (4.0.1)
+  - Crashlytics (3.10.8):
+    - Fabric (~> 1.7.12)
   - CryptoSwift (0.12.0)
   - Differentiator (3.1.0)
-  - Fabric (1.7.11)
+  - Fabric (1.7.12)
   - IDZSwiftCommonCrypto (0.10.0)
   - ImagePicker (3.1.0)
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
-  - McPicker (1.0.0)
-  - MinterCore (0.1.8):
-    - Alamofire (~> 4.6)
+  - McPicker (2.0.0)
+  - MinterCore (0.1.9):
+    - Alamofire (~> 4.7)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 0.9)
     - ObjectMapper (~> 3.1)
@@ -39,22 +37,22 @@ PODS:
   - ObjectMapper (3.3.0)
   - QRCode (2.0)
   - QRCodeReader.swift (8.2.0)
-  - ReachabilitySwift (4.2.1)
-  - Realm (3.10.0):
-    - Realm/Headers (= 3.10.0)
-  - Realm/Headers (3.10.0)
-  - RealmSwift (3.10.0):
-    - Realm (= 3.10.0)
-  - RxAppState (1.1.2):
-    - RxCocoa (~> 4.0)
-    - RxSwift (~> 4.0)
-  - RxCocoa (4.3.0):
+  - ReachabilitySwift (4.3.0)
+  - Realm (3.11.0):
+    - Realm/Headers (= 3.11.0)
+  - Realm/Headers (3.11.0)
+  - RealmSwift (3.11.0):
+    - Realm (= 3.11.0)
+  - RxAppState (1.2.0):
+    - RxCocoa (~> 4.3)
+    - RxSwift (~> 4.3)
+  - RxCocoa (4.3.1):
     - RxSwift (~> 4.0)
   - RxDataSources (3.1.0):
     - Differentiator (~> 3.0)
     - RxCocoa (~> 4.0)
     - RxSwift (~> 4.0)
-  - RxSwift (4.3.0)
+  - RxSwift (4.3.1)
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
@@ -72,7 +70,6 @@ DEPENDENCIES:
   - AlamofireImage
   - ALCameraViewController
   - CentrifugeiOS
-  - CKMnemonic
   - CountdownLabel
   - Crashlytics
   - CryptoSwift
@@ -108,7 +105,6 @@ SPEC REPOS:
     - ALCameraViewController
     - BigInt
     - CentrifugeiOS
-    - CKMnemonic
     - CountdownLabel
     - Crashlytics
     - CryptoSwift
@@ -168,18 +164,17 @@ SPEC CHECKSUMS:
   ALCameraViewController: 6398a9282057f709b87a1ecc52a83b48028ade64
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   CentrifugeiOS: 1194c0928bda8f3cbbf3306d4165866e44a062e2
-  CKMnemonic: 88e745afffea6f3c719c799d9869a2ea5eb9f08b
-  CountdownLabel: 4534a68892b1deb73fda18702dfdc2c8444cec08
-  Crashlytics: ccaac42660eb9351b9960c0d66106b0bcf99f4fa
+  CountdownLabel: c9975e3f329140b5e7d1f45cd63b1300badd1712
+  Crashlytics: 058dc1ba579f6c100bc60a6878703779bff383c4
   CryptoSwift: 1c07ca50843dd48bc54e6ea53d7a4dba3b645716
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
-  Fabric: f233c9492b3bbc1f04e3882986740f7988a58edb
+  Fabric: d7387db9a31aadff63b147a4b91d982c53afaa4f
   IDZSwiftCommonCrypto: 4eef2c46e262dfbcbc1fd76365e066336680ad7d
   ImagePicker: db1fd7626337b2577c523bef5f499bbbe5a37079
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
-  McPicker: 130183cd3d22fc6933ea9e63c5a0d0d1becc0122
-  MinterCore: d8d980e0be86dcc0e87488132f83650ec2e69421
+  McPicker: 1d11ad8c07c337a16dd9397e45f321125304cbb0
+  MinterCore: 7b3ebf3a7ebca5e24a96e87f4400b1f77964dafe
   MinterExplorer: 39fffb050772598913cd9d5459fee06ec09c9cf5
   MinterMy: 99a32a3b0b914f73509715f9c0f7952715808591
   NextGrowingTextView: 6612417168300cbd7fb09089348f063e242b7713
@@ -187,13 +182,13 @@ SPEC CHECKSUMS:
   ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
   QRCode: f98a1886c8f37523704a7512a4c0cd45b34c18a4
   QRCodeReader.swift: 003eb32f18a5a675b936ec82ba0ff368cddbff45
-  ReachabilitySwift: 35720ffea59c1c76d15f885be77fd33e33985427
-  Realm: 85ab9e4f779d66f6e9ffeb118dc25b7f130c96ac
-  RealmSwift: 69121c8b86d0ae005fb779efdb10e606732e1c74
-  RxAppState: 0238d65c304725fa815a4b3758be210d48f4db82
-  RxCocoa: 71b9cce833fbcb89a8eec11816dd225830c2bd3c
+  ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
+  Realm: 92f09a102692b96a9a10e9617f214f15c5ab85fc
+  RealmSwift: 5f0481cd658bb751c509314b964a35eaa264d2cf
+  RxAppState: abff6ddb6cf6e0d7c3d7fec65e5892d5e856ba9b
+  RxCocoa: 78763c7b07d02455598d9fc3c1ad091a28b73635
   RxDataSources: a843bad90c29817f5923ec8163f4af2de084ceb3
-  RxSwift: a9717a34df3179fe63563f76e046ad345078dd3a
+  RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
@@ -205,6 +200,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 42082168c91b5110ee2d08a7ec2e6e69b6d585ce
+PODFILE CHECKSUM: 62cb32d7c08f4b25741df225cd11f5fc91b375e6
 
 COCOAPODS: 1.5.3

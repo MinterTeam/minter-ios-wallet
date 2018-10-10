@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.1</string>
 	<key>CFBundleVersion</key>
-	<string>112</string>
+	<string>115</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -40,6 +40,13 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>explorer.minter.network</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>minter-node-2.testnet.minter.network</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>

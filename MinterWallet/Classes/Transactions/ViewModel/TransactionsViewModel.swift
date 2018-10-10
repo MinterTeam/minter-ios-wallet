@@ -288,6 +288,7 @@ class TransactionsViewModel: BaseViewModel {
 		return transactionCellItem
 		
 	}
+	
 	private func sectionTitle(for date: Date?) -> String {
 		
 		guard nil != date else {

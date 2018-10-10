@@ -161,19 +161,19 @@ class ConvertCoinsViewModel : BaseViewModel {
 		
 		self.coinIsLoading.value = true
 		
-		CoinManager.default.info(symbol: coin!) { [weak self] (cn, error) in
-			
+		ExplorerCoinManager.default.coins(term: coin!) { [weak self] (coins, error) in
+		
 			defer {
 				self?.coinIsLoading.value = false
 				self?.validateErrors()
 			}
 			
-			guard error == nil, nil != cn else {
+			guard error == nil, (coins?.count ?? 0) > 0 else {
 				//Error?
 				return
 			}
 			
-			if coin == cn?.symbol?.uppercased() {
+			if coin == coins?.first?.symbol?.uppercased() {
 				self?.hasCoin.value = true
 			}
 			

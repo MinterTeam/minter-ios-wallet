@@ -68,6 +68,7 @@
 		FA505ADD20E24D7C00DA90C0 /* QRTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505ADC20E24D7C00DA90C0 /* QRTableViewCell.swift */; };
 		FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA557E55207BA7490095459B /* DefaultHeader.swift */; };
 		FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA557E57207BA7560095459B /* DefaultHeader.xib */; };
+		FA55B01D216D011600A3A78C /* WalletCoinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA55B01C216D011600A3A78C /* WalletCoinManager.swift */; };
 		FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */; };
 		FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */; };
 		FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */; };
@@ -293,6 +294,7 @@
 		FA505ADC20E24D7C00DA90C0 /* QRTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRTableViewCell.swift; sourceTree = "<group>"; };
 		FA557E55207BA7490095459B /* DefaultHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeader.swift; sourceTree = "<group>"; };
 		FA557E57207BA7560095459B /* DefaultHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultHeader.xib; sourceTree = "<group>"; };
+		FA55B01C216D011600A3A78C /* WalletCoinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCoinManager.swift; sourceTree = "<group>"; };
 		FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldTableViewCell.xib; sourceTree = "<group>"; };
 		FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoGrowingTextView.swift; sourceTree = "<group>"; };
@@ -1123,6 +1125,7 @@
 			children = (
 				FA61EF48209B037700A6FB62 /* AccountManager.swift */,
 				FAB85B4D20DD33E300782AFB /* TransactionManager.swift */,
+				FA55B01C216D011600A3A78C /* WalletCoinManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -1719,7 +1722,6 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
-				"${BUILT_PRODUCTS_DIR}/CKMnemonic/CKMnemonic.framework",
 				"${BUILT_PRODUCTS_DIR}/CentrifugeiOS/CentrifugeiOS.framework",
 				"${BUILT_PRODUCTS_DIR}/CountdownLabel/CountdownLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
@@ -1762,7 +1764,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CKMnemonic.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CentrifugeiOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountdownLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
@@ -1899,6 +1900,7 @@
 				FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */,
 				FAF5FDB0214949CB00911619 /* LUAutocompleteTableViewCell.swift in Sources */,
 				FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */,
+				FA55B01D216D011600A3A78C /* WalletCoinManager.swift in Sources */,
 				FA79F60720D06D3D007876ED /* String+Email.swift in Sources */,
 				FAA2607220931D41009FF3DE /* PasswordEditViewModel.swift in Sources */,
 				FAB85B4E20DD33E300782AFB /* TransactionManager.swift in Sources */,

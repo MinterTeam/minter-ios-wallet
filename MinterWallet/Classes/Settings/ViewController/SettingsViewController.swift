@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import ALCameraViewController
+import NotificationBannerSwift
 
 
 class SettingsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
@@ -65,6 +66,20 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 			return val == true
 		}).subscribe(onNext: { [weak self] (val) in
 			self?.tableView.reloadData()
+		}).disposed(by: disposeBag)
+		
+		viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
+			banner.show()
+		}).disposed(by: disposeBag)
+		
+		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
+			banner.show()
 		}).disposed(by: disposeBag)
 		
 		let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
@@ -198,37 +213,8 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 			self.present(imagePickerController, animated: true, completion: nil)
 		}))
 		actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-		
-//		if pictureView.image != nil {
-//			actionSheet.addAction(UIAlertAction(title: "Remove Photo", style: .destructive, handler: {(_ action: UIAlertAction) -> Void in
-//				self.pictureView.image = nil
-//			}))
-//		}
+
 		present(actionSheet, animated: true, completion: nil)
-		
-		
-		
-//		let cropping = CroppingParameters(isEnabled: true, allowResizing: true, allowMoving: true, minimumSize: CGSize(width: 20, height: 20))
-//
-//		let camera = CameraViewController(croppingParameters: cropping, allowsLibraryAccess: true, allowsSwapCameraOrientation: true, allowVolumeButtonCapture: true) { [weak self] (image, asset) in
-//
-//			if let image = image {
-//				self?.viewModel.updateAvatar(image)
-//			}
-//
-//			self?.dismiss(animated: true, completion: nil)
-//		}
-//
-//		let imagePickerViewController = CameraViewController.imagePickerViewController(croppingParameters: cropping) { [weak self] image, asset in
-//			if let image = image {
-//				self?.viewModel.updateAvatar(image)
-//			}
-//
-//			self?.dismiss(animated: true, completion: nil)
-//		}
-//
-//		present(imagePickerViewController, animated: true, completion: nil)
-		
 	}
 	
 	//MARK: - Segues
@@ -285,6 +271,13 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
 extension SettingsViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		
+		
+		
+		if let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), item.identifier == "ButtonTableViewCell_Get100" {
+			viewModel.requestMNT()
+			return
+		}
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .SettingsLogoutButton, params: nil)
 		
