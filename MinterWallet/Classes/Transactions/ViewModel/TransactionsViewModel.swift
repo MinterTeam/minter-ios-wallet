@@ -229,7 +229,6 @@ class TransactionsViewModel: BaseViewModel {
 			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.from ?? "")
 		}
 		
-		
 		let transactionCellItem = ConvertTransactionTableViewCellItem(reuseIdentifier: "ConvertTransactionTableViewCell", identifier: "ConvertTransactionTableViewCell_\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.title = title
@@ -288,6 +287,7 @@ class TransactionsViewModel: BaseViewModel {
 		return transactionCellItem
 		
 	}
+	
 	private func sectionTitle(for date: Date?) -> String {
 		
 		guard nil != date else {

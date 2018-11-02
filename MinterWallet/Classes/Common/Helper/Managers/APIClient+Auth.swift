@@ -20,5 +20,5 @@ extension APIClient {
 		let client = APIClient(headers: ["Authorization" : "Bearer " + accessToken, "Accept" : "application/json"])
 		return client
 	}
-	
+
 }

@@ -151,7 +151,6 @@ class Session {
 			//retrive user if doesn't exist?
 		}
 		
-		
 		checkLogin()
 	}
 	

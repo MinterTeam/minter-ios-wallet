@@ -12,6 +12,7 @@ import MinterMy
 import Toucan
 
 
+
 class SettingsViewModel: BaseViewModel {
 	
 	//MARK: -
@@ -33,6 +34,10 @@ class SettingsViewModel: BaseViewModel {
 	private var profileManager: ProfileManager?
 	
 	private var selectedImage: UIImage?
+	
+	var errorNotification = Variable<NotifiableError?>(nil)
+	
+	var successMessage = Variable<NotifiableSuccess?>(nil)
 	
 	//MARK: -
 
@@ -120,15 +125,19 @@ class SettingsViewModel: BaseViewModel {
 		addresses.value = nil
 		addresses.placeholder = "Manage"
 		
-		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Transactions")
+		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Logout")
 		button.buttonPattern = "blank"
 		button.title = "LOG OUT".localized()
+		
+		let getMNTButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Get100")
+		getMNTButton.buttonPattern = "purple"
+		getMNTButton.title = "GET 100 MNT".localized()
 		
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: "BlankTableViewCell")
 		blank.color = .clear
 		
 		var section1 = BaseTableSectionItem(header: " ")
-		section1.items = [addresses, separator, blank, button]
+		section1.items = [addresses, separator, blank, getMNTButton, button]
 		sctns.append(section1)
 		
 		sections = sctns
@@ -151,6 +160,25 @@ class SettingsViewModel: BaseViewModel {
 	
 	func section(index: Int) -> BaseTableSectionItem? {
 		return sections[safe: index]
+	}
+	
+	func requestMNT() {
+		guard let address = Session.shared.accounts.value.first?.address else {
+			return
+		}
+		
+		WalletCoinManager.requestMNT(address: "Mx" + address) { [weak self] (error) in
+			if nil != error {
+				var err = NotifiableError()
+				err.title = "You can request 100 MNT only once per hour"
+				self?.errorNotification.value = err
+			}
+			else {
+				var mes = NotifiableSuccess()
+				mes.title = "MNT has been deposited to your account"
+				self?.successMessage.value = mes
+			}
+		}
 	}
 	
 	//MARK: -

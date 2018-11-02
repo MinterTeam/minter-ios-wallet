@@ -9,6 +9,7 @@
 import UIKit
 import Fabric
 import Crashlytics
+import MinterCore
 
 
 @UIApplicationMain
@@ -20,7 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
 		Fabric.with([Crashlytics.self])
-		
+
+//		MinterCoreSDK.initialize(urlString: "http://138.197.222.87:8842/api/")
+		MinterCoreSDK.initialize(urlString: "https://minter-node-2.testnet.minter.network:8841/api/")
 
 		appearance()
 		
@@ -76,6 +79,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.baselineOffset : 1
 			], for: .highlighted
 		)
+		
+		UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -2)
+
 		
 		let img = UIImage(named: "BackIcon")?.resizableImage(withCapInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0))
 		img?.stretchableImage(withLeftCapWidth: 0, topCapHeight: 20)
