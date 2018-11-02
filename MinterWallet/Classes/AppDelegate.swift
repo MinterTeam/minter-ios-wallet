@@ -80,6 +80,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			], for: .highlighted
 		)
 		
+		UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -2)
+
+		
 		let img = UIImage(named: "BackIcon")?.resizableImage(withCapInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0))
 		img?.stretchableImage(withLeftCapWidth: 0, topCapHeight: 20)
 		UINavigationBar.appearance().backIndicatorTransitionMaskImage = img

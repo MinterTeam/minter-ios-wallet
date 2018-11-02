@@ -229,7 +229,6 @@ class TransactionsViewModel: BaseViewModel {
 			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.from ?? "")
 		}
 		
-		
 		let transactionCellItem = ConvertTransactionTableViewCellItem(reuseIdentifier: "ConvertTransactionTableViewCell", identifier: "ConvertTransactionTableViewCell_\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.title = title

@@ -173,10 +173,11 @@ class ConvertCoinsViewModel : BaseViewModel {
 				return
 			}
 			
-			if coin == coins?.first?.symbol?.uppercased() {
+			if (coins?.filter({ (cn) -> Bool in
+				return (cn.symbol?.uppercased() ?? "") == (coin ?? "")
+			}).count ?? 0) > 0 {
 				self?.hasCoin.value = true
 			}
-			
 		}
 	}
 	
