@@ -153,6 +153,12 @@ extension PasswordEditViewController : ButtonTableViewCellDelegate, ValidatableC
 	//MARK: -
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
+		
 		viewModel.changePassword()
 	}
 

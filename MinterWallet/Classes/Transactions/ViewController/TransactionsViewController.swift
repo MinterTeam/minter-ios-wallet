@@ -180,6 +180,9 @@ extension TransactionsViewController : TransactionTableViewCellDelegate, Convert
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
 		
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
@@ -190,6 +193,9 @@ extension TransactionsViewController : TransactionTableViewCellDelegate, Convert
 	
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
 		
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
 		
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
@@ -199,6 +205,9 @@ extension TransactionsViewController : TransactionTableViewCellDelegate, Convert
 	}
 	
 	func didTapExpandedButton(cell: DelegateTransactionTableViewCell) {
+		
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
 		

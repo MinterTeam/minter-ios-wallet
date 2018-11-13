@@ -126,6 +126,11 @@ extension EmailEditViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
+		
 		tableView.endEditing(true)
 		
 		if let emailCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell, let email = emailCell.textField.text {

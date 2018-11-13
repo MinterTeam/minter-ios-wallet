@@ -106,6 +106,7 @@ class DefaultButton: UIButton {
 	//MARK: -
 
 	@objc func animateButtonTouchDidTouchDown(_ sender: UIButton) {
+		
 		UIView.animate(withDuration: 0.1, delay: 0.0, usingSpringWithDamping: 10, initialSpringVelocity: 1, options: [.allowUserInteraction], animations: { [weak self]() -> Void in
 			self?.transform = CGAffineTransform(scaleX: 1.01, y: 1.01)
 		}) { (result) -> Void in

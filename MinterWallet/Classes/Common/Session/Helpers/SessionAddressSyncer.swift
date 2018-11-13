@@ -77,6 +77,10 @@ class SessionAddressSyncer {
 		return res
 	}
 	
+	private func loadAppSettings() {
+		
+	}
+	
 	
 	private var addressManager: MyAddressManager?
 	

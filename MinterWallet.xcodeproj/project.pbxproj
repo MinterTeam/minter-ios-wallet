@@ -66,6 +66,8 @@
 		FA4DF4B02108FA1500E64F1B /* AmountTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4DF4AE2108FA1500E64F1B /* AmountTextFieldTableViewCell.swift */; };
 		FA4DF4B12108FA1500E64F1B /* AmountTextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4DF4AF2108FA1500E64F1B /* AmountTextFieldTableViewCell.xib */; };
 		FA505ADD20E24D7C00DA90C0 /* QRTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505ADC20E24D7C00DA90C0 /* QRTableViewCell.swift */; };
+		FA531E2C219B1E9400A7AD9F /* AppSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA531E2B219B1E9400A7AD9F /* AppSettingsModel.swift */; };
+		FA531E2E219B1F1900A7AD9F /* AppSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */; };
 		FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA557E55207BA7490095459B /* DefaultHeader.swift */; };
 		FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA557E57207BA7560095459B /* DefaultHeader.xib */; };
 		FA55B01D216D011600A3A78C /* WalletCoinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA55B01C216D011600A3A78C /* WalletCoinManager.swift */; };
@@ -194,6 +196,11 @@
 		FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA694520D7C717006F173F /* MnemonicTests.swift */; };
 		FAD0F6C220FCAFB2009A5936 /* NewConvertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */; };
 		FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB3E3B20A9C30000EB6CD7 /* Storage.swift */; };
+		FADD8F1F219309A300463F66 /* pop_down.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F1E219309A300463F66 /* pop_down.wav */; };
+		FADD8F2121930B2300463F66 /* SoundHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD8F2021930B2300463F66 /* SoundHelper.swift */; };
+		FADD8F2321930E7A00463F66 /* beep_digi_octave.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2221930E7A00463F66 /* beep_digi_octave.wav */; };
+		FADD8F2521930E8C00463F66 /* pop_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2421930E8B00463F66 /* pop_hi.wav */; };
+		FADD8F2721930E9F00463F66 /* pop_zap.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2621930E9F00463F66 /* pop_zap.wav */; };
 		FAE43C9321539F2A002027D4 /* DelegateTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE43C9121539F2A002027D4 /* DelegateTransactionTableViewCell.swift */; };
 		FAE43C9421539F2A002027D4 /* DelegateTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE43C9221539F2A002027D4 /* DelegateTransactionTableViewCell.xib */; };
 		FAE5548C2118442800D4872C /* CoinsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5548B2118442800D4872C /* CoinsRouter.swift */; };
@@ -292,6 +299,8 @@
 		FA4DF4AE2108FA1500E64F1B /* AmountTextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountTextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		FA4DF4AF2108FA1500E64F1B /* AmountTextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmountTextFieldTableViewCell.xib; sourceTree = "<group>"; };
 		FA505ADC20E24D7C00DA90C0 /* QRTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRTableViewCell.swift; sourceTree = "<group>"; };
+		FA531E2B219B1E9400A7AD9F /* AppSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsModel.swift; sourceTree = "<group>"; };
+		FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsManager.swift; sourceTree = "<group>"; };
 		FA557E55207BA7490095459B /* DefaultHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeader.swift; sourceTree = "<group>"; };
 		FA557E57207BA7560095459B /* DefaultHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultHeader.xib; sourceTree = "<group>"; };
 		FA55B01C216D011600A3A78C /* WalletCoinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCoinManager.swift; sourceTree = "<group>"; };
@@ -430,6 +439,11 @@
 		FACA694520D7C717006F173F /* MnemonicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTests.swift; sourceTree = "<group>"; };
 		FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConvertViewController.swift; sourceTree = "<group>"; };
 		FADB3E3B20A9C30000EB6CD7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		FADD8F1E219309A300463F66 /* pop_down.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_down.wav; sourceTree = "<group>"; };
+		FADD8F2021930B2300463F66 /* SoundHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundHelper.swift; sourceTree = "<group>"; };
+		FADD8F2221930E7A00463F66 /* beep_digi_octave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep_digi_octave.wav; sourceTree = "<group>"; };
+		FADD8F2421930E8B00463F66 /* pop_hi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_hi.wav; sourceTree = "<group>"; };
+		FADD8F2621930E9F00463F66 /* pop_zap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_zap.wav; sourceTree = "<group>"; };
 		FAE43C9121539F2A002027D4 /* DelegateTransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateTransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FAE43C9221539F2A002027D4 /* DelegateTransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DelegateTransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FAE5548B2118442800D4872C /* CoinsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsRouter.swift; sourceTree = "<group>"; };
@@ -1067,6 +1081,7 @@
 			isa = PBXGroup;
 			children = (
 				FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */,
+				FA531E2B219B1E9400A7AD9F /* AppSettingsModel.swift */,
 			);
 			path = "Database Models";
 			sourceTree = "<group>";
@@ -1126,6 +1141,7 @@
 				FA61EF48209B037700A6FB62 /* AccountManager.swift */,
 				FAB85B4D20DD33E300782AFB /* TransactionManager.swift */,
 				FA55B01C216D011600A3A78C /* WalletCoinManager.swift */,
+				FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -1163,6 +1179,7 @@
 		FA669B67207239F200AD110A /* MinterWallet */ = {
 			isa = PBXGroup;
 			children = (
+				FADD8F1D2193098A00463F66 /* Sounds */,
 				FA7D98F9207F584700193B8A /* Third Party */,
 				FA669BA42072478900AD110A /* Fonts */,
 				FA669B982072448B00AD110A /* Common */,
@@ -1270,6 +1287,7 @@
 				FAB61CF8213D3396002762A7 /* Decimal+Fractional.swift */,
 				FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */,
 				FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */,
+				FADD8F2021930B2300463F66 /* SoundHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1438,6 +1456,17 @@
 			path = Storage;
 			sourceTree = "<group>";
 		};
+		FADD8F1D2193098A00463F66 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				FADD8F2621930E9F00463F66 /* pop_zap.wav */,
+				FADD8F2421930E8B00463F66 /* pop_hi.wav */,
+				FADD8F2221930E7A00463F66 /* beep_digi_octave.wav */,
+				FADD8F1E219309A300463F66 /* pop_down.wav */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		FAE7944E2088C3000006CB0B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -1598,9 +1627,11 @@
 				FAE43C9421539F2A002027D4 /* DelegateTransactionTableViewCell.xib in Resources */,
 				FAB8660020C7D0B3002568A4 /* TextViewTableViewCell.xib in Resources */,
 				FA45427A2106106200DB6634 /* CoinsTableViewHeaderView.xib in Resources */,
+				FADD8F2521930E8C00463F66 /* pop_hi.wav in Resources */,
 				FA670A3F20E63431000A5169 /* AddressTextViewTableViewCell.xib in Resources */,
 				FA669B72207239F200AD110A /* Assets.xcassets in Resources */,
 				FA669B70207239F200AD110A /* Main.storyboard in Resources */,
+				FADD8F2721930E9F00463F66 /* pop_zap.wav in Resources */,
 				FA669BC52072483100AD110A /* Ubuntu-R.ttf in Resources */,
 				FAA26052208E30AC009FF3DE /* CoinTableViewCell.xib in Resources */,
 				FA669BC82072483100AD110A /* Ubuntu-C.ttf in Resources */,
@@ -1613,6 +1644,7 @@
 				FAA234DF20848EC900F999DE /* SwitchTableViewCell.xib in Resources */,
 				FAA234E3208495B900F999DE /* TwoTitleTableViewCell.xib in Resources */,
 				FA669BC02072483100AD110A /* UbuntuMono-BI.ttf in Resources */,
+				FADD8F1F219309A300463F66 /* pop_down.wav in Resources */,
 				FA669BC62072483100AD110A /* Ubuntu-LI.ttf in Resources */,
 				FA669BCA2072483100AD110A /* UbuntuMono-RI.ttf in Resources */,
 				FA2F56BA210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib in Resources */,
@@ -1622,6 +1654,7 @@
 				8FF7BCCC97FAB66AA4688C1B /* Coins.storyboard in Resources */,
 				15A1B86305F7B488825D223C /* CreateWallet.storyboard in Resources */,
 				FAA2608020935C36009FF3DE /* GenerateAddressLabelTableViewCell.xib in Resources */,
+				FADD8F2321930E7A00463F66 /* beep_digi_octave.wav in Resources */,
 				6C405281D86D42CB85997A3F /* Root.storyboard in Resources */,
 				02A6A0A6DB602A40AB4A4C29 /* Transactions.storyboard in Resources */,
 				FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */,
@@ -1848,6 +1881,7 @@
 				FAE7945A208DDC3F0006CB0B /* ActionBarButtonItem.swift in Sources */,
 				FA505ADD20E24D7C00DA90C0 /* QRTableViewCell.swift in Sources */,
 				FA7935FF20D3B3D70012642E /* AddressManager+Default.swift in Sources */,
+				FADD8F2121930B2300463F66 /* SoundHelper.swift in Sources */,
 				FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */,
 				FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */,
 				FAA2606A20931370009FF3DE /* MobileEditViewModel.swift in Sources */,
@@ -1862,6 +1896,7 @@
 				FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */,
 				FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */,
 				FA9BE30D214006A5002160F3 /* AnalyticsHelper.swift in Sources */,
+				FA531E2C219B1E9400A7AD9F /* AppSettingsModel.swift in Sources */,
 				FA6760AA20A9E90900F970E7 /* DatabaseStorage.swift in Sources */,
 				FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */,
 				FA669BA12072461700AD110A /* String+Localized.swift in Sources */,
@@ -1908,6 +1943,7 @@
 				FAA26068209311C2009FF3DE /* MobileEditViewController.swift in Sources */,
 				FA669BDB2072687C00AD110A /* URL+Params.swift in Sources */,
 				FAA234DE20848EC900F999DE /* SwitchTableViewCell.swift in Sources */,
+				FA531E2E219B1F1900A7AD9F /* AppSettingsManager.swift in Sources */,
 				FA669B9E207244FF00AD110A /* BaseViewController.swift in Sources */,
 				FAA234E62084A26900F999DE /* SeparatorTableViewCell.swift in Sources */,
 				FAB865F320C57007002568A4 /* PopupRouter.swift in Sources */,

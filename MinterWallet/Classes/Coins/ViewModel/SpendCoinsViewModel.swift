@@ -138,6 +138,12 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		MinterExplorer.ExplorerTransactionManager.default.estimateCoinSell(coinFrom: from, coinTo: to, value: value) { [weak self] (val, commission, error) in
 			
 			guard nil == error, let ammnt = val, let commission = commission else {
+				
+				if let err = error as? APIClient.APIClientResponseError, let log = err.userData?["log"] as? String {
+					self?.approximately.value = log
+					return
+				}
+				
 				self?.approximately.value = "Estimate can't be calculated at the moment".localized()
 				return
 			}

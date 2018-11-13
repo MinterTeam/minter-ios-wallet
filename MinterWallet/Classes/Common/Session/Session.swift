@@ -97,7 +97,7 @@ class Session {
 		
 		UIApplication.shared.rx.applicationDidBecomeActive.subscribe(onNext: { (state) in
 			self.loadTransactions()
-			self.loadTransactions()
+			self.loadBalances()
 		}).disposed(by: disposeBag)
 		
 		restore()
@@ -150,6 +150,8 @@ class Session {
 		else {
 			//retrive user if doesn't exist?
 		}
+		
+		AppSettingsManager.shared.restore()
 		
 		checkLogin()
 	}

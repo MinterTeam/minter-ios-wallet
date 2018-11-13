@@ -60,6 +60,11 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	
 	@IBAction func didTapExchange(_ sender: Any) {
 		
+		SoundHelper.playSoundIfAllowed(type: .bip)
+		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendExchangeButton, params: nil)
 		
 		vm.exchange()
@@ -191,6 +196,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		if textField == self.spendCoinTextField {
 			scrollView.endEditing(true)
 			showPicker()
+			
 			return false
 		}
 		

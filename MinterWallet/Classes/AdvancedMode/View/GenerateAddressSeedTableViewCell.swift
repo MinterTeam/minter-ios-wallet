@@ -24,6 +24,9 @@ class GenerateAddressSeedTableViewCell: BaseCell {
 	@IBOutlet weak var seedLabel: UILabel!
 
 	@IBAction func copyBtnDidTap(_ sender: Any) {
+		
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
 		UIPasteboard.general.string = seedLabel.text
 		
 		SVProgressHUD.showSuccess(withStatus: "Copied")

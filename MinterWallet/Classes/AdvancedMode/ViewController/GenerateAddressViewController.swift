@@ -108,6 +108,8 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
 		viewModel.activate()
 		
 		delegate?.GenerateAddressViewControllerDelegateDidAddAccount()

@@ -39,6 +39,11 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 	
 	@IBAction func didTapExchangeButton(_ sender: Any) {
 		
+		SoundHelper.playSoundIfAllowed(type: .bip)
+		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .ConvertGetExchangeButton, params: nil)
 		
 		vm.exchange()
@@ -170,6 +175,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 			scrollView.endEditing(true)
 			
 			showPicker()
+			
 			return false
 		}
 		else if textField == self.approximately {

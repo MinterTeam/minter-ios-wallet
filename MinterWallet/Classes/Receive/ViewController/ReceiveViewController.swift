@@ -22,6 +22,9 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 	
 	@IBAction func shareButtonDidTap(_ sender: UIButton) {
 		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .ReceiveShareButton, params: nil)
 		
 		if let activities = viewModel.activities() {

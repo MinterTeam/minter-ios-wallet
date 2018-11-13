@@ -199,6 +199,7 @@ extension SendViewController: PickerTableViewCellDelegate {
 	}
 	
 	func willShowPicker() {
+		
 		tableView.endEditing(true)
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsChooseCoinButton, params: nil)
@@ -215,6 +216,11 @@ extension SendViewController: PickerTableViewCellDataSource {
 extension SendViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+		
+		SoundHelper.playSoundIfAllowed(type: .bip)
+		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsSendButton, params: nil)
 		
@@ -305,12 +311,20 @@ extension SendViewController {
 	
 	func didFinish(viewController: SendPopupViewController) {
 		
+		SoundHelper.playSoundIfAllowed(type: .bip)
+		
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
+		
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupSendButton, params: nil)
 		
 		viewModel.submitSendButtonTaped()
 	}
 	
 	func didCancel(viewController: SendPopupViewController) {
+		
+		SoundHelper.playSoundIfAllowed(type: .cancel)
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupCancelButton, params: nil)
 		
@@ -320,6 +334,11 @@ extension SendViewController {
 	//MARK: - SentPopupViewControllerDelegate
 	
 	func didTapActionButton(viewController: SentPopupViewController) {
+		
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupViewTransactionButton, params: nil)
 		
@@ -332,6 +351,10 @@ extension SendViewController {
 	}
 	
 	func didTapSecondButton(viewController: SentPopupViewController) {
+		
+		SoundHelper.playSoundIfAllowed(type: .cancel)
+		
+		lightImpactFeedbackGenerator.prepare()
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupCloseButton, params: nil)
 		
@@ -433,6 +456,9 @@ extension SendViewController : QRCodeReaderViewControllerDelegate {
 	}
 	
 	func readerDidCancel(_ reader: QRCodeReaderViewController) {
+		
+		SoundHelper.playSoundIfAllowed(type: .cancel)
+		
 		reader.stopScanning()
 		
 		dismiss(animated: true, completion: nil)

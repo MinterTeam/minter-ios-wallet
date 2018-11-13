@@ -16,6 +16,9 @@ import YandexMobileMetrica
 
 class BaseViewController : UIViewController {
 	
+	let hardImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+	let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
@@ -37,9 +40,6 @@ class BaseViewController : UIViewController {
 		super.viewWillAppear(animated)
 		
 		self.setNeedsStatusBarAppearanceUpdate()
-		
-		
-		
 	}
 
 }
@@ -47,6 +47,9 @@ class BaseViewController : UIViewController {
 
 
 class BaseTableViewController : AccordionTableViewController {
+	
+	let hardImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+	let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent

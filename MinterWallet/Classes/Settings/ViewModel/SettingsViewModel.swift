@@ -136,8 +136,12 @@ class SettingsViewModel: BaseViewModel {
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: "BlankTableViewCell")
 		blank.color = .clear
 		
+		let switchItem = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell", identifier: "SwitchTableViewCell")
+		switchItem.title = "Enable sounds".localized()
+		switchItem.isOn.value = AppSettingsManager.shared.isSoundsEnabled
+		
 		var section1 = BaseTableSectionItem(header: " ")
-		section1.items = [addresses, separator, blank, getMNTButton, button]
+		section1.items = [addresses, separator, switchItem, blank, getMNTButton, button]
 		sctns.append(section1)
 		
 		sections = sctns
@@ -161,6 +165,8 @@ class SettingsViewModel: BaseViewModel {
 	func section(index: Int) -> BaseTableSectionItem? {
 		return sections[safe: index]
 	}
+	
+	//MARK: -
 	
 	func requestMNT() {
 		guard let address = Session.shared.accounts.value.first?.address else {
@@ -196,6 +202,13 @@ class SettingsViewModel: BaseViewModel {
 	
 	//MARK: -
 	
+	func didSwitchSound(isOn: Bool) {
+		AppSettingsManager.shared.setSounds(enabled: isOn)
+		if isOn {
+			SoundHelper.playSoundIfAllowed(type: .click)
+		}
+	}
+	
 	func updateAvatar(_ image: UIImage) {
 		
 		guard let client = APIClient.withAuthentication(), let user = Session.shared.user.value else {
@@ -228,10 +241,8 @@ class SettingsViewModel: BaseViewModel {
 				}
 				
 				Session.shared.loadUser()
-				
 			})
 		}
-		
 	}
 
 }

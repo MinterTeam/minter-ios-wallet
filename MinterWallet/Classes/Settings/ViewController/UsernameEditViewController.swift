@@ -145,6 +145,11 @@ extension UsernameEditViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
+		
 		if let usernameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell, let username = usernameCell.textField.text {
 			
 			self.viewModel.username.value = username

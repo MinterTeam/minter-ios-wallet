@@ -29,10 +29,11 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	
 	@objc func handleRefresh(_ refreshControl: UIRefreshControl) {
 		
+		SoundHelper.playSoundIfAllowed(type: .refresh)
+		
 		//TODO: move to VM
 		Session.shared.loadBalances()
 		Session.shared.loadTransactions()
-		
 		
 		refreshControl.endRefreshing()
 	}
@@ -246,6 +247,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	//MARK: - Segues
 	
 	func performSegue(for cellIdentifier: String) {
+		
 		let vm = type(of: self.viewModel)
 		
 		//Move to router?
@@ -283,6 +285,9 @@ extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransac
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
 		
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
@@ -292,6 +297,9 @@ extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransac
 	
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
 		
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
 		
 		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
@@ -300,6 +308,9 @@ extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransac
 	}
 	
 	func didTapExpandedButton(cell: DelegateTransactionTableViewCell) {
+		
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
 		

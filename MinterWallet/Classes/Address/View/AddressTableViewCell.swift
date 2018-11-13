@@ -29,6 +29,8 @@ class AddressTableViewCell: BaseCell {
 	
 	@IBAction func didTapActionButton(_ sender: Any) {
 		
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .AddressesCopyButton, params: nil)
 		
 		UIPasteboard.general.string = addressLabel.text

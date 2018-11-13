@@ -84,12 +84,10 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		
 		let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 		let build = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
-
 		
 		infoLabel.text = "Version: \(version) (\(build))"
 		tableView.tableFooterView = bottomView
 		
-
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -106,7 +104,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		tableView.register(UINib(nibName: "DisclosureTableViewCell", bundle: nil), forCellReuseIdentifier: "DisclosureTableViewCell")
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil), forCellReuseIdentifier: "BlankTableViewCell")
-		
+		tableView.register(UINib(nibName: "SettingsSwitchTableViewCell", bundle: nil), forCellReuseIdentifier: "SwitchTableViewCell")
 		
 		tableView.register(UINib(nibName: "DefaultHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "DefaultHeader")
 	}
@@ -132,6 +130,10 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		if let buttonCell = cell as? ButtonTableViewCell {
 			buttonCell.delegate = self
 			buttonCell.backgroundColor = .clear
+		}
+		
+		if let switchCell = cell as? SwitchTableViewCell {
+			switchCell.delegate = self
 		}
 		
 		let avatarCell = cell as? SettingsAvatarTableViewCell
@@ -272,7 +274,10 @@ extension SettingsViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
+		SoundHelper.playSoundIfAllowed(type: .bip)
 		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
 		
 		if let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), item.identifier == "ButtonTableViewCell_Get100" {
 			viewModel.requestMNT()
@@ -282,6 +287,14 @@ extension SettingsViewController : ButtonTableViewCellDelegate {
 		AnalyticsHelper.defaultAnalytics.track(event: .SettingsLogoutButton, params: nil)
 		
 		viewModel.rightButtonTapped()
+	}
+	
+}
+
+extension SettingsViewController : SwitchTableViewCellDelegate {
+	
+	func didSwitch(isOn: Bool, cell: SwitchTableViewCell) {
+		viewModel.didSwitchSound(isOn: isOn)
 	}
 	
 }

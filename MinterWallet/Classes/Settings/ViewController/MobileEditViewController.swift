@@ -110,6 +110,11 @@ extension MobileEditViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
+		
 		if let mobileCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell, let phone = mobileCell.textField.text {
 			
 			viewModel.update(phone: phone)
