@@ -329,6 +329,8 @@ extension SendViewController {
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupCancelButton, params: nil)
 		
 		viewController.dismiss(animated: true, completion: nil)
+		
+		viewModel.sendCancelButtonTapped()
 	}
 	
 	//MARK: - SentPopupViewControllerDelegate

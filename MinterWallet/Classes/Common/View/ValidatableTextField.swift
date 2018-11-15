@@ -14,6 +14,8 @@ class ValidatableTextField: UITextField {
 
 	//MARK: -
 	
+	var rightPadding = CGFloat(0)
+	
 	private let topPadding = CGFloat(10.0)
 	private let leftPadding = CGFloat(16.0)
 	
@@ -74,13 +76,13 @@ class ValidatableTextField: UITextField {
 	override func editingRect(forBounds bounds: CGRect) -> CGRect {
 		let newLeftPadding = leftPadding + CGFloat(prefixView?.bounds.width ?? 0)
 		
-		return CGRect(x: newLeftPadding, y: topPadding, width: bounds.width - leftPadding - leftPadding, height: bounds.height - topPadding - topPadding)
+		return CGRect(x: newLeftPadding, y: topPadding, width: bounds.width - 2*leftPadding - rightPadding, height: bounds.height - 2*topPadding)
 	}
 	
 	override func textRect(forBounds bounds: CGRect) -> CGRect {
 		let newLeftPadding = leftPadding + CGFloat(prefixView?.bounds.width ?? 0)
 		
-		return CGRect(x: newLeftPadding, y: topPadding, width: bounds.width - leftPadding - leftPadding, height: bounds.height - topPadding - topPadding)
+		return CGRect(x: newLeftPadding, y: topPadding, width: bounds.width - 2*leftPadding - rightPadding, height: bounds.height - 2*topPadding)
 	}
 	
 	override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
@@ -114,6 +116,12 @@ class ValidatableTextField: UITextField {
 		self.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
 		self.rightView = UIView()
 		self.rightViewMode = .never
+	}
+	
+	override func resignFirstResponder() -> Bool {
+		let r = super.resignFirstResponder()
+		self.layoutIfNeeded()
+		return r
 	}
 
 }

@@ -77,11 +77,11 @@ class ReceiveViewModel: BaseViewModel {
 		}
 		
 		let address = "Mx" + account.address
-		
-		let qrCode = QRCode(address)
-		if let image = qrCode?.image {
-			return [address]
-		}
+//
+//		let qrCode = QRCode(address)
+//		if let image = qrCode?.image {
+//			return [address]
+//		}
 		
 		return [address]
 	}

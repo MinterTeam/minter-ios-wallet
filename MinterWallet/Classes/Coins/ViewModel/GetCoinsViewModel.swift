@@ -130,7 +130,8 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 				return
 			}
 			
-			let normalizedCommission = commission / TransactionCoinFactorDecimal
+			//if we can pay commission with base coin - set normalized comission to zero
+			let normalizedCommission = (self?.canPayComission() ?? false) ? 0 : commission / TransactionCoinFactorDecimal
 			let val = (ammnt / TransactionCoinFactorDecimal) + normalizedCommission
 			
 			self?.approximately.value = CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0 , formatter: self!.formatter) + " " + from

@@ -70,14 +70,17 @@ class SendViewModel: BaseViewModel {
 	var sections = Variable([BaseTableSectionItem]())
 	private var _sections = Variable([BaseTableSectionItem]())
 	
+	//Formatters
 	private let formatter = CurrencyNumberFormatter.decimalFormatter
 	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
 	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 	private let coinFormatter = CurrencyNumberFormatter.coinFormatter
 	
+	//Loading observables
 	private var isLoadingAddress = Variable(false)
 	private var isLoadingNonce = Variable(false)
 	
+	//State obervables
 	private var addressStateObservable = Variable(TextViewTableViewCell.State.default)
 	private var amountStateObservable = Variable(TextFieldTableViewCell.State.default)
 	
@@ -173,8 +176,11 @@ class SendViewModel: BaseViewModel {
 		return isLoadingNonce.asObservable()
 	}
 	
+	var forceRefreshSubmitButtonState = Variable(false)
+	
 	var isSubmitButtonEnabledObservable: Observable<Bool> {
-		return Observable.combineLatest(self.toAddress.asObservable(), self.amount.asObservable(), self.selectedCoin.asObservable()).map({ (val) -> Bool in
+		return Observable.combineLatest(self.toAddress.asObservable(), self.amount.asObservable(), self.selectedCoin.asObservable(), forceRefreshSubmitButtonState.asObservable()).map({ (val) -> Bool in
+			
 			return (val.0?.isValidAddress() ?? false) && self.isAmountValid(amount: (val.1 ?? 0))
 		})
 	}
@@ -319,16 +325,15 @@ class SendViewModel: BaseViewModel {
 		defer {
 			self._sections.value = self.createSections()
 		}
-		
-		if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) {
-			self.toField = value
-			
-			return isToValid(to: value)
-		}
-		else if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
+
+		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
 			self.amountField = value.replacingOccurrences(of: ",", with: ".")
 			
 			return isAmountValid(amount: Decimal(string: value) ?? 0)
+		} else if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) && value.count >= 5 {
+			self.toField = value
+			
+			return isToValid(to: value)
 		}
 		
 		assert(true)
@@ -340,12 +345,15 @@ class SendViewModel: BaseViewModel {
 		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
 			self.amountField = value.replacingOccurrences(of: ",", with: ".")
 			
-			if isAmountValid(amount: self.amount.value ?? 0) || self.amountField == "" 	 {
+			if isAmountValid(amount: self.amount.value ?? 0) || self.amountField == "" {
 				amountStateObservable.value = .default
 			}
 			else {
 				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
 			}
+		}
+		else if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) {
+			self.toField = value
 		}
 		
 		self._sections.value = self.createSections()
@@ -391,7 +399,6 @@ class SendViewModel: BaseViewModel {
 		if to.isValidAddress() {
 			toAddress.value = toField
 			addressStateObservable.value = .default
-			
 		}
 		else if to.isValidEmail() {
 			//get by email
@@ -399,6 +406,7 @@ class SendViewModel: BaseViewModel {
 			isLoadingAddress.value = true
 			infoManager.address(email: to) { [weak self] (address, user, error) in
 				self?.isLoadingAddress.value = false
+				self?.forceRefreshSubmitButtonState.value = true
 				
 				guard nil == error, let address = address else {
 					//show field error
@@ -424,6 +432,7 @@ class SendViewModel: BaseViewModel {
 			isLoadingAddress.value = true
 			infoManager.address(username: val) { [weak self] (address, user, error) in
 				self?.isLoadingAddress.value = false
+				self?.forceRefreshSubmitButtonState.value = true
 				
 				guard nil == error, let address = address else {
 					self?.addressStateObservable.value = .invalid(error: "USERNAME CAN NOT BE FOUND".localized())
@@ -564,8 +573,13 @@ class SendViewModel: BaseViewModel {
 		else {
 			sendTX()
 		}
-		
 	}
+	
+	func sendCancelButtonTapped() {
+		forceRefreshSubmitButtonState.value = true
+	}
+	
+	//MARK: -
 	
 	func getNonce(completion: ((Bool) -> ())?) {
 		
@@ -754,7 +768,7 @@ class SendViewModel: BaseViewModel {
 				
 				if let error = err as? APIClient.APIClientResponseError {
 					if let errorMessage = error.userData?["log"] as? String {
-						self?.txError.value =  NotifiableError(title: "Tx Error", text: errorMessage)
+						self?.txError.value =  NotifiableError(title: "An Error Occurred".localized(), text: errorMessage)
 					}
 				}
 				else {

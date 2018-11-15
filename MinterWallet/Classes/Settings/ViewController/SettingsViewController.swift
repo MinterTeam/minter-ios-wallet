@@ -274,18 +274,18 @@ extension SettingsViewController : ButtonTableViewCellDelegate {
 	
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
-		SoundHelper.playSoundIfAllowed(type: .bip)
-		
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
 		
 		if let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), item.identifier == "ButtonTableViewCell_Get100" {
+			SoundHelper.playSoundIfAllowed(type: .bip)
 			viewModel.requestMNT()
 			return
 		}
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .SettingsLogoutButton, params: nil)
 		
+		SoundHelper.playSoundIfAllowed(type: .cancel)
 		viewModel.rightButtonTapped()
 	}
 	

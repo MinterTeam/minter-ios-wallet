@@ -16,7 +16,13 @@ class QRTableViewCellItem : BaseCellItem {
 	
 }
 
+protocol QRTableViewCellDelegate: class {
+	func QRTableViewCellDidTapCopy(cell: QRTableViewCell)
+}
+
 class QRTableViewCell: BaseCell {
+	
+	weak var delegate: QRTableViewCellDelegate?
 	
 	//MARK: - 
 
@@ -25,18 +31,13 @@ class QRTableViewCell: BaseCell {
 	@IBOutlet weak var copyBtn: UIButton!
 	
 	@IBAction func copyButtonDidTap(_ sender: Any) {
-		UIPasteboard.general.image = qrImageView.image
-		
-		SVProgressHUD.showSuccess(withStatus: "Copied".localized())
+		delegate?.QRTableViewCellDidTapCopy(cell: self)
 	}
 	
 	//MARK: -
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
-		
-		
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -33,7 +33,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5j-b4-ihl">
-                        <rect key="frame" x="58" y="19" width="307" height="0.0"/>
+                        <rect key="frame" x="58" y="18.5" width="307" height="0.0"/>
                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                         <color key="textColor" red="0.95693963770000001" green="0.23488524559999999" blue="0.21839424969999999" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
@@ -86,6 +86,7 @@
                 <outlet property="errorTitle" destination="H5j-b4-ihl" id="OUa-SS-Bar"/>
                 <outlet property="textField" destination="Ond-CZ-BlM" id="223-2T-QIR"/>
                 <outlet property="title" destination="dre-gy-gzx" id="KJr-wI-OeO"/>
+                <outlet property="useMaxButton" destination="aKF-ms-b8X" id="NO2-Zu-bGU"/>
             </connections>
             <point key="canvasLocation" x="-102.5" y="-98"/>
         </tableViewCell>

@@ -9,6 +9,8 @@
 import UIKit
 import RxSwift
 import RxDataSources
+import QRCode
+import SVProgressHUD
 
 
 class ReceiveViewController: BaseViewController, UITableViewDelegate {
@@ -57,6 +59,10 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 				
 				cell.configure(item: item)
 				
+				if let qrCell = cell as? QRTableViewCell {
+					qrCell.delegate = self
+				}
+				
 				return cell
 		})
 		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .automatic, reloadAnimation: .automatic, deleteAnimation: .automatic)
@@ -101,6 +107,24 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 		
 		return header
 	}
-	
+}
 
+extension ReceiveViewController : QRTableViewCellDelegate {
+	func QRTableViewCellDidTapCopy(cell: QRTableViewCell) {
+		if let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let qrItem = item as? QRTableViewCellItem {
+			
+			self.lightImpactFeedbackGenerator.prepare()
+			self.lightImpactFeedbackGenerator.impactOccurred()
+			
+			guard let str = qrItem.string, let img = QRCode(str)?.image else {
+				return
+			}
+			
+			SoundHelper.playSoundIfAllowed(type: .click)
+			
+			UIPasteboard.general.image = img
+			
+			SVProgressHUD.showSuccess(withStatus: "Copied".localized())
+		}
+	}
 }

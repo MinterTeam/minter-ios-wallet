@@ -19,7 +19,19 @@ protocol AmountTextFieldTableViewCellDelegate : class {
 
 class AmountTextFieldTableViewCell : TextFieldTableViewCell {
 	
+	//MARK: - IBOutlets
+	
+	@IBOutlet weak var useMaxButton: UIButton!
+	
+	@IBAction func didTapUseMax(_ sender: Any) {
+		amountDelegate?.didTapUseMax()
+	}
+	
+	//MARK: -
+	
 	weak var amountDelegate: AmountTextFieldTableViewCellDelegate?
+	
+	//MARK: - States
 	
 	override var state: State {
 		didSet {
@@ -66,16 +78,17 @@ class AmountTextFieldTableViewCell : TextFieldTableViewCell {
 		self.textField.rightViewMode = .never
 	}
 
+	//MARK: - UITableViewCell
+	
 	override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		self.textField.rightPadding = CGFloat(self.useMaxButton.bounds.width)
+		
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-    
-	@IBAction func didTapUseMax(_ sender: Any) {
-		amountDelegate?.didTapUseMax()
-	}
-	
+
 }

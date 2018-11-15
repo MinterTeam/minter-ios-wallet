@@ -219,6 +219,8 @@ extension TextFieldTableViewCell : UITextFieldDelegate {
 //			print("Validation has been completed")
 		})
 		
+		self.layoutIfNeeded()
+		
 	}
 	
 	

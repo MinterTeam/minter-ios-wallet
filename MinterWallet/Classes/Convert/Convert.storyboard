@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="HKa-ye-yvn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="HKa-ye-yvn">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -42,7 +42,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JHK-Ad-eE3" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="63.5" width="130" height="46"/>
+                                        <rect key="frame" x="-137" y="63" width="130" height="46"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="46" id="JHs-xA-kdl"/>
                                             <constraint firstAttribute="width" constant="130" id="ndJ-Rx-fLw"/>
@@ -55,10 +55,10 @@
                                         </connections>
                                     </textField>
                                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="n1y-bh-FNY">
-                                        <rect key="frame" x="110" y="76.5" width="20" height="20"/>
+                                        <rect key="frame" x="-37" y="76" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.0" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EbC-by-mD1" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="150" y="63.5" width="215" height="46"/>
+                                        <rect key="frame" x="3" y="63" width="215" height="46"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -67,10 +67,10 @@
                                         </connections>
                                     </textField>
                                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="V6N-Jt-Zi3">
-                                        <rect key="frame" x="335" y="76.5" width="20" height="20"/>
+                                        <rect key="frame" x="188" y="76" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU SPEND" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVm-Vc-YX1">
-                                        <rect key="frame" x="40" y="129.5" width="61" height="13"/>
+                                        <rect key="frame" x="40" y="129" width="61" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -100,7 +100,7 @@
                                         <rect key="frame" x="335" y="163" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4V-x7-ifu" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="216" width="335" height="50"/>
+                                        <rect key="frame" x="20" y="216" width="188" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="w7K-GZ-cqx"/>
                                         </constraints>
@@ -114,14 +114,14 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCS-fV-2hQ">
-                                        <rect key="frame" x="0.0" y="286" width="375" height="1"/>
+                                        <rect key="frame" x="0.0" y="286" width="228" height="1"/>
                                         <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="deviceRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="92z-Dy-1s5"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pev-rW-XlN" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="307" width="335" height="50"/>
+                                        <rect key="frame" x="20" y="307" width="188" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="pKh-DO-kJE"/>
                                         </constraints>
@@ -251,7 +251,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KlA-XB-YRc" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="39" width="355" height="46"/>
+                                        <rect key="frame" x="10" y="39" width="516.5" height="46"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="46" id="wRr-xe-127"/>
                                         </constraints>
@@ -263,7 +263,7 @@
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DTd-9N-LWO" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="117" width="355" height="46"/>
+                                        <rect key="frame" x="10" y="116" width="516.5" height="46"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
@@ -272,7 +272,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LYq-Jk-u2q">
-                                        <rect key="frame" x="277" y="125" width="72" height="30"/>
+                                        <rect key="frame" x="438.5" y="124" width="72" height="30"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="16"/>
                                         <state key="normal" title="USE MAX">
                                             <color key="titleColor" red="0.31372549019607843" green="0.1803921568627451" blue="0.76078431372549016" alpha="1" colorSpace="deviceRGB"/>
@@ -282,13 +282,13 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AMOUNT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q3i-Ht-noE">
-                                        <rect key="frame" x="20" y="95.5" width="48.5" height="13"/>
+                                        <rect key="frame" x="20" y="95" width="48.5" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xng-dO-2VT" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="238.5" width="355" height="46"/>
+                                        <rect key="frame" x="10" y="237" width="516.5" height="46"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -297,64 +297,64 @@
                                         </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="COIN YOU WANT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7D6-9F-0iS">
-                                        <rect key="frame" x="20" y="217" width="304.5" height="13"/>
+                                        <rect key="frame" x="20" y="216" width="466" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="bLU-27-sln">
-                                        <rect key="frame" x="335" y="251.5" width="20" height="20"/>
+                                        <rect key="frame" x="496.5" y="250" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="convertIcon" translatesAutoresizingMaskIntoConstraints="NO" id="IHi-13-hSG">
-                                        <rect key="frame" x="178.5" y="183" width="18" height="24"/>
+                                        <rect key="frame" x="178.5" y="182" width="18" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="18" id="jUz-qZ-AYe"/>
                                             <constraint firstAttribute="height" constant="24" id="koR-cu-Nsb"/>
                                         </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yT3-xb-Wev">
-                                        <rect key="frame" x="0.0" y="194.5" width="167.5" height="1"/>
+                                        <rect key="frame" x="0.0" y="193.5" width="167.5" height="1"/>
                                         <color key="backgroundColor" red="0.88235294119999996" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="deviceRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="dgt-XA-L2n"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tnd-qZ-n89">
-                                        <rect key="frame" x="207.5" y="194.5" width="167.5" height="1"/>
+                                        <rect key="frame" x="207.5" y="193.5" width="329" height="1"/>
                                         <color key="backgroundColor" red="0.88235294119999996" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="deviceRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="Afk-Cr-M1i"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wO2-pp-gKK">
-                                        <rect key="frame" x="78.5" y="95" width="286.5" height="14"/>
+                                        <rect key="frame" x="78.5" y="94.5" width="448" height="14"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                                         <color key="textColor" red="0.93333333333333335" green="0.13725490196078433" blue="0.16862745098039217" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2WZ-9i-Lk0">
-                                        <rect key="frame" x="334.5" y="217" width="30.5" height="14"/>
+                                        <rect key="frame" x="496" y="215.5" width="30.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                                         <color key="textColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="axC-Ce-LpR">
-                                        <rect key="frame" x="10" y="294" width="355" height="77"/>
+                                        <rect key="frame" x="10" y="293" width="516.5" height="77"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU WILL GET APPROXIMATELY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WN-TG-cHe">
-                                                <rect key="frame" x="10" y="16" width="335" height="13"/>
+                                                <rect key="frame" x="10" y="16" width="496.5" height="13"/>
                                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9oO-ro-9QR">
-                                                <rect key="frame" x="10" y="37" width="335" height="25"/>
+                                                <rect key="frame" x="10" y="37" width="496.5" height="25"/>
                                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xsH-Cd-1fF">
-                                                <rect key="frame" x="325" y="29" width="20" height="20"/>
+                                                <rect key="frame" x="486.5" y="28.5" width="20" height="20"/>
                                             </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="deviceRGB"/>
@@ -376,13 +376,13 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The final amount depends on the exchange rate at the moment of transaction." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mbm-G6-RzB">
-                                        <rect key="frame" x="20" y="387" width="335" height="31.5"/>
+                                        <rect key="frame" x="20" y="386" width="496.5" height="16"/>
                                         <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFm-Om-pVV" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="434.5" width="355" height="50"/>
+                                        <rect key="frame" x="10" y="418" width="516.5" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="iuv-KQ-Wkm"/>
                                         </constraints>
@@ -396,13 +396,13 @@
                                         </connections>
                                     </button>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="KDg-1q-0rV">
-                                        <rect key="frame" x="177" y="449.5" width="20" height="20"/>
+                                        <rect key="frame" x="258.5" y="433" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zvp-UN-eHT">
-                                        <rect key="frame" x="8" y="292.5" width="359" height="300"/>
+                                        <rect key="frame" x="8" y="292.5" width="520.5" height="300"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ucv-gD-Usa" customClass="LUAutocompleteView" customModule="MinterWallet" customModuleProvider="target">
-                                                <rect key="frame" x="2" y="0.0" width="355" height="100"/>
+                                                <rect key="frame" x="2" y="0.0" width="516.5" height="100"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
@@ -499,6 +499,7 @@
                         <outlet property="scrollView" destination="fWF-q3-jXc" id="tMI-Tf-Syg"/>
                         <outlet property="spendAmountTextField" destination="DTd-9N-LWO" id="FO2-o5-byB"/>
                         <outlet property="spendCoinTextField" destination="KlA-XB-YRc" id="b2G-og-P6M"/>
+                        <outlet property="useMaxButton" destination="LYq-Jk-u2q" id="YIk-Pf-SJN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ank-jO-Ewg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -521,13 +522,13 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="COIN YOU WANT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QM6-7l-CVw">
-                                        <rect key="frame" x="20" y="18" width="304.5" height="13"/>
+                                        <rect key="frame" x="20" y="18" width="466" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1c8-xC-IUA" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="39" width="355" height="46"/>
+                                        <rect key="frame" x="10" y="39" width="516.5" height="46"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="46" id="bSp-IW-K2R"/>
                                         </constraints>
@@ -539,22 +540,22 @@
                                         </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pql-Jb-1eA">
-                                        <rect key="frame" x="334.5" y="18" width="30.5" height="14"/>
+                                        <rect key="frame" x="496" y="17.5" width="30.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                                         <color key="textColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2E5-uS-hI6">
-                                        <rect key="frame" x="335" y="52" width="20" height="20"/>
+                                        <rect key="frame" x="496.5" y="52" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HsT-Oy-UFW">
-                                        <rect key="frame" x="334" y="95" width="30.5" height="14"/>
+                                        <rect key="frame" x="496" y="94.5" width="30.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                                         <color key="textColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SV9-8c-Anc" customClass="ValidatableTextField" customModule="MinterWallet" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="117" width="355" height="46"/>
+                                        <rect key="frame" x="10" y="116" width="516.5" height="46"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
@@ -563,7 +564,7 @@
                                         </connections>
                                     </textField>
                                     <button hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIT-dB-z8X">
-                                        <rect key="frame" x="277" y="125" width="72" height="30"/>
+                                        <rect key="frame" x="438.5" y="124" width="72" height="30"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="16"/>
                                         <state key="normal" title="USE MAX">
                                             <color key="titleColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
@@ -574,7 +575,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="AMOUNT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FsE-fQ-AXg">
-                                        <rect key="frame" x="20" y="95.5" width="304.5" height="13"/>
+                                        <rect key="frame" x="20" y="95" width="466" height="13"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -587,7 +588,7 @@
                                         </constraints>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="convertRevertIcon" translatesAutoresizingMaskIntoConstraints="NO" id="7tE-XO-kJe">
-                                        <rect key="frame" x="178" y="183" width="18" height="24"/>
+                                        <rect key="frame" x="178.5" y="182" width="18" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="18" id="Jbn-TB-Y2Q"/>
                                             <constraint firstAttribute="height" constant="24" id="YHY-ci-Uud"/>
@@ -619,19 +620,19 @@
                                         <rect key="frame" x="10" y="371" width="355" height="76.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU WILL PAY APPROXIMATELY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XOp-eD-f6l">
-                                                <rect key="frame" x="10" y="16" width="335" height="13"/>
+                                                <rect key="frame" x="10" y="16" width="496.5" height="13"/>
                                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="11"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wgo-jy-crs">
-                                                <rect key="frame" x="10" y="37" width="335" height="25"/>
+                                                <rect key="frame" x="10" y="37" width="496.5" height="25"/>
                                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="GQx-XK-4eX">
-                                                <rect key="frame" x="325" y="28.5" width="20" height="20"/>
+                                                <rect key="frame" x="486.5" y="28.5" width="20" height="20"/>
                                             </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="deviceRGB"/>
@@ -673,13 +674,13 @@
                                         </connections>
                                     </button>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VqN-EM-pSz">
-                                        <rect key="frame" x="177" y="449.5" width="20" height="20"/>
+                                        <rect key="frame" x="258.5" y="433" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V8P-l1-8Qq">
-                                        <rect key="frame" x="8" y="161" width="359" height="300"/>
+                                        <rect key="frame" x="8" y="161" width="520.5" height="300"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWc-5V-dH9" customClass="LUAutocompleteView" customModule="MinterWallet" customModuleProvider="target">
-                                                <rect key="frame" x="2" y="0.0" width="355" height="298"/>
+                                                <rect key="frame" x="2" y="0.0" width="516.5" height="298"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>

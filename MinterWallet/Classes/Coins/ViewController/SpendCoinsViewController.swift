@@ -18,8 +18,6 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	
 	//MARK: -
 	
-	// MARK: -
-	
 	var vm: SpendCoinsViewModel {
 		return viewModel as! SpendCoinsViewModel
 	}
@@ -27,7 +25,9 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	private var formatter = CurrencyNumberFormatter.coinFormatter
 	
 	//MARK: - IBOutlet
-
+	
+	@IBOutlet weak var useMaxButton: UIButton!
+	
 	@IBOutlet weak var scrollView: TPKeyboardAvoidingScrollView!
 	
 	@IBOutlet weak var spendCoinTextField: ValidatableTextField! {
@@ -89,6 +89,9 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		super.viewDidLoad()
 		
 		viewModel = SpendCoinsViewModel()
+		
+		
+		self.spendAmountTextField.rightPadding = useMaxButton.bounds.width
 		
 		vm.spendCoin.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (coin) in
 			self?.spendCoinTextField.text = self?.vm.spendCoinText
