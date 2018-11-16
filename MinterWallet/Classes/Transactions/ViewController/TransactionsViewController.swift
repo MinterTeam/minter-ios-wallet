@@ -114,7 +114,7 @@ class TransactionsViewController: BaseTableViewController {
 		
 		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
 		
-			return expandedIdentifiers.contains(cell.identifier) ? 430 : 54
+			return expandedIdentifiers.contains(cell.identifier) ? 430 : 55
 		}
 		
 		if (viewModel.cellItem(section: indexPath.section, row: indexPath.row) as? LoadingTableViewCellItem) != nil {

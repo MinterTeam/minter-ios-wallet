@@ -90,7 +90,6 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		
 		viewModel = SpendCoinsViewModel()
 		
-		
 		self.spendAmountTextField.rightPadding = useMaxButton.bounds.width
 		
 		vm.spendCoin.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (coin) in

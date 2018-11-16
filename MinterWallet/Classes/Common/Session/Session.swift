@@ -248,6 +248,10 @@ class Session {
 	
 	func loadBalances() {
 		
+		guard accounts.value.count > 0 else {
+			return
+		}
+		
 		addressManager.addresses(addresses: accounts.value.map({ (account) -> String in
 			return "Mx" + account.address
 		})) { [weak self] (response, err) in
