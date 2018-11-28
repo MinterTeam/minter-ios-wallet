@@ -20,13 +20,13 @@ PODS:
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
   - McPicker (2.0.0)
-  - MinterCore (0.1.9):
-    - Alamofire (~> 4.7)
+  - MinterCore (0.1.11):
+    - Alamofire (= 4.7.3)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 0.9)
     - ObjectMapper (~> 3.1)
     - secp256k1.swift (~> 0.1)
-  - MinterExplorer (0.1.9):
+  - MinterExplorer (0.1.10):
     - MinterCore
   - MinterMy (0.1.4):
     - MinterCore
@@ -56,7 +56,7 @@ PODS:
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
-  - Starscream (3.0.5)
+  - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - SwiftValidator (4.0.0)
   - Toucan (1.0.0)
@@ -174,8 +174,8 @@ SPEC CHECKSUMS:
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   McPicker: 1d11ad8c07c337a16dd9397e45f321125304cbb0
-  MinterCore: 7b3ebf3a7ebca5e24a96e87f4400b1f77964dafe
-  MinterExplorer: 39fffb050772598913cd9d5459fee06ec09c9cf5
+  MinterCore: 510e9db4ba53fc144ff3d7b001e3eb4e00c22e49
+  MinterExplorer: d676e9f951b9ef573140500277ac26002eee1517
   MinterMy: 99a32a3b0b914f73509715f9c0f7952715808591
   NextGrowingTextView: 6612417168300cbd7fb09089348f063e242b7713
   NotificationBannerSwift: 5d0191ae57c4b38e484dab4912e32d1ed99fce61
@@ -192,7 +192,7 @@ SPEC CHECKSUMS:
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
-  Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
+  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
   Toucan: 61867fb10948c02e9804280a95eb183e98eac97a
@@ -200,6 +200,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 62cb32d7c08f4b25741df225cd11f5fc91b375e6
+PODFILE CHECKSUM: 8cf22e8e04613baad6761910e35bf23ccf40b58b
 
 COCOAPODS: 1.5.3

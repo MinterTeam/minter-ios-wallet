@@ -4,9 +4,9 @@ use_frameworks!
 platform :ios, '10.0'
 
 target 'MinterWallet' do
-	pod 'MinterCore'
-	pod 'MinterMy'
-	pod 'MinterExplorer'
+	pod 'MinterCore', :path => '../MinterCore'
+	pod 'MinterMy', :path => '../MinterMy'
+	pod 'MinterExplorer', :path => '../MinterExplorer'
 	pod 'Alamofire'
 	pod 'AlamofireImage'
 	pod 'RxSwift'
@@ -18,7 +18,6 @@ target 'MinterWallet' do
 	pod 'ImagePicker'
 	pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 	pod 'NextGrowingTextView'
-#	pod 'CKMnemonic'
 	pod 'KeychainSwift'
 	pod 'RealmSwift'
 	pod 'AFDateHelper', '~> 4.2.2'

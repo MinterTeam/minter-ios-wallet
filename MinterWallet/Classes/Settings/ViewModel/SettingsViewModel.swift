@@ -173,7 +173,7 @@ class SettingsViewModel: BaseViewModel {
 			return
 		}
 		
-		WalletCoinManager.requestMNT(address: "Mx" + address) { [weak self] (error) in
+		WalletCoinManager.shared.requestMNT(address: "Mx" + address) { [weak self] (error) in
 			if nil != error {
 				var err = NotifiableError()
 				err.title = "You can request 100 MNT only once per hour"

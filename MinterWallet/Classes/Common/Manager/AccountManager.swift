@@ -61,6 +61,7 @@ class AccountManager {
 			let address = RawTransactionSigner.address(publicKey: publicKey) else {
 				return nil
 		}
+		
 		var acc = Account(id: id, encryptedBy: .me, address: address)
 		acc.encryptedBy = encryptedBy
 		return acc
@@ -107,7 +108,11 @@ class AccountManager {
 	
 	//Generate Seed from mnemonic
 	func seed(mnemonic: String, passphrase: String = "") -> Data? {
-		return Data(hex: String.seedString(mnemonic, passphrase: passphrase)!)
+		
+		if let seed = RawTransactionSigner.seed(from: mnemonic) {
+			return Data(hex: seed)
+		}
+		return nil
 	}
 	
 	//Save PK to SecureStorage

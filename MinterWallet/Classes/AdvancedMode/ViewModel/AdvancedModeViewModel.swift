@@ -55,13 +55,11 @@ class AdvancedModeViewModel: AccountantBaseViewModel {
 	func validationText(for error: ValidationError) -> String {
 		switch error {
 		case .wrongMnemonic:
-			
-			return "INCOREECT SEED PHRASE".localized()
+			return "INCORRECT SEED PHRASE".localized()
 			
 		default:
 			return ""
 		}
 	}
-	
-	
+
 }

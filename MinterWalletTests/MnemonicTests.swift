@@ -91,9 +91,9 @@ class MnemonicTests: XCTestCase {
 	}
 	
 	func testDerive() {
-		let mnemonic = "exercise fantasy smooth enough arrive steak demise donkey true employ jealous decide blossom bind someone"
+		let mnemonic = "globe arrange forget twice potato nurse ice dwarf arctic piano scorpion tube"
 		let adds = accountManager.address(from: mnemonic)
-		XCTAssert(adds?.uppercased() == "7633980C000139dd3BD24A3f54E06474FA941e16".uppercased())
+		XCTAssert(adds?.uppercased() == "676138799eE899a214D6d878B4658Fc77e2f0922".uppercased())
 
 	}
 	

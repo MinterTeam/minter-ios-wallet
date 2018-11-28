@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import CryptoSwift
 
 enum WalletCoinManagerError : Error {
 	case wrongResponse
@@ -15,14 +16,19 @@ enum WalletCoinManagerError : Error {
 
 class WalletCoinManager {
 	
+	//MARK: -
+	
 	private init() {}
 	
-	let shared = WalletCoinManager()
+	static let shared = WalletCoinManager()
 	
+	//MARK: -
 
-	static func requestMNT(address: String, completion: ((Error?) -> ())?) {
+	func requestMNT(address: String, completion: ((Error?) -> ())?) {
 		
-		Alamofire.request("https://minter-bot-wallet.dl-dev.ru/api/coins/send", method: .post, parameters: ["address" : address]).responseJSON { (response) in
+		let signature = makeSignature(for: address)
+		
+		Alamofire.request("https://minter-bot-wallet.dl-dev.ru/api/coins/send", method: .post, parameters: ["address" : address, "signature" : signature]).responseJSON { (response) in
 			if response.response?.statusCode == 200 {
 				completion?(nil)
 			}
@@ -30,6 +36,10 @@ class WalletCoinManager {
 				completion?(WalletCoinManagerError.wrongResponse)
 			}
 		}
+	}
+	
+	private func makeSignature(for address: String) -> String {
+		return address
 	}
 
 }

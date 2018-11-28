@@ -283,6 +283,7 @@
 		FA04028E20FDD6B900F1689F /* ConvertCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCoinsViewModel.swift; sourceTree = "<group>"; };
+		FA0AAE00219EC6BB0031585F /* Centrifuge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Centrifuge.framework; sourceTree = "<group>"; };
 		FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinAutocompleteCell.swift; sourceTree = "<group>"; };
 		FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoinAutocompleteCell.xib; sourceTree = "<group>"; };
 		FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTextViewTableViewCell1.xib; sourceTree = "<group>"; };
@@ -1365,6 +1366,7 @@
 		FA7D98F9207F584700193B8A /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				FA0AAE00219EC6BB0031585F /* Centrifuge.framework */,
 				FAF5FDA92149499D00911619 /* LUAutocomplete */,
 				FAF5FDA82149468000911619 /* Reachability */,
 				FAA2605820920989009FF3DE /* PlayNDrop */,
@@ -2188,6 +2190,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A26H28FPZU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
+				);
 				INFOPLIST_FILE = MinterWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2210,6 +2217,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A26H28FPZU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
+				);
 				INFOPLIST_FILE = MinterWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

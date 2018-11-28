@@ -75,7 +75,6 @@ class AdvancedModeViewController: BaseViewController {
 				generate.delegate = self
 			}
 		}
-		
 	}
 }
 
@@ -84,5 +83,13 @@ extension AdvancedModeViewController : GenerateAddressViewControllerDelegate {
 	func GenerateAddressViewControllerDelegateDidAddAccount() {
 		self.delegate?.AdvancedModeViewControllerDidAddAccount()
 	}
-	
+}
+
+extension AdvancedModeViewController : UITextViewDelegate {
+	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+		if text == "\n" {
+			textView.resignFirstResponder()
+		}
+		return true
+	}
 }
