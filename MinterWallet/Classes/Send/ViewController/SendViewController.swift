@@ -11,12 +11,11 @@ import NotificationBannerSwift
 import RxSwift
 import SafariServices
 import SwiftValidator
-import QRCodeReader
 import AVFoundation
 
 
 
-class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate, CountdownPopupViewControllerDelegate, TextViewTableViewCellDelegate, AddressTextViewTableViewCellDelegate {
+class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate, TextViewTableViewCellDelegate, AddressTextViewTableViewCellDelegate {
 	
 	
 	//MARK: - IBOutlet
@@ -78,10 +77,6 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 			if popup == nil {
 				self?.popupViewController?.dismiss(animated: true, completion: nil)
 				return
-			}
-			
-			if let countdown = popup as? CountdownPopupViewController {
-				countdown.delegate = self
 			}
 			
 			if let sent = popup as? SentPopupViewController {
@@ -362,17 +357,6 @@ extension SendViewController {
 		
 		viewController.dismiss(animated: true, completion: nil)
 	}
-
-	//MARK: - CountdownPopupViewControllerDelegate
-	
-	func didFinishCounting(viewController: CountdownPopupViewController) {
-		viewModel.countdownFinished.value = true
-	}
-	
-	func didExeed10(viewController: CountdownPopupViewController) {
-		viewModel.fakeCountdownFinished.value = true
-		tableView.reloadData()
-	}
 	
 	//MARK: -
 	
@@ -416,7 +400,7 @@ extension SendViewController {
 extension SendViewController : SwitchTableViewCellDelegate {
 	
 	func didSwitch(isOn: Bool, cell: SwitchTableViewCell) {
-		viewModel.isFreeTx.value = isOn
+		
 	}
 	
 }

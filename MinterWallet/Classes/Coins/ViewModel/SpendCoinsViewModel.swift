@@ -48,6 +48,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		Observable.combineLatest(spendCoin.asObservable(), spendAmount.asObservable(), getCoin.asObservable()).filter { (val) -> Bool in
 			return true
 		}.throttle(1, scheduler: MainScheduler.instance).subscribe(onNext: { [weak self] (val) in
+			self?.minimumValueToBuy.value = nil
 			self?.approximately.value = ""
 			self?.calculateApproximately()
 			self?.validateErrors()
@@ -82,7 +83,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 	
 	var approximatelyReady = Variable<Bool>(false)
 	
-//	private var fee: Decimal?
+	var minimumValueToBuy = Variable<Decimal?>(nil)
 	
 	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
 	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
@@ -148,11 +149,12 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 				return
 			}
 			
-//			let normalizedCommission = commission / TransactionCoinFactorDecimal
-			let val = (ammnt / TransactionCoinFactorDecimal)// - ((self?.canPayComission() ?? false) ? 0 : normalizedCommission)
+			let val = (ammnt / TransactionCoinFactorDecimal)
 			
 			self?.approximately.value = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0, formatter: self!.formatter)) + " " + to
-//			self?.fee = commission
+			var approximatelyRoundedVal = (ammnt * 0.9)
+			approximatelyRoundedVal.round(.up)
+			self?.minimumValueToBuy.value = approximatelyRoundedVal
 			
 			if to == self?.getCoin.value {
 				self?.approximatelyReady.value = true
@@ -193,7 +195,8 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			let coinTo = self.getCoin.value?.uppercased(),
 			let amount = self.spendAmount.value,
 			let selectedAddress = self.selectedAddress,
-			let amountString = self.spendAmount.value, let amnt = Decimal(string: amountString)
+			let amountString = self.spendAmount.value, let amnt = Decimal(string: amountString),
+			let minimumBuyValue = self.minimumValueToBuy.value, let minimumBuyVal = BigUInt(decimal: minimumBuyValue)
 		else {
 			return
 		}
@@ -205,6 +208,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 		}
 		
 		let convertVal = (BigUInt(strVal) ?? BigUInt(0))
+		
 		
 		let value = convertVal
 		
@@ -246,13 +250,13 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 					let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
 					let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
 					
-					tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo)
+					tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minimumBuyVal)
 				}
 				else {
 					let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
 					let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
 					
-					tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value)
+					tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value, minimumValueToBuy: minimumBuyVal)
 				}
 				
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)

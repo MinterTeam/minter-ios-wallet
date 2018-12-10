@@ -3,23 +3,15 @@ PODS:
   - Alamofire (4.7.3)
   - AlamofireImage (3.4.1):
     - Alamofire (~> 4.7)
-  - ALCameraViewController (3.0.3)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
-  - CentrifugeiOS (5.0.1):
-    - IDZSwiftCommonCrypto (~> 0.10.0)
-    - Starscream (~> 3.0.4)
-  - CountdownLabel (4.0.1)
   - Crashlytics (3.10.8):
     - Fabric (~> 1.7.12)
   - CryptoSwift (0.12.0)
   - Differentiator (3.1.0)
   - Fabric (1.7.12)
-  - IDZSwiftCommonCrypto (0.10.0)
-  - ImagePicker (3.1.0)
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
-  - McPicker (2.0.0)
   - MinterCore (0.1.11):
     - Alamofire (= 4.7.3)
     - BigInt (~> 3.0)
@@ -30,13 +22,10 @@ PODS:
     - MinterCore
   - MinterMy (0.1.4):
     - MinterCore
-  - NextGrowingTextView (1.4.0)
-  - NotificationBannerSwift (1.7.1):
+  - NotificationBannerSwift (1.8.0):
     - MarqueeLabel/Swift (~> 3.2.0)
     - SnapKit (~> 4.0.1)
   - ObjectMapper (3.3.0)
-  - QRCode (2.0)
-  - QRCodeReader.swift (8.2.0)
   - ReachabilitySwift (4.3.0)
   - Realm (3.11.0):
     - Realm/Headers (= 3.11.0)
@@ -56,44 +45,33 @@ PODS:
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
-  - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - SwiftValidator (4.0.0)
-  - Toucan (1.0.0)
   - TPKeyboardAvoiding (1.3.2)
   - XLPagerTabStrip (8.0.1)
   - YandexMobileMetrica/Dynamic (3.2.0)
 
 DEPENDENCIES:
   - AFDateHelper (~> 4.2.2)
-  - Alamofire
-  - AlamofireImage
-  - ALCameraViewController
-  - CentrifugeiOS
-  - CountdownLabel
-  - Crashlytics
+  - Alamofire (= 4.7.3)
+  - AlamofireImage (= 3.4.1)
+  - Crashlytics (~> 3.10)
   - CryptoSwift
-  - Fabric
-  - ImagePicker
-  - KeychainSwift
-  - McPicker
+  - Fabric (~> 1.7)
+  - KeychainSwift (= 12.0.0)
   - MinterCore (from `../MinterCore`)
   - MinterExplorer (from `../MinterExplorer`)
   - MinterMy (from `../MinterMy`)
-  - NextGrowingTextView
-  - NotificationBannerSwift
-  - ObjectMapper
-  - QRCode
-  - QRCodeReader.swift (~> 8.2.0)
-  - ReachabilitySwift
-  - RealmSwift
-  - RxAppState
-  - RxDataSources
-  - RxSwift
+  - NotificationBannerSwift (= 1.8.0)
+  - ObjectMapper (~> 3.3)
+  - ReachabilitySwift (~> 4.3)
+  - RealmSwift (= 3.11.0)
+  - RxAppState (= 1.2.0)
+  - RxDataSources (~> 3.0)
+  - RxSwift (= 4.3.1)
   - SVProgressHUD (from `https://github.com/SVProgressHUD/SVProgressHUD.git`)
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, branch `master`)
-  - Toucan
-  - TPKeyboardAvoiding
+  - TPKeyboardAvoiding (~> 1.3)
   - XLPagerTabStrip (~> 8.0)
   - YandexMobileMetrica/Dynamic (= 3.2.0)
 
@@ -102,24 +80,15 @@ SPEC REPOS:
     - AFDateHelper
     - Alamofire
     - AlamofireImage
-    - ALCameraViewController
     - BigInt
-    - CentrifugeiOS
-    - CountdownLabel
     - Crashlytics
     - CryptoSwift
     - Differentiator
     - Fabric
-    - IDZSwiftCommonCrypto
-    - ImagePicker
     - KeychainSwift
     - MarqueeLabel
-    - McPicker
-    - NextGrowingTextView
     - NotificationBannerSwift
     - ObjectMapper
-    - QRCode
-    - QRCodeReader.swift
     - ReachabilitySwift
     - Realm
     - RealmSwift
@@ -130,8 +99,6 @@ SPEC REPOS:
     - secp256k1.swift
     - SipHash
     - SnapKit
-    - Starscream
-    - Toucan
     - TPKeyboardAvoiding
     - XLPagerTabStrip
     - YandexMobileMetrica
@@ -161,27 +128,18 @@ SPEC CHECKSUMS:
   AFDateHelper: 4ad66fb19503041fbba8a3018cb7ef9c71b2ff88
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireImage: 78d67ccbb763d87ba44b21583d2153500a195630
-  ALCameraViewController: 6398a9282057f709b87a1ecc52a83b48028ade64
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
-  CentrifugeiOS: 1194c0928bda8f3cbbf3306d4165866e44a062e2
-  CountdownLabel: c9975e3f329140b5e7d1f45cd63b1300badd1712
   Crashlytics: 058dc1ba579f6c100bc60a6878703779bff383c4
   CryptoSwift: 1c07ca50843dd48bc54e6ea53d7a4dba3b645716
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   Fabric: d7387db9a31aadff63b147a4b91d982c53afaa4f
-  IDZSwiftCommonCrypto: 4eef2c46e262dfbcbc1fd76365e066336680ad7d
-  ImagePicker: db1fd7626337b2577c523bef5f499bbbe5a37079
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
-  McPicker: 1d11ad8c07c337a16dd9397e45f321125304cbb0
   MinterCore: 510e9db4ba53fc144ff3d7b001e3eb4e00c22e49
   MinterExplorer: d676e9f951b9ef573140500277ac26002eee1517
   MinterMy: 99a32a3b0b914f73509715f9c0f7952715808591
-  NextGrowingTextView: 6612417168300cbd7fb09089348f063e242b7713
-  NotificationBannerSwift: 5d0191ae57c4b38e484dab4912e32d1ed99fce61
+  NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
   ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
-  QRCode: f98a1886c8f37523704a7512a4c0cd45b34c18a4
-  QRCodeReader.swift: 003eb32f18a5a675b936ec82ba0ff368cddbff45
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
   Realm: 92f09a102692b96a9a10e9617f214f15c5ab85fc
   RealmSwift: 5f0481cd658bb751c509314b964a35eaa264d2cf
@@ -192,14 +150,12 @@ SPEC CHECKSUMS:
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
-  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
-  Toucan: 61867fb10948c02e9804280a95eb183e98eac97a
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 8cf22e8e04613baad6761910e35bf23ccf40b58b
+PODFILE CHECKSUM: 97b0506c029db3262cfd992cdcaa563ca9513a8a
 
 COCOAPODS: 1.5.3

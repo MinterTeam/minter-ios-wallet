@@ -71,11 +71,10 @@ class CoinsViewModel: BaseViewModel {
 	override init() {
 		super.init()
 		
-		Observable.combineLatest(Session.shared.transactions.asObservable(), Session.shared.balances.asObservable(), Session.shared.allBalances.asObservable())
+		Observable.combineLatest(Session.shared.transactions.asObservable(), Session.shared.balances.asObservable(), Session.shared.allBalances.asObservable(), Session.shared.isLoggedIn.asObservable().distinctUntilChanged())
 		.subscribe(onNext: { [weak self] (transactions) in
 			self?.createSection()
 		}).disposed(by: disposeBag)
-		
 	}
 	
 	func createSection() {
@@ -345,7 +344,6 @@ class CoinsViewModel: BaseViewModel {
 	
 	//MARK: -
 	
-	
 	func headerViewTitleText(with balance: Decimal) -> NSAttributedString {
 		
 		let formatter = CurrencyNumberFormatter.coinFormatter
@@ -359,5 +357,5 @@ class CoinsViewModel: BaseViewModel {
 		
 		return string
 	}
-	
+
 }

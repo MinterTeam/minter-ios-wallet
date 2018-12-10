@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import XLPagerTabStrip
 import NotificationBannerSwift
-import McPicker
+//import McPicker
 import TPKeyboardAvoiding
 
 

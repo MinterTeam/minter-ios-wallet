@@ -69,10 +69,6 @@ struct Storyboards {
             return self.storyboard.instantiateViewController(withIdentifier: "SendPopupViewController") as! SendPopupViewController
         }
 
-        static func instantiateCountdownPopupViewController() -> CountdownPopupViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: "CountdownPopupViewController") as! CountdownPopupViewController
-        }
-
         static func instantiateSentPopupViewController() -> SentPopupViewController {
             return self.storyboard.instantiateViewController(withIdentifier: "SentPopupViewController") as! SentPopupViewController
         }
@@ -602,16 +598,6 @@ extension SendPopupViewController: SendPopupViewControllerIdentifiableProtocol {
 extension IdentifiableProtocol where Self: SendPopupViewController {
     var storyboardIdentifier: String? { return "SendPopupViewController" }
     static var storyboardIdentifier: String? { return "SendPopupViewController" }
-}
-
-// MARK: - CountdownPopupViewController
-protocol CountdownPopupViewControllerIdentifiableProtocol: IdentifiableProtocol { }
-
-extension CountdownPopupViewController: CountdownPopupViewControllerIdentifiableProtocol { }
-
-extension IdentifiableProtocol where Self: CountdownPopupViewController {
-    var storyboardIdentifier: String? { return "CountdownPopupViewController" }
-    static var storyboardIdentifier: String? { return "CountdownPopupViewController" }
 }
 
 // MARK: - SentPopupViewController

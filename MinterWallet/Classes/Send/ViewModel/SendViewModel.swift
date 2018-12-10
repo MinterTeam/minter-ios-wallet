@@ -168,10 +168,6 @@ class SendViewModel: BaseViewModel {
 	
 	var showPopup = Variable<PopupViewController?>(nil)
 	
-	//used to send request before real countdown finished
-	var fakeCountdownFinished = Variable(false)
-	var countdownFinished = Variable(false)
-	
 	var isPrepearingObservable: Observable<Bool> {
 		return isLoadingNonce.asObservable()
 	}
@@ -184,8 +180,6 @@ class SendViewModel: BaseViewModel {
 			return (val.0?.isValidAddress() ?? false) && self.isAmountValid(amount: (val.1 ?? 0))
 		})
 	}
-	
-	var isFreeTx = Variable(false)
 	
 	var isCountingDown = false
 	
@@ -205,31 +199,6 @@ class SendViewModel: BaseViewModel {
 			}
 			self?.sections.value = self?.createSections() ?? []
 		}).disposed(by: disposeBag)
-		
-		fakeCountdownFinished.asObservable().filter({ (val) -> Bool in
-			return val == true
-		}).subscribe(onNext: { [weak self] (val) in
-			self?.isCountingDown = false
-			
-			self?.sendTX()
-			
-		}).disposed(by: disposeBag)
-		
-		Observable.combineLatest(fakeCountdownFinished.asObservable(), countdownFinished.asObservable()).subscribe { [weak self] (val) in
-			
-			guard let to = self?.toAddress.value, val.event.element?.0 == true && val.event.element?.1 == true else {
-				return
-			}
-			
-			DispatchQueue.main.async {
-				self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: self!.toField ?? to, address: to))
-			}
-			
-			DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
-				Session.shared.loadTransactions()
-				SessionHelper.reloadAccounts()
-			})
-		}.disposed(by: disposeBag)
 		
 		sections.asObservable().subscribe(onNext: { [weak self] (items) in
 				self?._sections.value = items
@@ -282,10 +251,6 @@ class SendViewModel: BaseViewModel {
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: cellIdentifierPrefix.separator.rawValue)
 		
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: cellIdentifierPrefix.blank.rawValue)
-		
-//		let sendForFree = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell", identifier: cellIdentifierPrefix.swtch.rawValue)
-//		sendForFree.title = "Send for free!".localized()
-//		sendForFree.isOn.value = isFreeTx.value
 		
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: cellIdentifierPrefix.button.rawValue)
 		button.title = "SEND".localized()
@@ -563,16 +528,7 @@ class SendViewModel: BaseViewModel {
 	
 	func submitSendButtonTaped() {
 		
-		self.countdownFinished.value = false
-		self.fakeCountdownFinished.value = false
-		
-		if isFreeTx.value {
-			let vm = self.countdownPopupViewModel()
-			self.showPopup.value = PopupRouter.countdownPopupViewController(viewModel: vm)
-		}
-		else {
-			sendTX()
-		}
+		sendTX()
 	}
 	
 	func sendCancelButtonTapped() {
@@ -830,18 +786,6 @@ class SendViewModel: BaseViewModel {
 		vm.secondButtonTitle = "CLOSE".localized()
 		vm.username = to
 		vm.title = "Success!".localized()
-		return vm
-	}
-	
-	func countdownPopupViewModel() -> CountdownPopupViewModel {
-		
-		let vm = CountdownPopupViewModel()
-		vm.popupTitle = "Please wait".localized()
-		vm.unit = (one: "second", two: "seconds", other: "seconds")
-		vm.count = 13
-		vm.desc1 = "Coins will be received in".localized()
-		vm.desc2 = "Too long? You can make a faster transaction for 0.1 BIP".localized()
-		vm.buttonTitle = "Express transaction".localized()
 		return vm
 	}
 	

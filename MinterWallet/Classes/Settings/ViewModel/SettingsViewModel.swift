@@ -9,7 +9,6 @@
 import RxSwift
 import MinterCore
 import MinterMy
-import Toucan
 
 
 

@@ -21,13 +21,6 @@ class PopupRouter : BaseRouter {
 	
 	//MARK: -
 	
-	class func countdownPopupViewController(viewModel: CountdownPopupViewModel) -> CountdownPopupViewController? {
-		
-		let viewController = Storyboards.Popup.instantiateCountdownPopupViewController()
-		viewController.viewModel = viewModel
-		return viewController
-	}
-	
 	class func sentPopupViewCointroller(viewModel: SentPopupViewModel) -> SentPopupViewController? {
 		let viewController = Storyboards.Popup.instantiateSentPopupViewController()
 		viewController.viewModel = viewModel

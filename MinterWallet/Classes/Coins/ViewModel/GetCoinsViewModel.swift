@@ -31,6 +31,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		Observable.combineLatest(getCoin.asObservable(), getAmount.asObservable(), spendCoin.asObservable()).filter { (val) -> Bool in
 			return true
 		}.subscribe(onNext: { [weak self] (val) in
+			self?.approximatelySum.value = nil
 			self?.approximately.value = ""
 			self?.calculateApproximately()
 		}).disposed(by: disposeBag)
@@ -96,8 +97,6 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		else {
 			self.amountError.value = ""
 		}
-		
-		
 	}
 	
 	func calculateApproximately() {
@@ -145,15 +144,20 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 	}
 	
 	func exchange() {
+		var approximatelySumRoundedVal = (self.approximatelySum.value ?? 0) * 1.1 * TransactionCoinFactorDecimal
+		approximatelySumRoundedVal.round(.up)
 		
 		guard let coinFrom = self.selectedCoin?.uppercased(),
 			let coinTo = self.getCoin.value?.uppercased(),
 //			let amount = self.approximatelySum.value,
 			let selectedAddress = self.selectedAddress,
-			let amntString = self.getAmount.value, let amount = Decimal(string: amntString)
+			let amntString = self.getAmount.value, let amount = Decimal(string: amntString),
+			let maximumValueToSell = BigUInt(decimal: approximatelySumRoundedVal)
 			else {
+				self.errorNotification.value = NotifiableError(title: "Incorrect amount", text: nil)
 				return
 		}
+
 		
 		let ammnt = amount * TransactionCoinFactorDecimal
 		
@@ -192,7 +196,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 				let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
 				let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
 				
-				let tx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value)
+				let tx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value, maximumValueToSell: maximumValueToSell)
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
 				
 				MinterExplorer.ExplorerTransactionManager.default.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in

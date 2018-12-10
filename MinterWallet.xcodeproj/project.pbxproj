@@ -50,6 +50,28 @@
 		FA04028F20FDD6B900F1689F /* ConvertCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04028E20FDD6B900F1689F /* ConvertCoinsViewModel.swift */; };
 		FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */; };
 		FA04029320FDD6E000F1689F /* GetCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */; };
+		FA0AF8DC21B5297E000B571B /* NextGrowingInternalTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8DA21B5297D000B571B /* NextGrowingInternalTextView.swift */; };
+		FA0AF8DD21B5297E000B571B /* NextGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8DB21B5297D000B571B /* NextGrowingTextView.swift */; };
+		FA0AF8E521B534EF000B571B /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8DF21B534EF000B571B /* UIImageViewExtension.swift */; };
+		FA0AF8E621B534EF000B571B /* CIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8E021B534EF000B571B /* CIImageExtension.swift */; };
+		FA0AF8E721B534EF000B571B /* CIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8E221B534EF000B571B /* CIColorExtension.swift */; };
+		FA0AF8E821B534EF000B571B /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8E321B534EF000B571B /* QRCode.swift */; };
+		FA0F296121B1740800E10F5E /* ReaderOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295721B1740600E10F5E /* ReaderOverlayView.swift */; };
+		FA0F296221B1740800E10F5E /* ToggleTorchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295821B1740600E10F5E /* ToggleTorchButton.swift */; };
+		FA0F296321B1740800E10F5E /* QRCodeReaderViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295921B1740600E10F5E /* QRCodeReaderViewContainer.swift */; };
+		FA0F296421B1740800E10F5E /* QRCodeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295A21B1740700E10F5E /* QRCodeReader.swift */; };
+		FA0F296521B1740800E10F5E /* QRCodeReaderViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295B21B1740700E10F5E /* QRCodeReaderViewControllerDelegate.swift */; };
+		FA0F296621B1740800E10F5E /* SwitchCameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295C21B1740700E10F5E /* SwitchCameraButton.swift */; };
+		FA0F296721B1740800E10F5E /* QRCodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295D21B1740700E10F5E /* QRCodeReaderViewController.swift */; };
+		FA0F296821B1740800E10F5E /* QRCodeReaderViewControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295E21B1740800E10F5E /* QRCodeReaderViewControllerBuilder.swift */; };
+		FA0F296921B1740800E10F5E /* QRCodeReaderResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295F21B1740800E10F5E /* QRCodeReaderResult.swift */; };
+		FA0F296A21B1740800E10F5E /* QRCodeReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F296021B1740800E10F5E /* QRCodeReaderView.swift */; };
+		FA0F296E21B1773A00E10F5E /* Toucan.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F296D21B1773A00E10F5E /* Toucan.swift */; };
+		FA0F297821B179BB00E10F5E /* McPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F297121B179BB00E10F5E /* McPicker.swift */; };
+		FA0F297921B179BB00E10F5E /* McPickerBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F297221B179BB00E10F5E /* McPickerBarButtonItem.swift */; };
+		FA0F297A21B179BB00E10F5E /* McTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F297321B179BB00E10F5E /* McTextField.swift */; };
+		FA0F297B21B179BB00E10F5E /* McPickerPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F297421B179BB00E10F5E /* McPickerPopoverViewController.swift */; };
+		FA101E2E21BC6DFE00DB1D3A /* Centrifuge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0AAE00219EC6BB0031585F /* Centrifuge.framework */; };
 		FA11EA62214ABFB300C8DFB0 /* CoinAutocompleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */; };
 		FA11EA64214ABFD300C8DFB0 /* CoinAutocompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */; };
 		FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */; };
@@ -116,6 +138,7 @@
 		FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */; };
 		FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */; };
 		FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */; };
+		FA77578121B92B20006CE586 /* Decimal+Flaoting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77578021B92B20006CE586 /* Decimal+Flaoting.swift */; };
 		FA7935FB20D30B710012642E /* SessionAddressSyncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7935FA20D30B710012642E /* SessionAddressSyncer.swift */; };
 		FA7935FF20D3B3D70012642E /* AddressManager+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7935FE20D3B3D70012642E /* AddressManager+Default.swift */; };
 		FA79F5FE20C81A9E007876ED /* ValidatableCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79F5FD20C81A9E007876ED /* ValidatableCellProtocol.swift */; };
@@ -148,8 +171,6 @@
 		FAA234EF20872BF800F999DE /* SendPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234EE20872BF800F999DE /* SendPopupViewModel.swift */; };
 		FAA26052208E30AC009FF3DE /* CoinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE7945C208E17BE0006CB0B /* CoinTableViewCell.xib */; };
 		FAA26053208E30B9009FF3DE /* CoinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE7945B208E17BE0006CB0B /* CoinTableViewCell.swift */; };
-		FAA26055208F7A37009FF3DE /* CountdownPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA26054208F7A37009FF3DE /* CountdownPopupViewController.swift */; };
-		FAA26057208F7A55009FF3DE /* CountdownPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA26056208F7A55009FF3DE /* CountdownPopupViewModel.swift */; };
 		FAA2605C2092099B009FF3DE /* CCMPlayNDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA2605B20920999009FF3DE /* CCMPlayNDropView.m */; };
 		FAA2605E209209DE009FF3DE /* DroppableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2605D209209DE009FF3DE /* DroppableView.swift */; };
 		FAA2606120923634009FF3DE /* AddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2605F20923634009FF3DE /* AddressTableViewCell.swift */; };
@@ -284,6 +305,27 @@
 		FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA0AAE00219EC6BB0031585F /* Centrifuge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Centrifuge.framework; sourceTree = "<group>"; };
+		FA0AF8DA21B5297D000B571B /* NextGrowingInternalTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingInternalTextView.swift; sourceTree = "<group>"; };
+		FA0AF8DB21B5297D000B571B /* NextGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingTextView.swift; sourceTree = "<group>"; };
+		FA0AF8DF21B534EF000B571B /* UIImageViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
+		FA0AF8E021B534EF000B571B /* CIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIImageExtension.swift; sourceTree = "<group>"; };
+		FA0AF8E221B534EF000B571B /* CIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIColorExtension.swift; sourceTree = "<group>"; };
+		FA0AF8E321B534EF000B571B /* QRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
+		FA0F295721B1740600E10F5E /* ReaderOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderOverlayView.swift; sourceTree = "<group>"; };
+		FA0F295821B1740600E10F5E /* ToggleTorchButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleTorchButton.swift; sourceTree = "<group>"; };
+		FA0F295921B1740600E10F5E /* QRCodeReaderViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewContainer.swift; sourceTree = "<group>"; };
+		FA0F295A21B1740700E10F5E /* QRCodeReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReader.swift; sourceTree = "<group>"; };
+		FA0F295B21B1740700E10F5E /* QRCodeReaderViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewControllerDelegate.swift; sourceTree = "<group>"; };
+		FA0F295C21B1740700E10F5E /* SwitchCameraButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCameraButton.swift; sourceTree = "<group>"; };
+		FA0F295D21B1740700E10F5E /* QRCodeReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewController.swift; sourceTree = "<group>"; };
+		FA0F295E21B1740800E10F5E /* QRCodeReaderViewControllerBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewControllerBuilder.swift; sourceTree = "<group>"; };
+		FA0F295F21B1740800E10F5E /* QRCodeReaderResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderResult.swift; sourceTree = "<group>"; };
+		FA0F296021B1740800E10F5E /* QRCodeReaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderView.swift; sourceTree = "<group>"; };
+		FA0F296D21B1773A00E10F5E /* Toucan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toucan.swift; sourceTree = "<group>"; };
+		FA0F297121B179BB00E10F5E /* McPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = McPicker.swift; sourceTree = "<group>"; };
+		FA0F297221B179BB00E10F5E /* McPickerBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = McPickerBarButtonItem.swift; sourceTree = "<group>"; };
+		FA0F297321B179BB00E10F5E /* McTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = McTextField.swift; sourceTree = "<group>"; };
+		FA0F297421B179BB00E10F5E /* McPickerPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = McPickerPopoverViewController.swift; sourceTree = "<group>"; };
 		FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinAutocompleteCell.swift; sourceTree = "<group>"; };
 		FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoinAutocompleteCell.xib; sourceTree = "<group>"; };
 		FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTextViewTableViewCell1.xib; sourceTree = "<group>"; };
@@ -357,6 +399,7 @@
 		FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopMost.swift"; sourceTree = "<group>"; };
+		FA77578021B92B20006CE586 /* Decimal+Flaoting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Flaoting.swift"; sourceTree = "<group>"; };
 		FA7935FA20D30B710012642E /* SessionAddressSyncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAddressSyncer.swift; sourceTree = "<group>"; };
 		FA7935FE20D3B3D70012642E /* AddressManager+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressManager+Default.swift"; sourceTree = "<group>"; };
 		FA79F5FD20C81A9E007876ED /* ValidatableCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatableCellProtocol.swift; sourceTree = "<group>"; };
@@ -389,8 +432,6 @@
 		FAA234E92084A42A00F999DE /* PickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerTableViewCell.xib; sourceTree = "<group>"; };
 		FAA234EC20872BD000F999DE /* SendPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPopupViewController.swift; sourceTree = "<group>"; };
 		FAA234EE20872BF800F999DE /* SendPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPopupViewModel.swift; sourceTree = "<group>"; };
-		FAA26054208F7A37009FF3DE /* CountdownPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownPopupViewController.swift; sourceTree = "<group>"; };
-		FAA26056208F7A55009FF3DE /* CountdownPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownPopupViewModel.swift; sourceTree = "<group>"; };
 		FAA2605920920997009FF3DE /* MinterWallet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MinterWallet-Bridging-Header.h"; sourceTree = "<group>"; };
 		FAA2605A20920999009FF3DE /* CCMPlayNDropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMPlayNDropView.h; sourceTree = "<group>"; };
 		FAA2605B20920999009FF3DE /* CCMPlayNDropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMPlayNDropView.m; sourceTree = "<group>"; };
@@ -471,6 +512,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA101E2E21BC6DFE00DB1D3A /* Centrifuge.framework in Frameworks */,
 				BBEC25451D081255FEE27D0F /* Pods_MinterWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -940,7 +982,6 @@
 			children = (
 				3BA1EA41241735BB83566B6A /* PopupViewController.swift */,
 				FAA234EC20872BD000F999DE /* SendPopupViewController.swift */,
-				FAA26054208F7A37009FF3DE /* CountdownPopupViewController.swift */,
 				FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */,
 			);
 			path = ViewController;
@@ -958,7 +999,6 @@
 			children = (
 				B3A840EEC1F5676CEE8EB564 /* PopupViewModel.swift */,
 				FAA234EE20872BF800F999DE /* SendPopupViewModel.swift */,
-				FAA26056208F7A55009FF3DE /* CountdownPopupViewModel.swift */,
 				FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1028,6 +1068,7 @@
 		F1B9FBEAE725F311F68F278E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA0AAE00219EC6BB0031585F /* Centrifuge.framework */,
 				9EBD75282FB7FF99C075E9B1 /* Pods_MinterWallet.framework */,
 				E5F7398A88DFF31468C6E439 /* Pods_MinterWalletTests.framework */,
 			);
@@ -1076,6 +1117,70 @@
 				FAC4BA0F20D9445F005A1B90 /* APIClient+Auth.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		FA0AF8D921B5291A000B571B /* NextGrowingTextView */ = {
+			isa = PBXGroup;
+			children = (
+				FA0AF8DA21B5297D000B571B /* NextGrowingInternalTextView.swift */,
+				FA0AF8DB21B5297D000B571B /* NextGrowingTextView.swift */,
+			);
+			path = NextGrowingTextView;
+			sourceTree = "<group>";
+		};
+		FA0AF8DE21B534EF000B571B /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				FA0AF8DF21B534EF000B571B /* UIImageViewExtension.swift */,
+				FA0AF8E021B534EF000B571B /* CIImageExtension.swift */,
+				FA0AF8E221B534EF000B571B /* CIColorExtension.swift */,
+				FA0AF8E321B534EF000B571B /* QRCode.swift */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
+		FA0F295621B173E200E10F5E /* QRCodeReader.swift */ = {
+			isa = PBXGroup;
+			children = (
+				FA0F295A21B1740700E10F5E /* QRCodeReader.swift */,
+				FA0F295F21B1740800E10F5E /* QRCodeReaderResult.swift */,
+				FA0F296021B1740800E10F5E /* QRCodeReaderView.swift */,
+				FA0F295921B1740600E10F5E /* QRCodeReaderViewContainer.swift */,
+				FA0F295D21B1740700E10F5E /* QRCodeReaderViewController.swift */,
+				FA0F295E21B1740800E10F5E /* QRCodeReaderViewControllerBuilder.swift */,
+				FA0F295B21B1740700E10F5E /* QRCodeReaderViewControllerDelegate.swift */,
+				FA0F295721B1740600E10F5E /* ReaderOverlayView.swift */,
+				FA0F295C21B1740700E10F5E /* SwitchCameraButton.swift */,
+				FA0F295821B1740600E10F5E /* ToggleTorchButton.swift */,
+			);
+			path = QRCodeReader.swift;
+			sourceTree = "<group>";
+		};
+		FA0F296C21B1771D00E10F5E /* Toucan */ = {
+			isa = PBXGroup;
+			children = (
+				FA0F296D21B1773A00E10F5E /* Toucan.swift */,
+			);
+			path = Toucan;
+			sourceTree = "<group>";
+		};
+		FA0F296F21B179BB00E10F5E /* McPicker */ = {
+			isa = PBXGroup;
+			children = (
+				FA0F297021B179BB00E10F5E /* Classes */,
+			);
+			path = McPicker;
+			sourceTree = "<group>";
+		};
+		FA0F297021B179BB00E10F5E /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FA0F297121B179BB00E10F5E /* McPicker.swift */,
+				FA0F297221B179BB00E10F5E /* McPickerBarButtonItem.swift */,
+				FA0F297321B179BB00E10F5E /* McTextField.swift */,
+				FA0F297421B179BB00E10F5E /* McPickerPopoverViewController.swift */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		FA319B8620AACB3D00751A48 /* Database Models */ = {
@@ -1289,6 +1394,7 @@
 				FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */,
 				FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */,
 				FADD8F2021930B2300463F66 /* SoundHelper.swift */,
+				FA77578021B92B20006CE586 /* Decimal+Flaoting.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1366,7 +1472,11 @@
 		FA7D98F9207F584700193B8A /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
-				FA0AAE00219EC6BB0031585F /* Centrifuge.framework */,
+				FA0AF8DE21B534EF000B571B /* QRCode */,
+				FA0AF8D921B5291A000B571B /* NextGrowingTextView */,
+				FA0F296F21B179BB00E10F5E /* McPicker */,
+				FA0F296C21B1771D00E10F5E /* Toucan */,
+				FA0F295621B173E200E10F5E /* QRCodeReader.swift */,
 				FAF5FDA92149499D00911619 /* LUAutocomplete */,
 				FAF5FDA82149468000911619 /* Reachability */,
 				FAA2605820920989009FF3DE /* PlayNDrop */,
@@ -1753,27 +1863,18 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MinterWallet/Pods-MinterWallet-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFDateHelper/AFDateHelper.framework",
-				"${BUILT_PRODUCTS_DIR}/ALCameraViewController/ALCameraViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
-				"${BUILT_PRODUCTS_DIR}/CentrifugeiOS/CentrifugeiOS.framework",
-				"${BUILT_PRODUCTS_DIR}/CountdownLabel/CountdownLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
-				"${BUILT_PRODUCTS_DIR}/IDZSwiftCommonCrypto/IDZSwiftCommonCrypto.framework",
-				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
-				"${BUILT_PRODUCTS_DIR}/McPicker/McPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterCore/MinterCore.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterExplorer/MinterExplorer.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterMy/MinterMy.framework",
-				"${BUILT_PRODUCTS_DIR}/NextGrowingTextView/NextGrowingTextView.framework",
 				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
-				"${BUILT_PRODUCTS_DIR}/QRCode/QRCode.framework",
-				"${BUILT_PRODUCTS_DIR}/QRCodeReader.swift/QRCodeReader.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
@@ -1784,10 +1885,8 @@
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftValidator/SwiftValidator.framework",
 				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
-				"${BUILT_PRODUCTS_DIR}/Toucan/Toucan.framework",
 				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
 				"${PODS_ROOT}/YandexMobileMetrica/dynamic/YandexMobileMetrica.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
@@ -1795,27 +1894,18 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFDateHelper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ALCameraViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CentrifugeiOS.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountdownLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IDZSwiftCommonCrypto.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/McPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterExplorer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterMy.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NextGrowingTextView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCode.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCodeReader.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
@@ -1826,10 +1916,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftValidator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toucan.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YandexMobileMetrica.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
@@ -1898,12 +1986,15 @@
 				FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */,
 				FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */,
 				FA9BE30D214006A5002160F3 /* AnalyticsHelper.swift in Sources */,
+				FA0AF8E721B534EF000B571B /* CIColorExtension.swift in Sources */,
 				FA531E2C219B1E9400A7AD9F /* AppSettingsModel.swift in Sources */,
 				FA6760AA20A9E90900F970E7 /* DatabaseStorage.swift in Sources */,
 				FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */,
+				FA0F297A21B179BB00E10F5E /* McTextField.swift in Sources */,
 				FA669BA12072461700AD110A /* String+Localized.swift in Sources */,
 				FA04028B20FDD5CA00F1689F /* SpendCoinsViewController.swift in Sources */,
 				FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */,
+				FA0F296421B1740800E10F5E /* QRCodeReader.swift in Sources */,
 				FA669BD32072601300AD110A /* UIColor+HEX.swift in Sources */,
 				FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */,
 				FA670A3920E27352000A5169 /* ReceiveAddressTableViewCell.swift in Sources */,
@@ -1925,9 +2016,12 @@
 				FA9A6E51209B1D5D0012AC96 /* SHA3+String.swift in Sources */,
 				FA669BCF207249D300AD110A /* DefaultButton.swift in Sources */,
 				FAA234ED20872BD000F999DE /* SendPopupViewController.swift in Sources */,
+				FA0F297821B179BB00E10F5E /* McPicker.swift in Sources */,
+				FA77578121B92B20006CE586 /* Decimal+Flaoting.swift in Sources */,
 				FAB865F520C68236002568A4 /* SendValidationRules.swift in Sources */,
 				FAC4BA1220D94604005A1B90 /* String+Validation.swift in Sources */,
 				FA9BE30B213FE7E0002160F3 /* AnalyticsEvents.swift in Sources */,
+				FA0AF8DC21B5297E000B571B /* NextGrowingInternalTextView.swift in Sources */,
 				FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */,
 				2177DA1D3DFAC5A28E961357 /* LoginViewController.swift in Sources */,
 				FAB865F120BEE9D5002568A4 /* AdvancedModeBaseViewModel.swift in Sources */,
@@ -1938,16 +2032,22 @@
 				FAF5FDB0214949CB00911619 /* LUAutocompleteTableViewCell.swift in Sources */,
 				FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */,
 				FA55B01D216D011600A3A78C /* WalletCoinManager.swift in Sources */,
+				FA0F296121B1740800E10F5E /* ReaderOverlayView.swift in Sources */,
 				FA79F60720D06D3D007876ED /* String+Email.swift in Sources */,
+				FA0AF8E821B534EF000B571B /* QRCode.swift in Sources */,
 				FAA2607220931D41009FF3DE /* PasswordEditViewModel.swift in Sources */,
 				FAB85B4E20DD33E300782AFB /* TransactionManager.swift in Sources */,
 				FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */,
 				FAA26068209311C2009FF3DE /* MobileEditViewController.swift in Sources */,
 				FA669BDB2072687C00AD110A /* URL+Params.swift in Sources */,
 				FAA234DE20848EC900F999DE /* SwitchTableViewCell.swift in Sources */,
+				FA0F296921B1740800E10F5E /* QRCodeReaderResult.swift in Sources */,
 				FA531E2E219B1F1900A7AD9F /* AppSettingsManager.swift in Sources */,
+				FA0F296621B1740800E10F5E /* SwitchCameraButton.swift in Sources */,
 				FA669B9E207244FF00AD110A /* BaseViewController.swift in Sources */,
+				FA0F296E21B1773A00E10F5E /* Toucan.swift in Sources */,
 				FAA234E62084A26900F999DE /* SeparatorTableViewCell.swift in Sources */,
+				FA0F296521B1740800E10F5E /* QRCodeReaderViewControllerDelegate.swift in Sources */,
 				FAB865F320C57007002568A4 /* PopupRouter.swift in Sources */,
 				FA669B9C207244E300AD110A /* BaseViewModel.swift in Sources */,
 				332EB812C95C0592C6924E65 /* CoinsViewController.swift in Sources */,
@@ -1956,6 +2056,7 @@
 				FAA2607020931D2F009FF3DE /* PasswordEditViewController.swift in Sources */,
 				FA835CCE2077BC9200BFC35A /* ScreenHeader.swift in Sources */,
 				D1CAF56CB50CFF293A1D7F1A /* CoinsViewModel.swift in Sources */,
+				FA0AF8E621B534EF000B571B /* CIImageExtension.swift in Sources */,
 				2B4873CFE9E2F66FBBAADC30 /* CreateWalletViewController.swift in Sources */,
 				35C28F738CF2110198FBDD3C /* CreateWalletViewModel.swift in Sources */,
 				FAF5FDB1214949CB00911619 /* LUAutocompleteView.swift in Sources */,
@@ -1965,8 +2066,11 @@
 				FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */,
 				FA670A3B20E291C0000A5169 /* TransactionItem.swift in Sources */,
 				D08EF152AB24CD864B6F2E40 /* RootViewController.swift in Sources */,
+				FA0F297921B179BB00E10F5E /* McPickerBarButtonItem.swift in Sources */,
 				FAB85B4620DB980500782AFB /* URLRequst+NoCache.swift in Sources */,
+				FA0F296321B1740800E10F5E /* QRCodeReaderViewContainer.swift in Sources */,
 				FAE43C9321539F2A002027D4 /* DelegateTransactionTableViewCell.swift in Sources */,
+				FA0AF8E521B534EF000B571B /* UIImageViewExtension.swift in Sources */,
 				FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */,
 				94B58309D085DACB65260018 /* RootViewModel.swift in Sources */,
 				FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */,
@@ -1975,6 +2079,7 @@
 				FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */,
 				FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */,
 				833CF747F604B61E37401C11 /* TransactionsViewController.swift in Sources */,
+				FA0F296721B1740800E10F5E /* QRCodeReaderViewController.swift in Sources */,
 				FAA2608320935E8B009FF3DE /* GenerateAddressSeedTableViewCell.swift in Sources */,
 				1091290DC26B4D7128B4DA92 /* TransactionsViewModel.swift in Sources */,
 				FAA2607820933984009FF3DE /* GrowingDefaultTextView.swift in Sources */,
@@ -1982,7 +2087,9 @@
 				FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */,
 				D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */,
 				EFCE6415FD145CE2E62EF813 /* SendViewModel.swift in Sources */,
+				FA0AF8DD21B5297E000B571B /* NextGrowingTextView.swift in Sources */,
 				FA2F56B8210B31E1002C72DC /* AccordionTableViewController.swift in Sources */,
+				FA0F296A21B1740800E10F5E /* QRCodeReaderView.swift in Sources */,
 				FA79F5FE20C81A9E007876ED /* ValidatableCellProtocol.swift in Sources */,
 				FAA2606C20931A56009FF3DE /* EmailEditViewController.swift in Sources */,
 				FAC4BA1420DA49E2005A1B90 /* Notifiable.swift in Sources */,
@@ -1992,24 +2099,25 @@
 				FAC4BA1020D9445F005A1B90 /* APIClient+Auth.swift in Sources */,
 				FAD0F6C220FCAFB2009A5936 /* NewConvertViewController.swift in Sources */,
 				4CAD2C40F3ECF43BAE855D20 /* PopupViewModel.swift in Sources */,
+				FA0F297B21B179BB00E10F5E /* McPickerPopoverViewController.swift in Sources */,
 				FAA2607F20935C36009FF3DE /* GenerateAddressLabelTableViewCell.swift in Sources */,
 				07B23B1F8A8E95A0459601A1 /* ReceiveViewController.swift in Sources */,
 				27FF799EFD5EE33465322922 /* ReceiveViewModel.swift in Sources */,
 				FA04028F20FDD6B900F1689F /* ConvertCoinsViewModel.swift in Sources */,
 				FAB865FF20C7D0B3002568A4 /* TextViewTableViewCell.swift in Sources */,
+				FA0F296221B1740800E10F5E /* ToggleTorchButton.swift in Sources */,
 				AF44D30C07B56ACF70021D25 /* SettingsViewController.swift in Sources */,
 				FA04028D20FDD5DF00F1689F /* GetCoinsViewController.swift in Sources */,
 				FA5FC90C20FDE39C00E6AED3 /* ConvertCoinsViewController.swift in Sources */,
 				DF1E9909F9D644AEBBBED0DF /* SettingsViewModel.swift in Sources */,
+				FA0F296821B1740800E10F5E /* QRCodeReaderViewControllerBuilder.swift in Sources */,
 				FA8AE85D20AC638900F26E11 /* String+Random.swift in Sources */,
 				550C26104C6471B011F52123 /* AddressViewController.swift in Sources */,
-				FAA26057208F7A55009FF3DE /* CountdownPopupViewModel.swift in Sources */,
 				1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */,
 				FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */,
 				FA01604220B4533B00746B51 /* Manager+Default.swift in Sources */,
 				FA7A9BF820BED28900E3CCDA /* SentPopupViewController.swift in Sources */,
 				FA04029320FDD6E000F1689F /* GetCoinsViewModel.swift in Sources */,
-				FAA26055208F7A37009FF3DE /* CountdownPopupViewController.swift in Sources */,
 				FAA2606620930C68009FF3DE /* UsernameEditViewModel.swift in Sources */,
 				FAA3DD09211358BF0054D27E /* ReachabilityService.swift in Sources */,
 				FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */,
@@ -2190,9 +2298,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A26H28FPZU;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
+					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
+					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = MinterWallet/Info.plist;
@@ -2201,6 +2313,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "MinterWallet/MinterWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -2217,9 +2330,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A26H28FPZU;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
+					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
+					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = MinterWallet/Info.plist;
@@ -2228,6 +2345,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRIP_BITCODE_FROM_COPIED_FILES = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "MinterWallet/MinterWallet-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;

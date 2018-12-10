@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import QRCode
 import SVProgressHUD
 
 class QRTableViewCellItem : BaseCellItem {

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import McPicker
+//import McPicker
 
 
 class PickerTableViewCellItem : BaseCellItem {

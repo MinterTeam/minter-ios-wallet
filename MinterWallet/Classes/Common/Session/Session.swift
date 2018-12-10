@@ -165,6 +165,7 @@ class Session {
 		localStorage.removeAll()
 		dataBaseStorage.removeAll()
 		
+		baseCoinBalances.value = [:]
 		accounts.value = []
 		transactions.value = []
 		allBalances.value = [:]

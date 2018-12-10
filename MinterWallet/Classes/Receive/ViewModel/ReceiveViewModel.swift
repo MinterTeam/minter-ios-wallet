@@ -7,7 +7,6 @@
 //
 
 import RxSwift
-import QRCode
 
 
 class ReceiveViewModel: BaseViewModel {
@@ -48,7 +47,6 @@ class ReceiveViewModel: BaseViewModel {
 			
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_1\(sectionId)")
 			
-//			let address = ReceiveAddressTableViewCellItem(reuseIdentifier: "ReceiveAddressTableViewCell", identifier: "ReceiveAddressTableViewCell_" + sectionId)
 			let address = AddressTableViewCellItem(reuseIdentifier: "AddressTableViewCell", identifier: "AddressTableViewCell_" + sectionId)
 			address.address = "Mx" + account.address
 			address.buttonTitle = "Copy".localized()

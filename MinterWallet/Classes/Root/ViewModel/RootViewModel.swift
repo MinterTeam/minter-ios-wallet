@@ -7,7 +7,7 @@
 //
 
 import RxSwift
-import CentrifugeiOS
+import Centrifuge
 import MinterCore
 import MinterExplorer
 import RxAppState
@@ -18,27 +18,29 @@ class RootViewModel: BaseViewModel {
 	private let session = Session.shared
 	
 	private let disposeBag = DisposeBag()
-
+	
 	var title: String {
 		get {
 			return "Root".localized()
 		}
 	}
 	
-	var channel: String? {
+	var channel: String?
+	
+	var client: CentrifugeClient? = CentrifugeNew(MinterExplorerWebSocketURL, CentrifugeDefaultConfig())
+	
+	var isConnected: Bool = false {
 		didSet {
-//			print("CHANNEL: " + (channel ?? "****"))
+			
+			if self.isConnected == true {
+				self.subscribeAccountBalanceChange()
+			}
+			reloadData()
 		}
 	}
 	
-	var timestamp: Int?
-	var token: String?
-	
-	var client: CentrifugeClient?
-	var isConnected: Bool = false
-	
 	var addressManager = ExplorerAddressManager.default
-
+	
 	override init() {
 		super.init()
 		
@@ -62,76 +64,86 @@ class RootViewModel: BaseViewModel {
 			
 			guard addresses.count > 0 else {
 				if self?.isConnected == true {
-					self?.client?.disconnect()
+					try? self?.client?.disconnect()
 				}
-//				self?.unsubscribeAccountBalanceChange(completed: {
-//
-//				})
+				self?.unsubscribeAccountBalanceChange(completed: {
+					
+				})
 				return
 			}
 			
-			self?.addressManager.balanceChannel(addresses: addresses, completion: { (channel, token, timestamp, error) in
-				
-				guard nil == error else {
-					return
-				}
-				
-				guard (self?.channel ?? "") != (channel ?? "") else {
-					return
-				}
-				
-				self?.channel = channel
-				self?.timestamp = timestamp
-				self?.token = token
-				
-				self?.connect(completion: {
-					if self?.isConnected == true {
-						self?.subscribeAccountBalanceChange()
-					}
-				})
+			self?.channel = addresses.first
+			
+			self?.connect(completion: {
+
 			})
 			
+//			self?.addressManager.balanceChannel(addresses: addresses, completion: { (channel, token, timestamp, error) in
+//
+//				guard nil == error else {
+//					return
+//				}
+//
+//				self?.channel = "Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99"
+////				guard (self?.channel ?? "") != (channel ?? "") else {
+////					return
+////				}
+//
+//				self?.channel = channel
+//
+//				self?.connect(completion: {
+//
+//				})
+//			})
+			
 		}).disposed(by: disposeBag)
-
+		
 	}
 	
+	let connectHandler = CentrifugueConnectHandler()
+	
+	let disconnectHandler = CentrifugueDisconnectHandler()
+	
+	let messageHandler = CentrifugueMessageHandler()
+	let publishHandler = CentrifuguePublishHandler()
+	let errorHandler = CentrifugueErrorHandler()
+	let subscribeErrorHandler = CentrifugueSubscribeErrorHandler()
+	
 	func connect(completion: (() -> ())?) {
+		connectHandler.delegate = self
+		disconnectHandler.delegate = self
+		messageHandler.delegate = self
 		
-		guard let tkn = self.token, let tmstmp = self.timestamp else {
+		client?.onConnect(connectHandler)
+		client?.onDisconnect(disconnectHandler)
+		client?.onMessage(messageHandler)
+		client?.onError(errorHandler)
+		
+		do {
+			try client?.connect()
+		} catch {
 			return
 		}
-		
-		let user = ""//String(Session.shared.user.value?.id ?? 0)
-		let timestamp = String(tmstmp)
-		let token = tkn
-		
-		let creds = CentrifugeCredentials(token: token, user: user, timestamp: timestamp)
-		let url = MinterExplorerWebSocketURL
-		client = Centrifuge.client(url: url, creds: creds, delegate: self)
-		
-		client?.connect { message, error in
-			
-			guard nil == error else {
-				self.isConnected = false
-				return
-			}
-			
-			self.isConnected = true
-			completion?()
-			
-		}
 	}
+	
+	var sub: CentrifugeSubscription?
 	
 	private func subscribeAccountBalanceChange() {
 		guard self.isConnected == true, let cnl = self.channel else {
 			return
 		}
 		
-		self.client?.subscribe(toChannel: cnl, delegate: self, completion: { (mes, err) in
-//			print(mes)
-//			print(err)
-		})
-
+		do {
+			sub = try self.client?.newSubscription(cnl)
+		} catch {
+			return
+		}
+		
+		
+		sub?.onPublish(publishHandler)
+		sub?.onSubscribeError(subscribeErrorHandler)
+		try? sub?.subscribe()
+		
 	}
 	
 	private func unsubscribeAccountBalanceChange(completed: (() -> ())?) {
@@ -141,48 +153,108 @@ class RootViewModel: BaseViewModel {
 			return
 		}
 		
-		self.client?.unsubscribe(fromChannel: cnl, completion: { (message, error) in
-
-			defer {
-				completed?()
-			}
-		})
+		//		self.client?.unsubscribe(fromChannel: cnl, completion: { (message, error) in
+		//
+		//			defer {
+		//				completed?()
+		//			}
+		//		})
+	}
+	
+	//MARK: -
+	
+	func reloadData() {
+		Session.shared.loadBalances()
+		Session.shared.loadTransactions()
 	}
 
 }
 
 
 
-extension RootViewModel : CentrifugeClientDelegate, CentrifugeChannelDelegate {
-	
-	func client(_ client: CentrifugeClient, didReceiveRefreshMessage message: CentrifugeServerMessage) {
-		self.isConnected = false
-	}
-
-	func client(_ client: CentrifugeClient, didDisconnectWithError error: Error) {
-		self.isConnected = false
-	}
+extension RootViewModel : CentrifugueConnectHandlerDelegate, CentrifugueDisconnectHandlerDelegate, CentrifuguePublishHandlerDelegate {
 	
 	//MARK: -
 	
-	func client(_ client: CentrifugeClient, didReceiveMessageInChannel channel: String, message: CentrifugeServerMessage) {
-		Session.shared.loadBalances()
-		Session.shared.loadTransactions()
+	func didConnect() {
+		self.isConnected = true
 	}
 	
-	func client(_ client: CentrifugeClient, didReceiveJoinInChannel channel: String, message: CentrifugeServerMessage) {
-		Session.shared.loadBalances()
-		Session.shared.loadTransactions()
+	func didDisconnect() {
+		self.isConnected = false
 	}
 	
-	func client(_ client: CentrifugeClient, didReceiveLeaveInChannel channel: String, message: CentrifugeServerMessage) {
-		Session.shared.loadBalances()
-		Session.shared.loadTransactions()
+	func didPublish() {
+		reloadData()
 	}
 	
-	func client(_ client: CentrifugeClient, didReceiveUnsubscribeInChannel channel: String, message: CentrifugeServerMessage) {
-		Session.shared.loadBalances()
-		Session.shared.loadTransactions()
+}
+
+//MARK: -
+
+protocol CentrifugueConnectHandlerDelegate : class {
+	func didConnect()
+}
+
+protocol CentrifugueDisconnectHandlerDelegate : class {
+	func didDisconnect()
+}
+
+protocol CentrifuguePublishHandlerDelegate : class {
+	func didPublish()
+}
+
+//MARK: -
+
+class CentrifugueConnectHandler : NSObject, CentrifugeConnectHandlerProtocol {
+	
+	weak var delegate: CentrifugueConnectHandlerDelegate?
+	
+	func onConnect(_ p0: CentrifugeClient!, p1: CentrifugeConnectEvent!) {
+		
+		delegate?.didConnect()
 	}
+}
+
+class CentrifugueDisconnectHandler : NSObject, CentrifugeDisconnectHandlerProtocol {
+	
+	weak var delegate: CentrifugueDisconnectHandlerDelegate?
+	
+	func onDisconnect(_ p0: CentrifugeClient!, p1: CentrifugeDisconnectEvent!) {
+		delegate?.didDisconnect()
+	}
+}
+
+class CentrifuguePublishHandler : NSObject, CentrifugePublishHandlerProtocol {
+	
+	weak var delegate: CentrifuguePublishHandlerDelegate?
+	
+	func onPublish(_ p0: CentrifugeSubscription!, p1: CentrifugePublishEvent!) {
+		delegate?.didPublish()
+	}
+}
+
+class CentrifugueMessageHandler : NSObject, CentrifugeMessageHandlerProtocol {
+	
+	weak var delegate: CentrifuguePublishHandlerDelegate?
+	
+	func onMessage(_ p0: CentrifugeClient!, p1: CentrifugeMessageEvent!) {
+		delegate?.didPublish()
+	}
+}
+
+class CentrifugueErrorHandler : NSObject, CentrifugeErrorHandlerProtocol {
+	
+	func onError(_ p0: CentrifugeClient!, p1: CentrifugeErrorEvent!) {
+		
+	}
+}
+
+class CentrifugueSubscribeErrorHandler : NSObject, CentrifugeSubscribeErrorHandlerProtocol {
+	
+	func onSubscribeError(_ p0: CentrifugeSubscription!, p1: CentrifugeSubscribeErrorEvent!) {
+		
+	}
+	
 	
 }
