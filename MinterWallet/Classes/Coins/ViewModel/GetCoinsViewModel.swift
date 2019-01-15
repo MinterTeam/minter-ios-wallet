@@ -34,6 +34,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			self?.approximatelySum.value = nil
 			self?.approximately.value = ""
 			self?.calculateApproximately()
+			self?.checkAmountValue()
 		}).disposed(by: disposeBag)
 		
 		shouldClearForm.asObservable().subscribe(onNext: { (val) in
@@ -87,8 +88,23 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		}
 		
 		if let amountString = self.getAmount.value, let amnt = Decimal(string: amountString), amnt > 0 {
+			
 			if (approximatelySum.value ?? 0.0) > (selectedBalance ?? 0.0) {
 				self.amountError.value = "INSUFFICIENT FUNDS".localized()
+			}
+			else {
+				self.amountError.value = ""
+			}
+		}
+		else {
+			self.amountError.value = ""
+		}
+	}
+	
+	private func checkAmountValue() {
+		if let amountString = self.getAmount.value, let amnt = Decimal(string: amountString), amnt > 0 {
+			if amnt < 1.0/TransactionCoinFactorDecimal {
+				self.amountError.value = "TOO SMALL VALUE".localized()
 			}
 			else {
 				self.amountError.value = ""
@@ -104,7 +120,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		approximatelyReady.value = false
 		self.approximatelySum.value = nil
 		
-		guard let from = selectedCoin?.uppercased(), let to = self.getCoin.value?.uppercased(), let amountString = self.getAmount.value, let amnt = Decimal(string: amountString), amnt > 0 else {
+		guard let from = selectedCoin?.uppercased(), let to = self.getCoin.value?.uppercased(), let amountString = self.getAmount.value, let amnt = Decimal(string: amountString), amnt > 0 && amnt > 1.0/TransactionCoinFactorDecimal else {
 			return
 		}
 		

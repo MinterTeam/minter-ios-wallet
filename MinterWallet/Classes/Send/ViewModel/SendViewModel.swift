@@ -539,7 +539,8 @@ class SendViewModel: BaseViewModel {
 	
 	func getNonce(completion: ((Bool) -> ())?) {
 		
-		if isLoadingNonce.value == true {
+		if nil == self.selectedAddress || isLoadingNonce.value == true {
+			completion?(false)
 			return
 		}
 		isLoadingNonce.value = true
@@ -728,7 +729,7 @@ class SendViewModel: BaseViewModel {
 					}
 				}
 				else {
-					self?.txError.value = NotifiableError(title: "Unable to send transaction".localized(), text: nil)
+					self?.txError.value = NotifiableError(title: "An Error Occurred".localized(), text: "Unable to send transaction".localized())
 				}
 				
 				res = false
@@ -759,8 +760,7 @@ class SendViewModel: BaseViewModel {
 	
 	private func rawTransaction(nonce: BigUInt, gasCoin: String, to: String, value: BigUInt, coin: String) -> RawTransaction {
 		let cn = gasCoin
-		let coinData = cn.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
-		return SendCoinRawTransaction(nonce: nonce, gasCoin: coinData, to: to, value: value, coin: coin.uppercased())
+		return SendCoinRawTransaction(nonce: nonce, gasCoin: cn, to: to, value: value, coin: coin.uppercased())
 	}
 	
 	//MARK: -

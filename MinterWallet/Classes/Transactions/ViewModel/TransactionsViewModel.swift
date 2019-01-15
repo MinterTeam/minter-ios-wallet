@@ -179,7 +179,7 @@ class TransactionsViewModel: BaseViewModel {
 		
 		var signMultiplier = 1.0
 		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-			account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+			account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
 		})
 		
 		var title = ""
@@ -188,15 +188,15 @@ class TransactionsViewModel: BaseViewModel {
 			signMultiplier = -1.0
 		}
 		else {
-			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.from ?? "")
+			title = user?.username != nil ? "@" + user!.username! : (transaction.from ?? "")
 		}
 		
 		let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.title = title
-		transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.data?.from : transaction.data?.to) ?? "")).url()
+		transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")).url()
 		transactionCellItem.date = transaction.date
-		transactionCellItem.from = transaction.data?.from
+		transactionCellItem.from = transaction.from
 		transactionCellItem.to = transaction.data?.to
 		if let data = transaction.data as? MinterExplorer.SendCoinTransactionData {
 			transactionCellItem.coin = data.coin
@@ -217,7 +217,7 @@ class TransactionsViewModel: BaseViewModel {
 		
 		var signMultiplier = 1.0
 		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-			account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+			account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
 		})
 		
 		var title = ""
@@ -226,14 +226,14 @@ class TransactionsViewModel: BaseViewModel {
 			signMultiplier = -1.0
 		}
 		else {
-			title = user?.username != nil ? "@" + user!.username! : (transaction.data?.from ?? "")
+			title = user?.username != nil ? "@" + user!.username! : (transaction.from ?? "")
 		}
 		
 		let transactionCellItem = ConvertTransactionTableViewCellItem(reuseIdentifier: "ConvertTransactionTableViewCell", identifier: "ConvertTransactionTableViewCell_\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.title = title
 		transactionCellItem.date = transaction.date
-		transactionCellItem.from = transaction.data?.from
+		transactionCellItem.from = transaction.from
 		transactionCellItem.to = transaction.data?.to
 		
 		var arrowSign = " > "
@@ -278,7 +278,7 @@ class TransactionsViewModel: BaseViewModel {
 			transactionCellItem.amount = Decimal(signMultiplier) * (data.stake ?? 0)
 			transactionCellItem.title = data.coin ?? ""
 			transactionCellItem.to = data.pubKey ?? ""
-			transactionCellItem.from = data.from ?? ""
+			transactionCellItem.from = transaction.from ?? ""
 			transactionCellItem.type = transaction.type == .unbond ? "Unbond".localized() : "Delegate".localized()
 			transactionCellItem.image = transaction.type == .unbond ? UIImage(named: "unbondImage") : UIImage(named: "delegateImage")
 			
@@ -333,10 +333,10 @@ class TransactionsViewModel: BaseViewModel {
 				item.transaction = transaction
 
 				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
 				})
 
-				var key = transaction.data?.from?.lowercased()
+				var key = transaction.from?.lowercased()
 				if hasAddress, let to = transaction.data?.to {
 					key = to.lowercased()
 				}

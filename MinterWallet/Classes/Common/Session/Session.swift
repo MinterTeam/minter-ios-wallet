@@ -229,10 +229,10 @@ class Session {
 				item.transaction = transaction
 
 				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
 				})
 
-				var key = transaction.data?.from?.lowercased()
+				var key = transaction.from?.lowercased()
 
 				if hasAddress, let to = transaction.data?.to {
 					key = to.lowercased()

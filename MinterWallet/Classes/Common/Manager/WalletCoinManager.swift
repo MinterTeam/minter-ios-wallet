@@ -28,7 +28,7 @@ class WalletCoinManager {
 		
 		let signature = makeSignature(for: address)
 		
-		Alamofire.request("https://minter-bot-wallet.dl-dev.ru/api/coins/send", method: .post, parameters: ["address" : address, "signature" : signature]).responseJSON { (response) in
+		Alamofire.request("https://testnet.tgbot.minter.network/api/coins/send", method: .post, parameters: ["address" : address, "signature" : signature]).responseJSON { (response) in
 			if response.response?.statusCode == 200 {
 				completion?(nil)
 			}

@@ -31,7 +31,7 @@ class RootViewModel: BaseViewModel {
 	
 	var isConnected: Bool = false {
 		didSet {
-			
+			print("***********DID Connect/Disconnect************ \(isConnected == true)")
 			if self.isConnected == true {
 				self.subscribeAccountBalanceChange()
 			}
@@ -54,9 +54,9 @@ class RootViewModel: BaseViewModel {
 			Session.shared.loadUser()
 		}).disposed(by: disposeBag)
 		
-		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable()).distinctUntilChanged({ (val1, val2) -> Bool in
-			return val1.1 == val2.1
-		}).subscribe(onNext: { [weak self] (state, accounts) in
+		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable(), Session.shared.isLoggedIn.asObservable()).distinctUntilChanged({ (val1, val2) -> Bool in
+			return val1.1 == val2.1 || val1.2 == val2.2 || val1.1 == val2.1
+		}).subscribe(onNext: { [weak self] (state, accounts, loggedIn) in
 			
 			let addresses = accounts.map({ (account) -> String in
 				return "Mx" + account.address
@@ -77,24 +77,6 @@ class RootViewModel: BaseViewModel {
 			self?.connect(completion: {
 
 			})
-			
-//			self?.addressManager.balanceChannel(addresses: addresses, completion: { (channel, token, timestamp, error) in
-//
-//				guard nil == error else {
-//					return
-//				}
-//
-//				self?.channel = "Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99"
-////				guard (self?.channel ?? "") != (channel ?? "") else {
-////					return
-////				}
-//
-//				self?.channel = channel
-//
-//				self?.connect(completion: {
-//
-//				})
-//			})
 			
 		}).disposed(by: disposeBag)
 		
@@ -132,17 +114,22 @@ class RootViewModel: BaseViewModel {
 		guard self.isConnected == true, let cnl = self.channel else {
 			return
 		}
-		
+		print("***********Connecting to \(cnl) ************")
 		do {
 			sub = try self.client?.newSubscription(cnl)
 		} catch {
+			print("***********ON SUBSCRIBE ERROR************")
 			return
 		}
 		
 		
 		sub?.onPublish(publishHandler)
 		sub?.onSubscribeError(subscribeErrorHandler)
-		try? sub?.subscribe()
+		do {
+			try sub?.subscribe()
+		} catch {
+			print("***********ON SUBSCRIBE ERROR************")
+		}
 		
 	}
 	
@@ -185,7 +172,10 @@ extension RootViewModel : CentrifugueConnectHandlerDelegate, CentrifugueDisconne
 	}
 	
 	func didPublish() {
-		reloadData()
+		DispatchQueue.main.async { [weak self] in
+			print("***********DID PUBLISH************")
+			self?.reloadData()
+		}
 	}
 	
 }
@@ -230,6 +220,7 @@ class CentrifuguePublishHandler : NSObject, CentrifugePublishHandlerProtocol {
 	weak var delegate: CentrifuguePublishHandlerDelegate?
 	
 	func onPublish(_ p0: CentrifugeSubscription!, p1: CentrifugePublishEvent!) {
+		print("***********ON PUBLISH************")
 		delegate?.didPublish()
 	}
 }
@@ -239,6 +230,7 @@ class CentrifugueMessageHandler : NSObject, CentrifugeMessageHandlerProtocol {
 	weak var delegate: CentrifuguePublishHandlerDelegate?
 	
 	func onMessage(_ p0: CentrifugeClient!, p1: CentrifugeMessageEvent!) {
+		print("***********ON MESSAGE************")
 		delegate?.didPublish()
 	}
 }
@@ -246,14 +238,14 @@ class CentrifugueMessageHandler : NSObject, CentrifugeMessageHandlerProtocol {
 class CentrifugueErrorHandler : NSObject, CentrifugeErrorHandlerProtocol {
 	
 	func onError(_ p0: CentrifugeClient!, p1: CentrifugeErrorEvent!) {
-		
+		print("***********ON ERROR************")
 	}
 }
 
 class CentrifugueSubscribeErrorHandler : NSObject, CentrifugeSubscribeErrorHandlerProtocol {
 	
 	func onSubscribeError(_ p0: CentrifugeSubscription!, p1: CentrifugeSubscribeErrorEvent!) {
-		
+		print("***********ON SUBSCRIBE ERROR************")
 	}
 	
 	

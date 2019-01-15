@@ -40,11 +40,11 @@ class WalletTransactionManager {
 			}
 
 			let users = transactions?.map({ (transaction) -> String? in
-				let from = transaction.data?.from
+				let from = transaction.from
 				let to = transaction.data?.to
 
 				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == transaction.data?.from?.stripMinterHexPrefix().lowercased()
+					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
 				})
 
 				return hasAddress ? to : from
