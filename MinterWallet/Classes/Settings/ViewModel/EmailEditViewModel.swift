@@ -14,21 +14,30 @@ import RxSwift
 
 class EmailEditViewModel: BaseViewModel {
 	
+	//MARK: - Input
+	
+	var email: AnyObserver<String>
+	private var emailSubject = PublishSubject<String>()
+	
+	var saveInDidTap: AnyObserver<Void>
+	private var saveInDidTapSubject = PublishSubject<Void>()
+	
+	var emailErrors = PublishSubject<String?>()
+	
+	
 	//MARK: -
 	
-	var profileManager: ProfileManager?
+	private var profileManager: ProfileManager!
 	
 	var errorNotification = Variable<NotifiableError?>(nil)
 	
 	var successMessage = Variable<NotifiableSuccess?>(nil)
 	
-	var disposeBag = DisposeBag()
+	private var disposeBag = DisposeBag()
 	
 	//MARK: -
 	
 	private var isLoading = Variable(false)
-	
-	var email = Variable<String?>(Session.shared.user.value?.email)
 	
 	var isButtonEnabled = Variable(false)
 	var state = Variable(TextFieldTableViewCell.State.default)
@@ -36,30 +45,65 @@ class EmailEditViewModel: BaseViewModel {
 	//MARK: -
 	
 	override init() {
+		
+		let client = APIClient.withAuthentication()
+		let user = Session.shared.user.value
+		
+		email = emailSubject.asObserver()
+		saveInDidTap = saveInDidTapSubject.asObserver()
+		
 		super.init()
+		
+		if client == nil || user == nil {
+			self.errorNotification.value = NotifiableError(title: "Something went wrong".localized(), text: nil)
+			return
+		}
+		
+		profileManager = ProfileManager(httpClient: client!)
 		
 		createSection()
 		
-		email.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
-			
-			if val?.isValidEmail() == true {
-				self?.isButtonEnabled.value = true
-				self?.state.value = .default
+		emailSubject.asObservable().distinctUntilChanged().subscribe { [weak self] el in
+			if let emailString = el.element, emailString.count > 0 {
+				self?.emailErrors.onNext(self?.validate(email: emailString)?.first)
 			}
 			else {
-				if nil == self?.email.value || self?.email.value == "" {
-					self?.state.value = .default
-				}
-				else {
-					self?.state.value = .invalid(error: "EMAIL IS INCORRECT".localized())
-				}
-				self?.isButtonEnabled.value = false
+				self?.emailErrors.onNext(nil)
 			}
 			
-			if (self?.email.value ?? "") == (Session.shared.user.value?.email ?? "") {
+			if (el.element?.isValidEmail() ?? false) && (el.element ?? "") != (Session.shared.user.value?.email ?? "") {
+				self?.isButtonEnabled.value = true
+			}
+			else {
 				self?.isButtonEnabled.value = false
 			}
-		}).disposed(by: disposeBag)
+		}.disposed(by: disposeBag)
+		
+		saveInDidTapSubject
+			.withLatestFrom(emailSubject.asObservable())
+			.filter({ (eml) -> Bool in
+				return eml.isValidEmail() && eml != (Session.shared.user.value?.email ?? "")
+			}).subscribe(onNext: { [weak self] (em) in
+				
+				guard self != nil else { return }
+				
+				var newUser = user
+				newUser?.email = em
+				
+				self?.profileManager.updateProfile(user: newUser!).subscribe(onNext: { [weak self] (val) in
+					Session.shared.user.value = newUser
+					self?.successMessage.value = NotifiableSuccess(title: "Profile saved".localized(), text: nil)
+				}, onError: { [weak self] (error) in
+					var message = "Profile can't be saved".localized()
+					if let err = error as? HTTPClientError, let mes = err.userData?["message"] as? String {
+						message = mes
+					}
+					self?.errorNotification.value = NotifiableError(title: message, text: nil)
+				}, onCompleted: { [weak self] in
+					self?.isLoading.value = false
+				}).disposed(by: self!.disposeBag)
+			}).disposed(by: disposeBag)
+		
 	}
 	
 	//MARK: -
@@ -114,46 +158,11 @@ class EmailEditViewModel: BaseViewModel {
 	
 	//MARK: -
 	
-	func update(email: String) {
-		
-		guard email.isValidEmail() && email != (Session.shared.user.value?.email ?? "") else {
-			return
-		}
-		
-		guard let client = APIClient.withAuthentication(), let user = Session.shared.user.value else {
-			self.errorNotification.value = NotifiableError(title: "Something went wrong".localized(), text: nil)
-			return
-		}
-		
-		isLoading.value = true
-		
-		if nil == profileManager {
-			profileManager = ProfileManager(httpClient: client)
-		}
-		
-		user.email = email
-		
-		profileManager?.updateProfile(user: user, completion: { [weak self] (updated, error) in
-			
-			self?.isLoading.value = false
-			
-			guard nil == error else {
-				self?.errorNotification.value = NotifiableError(title: "Profile can't be saved".localized(), text: nil)
-				return
-			}
-			
-			self?.successMessage.value = NotifiableSuccess(title: "Profile saved".localized(), text: nil)
-			
-		})
-	}
-	
-	//MARK: -
-	
-	func validate() -> [String]? {
-		if let eml = email.value, !eml.isValidEmail()/* && eml != "" */{
+	func validate(email: String) -> [String]? {
+		if !email.isValidEmail() {
 			return ["EMAIL IS NOT VALID".localized()]
 		}
 		return nil
 	}
-	
+
 }

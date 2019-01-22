@@ -140,7 +140,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			
 			guard nil == error, let ammnt = val, let commission = commission else {
 				
-				if let err = error as? APIClient.APIClientResponseError, let log = err.userData?["log"] as? String {
+				if let err = error as? HTTPClientError, let log = err.userData?["log"] as? String {
 					self?.approximately.value = log
 					return
 				}
@@ -275,7 +275,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 					}
 					
 					guard nil == err else {
-						if let apiError = err as? APIClient.APIClientResponseError, let errorCode = apiError.userData?["code"] as? Int {
+						if let apiError = err as? HTTPClientError, let errorCode = apiError.userData?["code"] as? Int {
 							if errorCode == 107 {
 								self?.errorNotification.value = NotifiableError(title: "Not enough coins to spend".localized(), text: nil)
 							}

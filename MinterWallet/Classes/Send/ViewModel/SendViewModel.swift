@@ -723,7 +723,7 @@ class SendViewModel: BaseViewModel {
 			
 			guard err == nil && nil != hash else {
 				
-				if let error = err as? APIClient.APIClientResponseError {
+				if let error = err as? HTTPClientError {
 					if let errorMessage = error.userData?["log"] as? String {
 						self?.txError.value =  NotifiableError(title: "An Error Occurred".localized(), text: errorMessage)
 					}

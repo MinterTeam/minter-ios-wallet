@@ -39,7 +39,7 @@ class WalletTransactionManager {
 				return
 			}
 
-			let users = transactions?.map({ (transaction) -> String? in
+			let users = Array(Set((transactions?.map({ (transaction) -> String? in
 				let from = transaction.from
 				let to = transaction.data?.to
 
@@ -50,10 +50,10 @@ class WalletTransactionManager {
 				return hasAddress ? to : from
 			}).filter({ (user) -> Bool in
 				return user != nil
-			}) as! [String]?
+			}) as! [String])))
 
-			if (users?.count ?? 0) > 0 {
-				self.infoManager.info(by: users!, completion: { (res, err) in
+			if users.count > 0 {
+				self.infoManager.info(by: users, completion: { (res, err) in
 
 					var usrs = [String : User]()
 

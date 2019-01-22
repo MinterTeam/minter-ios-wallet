@@ -54,17 +54,9 @@ class Session {
 	
 	var mainCoinBalance = Variable(Decimal(0.0))
 	
-	var accessToken: String? {
-		didSet {
-			checkLogin()
-		}
-	}
+	var accessToken = Variable<String?>(nil)
 	
-	private var refreshToken: String? {
-		didSet {
-			checkLogin()
-		}
-	}
+	private var refreshToken = Variable<String?>(nil)
 	
 	var user = Variable<User?>(nil)
 
@@ -88,6 +80,13 @@ class Session {
 			
 		}).disposed(by: disposeBag)
 		
+		Observable.combineLatest(self.accessToken.asObservable(), self.refreshToken.asObservable()).distinctUntilChanged({ (a, b) -> Bool in
+			return (a.0 ?? "" == b.0 ?? "") && (a.1 ?? "" == b.1 ?? "")
+		}).subscribe(onNext: { [weak self] (at, rt) in
+			self?.isLoggedIn.value = at != nil && rt != nil
+		}).disposed(by: disposeBag)
+		
+		
 		accounts.asObservable().distinctUntilChanged().filter({ (accs) -> Bool in
 			return accs.count > 0
 		}).subscribe(onNext: { [weak self] (accounts) in
@@ -106,12 +105,12 @@ class Session {
 	
 	func setAccessToken(_ token: String) {
 		secureStorage.set(token as NSString, forKey: SessionAccessTokenKey)
-		self.accessToken = token
+		self.accessToken.value = token
 	}
 	
 	func setRefreshToken(_ token: String) {
 		secureStorage.set(token as NSString, forKey: SessionRefreshTokenKey)
-		self.refreshToken = token
+		self.refreshToken.value = token
 	}
 	
 	func setUser(_ user: User) {
@@ -137,11 +136,11 @@ class Session {
 	
 	func restore() {
 		if let accessToken = secureStorage.object(forKey: SessionAccessTokenKey) as? String {
-			self.accessToken = accessToken
+			self.accessToken.value = accessToken
 		}
 		
 		if let refreshToken = secureStorage.object(forKey: SessionRefreshTokenKey) as? String {
-			self.refreshToken = refreshToken
+			self.refreshToken.value = refreshToken
 		}
 		
 		if let user = dataBaseStorage.objects(class: UserDataBaseModel.self)?.first as? UserDataBaseModel {
@@ -152,14 +151,12 @@ class Session {
 		}
 		
 		AppSettingsManager.shared.restore()
-		
-		checkLogin()
 	}
 	
 	func logout() {
 		
-		accessToken = nil
-		refreshToken = nil
+		accessToken.value = nil
+		refreshToken.value = nil
 		
 		secureStorage.removeAll()
 		localStorage.removeAll()
@@ -172,30 +169,23 @@ class Session {
 		balances.value = [:]
 		mainCoinBalance.value = 0.0
 		user.value = nil
-		
-		checkLogin()
-	}
-	
-	private func checkLogin() {
-		if nil != self.accessToken && nil != self.refreshToken {
-			self.isLoggedIn.value = true
-		}
-		else {
-			self.isLoggedIn.value = false
-		}
 	}
 	
 	//MARK: -
 	
 	func loadAccounts() {
 		
+		self.isLoading.value = true
 		syncer.isSyncing.asObservable().skip(1).filter({ (val) -> Bool in
 			return val == false
-		}).subscribe(onNext: { (val) in
-			var accs = [Account]()
-			accs = self.accountManager.loadLocalAccounts() ?? []
+		}).subscribe(onNext: { [weak self] (val) in
 			
-			self.accounts.value = accs.sorted(by: { (acc1, acc2) -> Bool in
+			self?.isLoading.value = false
+			
+			var accs = [Account]()
+			accs = self?.accountManager.loadLocalAccounts() ?? []
+			
+			self?.accounts.value = accs.sorted(by: { (acc1, acc2) -> Bool in
 				return (acc1.isMain && !acc2.isMain)
 			})
 		}).disposed(by: disposeBag)
@@ -204,21 +194,35 @@ class Session {
 
 	}
 	
+	private var isLoadingTransaction = false
+	
 	func loadTransactions() {
+		
+		if isLoadingTransaction {
+			return
+		}
+		isLoadingTransaction = true
 		
 		let addresses = accounts.value.map { (acc) -> String in
 			return "Mx" + acc.address
 		}
 		
 		guard addresses.count > 0 else {
+			isLoadingTransaction = false
 			return
 		}
 		
 		//TODO: move to helper
 		
+		self.isLoading.value = true
+		
 		transactionManger.transactions { [weak self] (transactions, users, error) in
-
+			self?.isLoadingTransaction = false
 			self?.isLoading.value = false
+			
+			guard (self?.isLoggedIn.value ?? false) || (self?.accounts.value ?? []).count > 0 else {
+				return
+			}
 
 			guard nil == error else {
 				return
@@ -249,13 +253,13 @@ class Session {
 	
 	func loadBalances() {
 		
-		guard accounts.value.count > 0 else {
-			return
-		}
-		
 		addressManager.addresses(addresses: accounts.value.map({ (account) -> String in
 			return "Mx" + account.address
 		})) { [weak self] (response, err) in
+			
+			guard (self?.isLoggedIn.value ?? false) || (self?.accounts.value ?? []).count > 0 else {
+				return
+			}
 			
 			guard nil == err else {
 				return

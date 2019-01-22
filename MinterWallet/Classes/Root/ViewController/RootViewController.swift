@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import Reachability
 import NotificationBannerSwift
+import MinterMy
 
 
 class RootViewController: UIViewController {
@@ -23,6 +24,8 @@ class RootViewController: UIViewController {
 		case up
 		case down
 	}
+	
+	//MARK: -
 
 	var viewModel = RootViewModel()
 	
@@ -32,6 +35,8 @@ class RootViewController: UIViewController {
 
 	// MARK: Life cycle
 
+	private var presenting = false
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -44,48 +49,65 @@ class RootViewController: UIViewController {
 		}
 	
 		
-		Observable.combineLatest(Session.shared.isLoggedIn.asObservable(), Session.shared.accounts.asObservable())/*.distinctUntilChanged({ (first, second) -> Bool in
-			return first.0 == second.0 && first.1 == second.1
-		})*/
-		.subscribe(onNext: { (isLoggedIn, accounts) in
-			
-			if accounts.count > 0 || isLoggedIn {
-				//has local accounts, show wallet
-				let vc = Storyboards.Main.instantiateInitialViewController()
-				
-				self.showViewControllerWith(vc, usingAnimation: .up) {
-					
-				}
-			}
-			else {
-				if let loginVC = LoginRouter.viewController(path: ["login"], param: [:]) {
-					self.showViewControllerWith(loginVC, usingAnimation: .right, completion: {
-						
-					})
-				}
-			}
+		Session.shared.isLoggedIn.asObservable().subscribe(onNext: { [weak self] (isLoggedIn) in
+			self?.nextStep(isLoggedIn: isLoggedIn)
+		}).disposed(by: disposeBag)
+		
+		Session.shared.accounts.asObservable().subscribe(onNext: { [weak self] (accounts) in
+			self?.nextStep(accounts: accounts, isLoggedIn: Session.shared.isLoggedIn.value)
 		}).disposed(by: disposeBag)
 		
 	}
 
-@objc func reachabilityChanged(_ note: Notification) {
-	
-	let reachability = note.object as! Reachability
-	
-	switch reachability.connection {
-	case .wifi:
-		print("Reachable via WiFi")
-	case .cellular:
-		print("Reachable via Cellular")
-	case .none:
-//		print("Network not reachable")
-		let banner = NotificationBanner(title: "Network is not reachable".localized(), subtitle: nil, style: .danger)
-		banner.show()
+	@objc func reachabilityChanged(_ note: Notification) {
+		
+		let reachability = note.object as! Reachability
+		
+		switch reachability.connection {
+		case .wifi:
+			print("Reachable via WiFi")
+		case .cellular:
+			print("Reachable via Cellular")
+		case .none:
+	//		print("Network not reachable")
+			let banner = NotificationBanner(title: "Network is not reachable".localized(), subtitle: nil, style: .danger)
+			banner.show()
+		}
 	}
-}
+	
+	private let tabbarVC = Storyboards.Main.instantiateInitialViewController()
+	
+	func nextStep(accounts: [Account] = [], isLoggedIn: Bool) {
+		
+		if self.presenting {
+			return
+		}
+		self.presenting = true
+
+		if isLoggedIn || accounts.count > 0 {
+
+			//has local accounts, show wallet
+			
+			tabbarVC.selectedIndex = 0
+			
+			self.showViewControllerWith(tabbarVC, usingAnimation: .up) { [weak self] in
+				self?.presenting = false
+			}
+		}
+		else {
+			if let loginVC = LoginRouter.viewController(path: ["login"], param: [:]) {
+				self.showViewControllerWith(loginVC, usingAnimation: .right, completion: { [weak self] in
+					self?.presenting = false
+				})
+			}
+		}
+
+	}
 
 	func showViewControllerWith(_ newViewController: UIViewController, usingAnimation animationType: AnimationType, completion: (() -> ())?) {
+		
 		if animationStart {
+			completion?()
 			return
 		}
 
@@ -93,6 +115,7 @@ class RootViewController: UIViewController {
 		
 		if nil != currentViewController {
 			guard newViewController.classForCoder != currentViewController!.classForCoder else {
+				completion?()
 				return
 			}
 		}

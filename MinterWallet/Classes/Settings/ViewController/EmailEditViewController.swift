@@ -50,6 +50,18 @@ class EmailEditViewController: BaseViewController, UITableViewDelegate, UITableV
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
 			banner.show()
 		}).disposed(by: disposeBag)
+		
+		viewModel.emailErrors.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (err) in
+			if let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+				if err != nil {
+					cell.setInvalid(message: err)
+				}
+				else {
+					cell.setDefault()
+				}
+			}
+		}).disposed(by: disposeBag)
+		
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -90,9 +102,15 @@ class EmailEditViewController: BaseViewController, UITableViewDelegate, UITableV
 		var validationCell = cell as? ValidatableCellProtocol
 		validationCell?.validateDelegate = self
 		
+		if let textFieldCell = cell as? TextFieldTableViewCell {
+			textFieldCell.textField.rx.text.orEmpty.bind(to: viewModel.email).disposed(by: disposeBag)
+		}
+		
+		
 		var buttonCell = cell as? ButtonTableViewCell
 		buttonCell?.delegate = self
 		
+		buttonCell?.button.rx.tap.asObservable().subscribe(viewModel.saveInDidTap).disposed(by: disposeBag)
 		
 		return cell
 	}
@@ -107,19 +125,6 @@ class EmailEditViewController: BaseViewController, UITableViewDelegate, UITableV
 	
 	//MARK: -
 	
-	func checkErrors() {
-		if let errors = viewModel.validate(), let err = errors.first {
-			if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
-				cell.setInvalid(message: err)
-			}
-		}
-		else {
-			if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
-				cell.setDefault()
-			}
-		}
-	}
-	
 }
 
 extension EmailEditViewController : ButtonTableViewCellDelegate {
@@ -132,17 +137,6 @@ extension EmailEditViewController : ButtonTableViewCellDelegate {
 		hardImpactFeedbackGenerator.impactOccurred()
 		
 		tableView.endEditing(true)
-		
-		if let emailCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell, let email = emailCell.textField.text {
-			
-			self.viewModel.email.value = email
-			
-			checkErrors()
-			
-			if nil == viewModel.validate() {
-				viewModel.update(email: email)
-			}
-		}
 	}
 	
 }
@@ -151,12 +145,12 @@ extension EmailEditViewController : ValidatableCellDelegate {
 	
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
 		
-		self.viewModel.email.value = field?.validationText
+//		self.viewModel.email.value = field?.validationText
 		completion?()
 	}
 
 	func didValidateField(field: ValidatableCellProtocol?) {
-		checkErrors()
+		
 	}
 
 }

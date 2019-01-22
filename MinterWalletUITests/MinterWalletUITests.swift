@@ -168,8 +168,10 @@ class MinterWalletUITests: XCTestCase {
 			textView.tap()
 			textView.typeText("Mx228e5a68b847d169da439ec15f727f08233a7ca6")
 			
-			self.app.textFields.element(boundBy: 1).tap()
-			self.app.textFields.element(boundBy: 1).typeText("0.0001")
+			self.app.tables.buttons["USE MAX"].tap()
+			
+//			self.app.textFields.element(boundBy: 1).tap()
+//			self.app.textFields.element(boundBy: 1).typeText("0.0001")
 			
 			self.app.tables.buttons["SEND"].tap()
 			
@@ -257,6 +259,33 @@ class MinterWalletUITests: XCTestCase {
 		tablesQuery/*@START_MENU_TOKEN@*/.buttons["CONTINUE"]/*[[".cells.buttons[\"CONTINUE\"]",".buttons[\"CONTINUE\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
 		
 		let label = app.staticTexts["My Balance"]
+		
+		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label, handler: nil)
+		waitForExpectations(timeout: 15, handler: nil)
+	}
+	
+	func testLoginWithIncorrectCredentials() {
+		logout()
+		
+		let login = "testme1fdsfds"
+		let pwd = "12345fsdfsdf6"
+		
+		let app = XCUIApplication()
+		app.buttons["SIGN IN"].tap()
+		
+		let tablesQuery2 = app.tables
+		let password = tablesQuery2.cells.containing(.staticText, identifier:"YOUR PASSWORD").children(matching: .secureTextField).element
+		password.tap()
+		password.typeText(pwd)
+		
+		let tablesQuery = tablesQuery2
+		let username = tablesQuery/*@START_MENU_TOKEN@*/.textFields.containing(.staticText, identifier:"@").element/*[[".cells.textFields.containing(.staticText, identifier:\"@\").element",".textFields.containing(.staticText, identifier:\"@\").element"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+		username.tap()
+		username.typeText(login)
+		
+		tablesQuery/*@START_MENU_TOKEN@*/.buttons["CONTINUE"]/*[[".cells.buttons[\"CONTINUE\"]",".buttons[\"CONTINUE\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+		
+		let label = app.staticTexts["The user credentials were incorrect."]
 		
 		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label, handler: nil)
 		waitForExpectations(timeout: 15, handler: nil)

@@ -13,7 +13,7 @@ extension APIClient {
 	
 	class func withAuthentication() -> APIClient? {
 		
-		guard let accessToken = Session.shared.accessToken else {
+		guard let accessToken = Session.shared.accessToken.value else {
 			return nil
 		}
 		

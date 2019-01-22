@@ -35,7 +35,9 @@ class RootViewModel: BaseViewModel {
 			if self.isConnected == true {
 				self.subscribeAccountBalanceChange()
 			}
-			reloadData()
+			if isConnected {
+//				reloadData()
+			}
 		}
 	}
 	

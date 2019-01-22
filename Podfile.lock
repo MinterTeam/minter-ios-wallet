@@ -12,7 +12,7 @@ PODS:
   - Fabric (1.7.12)
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
-  - MinterCore (0.1.13):
+  - MinterCore (0.1.14):
     - Alamofire (= 4.7.3)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 0.9)
@@ -135,7 +135,7 @@ SPEC CHECKSUMS:
   Fabric: d7387db9a31aadff63b147a4b91d982c53afaa4f
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
-  MinterCore: 13c832837a16e0017503a8484e1702a62cfac5dc
+  MinterCore: 2f48d0caab08a566b7181a1fa437649844060e6e
   MinterExplorer: d676e9f951b9ef573140500277ac26002eee1517
   MinterMy: 99a32a3b0b914f73509715f9c0f7952715808591
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7

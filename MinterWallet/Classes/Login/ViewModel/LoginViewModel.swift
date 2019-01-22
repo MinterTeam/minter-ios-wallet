@@ -32,6 +32,8 @@ class LoginViewModel: BaseViewModel {
 	
 	var notifiableError = Variable<NotifiableError?>(nil)
 	
+	private let disposeBag = DisposeBag()
+	
 	var isButtonEnabled: Observable<Bool> {
 		return Observable.combineLatest(username.asObservable(), password.asObservable()).map({ (val) -> Bool in
 			return LoginForm.isUsernameValid(username: val.0 ?? "") && LoginForm.isPasswordValid(password: (val.1 ?? ""))
@@ -90,47 +92,42 @@ class LoginViewModel: BaseViewModel {
 	
 	func login(username: String, password: String) {
 		
-		isLoading.value = true
+		let pwd = accountManager.accountPassword(password)
 		
-		authManager.login(username: username, password: accountManager.accountPassword(password)) { [weak self] (accessToken, refreshToken, user, error) in
+		authManager.login(username: username, password: pwd).do(onSubscribe: { [weak self] in
+			self?.isLoading.value = true
+		}).subscribe(onNext: { [weak self] (res) in
+			self?.accountManager.save(password: password)
+
+			SessionHelper.set(accessToken: res.0, refreshToken: res.1, user: res.2)
+
+			AccountManager().save(password: password)
+		}, onError: { [weak self] (error) in
+			var errorMessage = ""
+			if let error = error as? AuthManager.AuthManagerLoginError {
 			
-			self?.isLoading.value = false
-			
-			guard nil == error else {
-				
-				var errorMessage = ""
-				switch error! {
+				switch error {
 				case .invalidCredentials:
 					errorMessage = "Invalid Credentials".localized()
 					break
-					
+
 				case .custom(let error):
 					if nil != error.message {
 						errorMessage = error.message!
 					}
-					else {
-						errorMessage = "Something went wrong".localized()
-					}
 					break
 				}
-				
-				self?.notifiableError.value = NotifiableError(title: errorMessage, text: nil)
-				return
 			}
 			
-			guard nil != accessToken && nil != refreshToken else {
-				//Show error
-				return
+			if errorMessage == "" {
+				errorMessage = "Something went wrong".localized()
 			}
-			
-			self?.accountManager.save(password: password)
-			
-			SessionHelper.set(accessToken: accessToken, refreshToken: refreshToken, user: user)
-			
-			AccountManager().save(password: password)
-			
-		}
-		
+			self?.notifiableError.value = NotifiableError(title: errorMessage, text: nil)
+		}, onCompleted: { [weak self] in
+
+		}) { [weak self] in
+			self?.isLoading.value = false
+		}.disposed(by: disposeBag)
 		
 	}
 

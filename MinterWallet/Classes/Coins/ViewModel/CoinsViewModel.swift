@@ -84,7 +84,12 @@ class CoinsViewModel: BaseViewModel {
 		var section = BaseTableSectionItem(header: "Latest Transactions".localized())
 		section.identifier = "BaseTableSectionItem_1"
 		
-		Array(Session.shared.transactions.value[safe: 0..<5] ?? []).forEach { (transactionItem) in
+		let trans = Array(Session.shared.transactions.value[safe: 0..<5] ?? [])
+		if trans.count == 0 {
+			section.items = []
+		}
+		
+		trans.forEach { (transactionItem) in
 			
 			guard let transaction = transactionItem.transaction else {
 				return

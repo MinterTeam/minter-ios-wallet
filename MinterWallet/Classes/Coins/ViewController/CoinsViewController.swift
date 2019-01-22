@@ -154,6 +154,8 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
+		self.tableView.reloadData()
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen, params: nil)
 		
 		updateUsernameView()
