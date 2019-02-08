@@ -115,6 +115,8 @@ class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDa
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
+		viewModel.viewDidAppear()
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .SendScreen, params: nil)
 	}
 	

@@ -169,6 +169,16 @@ class AccountManager {
 		return address
 	}
 	
+	//MARK: -
+	
+	func privateKey(for address: String) -> PrivateKey? {
+		guard let mnemonic = self.mnemonic(for: address), let seed = self.seed(mnemonic: mnemonic) else {
+			return nil
+		}
+		
+		return self.privateKey(from: seed)
+	}
+	
 	func mnemonic(for address: String) -> String? {
 		guard let encryptedMnemonic = secureStorage.object(forKey: address) as? Data, let password = self.password() else {
 			return nil

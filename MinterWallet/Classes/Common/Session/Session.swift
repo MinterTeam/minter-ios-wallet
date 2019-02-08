@@ -25,6 +25,7 @@ class Session {
 	var isLoggedIn = Variable(false)
 	
 	private let accountManager = AccountManager()
+	private let gateManager = GateManager.shared
 	private let minterAccountManager = MinterCore.AccountManager.default
 	private let transactionManager = MinterExplorer.ExplorerTransactionManager.default
 	private let addressManager = MinterExplorer.ExplorerAddressManager.default
@@ -59,6 +60,8 @@ class Session {
 	private var refreshToken = Variable<String?>(nil)
 	
 	var user = Variable<User?>(nil)
+	
+	var currentGasPrice = Variable<Int>(1)
 
 	//MARK: -
 	
@@ -302,6 +305,14 @@ class Session {
 			})
 			
 			self?.mainCoinBalance.value = newMainCoinBalance
+		}
+	}
+	
+	func updateGas() {
+		gateManager.minGasPrice { (gas, err) in
+			if let gas = gas {
+				self.currentGasPrice.value = gas
+			}
 		}
 	}
 	

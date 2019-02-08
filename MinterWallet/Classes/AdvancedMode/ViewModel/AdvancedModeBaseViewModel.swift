@@ -44,7 +44,7 @@ class AccountantBaseViewModel : BaseViewModel {
 		}
 		
 		let accounts = databaseStorage.objects(class: AccountDataBaseModel.self) as? [AccountDataBaseModel]
-		let hasObjects = (accounts?.count ?? 0) > 0
+		let hasObjects = !(accounts?.count == 0)
 		
 		//No repeated accounts allowed
 		guard (accounts ?? []).filter({ (acc) -> Bool in

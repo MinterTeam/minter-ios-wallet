@@ -27,16 +27,12 @@ class RootViewModel: BaseViewModel {
 	
 	var channel: String?
 	
-	var client: CentrifugeClient? = CentrifugeNew(MinterExplorerWebSocketURL, CentrifugeDefaultConfig())
+	var client: CentrifugeClient?
 	
 	var isConnected: Bool = false {
 		didSet {
-			print("***********DID Connect/Disconnect************ \(isConnected == true)")
 			if self.isConnected == true {
 				self.subscribeAccountBalanceChange()
-			}
-			if isConnected {
-//				reloadData()
 			}
 		}
 	}
@@ -46,7 +42,9 @@ class RootViewModel: BaseViewModel {
 	override init() {
 		super.init()
 		
-		SessionHelper.reloadAccounts()
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+			SessionHelper.reloadAccounts()
+		}
 		
 		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in
 			return isLoggedIn
@@ -54,7 +52,10 @@ class RootViewModel: BaseViewModel {
 			//show wallet
 			SessionHelper.reloadAccounts()
 			Session.shared.loadUser()
+			
 		}).disposed(by: disposeBag)
+		
+		Session.shared.updateGas()
 		
 		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable(), Session.shared.isLoggedIn.asObservable()).distinctUntilChanged({ (val1, val2) -> Bool in
 			return val1.1 == val2.1 || val1.2 == val2.2 || val1.1 == val2.1
@@ -94,6 +95,10 @@ class RootViewModel: BaseViewModel {
 	let subscribeErrorHandler = CentrifugueSubscribeErrorHandler()
 	
 	func connect(completion: (() -> ())?) {
+		if nil == client {
+			client = CentrifugeNew(MinterExplorerWebSocketURL!.absoluteURL.absoluteString, CentrifugeDefaultConfig())
+		}
+		
 		connectHandler.delegate = self
 		disconnectHandler.delegate = self
 		messageHandler.delegate = self
@@ -116,11 +121,9 @@ class RootViewModel: BaseViewModel {
 		guard self.isConnected == true, let cnl = self.channel else {
 			return
 		}
-		print("***********Connecting to \(cnl) ************")
 		do {
 			sub = try self.client?.newSubscription(cnl)
 		} catch {
-			print("***********ON SUBSCRIBE ERROR************")
 			return
 		}
 		
@@ -130,7 +133,7 @@ class RootViewModel: BaseViewModel {
 		do {
 			try sub?.subscribe()
 		} catch {
-			print("***********ON SUBSCRIBE ERROR************")
+			
 		}
 		
 	}
@@ -141,13 +144,6 @@ class RootViewModel: BaseViewModel {
 			completed?()
 			return
 		}
-		
-		//		self.client?.unsubscribe(fromChannel: cnl, completion: { (message, error) in
-		//
-		//			defer {
-		//				completed?()
-		//			}
-		//		})
 	}
 	
 	//MARK: -
@@ -175,7 +171,6 @@ extension RootViewModel : CentrifugueConnectHandlerDelegate, CentrifugueDisconne
 	
 	func didPublish() {
 		DispatchQueue.main.async { [weak self] in
-			print("***********DID PUBLISH************")
 			self?.reloadData()
 		}
 	}
@@ -222,7 +217,6 @@ class CentrifuguePublishHandler : NSObject, CentrifugePublishHandlerProtocol {
 	weak var delegate: CentrifuguePublishHandlerDelegate?
 	
 	func onPublish(_ p0: CentrifugeSubscription!, p1: CentrifugePublishEvent!) {
-		print("***********ON PUBLISH************")
 		delegate?.didPublish()
 	}
 }
@@ -232,7 +226,6 @@ class CentrifugueMessageHandler : NSObject, CentrifugeMessageHandlerProtocol {
 	weak var delegate: CentrifuguePublishHandlerDelegate?
 	
 	func onMessage(_ p0: CentrifugeClient!, p1: CentrifugeMessageEvent!) {
-		print("***********ON MESSAGE************")
 		delegate?.didPublish()
 	}
 }
@@ -240,14 +233,12 @@ class CentrifugueMessageHandler : NSObject, CentrifugeMessageHandlerProtocol {
 class CentrifugueErrorHandler : NSObject, CentrifugeErrorHandlerProtocol {
 	
 	func onError(_ p0: CentrifugeClient!, p1: CentrifugeErrorEvent!) {
-		print("***********ON ERROR************")
 	}
 }
 
 class CentrifugueSubscribeErrorHandler : NSObject, CentrifugeSubscribeErrorHandlerProtocol {
 	
 	func onSubscribeError(_ p0: CentrifugeSubscription!, p1: CentrifugeSubscribeErrorEvent!) {
-		print("***********ON SUBSCRIBE ERROR************")
 	}
 	
 	

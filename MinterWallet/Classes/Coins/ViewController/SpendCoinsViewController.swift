@@ -13,7 +13,9 @@ import NotificationBannerSwift
 import TPKeyboardAvoiding
 
 
-class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider, UITextFieldDelegate {
+class SpendCoinsViewController: ConvertCoinsViewController, ControllerType, IndicatorInfoProvider, UITextFieldDelegate {
+	
+	typealias ViewModelType = SpendCoinsViewModel
 	
 	//MARK: -
 	
@@ -49,12 +51,6 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		}
 	}
 	
-//	@IBOutlet weak var getCoinTextField: ValidatableTextField! {
-//		didSet {
-//			setAppearance(for: getCoinTextField)
-//		}
-//	}
-	
 	@IBOutlet weak var getCoinActivityIndicator: UIActivityIndicatorView!
 	
 	@IBAction func didTapExchange(_ sender: Any) {
@@ -65,8 +61,6 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		hardImpactFeedbackGenerator.impactOccurred()
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendExchangeButton, params: nil)
-		
-		vm.exchange()
 	}
 	
 	@IBOutlet weak var amountErrorLabel: UILabel!
@@ -74,109 +68,124 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	@IBOutlet weak var getCoinErrorLabel: UILabel!
 	
 	@IBAction func didTapUseMax(_ sender: Any) {
-		
 		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendUseMaxButton, params: nil)
-		
-		let balanceString = vm.selectedBalanceString?.replacingOccurrences(of: " ", with: "")
-		self.spendAmountTextField.text = balanceString
-		vm.spendAmount.value = balanceString
 	}
 	
-	//MARK: -
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
+	// MARK: -
+	
+	func configure(with viewModel: ViewModelType) {
 		
-		viewModel = SpendCoinsViewModel()
+		//Input
 		
-		self.spendAmountTextField.rightPadding = useMaxButton.bounds.width
+		self.spendAmountTextField.rx.text.asObservable()
+			.subscribe(viewModel.input.spendAmount)
+			.disposed(by: self.disposableBag)
 		
-		vm.spendCoin.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (coin) in
-			self?.spendCoinTextField.text = self?.vm.spendCoinText
-		}).disposed(by: disposableBag)
+		self.getCoinTextField.rx.text.asObservable()
+			.subscribe(viewModel.input.getCoin)
+			.disposed(by: self.disposableBag)
 		
-		vm.isApproximatelyLoading.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
-			if val {
-				self?.getActivityIndicator.isHidden = false
-				self?.getActivityIndicator.startAnimating()
-			}
-			else {
-				self?.getActivityIndicator.isHidden = true
-				self?.getActivityIndicator.stopAnimating()
-			}
-		}).disposed(by: disposableBag)
+		self.spendCoinTextField.rx.text.asObservable()
+			.subscribe(viewModel.input.spendCoin)
+			.disposed(by: self.disposableBag)
 		
-		vm.approximately.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+		self.useMaxButton.rx.tap.asObservable()
+			.subscribe(viewModel.input.useMaxDidTap)
+			.disposed(by: self.disposableBag)
+		
+		self.exchangeButton.rx.tap.asObservable()
+			.subscribe(viewModel.input.exchangeDidTap)
+			.disposed(by: self.disposableBag)
+		
+		//Output
+		
+		viewModel.output.approximately.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
 			self?.approximately.text = val
-			
 		}).disposed(by: disposableBag)
 		
-		vm.isLoading.asObservable().subscribe(onNext: { [weak self] (val) in
-			if val {
-				self?.exchangeButton.isEnabled = false
-				self?.buttonActivityIndicator.startAnimating()
-				self?.buttonActivityIndicator.isHidden = false
-			}
-			else {
-				self?.exchangeButton.isEnabled = true
-				self?.buttonActivityIndicator.stopAnimating()
-				self?.buttonActivityIndicator.isHidden = true
-			}
-		}).disposed(by: disposableBag)
+		viewModel.output.spendCoin.filter({ (val) -> Bool in
+			return val != nil && val != ""
+		}).asDriver(onErrorJustReturn: nil).drive(self.spendCoinTextField.rx.text).disposed(by: self.disposableBag)
 		
-		vm.isButtonEnabled.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
-			self?.exchangeButton.isEnabled = val
-		}).disposed(by: disposableBag)
-		
-		vm.errorNotification.asObservable().filter({ (notification) -> Bool in
-			return nil != notification
-		}).subscribe(onNext: { (notification) in
-			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
-			banner.show()
-		}).disposed(by: disposableBag)
-		
-		vm.successMessage.asObservable().filter({ (notification) -> Bool in
-			return nil != notification
-		}).subscribe(onNext: { (notification) in
-			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
-			banner.show()
-		}).disposed(by: disposableBag)
-		
-		vm.shouldClearForm.asObservable().filter({ (val) -> Bool in
-			return val
-		}).subscribe(onNext: { [weak self] (val) in
-			self?.clearForm()
-		}).disposed(by: disposableBag)
-		
-		Session.shared.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
-			self?.spendCoinTextField.text = self?.vm.spendCoinText
-			
-			if self?.vm.hasMultipleCoins ?? false {
+		viewModel.output.hasMultipleCoinsObserver.asDriver(onErrorJustReturn: false).drive(onNext: { [weak self] (has) in
+			if has {
 				self?.spendCoinTextField?.rightViewMode = .always
 			}
 			else {
 				self?.spendCoinTextField?.rightViewMode = .never
 			}
+		}).disposed(by: self.disposableBag)
+		
+		viewModel.output.isButtonEnabled.asDriver(onErrorJustReturn: true).drive(onNext: { [weak self] (val) in
+			self?.exchangeButton.isEnabled = val
+		}).disposed(by: self.disposableBag)
+		
+		
+		viewModel.output.isLoading.asDriver(onErrorJustReturn: false).drive(onNext: { [weak self] (val) in
+			if val {
+				self?.buttonActivityIndicator.startAnimating()
+				self?.buttonActivityIndicator.isHidden = false
+			}
+			else {
+				self?.buttonActivityIndicator.stopAnimating()
+				self?.buttonActivityIndicator.isHidden = true
+			}
 		}).disposed(by: disposableBag)
 		
-		vm.amountError.asObservable().subscribe(onNext: { (val) in
+		viewModel.output.errorNotification.asDriver(onErrorJustReturn: nil).filter({ (notification) -> Bool in
+			return notification != nil
+		}).drive(onNext: { (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
+			banner.show()
+		}).disposed(by: self.disposableBag)
+		
+		viewModel.output.shouldClearForm.asObservable().filter({ (val) -> Bool in
+			return val
+		}).subscribe(onNext: { [weak self] (val) in
+			self?.clearForm()
+		}).disposed(by: disposableBag)
+		
+		viewModel.output.isCoinLoading.distinctUntilChanged().asDriver(onErrorJustReturn: false).drive(onNext: { [weak self] (val) in
+			self?.getCoinActivityIndicator.isHidden = !val
+			if val {
+				self?.getCoinActivityIndicator.startAnimating()
+			}
+			else {
+				self?.getCoinActivityIndicator.stopAnimating()
+			}
+		}).disposed(by: disposableBag)
+		
+		
+		viewModel.output.amountError.asObservable().subscribe(onNext: { (val) in
 			self.amountErrorLabel.text = val
 		}).disposed(by: disposableBag)
 		
-		vm.getCoinError.asObservable().subscribe(onNext: { (val) in
+		viewModel.output.getCoinError.asObservable().subscribe(onNext: { (val) in
 			self.getCoinErrorLabel.text = val
 		}).disposed(by: disposableBag)
 		
-		vm.coinIsLoading.asObservable().subscribe(onNext: { (val) in
-			if val {
-				self.getCoinActivityIndicator.startAnimating()
-				self.getCoinActivityIndicator.isHidden = false
-			}
-			else {
-				self.getCoinActivityIndicator.stopAnimating()
-				self.getCoinActivityIndicator.isHidden = true
-			}
+		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
+			banner.show()
 		}).disposed(by: disposableBag)
+
+		viewModel.output.spendAmount.asDriver(onErrorJustReturn: nil).drive(spendAmountTextField.rx.text).disposed(by: disposableBag)
+		
+		self.viewModel = viewModel
+	}
+	
+	//MARK: - UIViewController
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		// TODO: Вынести в Router!!!
+		let vm = SpendCoinsViewModel()
+		self.configure(with: vm)
+		
+		self.spendAmountTextField.rightPadding = useMaxButton.bounds.width
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -217,17 +226,14 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 	
 	func showPicker() {
 		
-		let items = vm.pickerItems()
+		let items = vm.spendCoinPickerItems
 		
 		guard items.count > 0 else {
 			return
 		}
 		
-//		let formatter = CurrencyNumberFormatter.decimalShortFormatter
-		
 		let data: [[String]] = [items.map({ (item) -> String in
-			let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: self.formatter)
-			return (item.coin ?? "") + " (" + balanceString + ")"
+			return item.title ?? ""
 		})]
 		
 		let picker = McPicker(data: data)
@@ -236,20 +242,8 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		picker.toolbarBarTintColor = UIColor(hex: 0x4225A4)
 		picker.toolbarItemsFont = UIFont.mediumFont(of: 16.0)
 		picker.show { [weak self] (selected) in
-			
-			guard let coin = selected[0] else {
-				return
-			}
-			
-			if let item = items.filter({ (item) -> Bool in
-				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: self!.formatter)
-				return (item.coin ?? "") + " (" + balanceString + ")" == coin
-			}).first {
-				self?.vm.selectedAddress = item.address
-				self?.vm.selectedCoin = item.coin
-			}
-			
-			self?.vm.spendCoin.value = coin
+			self?.spendCoinTextField.text = selected.first?.value
+			self?.spendCoinTextField.sendActions(for: .valueChanged)
 		}
 	}
 	
@@ -268,16 +262,20 @@ class SpendCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvide
 		textField.text = txtAfterUpdate
 		
 		if textField == self.spendAmountTextField {
-			vm.spendAmount.value = (txtAfterUpdate as String).replacingOccurrences(of: ",", with: ".")
+			txtAfterUpdate = (txtAfterUpdate as String).replacingOccurrences(of: ",", with: ".")
+			textField.text = txtAfterUpdate
 		}
 		else if textField == self.spendCoinTextField {
-			vm.spendCoin.value = txtAfterUpdate as String
+			vm.spendCoin.onNext(txtAfterUpdate as String)
 		}
 		else if textField == getCoinTextField {
-			vm.getCoin.value = txtAfterUpdate as String
 			autocompleteView.perform(#selector(LUAutocompleteView.textFieldEditingChanged))
 		}
+		textField.sendActions(for: .valueChanged)
+		
+		//TODO: move to VM
 		vm.validateErrors()
+		
 		return false
 	}
 }

@@ -13,29 +13,115 @@ import MinterExplorer
 import BigInt
 
 
-struct ConvertPickerItem {
-	var coin: String?
-	var address: String?
-	var balance: Decimal?
+
+enum SpendCoindsViewModelError : Error {
+	case incorrectParams
+	case noPrivateKey
+	case canNotGetNonce
+	case canNotCreateTx
 }
 
-
-class SpendCoinsViewModel : ConvertCoinsViewModel {
+class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
+	
+	//MARK: - ViewModelProtocol
+	
+	var input: SpendCoinsViewModel.Input!
+	var output: SpendCoinsViewModel.Output!
+	
+	
+	struct Input {
+		var spendAmount: AnyObserver<String?>
+		var getCoin: AnyObserver<String?>
+		var spendCoin: AnyObserver<String?>
+		var useMaxDidTap: AnyObserver<Void>
+		var exchangeDidTap: AnyObserver<Void>
+		var selectedAddress: String?
+		var selectedCoin: String?
+	}
+	
+	struct Output {
+		var approximately: Observable<String?>
+		var spendCoin: Observable<String?>
+		var spendAmount: Observable<String?>
+		var hasMultipleCoinsObserver: Observable<Bool>
+		var isButtonEnabled: Observable<Bool>
+		var isLoading: Observable<Bool>
+		var isCoinLoading: Observable<Bool>
+		var errorNotification: Observable<NotifiableError?>
+		var shouldClearForm: Observable<Bool>
+		var amountError: Observable<String?>
+		var getCoinError: Observable<String?>
+	}
+	
 	
 	//MARK: -
 	
-	let transactionManager = MinterExplorer.ExplorerTransactionManager.default
+	let transactionManager = ExplorerTransactionManager.default
+	
+	private var coinObservable: Observable<String?> {
+		return getCoin.asObservable()
+	}
 	
 	override init() {
 		super.init()
+
+		self.output = Output(approximately: approximately.asObservable(),
+												 spendCoin: spendCoinField.asObservable(),
+												 spendAmount: spendAmount.asObservable(),
+												 hasMultipleCoinsObserver: hasMultipleCoinsObserver,
+												 isButtonEnabled: isButtonEnabled,
+												 isLoading: isLoading.asObservable(),
+												 isCoinLoading: coinIsLoading.asObservable(),
+												 errorNotification: errorNotification.asObservable(),
+												 shouldClearForm: shouldClearForm.asObservable(),
+												 amountError: amountError.asObservable(),
+												 getCoinError: getCoinError.asObservable()
+		)
+		
+		self.input = Input(spendAmount: spendAmount.asObserver(),
+											 getCoin: getCoin.asObserver(),
+											 spendCoin: spendCoinField.asObserver(),
+											 useMaxDidTap: useMaxDidTap.asObserver(),
+											 exchangeDidTap: exchangeDidTap.asObserver(),
+											 selectedAddress: selectedAddress,
+											 selectedCoin: selectedCoin
+		)
+		
+		self.coinObservable.distinctUntilChanged().do(onNext: { [weak self] (term) in
+			if nil != term && term != "" {
+				self?.hasCoin.value = false
+				self?.getCoinError.value = "COIN NOT FOUND".localized()
+			}
+		}).map({ (term) -> String in
+			return term?.trimmingCharacters(in: .whitespacesAndNewlines).uppercased() ?? ""
+		}).filter({ (term) -> Bool in
+			return CoinValidator.isValid(coin: term)
+		}).subscribe(onNext: { [weak self] (term) in
+			
+			guard let _self = self else { return }
+			
+			self?.coinManager.coin(by: term).do(onNext: { (coin) in
+				self?.coinIsLoading.value = true
+			}, onCompleted: {
+				self?.coinIsLoading.value = false
+			}).filter({ (coin) -> Bool in
+				return coin != nil
+			}).subscribe(onNext: { [weak self] (coin) in
+				self?.hasCoin.value = true
+				self?.getCoinError.value = ""
+			}).disposed(by: _self.disposeBag)
+		}).disposed(by: disposeBag)
 		
 		Session.shared.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
+			
+			self?.spendCoinField.onNext(self?.spendCoinText)
+			
 			let val = self?.pickerItems().first
 			let ads = val?.address
 			let cn = val?.coin
 			
-			if nil == self?.spendCoin.value {
-				self?.spendCoin.value = cn
+			if let spend = try? self?.spendCoin.value(), nil == spend {
+				self?.spendCoin.onNext(cn)
 			}
 			if nil == self?.selectedCoin {
 				self?.selectedCoin = cn
@@ -45,41 +131,86 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			}
 		}).disposed(by: disposeBag)
 		
-		Observable.combineLatest(spendCoin.asObservable(), spendAmount.asObservable(), getCoin.asObservable()).filter { (val) -> Bool in
-			return true
-		}.throttle(1, scheduler: MainScheduler.instance).subscribe(onNext: { [weak self] (val) in
-			self?.minimumValueToBuy.value = nil
-			self?.approximately.value = ""
-			self?.calculateApproximately()
-			self?.validateErrors()
+		self.spendCoinField.throttle(1.0, scheduler: MainScheduler.instance).distinctUntilChanged().map({ (val) -> SpendCoinPickerItem? in
+			let item = self.spendCoinPickerItems.filter({ (item) -> Bool in
+				return item.title == val
+			}).first
+			return item
+		}).filter({ (item) -> Bool in
+			return item != nil
+		}).subscribe(onNext: { [weak self] (item) in
+			self?.selectedAddress = item?.address
+			self?.selectedCoin = item?.coin
+			self?.spendCoin.onNext(item?.coin)
 		}).disposed(by: disposeBag)
-
-		shouldClearForm.asObservable().subscribe(onNext: { [weak self] (val) in
-			self?.spendAmount.value = nil
-			self?.getCoin.value = nil
+		
+		self.spendCoin.distinctUntilChanged().asObservable().filter({ [weak self] (coin) -> Bool in
+			return coin != nil && self?.selectedBalance != nil && self?.selectedAddress != nil
+		}).subscribe(onNext: { [weak self] (coin) in
+			guard let _self = self else { return }
+			
+			let item = SpendCoinPickerItem(coin: coin!, balance: _self.selectedBalance!, address: _self.selectedAddress!, formatter: _self.formatter)
+			self?.spendCoinField.onNext(item.title)
+		}).disposed(by: disposeBag)
+		
+		Observable.combineLatest(spendCoin.asObservable(), spendAmount.asObservable(), getCoin.asObservable()).distinctUntilChanged({ (val1, val2) -> Bool in
+			return val1.0 == val2.0 && val1.1 == val2.1 && val1.2 == val2.2
+		}).throttle(1, scheduler: MainScheduler.instance).subscribe(onNext: { [weak self] (val) in
+			
+			self?.minimumValueToBuy.value = nil
+			self?.approximately.onNext("")
+			self?.validateErrors()
+			
+			if let from = self?.selectedCoin?.uppercased(), let to = val.2?.uppercased(), let amountString = val.1?.replacingOccurrences(of: " ", with: ""), let amnt = Decimal(string: amountString), amnt > 0 {
+				self?.calculateApproximately(fromCoin: from, amount: amnt, getCoin: to)
+			}
 		}).disposed(by: disposeBag)
 		
 		approximatelyReady.asObservable().subscribe(onNext: { [weak self] (val) in
 			self?.validateErrors()
 		}).disposed(by: disposeBag)
 		
-		getCoin.asObservable().subscribe(onNext: { [weak self] (val) in
-			self?.loadCoin()
+		exchangeDidTap.asObservable().subscribe(onNext: { [weak self] _ in
+			self?.exchange()
+		}).disposed(by: disposeBag)
+		
+		shouldClearForm.asObservable().subscribe(onNext: { [weak self] (val) in
+			self?.spendAmount.onNext(nil)
+			self?.getCoin.onNext(nil)
+		}).disposed(by: disposeBag)
+		
+		useMaxDidTap.subscribe(onNext: { [weak self] (_) in
+			guard let _self = self else { return }
+			let selectedAmount = CurrencyNumberFormatter.formattedDecimal(with: _self.selectedBalance ?? 0.0, formatter: _self.decimalFormatter)
+			self?.spendAmount.onNext(selectedAmount)
 		}).disposed(by: disposeBag)
 		
 		Session.shared.loadBalances()
-		
 	}
 	
 	//MARK: -
 	
-	var spendCoin = Variable<String?>(nil)
+	let useMaxDidTap = PublishSubject<Void>()
+	let exchangeDidTap = PublishSubject<Void>()
 	
-	var spendAmount = Variable<String?>(nil)
+	var spendCoin = BehaviorSubject<String?>(value: nil)
+	var spendCoinField = ReplaySubject<String?>.create(bufferSize: 2)
 	
-	var isApproximatelyLoading = Variable(false)
+	var spendAmount = BehaviorSubject<String?>(value: nil)
 	
-	var approximately = Variable<String?>(nil)
+	var hasMultipleCoinsObserver: Observable<Bool> {
+		return Session.shared.allBalances.asObservable().map({ (balances) -> Bool in
+			var coinCount = 0
+			balances.keys.forEach { (key) in
+				balances[key]?.forEach({ (val) in
+					coinCount += 1
+				})
+			}
+			return coinCount > 1
+		})
+	}
+	
+	private var approximately = PublishSubject<String?>()
 	
 	var approximatelyReady = Variable<Bool>(false)
 	
@@ -89,34 +220,45 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 	private let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 	
-	var isButtonEnabled: Observable<Bool> {
-		return Observable.combineLatest(hasCoin.asObservable(), getCoin.asObservable(), spendAmount.asObservable(), spendCoin.asObservable()).map({ (val) -> Bool in
-			
-			guard let amountString = val.2, let amnt = Decimal(string: amountString), amnt > 0 else {
-				return false
-			}
-			
-			guard (self.getCoin.value ?? "") != (self.selectedCoin ?? "") else {
-				return false
-			}
-			
-			return val.0 == true && (val.1 ?? "").count >= 3 /*&& amnt <= (self.selectedBalance ?? 0)*/ && (val.3 ?? "").count >= 3
-		})
-	}
+	lazy var isButtonEnabled: Observable<Bool> =
+		Observable.combineLatest(/*self.hasCoin.asObservable(),*/
+														 self.getCoin.asObservable(),
+														 self.spendAmount.asObservable(),
+														 self.spendCoin.asObservable(),
+														 self.isLoading.asObservable(),
+														 self.approximatelyReady.asObservable()
+			).map({ (val) -> Bool in
+				
+				let getCoin = val.0
+				let spendAmount = val.1
+				let spendCoin = val.2
+				let isLoading = val.3
+				let approximatelyReady = val.4
+				
+				
+				guard !isLoading && approximatelyReady else {
+					return false
+				}
+
+				guard let amountString = val.1, let amnt = Decimal(string: amountString), AmountValidator.isValid(amount: amnt) else {
+					return false
+				}
+
+				guard getCoin != (self.selectedCoin ?? "") else {
+					return false
+				}
+
+				return CoinValidator.isValid(coin: getCoin) && CoinValidator.isValid(coin: spendCoin)
+	})
 	
 	//MARK: -
 	
-	func calculateApproximately() {
-		
+	private func calculateApproximately(fromCoin: String, amount: Decimal, getCoin: String) {
 		approximatelyReady.value = false
-		
-		guard let from = selectedCoin?.uppercased(), let to = self.getCoin.value?.uppercased(), let amountString = self.spendAmount.value?.replacingOccurrences(of: " ", with: ""), let amnt = Decimal(string: amountString), amnt > 0 else {
-			return
-		}
 		
 		let numberFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 		
-		guard let strVal = numberFormatter.string(from: amnt * TransactionCoinFactorDecimal as NSNumber) else {
+		guard let strVal = numberFormatter.string(from: amount * TransactionCoinFactorDecimal as NSNumber) else {
 			return
 		}
 		
@@ -131,39 +273,44 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			value = (selectedBalance ?? Decimal(0.0)) * TransactionCoinFactorDecimal
 		}
 		
-		//TODO: isCoinValid
-		if to.count < 3 {
+		if !CoinValidator.isValid(coin: getCoin) {
 			return
 		}
 		
-		MinterExplorer.ExplorerTransactionManager.default.estimateCoinSell(coinFrom: from, coinTo: to, value: value) { [weak self] (val, commission, error) in
+		MinterExplorer.ExplorerTransactionManager.default.estimateCoinSell(coinFrom: fromCoin, coinTo: getCoin, value: value) { [weak self] (val, commission, error) in
+			guard let _self = self else { return }
 			
 			guard nil == error, let ammnt = val, let commission = commission else {
 				
-				if let err = error as? HTTPClientError, let log = err.userData?["log"] as? String {
-					self?.approximately.value = log
+				if let err = error as? HTTPClientError, let log = err.userData?["message"] as? String {
+					self?.approximately.onNext(log)
 					return
 				}
 				
-				self?.approximately.value = "Estimate can't be calculated at the moment".localized()
+				if self?.hasCoin.value == true {
+					self?.approximately.onNext("Estimate can't be calculated at the moment".localized())
+				}
 				return
 			}
 			
 			let val = (ammnt / TransactionCoinFactorDecimal)
 			
-			self?.approximately.value = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0, formatter: self!.formatter)) + " " + to
+			let appr = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0, formatter: _self.formatter)) + " " + getCoin
+			self?.approximately.onNext(appr)
+			
 			var approximatelyRoundedVal = (ammnt * 0.9)
 			approximatelyRoundedVal.round(.up)
 			self?.minimumValueToBuy.value = approximatelyRoundedVal
 			
-			if to == self?.getCoin.value {
+			let gtCoin = try? self?.getCoin.value() ?? ""
+			if getCoin == gtCoin {
 				self?.approximatelyReady.value = true
 			}
 		}
 	}
-	
+
 	override func validateErrors() {
-		if let amountString = self.spendAmount.value, amountString != "", let amount = Decimal(string: amountString) {
+		if let amountString = try? self.spendAmount.value() ?? "", amountString != "", let amount = Decimal(string: amountString) {
 			if amount > (selectedBalance ?? 0.0) {
 				amountError.value = "INSUFFICIENT FUNDS".localized()
 			}
@@ -172,7 +319,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 			}
 		}
 		else {
-			let amountString = self.spendAmount.value
+			let amountString = try? self.spendAmount.value() ?? ""
 			if nil == amountString || amountString == "" {
 				amountError.value = nil
 			}
@@ -180,127 +327,136 @@ class SpendCoinsViewModel : ConvertCoinsViewModel {
 				amountError.value = "INCORRECT AMOUNT".localized()
 			}
 		}
-			
-		if let amountString = self.spendAmount.value, amountString != "", let amount = Decimal(string: amountString), let getCoin = self.getCoin.value, !hasCoin.value && getCoin != "" {
-			getCoinError.value = "COIN NOT FOUND".localized()
-		}
-		else {
-			getCoinError.value = nil
-		}
+
+//		if let amountString = try? self.spendAmount.value() ?? "", amountString != "", let amount = Decimal(string: amountString), let getCoin = try? self.getCoin.value(), !hasCoin.value && getCoin != "" {
+//			getCoinError.value = "COIN NOT FOUND".localized()
+//		}
+//		else {
+//			getCoinError.value = nil
+//		}
 	}
 	
 	func exchange() {
 		
 		guard let coinFrom = self.selectedCoin?.uppercased(),
-			let coinTo = self.getCoin.value?.uppercased(),
-			let amount = self.spendAmount.value,
+			let coinTo = try? self.getCoin.value()?.uppercased() ?? "",
+			let amount = try? self.spendAmount.value() ?? "",
 			let selectedAddress = self.selectedAddress,
-			let amountString = self.spendAmount.value, let amnt = Decimal(string: amountString),
-			let minimumBuyValue = self.minimumValueToBuy.value, let minimumBuyVal = BigUInt(decimal: minimumBuyValue)
+			let minimumBuyValue = self.minimumValueToBuy.value
 		else {
 			return
 		}
-		//TODO: move to BigInt(decimal: ..)
-		let numberFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 		
-		guard let strVal = numberFormatter.string(from: amnt * TransactionCoinFactorDecimal as NSNumber) else {
-			return
-		}
+		self.newExchange(coinFrom: coinFrom, coinTo: coinTo, amount: amount, selectedAddress: selectedAddress, minimumBuyValue: minimumBuyValue).subscribe(onNext: { [weak self] (val) in
+			self?.shouldClearForm.value = true
+			self?.successMessage.onNext(NotifiableSuccess(title: "Coins have been successfully spent".localized(), text: nil))
+		}, onError: { [weak self] (error) in
+			self?.handleError(error)
+		}, onCompleted: {
+			Session.shared.loadBalances()
+			Session.shared.loadTransactions()
+		}).disposed(by: self.disposeBag)
+	}
+	
+	private func handleError(_ err: Error?) {
 		
-		let convertVal = (BigUInt(strVal) ?? BigUInt(0))
+		var title = "Can't send Transaction"
+		var text = ""
 		
-		
-		let value = convertVal
-		
-		if value <= 0 {
-			return
-		}
-		
-		let maxComparableSelectedBalance = (Decimal(string: decimalFormatter.string(from: (selectedBalance ?? 0.0) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
-		
-		let maxComparableBalance = decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
-		let isMax = (value > 0 && value == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
-		let isFromBaseCoin = coinFrom == Coin.baseCoin().symbol!
-		
-		isLoading.value = true
-		
-		DispatchQueue.global(qos: .userInitiated).async {
-			guard let mnemonic = self.accountManager.mnemonic(for: selectedAddress), let seed = self.accountManager.seed(mnemonic: mnemonic) else {
-				self.isLoading.value = false
-				//Error no Private key found
-				assert(true)
-				self.errorNotification.value = NotifiableError(title: "No private key found", text: nil)
-				return
+		if let mvError = err as? SpendCoindsViewModelError {
+			switch mvError {
+			case .canNotCreateTx:
+				title = "Can't create transaction".localized()
+				break
+				
+			case .incorrectParams:
+				title = "Incorrect params".localized()
+				break
+				
+			case .noPrivateKey:
+				title = "No private key found".localized()
+				break
+				
+			case .canNotGetNonce:
+				title = "Can't get nonce".localized()
+				break
 			}
-			
-			let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
-			
-			self.transactionManager.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
-				
-				guard err == nil, let nnce = count else {
-					self?.isLoading.value = false
-					self?.errorNotification.value = NotifiableError(title: "Can't get nonce", text: nil)
-					return
-				}
-				
-				let nonce = nnce + 1
-				
-				var tx: RawTransaction!
-				if isMax {
-					let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
-					let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
-					
-					tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minimumBuyVal)
+		}
+		
+		if let apiError = err as? HTTPClientError, let errorCode = apiError.userData?["code"] as? Int {
+			if errorCode == 107 {
+				title = "Not enough coins to spend".localized()
+			}
+			else if errorCode == 103 {
+				title = "Coin reserve balance is not sufficient for transaction".localized()
+			}
+			else {
+				if let msg = apiError.userData?["message"] as? String {
+					title = msg
 				}
 				else {
-					let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
-					let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
-					
-					tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value, minimumValueToBuy: minimumBuyVal)
+					title = "An error occured".localized()
 				}
-				
-				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
-				
-				self?.transactionManager.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
-					self?.isLoading.value = false
-					
-					defer {
-						DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 2, execute: {
-							Session.shared.loadBalances()
-							Session.shared.loadTransactions()
-						})
-						
-						Session.shared.loadBalances()
-						Session.shared.loadTransactions()
-					}
-					
-					guard nil == err else {
-						if let apiError = err as? HTTPClientError, let errorCode = apiError.userData?["code"] as? Int {
-							if errorCode == 107 {
-								self?.errorNotification.value = NotifiableError(title: "Not enough coins to spend".localized(), text: nil)
-							}
-							else if errorCode == 103 {
-								self?.errorNotification.value = NotifiableError(title: "Coin reserve balance is not sufficient for transaction".localized(), text: nil)
-							}
-							else {
-								if let msg = apiError.userData?["log"] as? String {
-									self?.errorNotification.value = NotifiableError(title: msg, text: nil)
-								}
-								else {
-									self?.errorNotification.value = NotifiableError(title: "An error occured".localized(), text: nil)
-								}
-							}
-							return
-						}
-						self?.errorNotification.value = NotifiableError(title: "Can't send Transaction", text: nil)
-						return
-					}
-					
-					self?.shouldClearForm.value = true
-					self?.successMessage.value = NotifiableSuccess(title: "Coins have been successfully spent".localized(), text: nil)
-				})
-			})
+			}
 		}
+		
+		self.errorNotification.onNext(NotifiableError(title: title, text: text))
+	}
+	
+	func newExchange(coinFrom: String, coinTo: String, amount: String, selectedAddress: String, minimumBuyValue: Decimal) -> Observable<String?> {
+		return Observable<String?>.create { [weak self] observer -> Disposable in
+			
+			guard let _self = self else { return Disposables.create() }
+			
+			guard let amnt = Decimal(string: amount), let minimumBuyVal = BigUInt(decimal: minimumBuyValue), let convertVal = BigUInt(decimal: amnt * TransactionCoinFactorDecimal), convertVal > 0 else {
+				observer.onError(SpendCoindsViewModelError.incorrectParams)
+				return Disposables.create()
+			}
+			
+			//Getting comparable value, since we are comparing not exact numbers, but it's shortened versions
+			let maxComparableSelectedBalance = (Decimal(string: _self.decimalFormatter.string(from: (_self.selectedBalance ?? 0.0) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
+			
+			let maxComparableBalance = _self.decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
+			let isMax = (convertVal > 0 && convertVal == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
+			
+			DispatchQueue.global(qos: .userInitiated).async {
+				
+				guard let pk = _self.accountManager.privateKey(for: selectedAddress) else {
+					observer.onError(SpendCoindsViewModelError.noPrivateKey)
+					return
+				}
+			
+				Observable.zip(_self.transactionManager.count(address: selectedAddress), GateManager.shared.minGasPrice()).flatMap({ (val) -> Observable<String?> in
+					let nonce = Decimal(val.0 + 1)
+		
+					var tx: RawTransaction!
+					let coin = _self.canPayComission() ? Coin.baseCoin().symbol! : coinFrom
+					
+					if isMax {
+						tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minimumBuyVal)
+					}
+					else {
+						tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, value: convertVal, minimumValueToBuy: minimumBuyVal)
+					}
+		
+					let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk.raw.toHexString())
+					return _self.transactionManager.send(rawTx: signedTx)
+				}).subscribe(onNext: { [observer] (hash) in
+					observer.onNext(hash)
+					observer.onCompleted()
+				}, onError: { [observer] err in
+					observer.onError(err)
+				}).disposed(by: _self.disposeBag)
+			}
+			
+			return Disposables.create()
+		}.do(onCompleted: { [weak self] in
+			self?.isLoading.onNext(false)
+		}, onSubscribe: { [weak self] in
+			self?.isLoading.onNext(true)
+		}, onDispose: { [weak self] in
+			self?.isLoading.onNext(false)
+		})
 	}
 
 }

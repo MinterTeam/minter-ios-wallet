@@ -10,7 +10,6 @@ import UIKit
 import RxSwift
 import XLPagerTabStrip
 import NotificationBannerSwift
-//import McPicker
 import TPKeyboardAvoiding
 
 
@@ -186,7 +185,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 	}
 	
 	private func shouldShowPicker() -> Bool {
-		return (vm.pickerItems().count) > 1
+		return vm.pickerItems().count > 1
 	}
 	
 	//MARK: -
@@ -203,8 +202,6 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 		guard items.count > 0 else {
 			return
 		}
-		
-//		let formatter = CurrencyNumberFormatter.decimalShortFormatter
 		
 		let data: [[String]] = [items.map({ (item) -> String in
 			let balanceString = CurrencyNumberFormatter.formattedDecimal(with: (item.balance ?? 0), formatter: coinFormatter)
@@ -255,7 +252,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 			vm.spendCoin.value = txtAfterUpdate as String
 		}
 		else if textField == getCoinTextField {
-			vm.getCoin.value = txtAfterUpdate as String
+			vm.getCoin.onNext(txtAfterUpdate as String)
 			autocompleteView.perform(#selector(LUAutocompleteView.textFieldEditingChanged))
 		}
 		

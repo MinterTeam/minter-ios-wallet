@@ -77,6 +77,11 @@
 		FA17816F21EF455300FECDED /* AuthManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17816E21EF455300FECDED /* AuthManager+Rx.swift */; };
 		FA17817121EF7D1F00FECDED /* ProfileManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817021EF7D1F00FECDED /* ProfileManager+Rx.swift */; };
 		FA17817B21F733D800FECDED /* TransactionManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817A21F733D800FECDED /* TransactionManager+Rx.swift */; };
+		FA17817D21F73E4200FECDED /* InfoManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817C21F73E4200FECDED /* InfoManager+Rx.swift */; };
+		FA17817F21F8789200FECDED /* RawTransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817E21F8789200FECDED /* RawTransactionBuilder.swift */; };
+		FA18359F220B141C00310CAF /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA18359E220B141C00310CAF /* Validators.swift */; };
+		FA1835A1220C7D8A00310CAF /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1835A0220C7D8A00310CAF /* MockAPIClient.swift */; };
+		FA1835A2220C7D8A00310CAF /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1835A0220C7D8A00310CAF /* MockAPIClient.swift */; };
 		FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */; };
 		FA2F56B8210B31E1002C72DC /* AccordionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */; };
 		FA2F56BA210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */; };
@@ -152,6 +157,9 @@
 		FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */; };
 		FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */; };
 		FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */; };
+		FA83186621F8C268007F268D /* GateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186521F8C268007F268D /* GateManager.swift */; };
+		FA83186821F9CDE0007F268D /* GateManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186721F9CDE0007F268D /* GateManager+Rx.swift */; };
+		FA83186A21FF003F007F268D /* CoinManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186921FF003F007F268D /* CoinManager+Rx.swift */; };
 		FA835CCC207630A100BFC35A /* ValidatableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA835CCB207630A100BFC35A /* ValidatableTextField.swift */; };
 		FA835CCE2077BC9200BFC35A /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */; };
 		FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA89A79820873A280019226D /* UIView+Roundify.swift */; };
@@ -334,6 +342,10 @@
 		FA17816E21EF455300FECDED /* AuthManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthManager+Rx.swift"; sourceTree = "<group>"; };
 		FA17817021EF7D1F00FECDED /* ProfileManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileManager+Rx.swift"; sourceTree = "<group>"; };
 		FA17817A21F733D800FECDED /* TransactionManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionManager+Rx.swift"; sourceTree = "<group>"; };
+		FA17817C21F73E4200FECDED /* InfoManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoManager+Rx.swift"; sourceTree = "<group>"; };
+		FA17817E21F8789200FECDED /* RawTransactionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionBuilder.swift; sourceTree = "<group>"; };
+		FA18359E220B141C00310CAF /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
+		FA1835A0220C7D8A00310CAF /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
 		FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTextViewTableViewCell1.xib; sourceTree = "<group>"; };
 		FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AlamofireCache.swift"; sourceTree = "<group>"; };
 		FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDateFormatter.swift; sourceTree = "<group>"; };
@@ -418,6 +430,9 @@
 		FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionExpandedTableViewCell.xib; sourceTree = "<group>"; };
 		FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewController.swift; sourceTree = "<group>"; };
 		FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewCell.swift; sourceTree = "<group>"; };
+		FA83186521F8C268007F268D /* GateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GateManager.swift; sourceTree = "<group>"; };
+		FA83186721F9CDE0007F268D /* GateManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GateManager+Rx.swift"; sourceTree = "<group>"; };
+		FA83186921FF003F007F268D /* CoinManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoinManager+Rx.swift"; sourceTree = "<group>"; };
 		FA835CCB207630A100BFC35A /* ValidatableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatableTextField.swift; sourceTree = "<group>"; };
 		FA835CCD2077BC9200BFC35A /* ScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenHeader.swift; sourceTree = "<group>"; };
 		FA89A79820873A280019226D /* UIView+Roundify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Roundify.swift"; sourceTree = "<group>"; };
@@ -1195,8 +1210,19 @@
 				FA17816E21EF455300FECDED /* AuthManager+Rx.swift */,
 				FA17817021EF7D1F00FECDED /* ProfileManager+Rx.swift */,
 				FA17817A21F733D800FECDED /* TransactionManager+Rx.swift */,
+				FA17817C21F73E4200FECDED /* InfoManager+Rx.swift */,
+				FA83186721F9CDE0007F268D /* GateManager+Rx.swift */,
+				FA83186921FF003F007F268D /* CoinManager+Rx.swift */,
 			);
 			path = Rx;
+			sourceTree = "<group>";
+		};
+		FA18359D220B140C00310CAF /* Validators */ = {
+			isa = PBXGroup;
+			children = (
+				FA18359E220B141C00310CAF /* Validators.swift */,
+			);
+			path = Validators;
 			sourceTree = "<group>";
 		};
 		FA319B8620AACB3D00751A48 /* Database Models */ = {
@@ -1264,6 +1290,7 @@
 				FAB85B4D20DD33E300782AFB /* TransactionManager.swift */,
 				FA55B01C216D011600A3A78C /* WalletCoinManager.swift */,
 				FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */,
+				FA83186521F8C268007F268D /* GateManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -1333,6 +1360,7 @@
 				FA669B7F207239F200AD110A /* MinterWalletTests.swift */,
 				FA669B81207239F200AD110A /* Info.plist */,
 				FACA694520D7C717006F173F /* MnemonicTests.swift */,
+				FA1835A0220C7D8A00310CAF /* MockAPIClient.swift */,
 			);
 			path = MinterWalletTests;
 			sourceTree = "<group>";
@@ -1349,6 +1377,7 @@
 		FA669B982072448B00AD110A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				FA18359D220B140C00310CAF /* Validators */,
 				FA17816D21EF453D00FECDED /* Rx */,
 				FA9BE309213FE7CE002160F3 /* Analytics */,
 				FA79F5FC20C81A85007876ED /* Protocol */,
@@ -1386,6 +1415,7 @@
 		FA669B9F2072460700AD110A /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				FA17817E21F8789200FECDED /* RawTransactionBuilder.swift */,
 				FA6259E620F899AD003B8BEF /* Forms */,
 				FA01604020B4532000746B51 /* Managers */,
 				FAA2608720946924009FF3DE /* Formatters */,
@@ -1981,6 +2011,7 @@
 				FA669BD6207265D800AD110A /* Storyboards.swift in Sources */,
 				FAA2606420930B8A009FF3DE /* UsernameEditViewController.swift in Sources */,
 				FAB85B4820DBADD900782AFB /* CALayer+Shadow.swift in Sources */,
+				FA18359F220B141C00310CAF /* Validators.swift in Sources */,
 				FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */,
 				FA670A3E20E63431000A5169 /* AddressTextViewTableViewCell.swift in Sources */,
 				FAE5548E2118472800D4872C /* ReceiveRouter.swift in Sources */,
@@ -1990,6 +2021,7 @@
 				FA7935FF20D3B3D70012642E /* AddressManager+Default.swift in Sources */,
 				FADD8F2121930B2300463F66 /* SoundHelper.swift in Sources */,
 				FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */,
+				FA17817F21F8789200FECDED /* RawTransactionBuilder.swift in Sources */,
 				FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */,
 				FAA2606A20931370009FF3DE /* MobileEditViewModel.swift in Sources */,
 				FA4542782106103500DB6634 /* CoinsTableViewHeaderView.swift in Sources */,
@@ -2025,6 +2057,7 @@
 				FAA2608B2094ABA7009FF3DE /* HomeViewController.swift in Sources */,
 				FAA26053208E30B9009FF3DE /* CoinTableViewCell.swift in Sources */,
 				FAA234EA2084A42A00F999DE /* PickerTableViewCell.swift in Sources */,
+				FA1835A1220C7D8A00310CAF /* MockAPIClient.swift in Sources */,
 				FAA2606E20931A89009FF3DE /* EmailEditViewModel.swift in Sources */,
 				FA89A79B20888D470019226D /* ShadowView.swift in Sources */,
 				FA669BDD207269E700AD110A /* LoginRouter.swift in Sources */,
@@ -2043,6 +2076,7 @@
 				FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */,
 				2177DA1D3DFAC5A28E961357 /* LoginViewController.swift in Sources */,
 				FAB865F120BEE9D5002568A4 /* AdvancedModeBaseViewModel.swift in Sources */,
+				FA83186821F9CDE0007F268D /* GateManager+Rx.swift in Sources */,
 				BF9CD1287559A6F7E3AAD242 /* LoginViewModel.swift in Sources */,
 				FA835CCC207630A100BFC35A /* ValidatableTextField.swift in Sources */,
 				FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */,
@@ -2062,6 +2096,7 @@
 				FA0F296921B1740800E10F5E /* QRCodeReaderResult.swift in Sources */,
 				FA531E2E219B1F1900A7AD9F /* AppSettingsManager.swift in Sources */,
 				FA0F296621B1740800E10F5E /* SwitchCameraButton.swift in Sources */,
+				FA83186621F8C268007F268D /* GateManager.swift in Sources */,
 				FA669B9E207244FF00AD110A /* BaseViewController.swift in Sources */,
 				FA0F296E21B1773A00E10F5E /* Toucan.swift in Sources */,
 				FAA234E62084A26900F999DE /* SeparatorTableViewCell.swift in Sources */,
@@ -2094,8 +2129,10 @@
 				FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */,
 				FA17817121EF7D1F00FECDED /* ProfileManager+Rx.swift in Sources */,
 				FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */,
+				FA83186A21FF003F007F268D /* CoinManager+Rx.swift in Sources */,
 				FAA2607C209355BD009FF3DE /* GenerateAddressViewModel.swift in Sources */,
 				FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */,
+				FA17817D21F73E4200FECDED /* InfoManager+Rx.swift in Sources */,
 				FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */,
 				833CF747F604B61E37401C11 /* TransactionsViewController.swift in Sources */,
 				FA0F296721B1740800E10F5E /* QRCodeReaderViewController.swift in Sources */,
@@ -2156,6 +2193,7 @@
 			files = (
 				FA669B80207239F200AD110A /* MinterWalletTests.swift in Sources */,
 				FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */,
+				FA1835A2220C7D8A00310CAF /* MockAPIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

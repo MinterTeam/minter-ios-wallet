@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+
 
 class TwoTitleTableViewCellItem : BaseCellItem {
 	
@@ -14,8 +16,9 @@ class TwoTitleTableViewCellItem : BaseCellItem {
 	
 	var subtitle: String?
 	
+	var subtitleObservable: Observable<String>?
+	
 }
-
 
 
 class TwoTitleTableViewCell: BaseCell {
@@ -44,6 +47,9 @@ class TwoTitleTableViewCell: BaseCell {
 		if let item = item as? TwoTitleTableViewCellItem {
 			label.text = item.title
 			sublabel.text = item.subtitle
+			
+			item.subtitleObservable?.bind(to: sublabel.rx.text).disposed(by: disposeBag)
+			
 		}
 	}
 

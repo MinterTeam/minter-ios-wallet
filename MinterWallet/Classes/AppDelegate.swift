@@ -10,6 +10,7 @@ import UIKit
 import Fabric
 import Crashlytics
 import MinterCore
+import MinterExplorer
 
 
 @UIApplicationMain
@@ -17,12 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 
-
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+		
+		MinterCoreSDK.initialize(urlString: "https://minter-node-3.testnet.minter.network:8841")
+		MinterExplorerSDK.initialize(urlString: "https://testnet.explorer.minter.network", websocketUrlString: "wss://rtm2.explorer.minter.network/connection/websocket")
 
 		Fabric.with([Crashlytics.self])
-
-		MinterCoreSDK.initialize(urlString: "https://minter-node-2.testnet.minter.network:8841/api/")
 
 		appearance()
 		

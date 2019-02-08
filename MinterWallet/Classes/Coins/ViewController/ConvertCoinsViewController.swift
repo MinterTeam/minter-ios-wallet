@@ -8,15 +8,25 @@
 
 import UIKit
 import RxSwift
+import NotificationBannerSwift
 
 
 class ConvertCoinsViewController: BaseViewController {
 	
-	var viewModel: ConvertCoinsViewModel?
+	var viewModel: ConvertCoinsViewModel? {
+		didSet {
+			viewModel?.feeObservable.asDriver(onErrorJustReturn: "").drive(feeLabel.rx.text).disposed(by: self.disposableBag)
+//			viewModel?.feeObservable.subscribe(onNext: { (val) in
+//				self.feeLabel.text = val
+//			}).disposed(by: self.disposableBag)
+		}
+	}
 	
 	let coinFormatter = CurrencyNumberFormatter.coinFormatter
 	
 	//MARK: - 
+	
+	@IBOutlet weak var feeLabel: UILabel!
 	
 	@IBOutlet weak var approximately: UILabel!
 	
@@ -48,16 +58,11 @@ class ConvertCoinsViewController: BaseViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		
+
 		autocompleteView.textField = getCoinTextField
 		
 		autocompleteView.dataSource = self
 		autocompleteView.delegate = self
-	}
-
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -109,7 +114,7 @@ extension ConvertCoinsViewController: LUAutocompleteViewDataSource {
 extension ConvertCoinsViewController: LUAutocompleteViewDelegate {
 	
 	func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: String) {
-		viewModel?.getCoin.value = text
+//		viewModel?.getCoin.value = text
 		//		print(text + " was selected from autocomplete view")
 	}
 }

@@ -8,8 +8,18 @@
 
 import Foundation
 
-class BaseViewModel {
+
+protocol ViewModelProtocol {
+	associatedtype Input
+	associatedtype Output
 	
+	var input: Input! { get }
+	var output: Output! { get }
+}
+
+
+class BaseViewModel {
+
 	
 	
 }

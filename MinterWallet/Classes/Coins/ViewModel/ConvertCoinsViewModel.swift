@@ -12,11 +12,43 @@ import MinterCore
 import MinterExplorer
 
 
+struct ConvertPickerItem {
+	var coin: String?
+	var address: String?
+	var balance: Decimal?
+}
+
+struct ConvertBalanceItem {
+	var coin: String?
+	var address: String?
+	var balance: Decimal?
+}
+
+struct SpendCoinPickerItem {
+	var title: String?
+	
+	var coin: String?
+	var address: String?
+	var balance: Decimal?
+	
+	init(coin: String, balance: Decimal, address: String, formatter: NumberFormatter) {
+		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: formatter)
+		self.title = coin + " (" + balanceString + ")"
+		
+		self.coin = coin
+		self.address = address
+		self.balance = balance
+		
+	}
+
+}
+
+
 class ConvertCoinsViewModel : BaseViewModel {
 	
 	var accountManager = AccountManager()
 	
-	let coinManager = MinterExplorer.ExplorerCoinManager.default
+	let coinManager = ExplorerCoinManager.default
 	
 	var disposeBag = DisposeBag()
 	
@@ -28,7 +60,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	var coinIsLoading = Variable(false)
 	
-	var getCoin = Variable<String?>(nil)
+	var getCoin = BehaviorSubject<String?>(value: nil)
 	
 	var shouldClearForm = Variable(false)
 	
@@ -36,19 +68,35 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	var getCoinError = Variable<String?>(nil)
 	
-	var isLoading = Variable(false)
+	lazy var isLoading = BehaviorSubject<Bool>(value: false)
 	
-	var errorNotification = Variable<NotifiableError?>(nil)
+	lazy  var errorNotification = PublishSubject<NotifiableError?>()
 	
-	var successMessage = Variable<NotifiableSuccess?>(nil)
+	lazy var successMessage = PublishSubject<NotifiableSuccess?>()
 	
 	let formatter = CurrencyNumberFormatter.coinFormatter
+	
+	var currentGas = Session.shared.currentGasPrice
+	
+	lazy var feeObservable = PublishSubject<String>()
+	
+	var baseCoinCommission: Decimal {
+		return Decimal(currentGas.value) * RawTransactionType.buyCoin.commission() / TransactionCoinFactorDecimal
+	}
 	
 	
 	//MARK: -
 	
 	override init() {
 		super.init()
+		
+		Session.shared.updateGas()
+		
+		Session.shared.currentGasPrice.asObservable().map { (gas) -> String in
+			return CurrencyNumberFormatter.formattedDecimal(with: self.baseCoinCommission, formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
+			}.subscribe(onNext: { [weak self] (val) in
+				self?.feeObservable.onNext(val)
+			}).disposed(by: disposeBag)
 		
 	}
 	
@@ -80,7 +128,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	func canPayComission() -> Bool {
 		let balance = self.baseCoinBalance
-		if balance >= RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal {
+		if balance >= self.baseCoinCommission {
 			return true
 		}
 		return false
@@ -101,6 +149,8 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	//MARK: -
 	
+	/// Depricated!
+	//TODO: move to SpendCoinPickerItem
 	func pickerItems() -> [ConvertPickerItem] {
 		
 		var ret = [ConvertPickerItem]()
@@ -113,6 +163,24 @@ class ConvertCoinsViewModel : BaseViewModel {
 				let balance = (balances[address]?[coin] ?? 0.0)
 				
 				let item = ConvertPickerItem(coin: coin, address: address, balance: balance)
+				ret.append(item)
+			})
+		}
+		return ret
+	}
+	
+	var spendCoinPickerSource: [String : [String : Decimal]] { return Session.shared.allBalances.value }
+	
+	var spendCoinPickerItems: [SpendCoinPickerItem] {
+		
+		let balances = spendCoinPickerSource
+		var ret = [SpendCoinPickerItem]()
+		balances.keys.forEach { (address) in
+			balances[address]?.keys.sorted(by: { (val1, val2) -> Bool in
+				return val1 < val2
+			}).forEach({ (coin) in
+				let balance = (balances[address]?[coin] ?? 0.0)
+				let item = SpendCoinPickerItem(coin: coin, balance: balance, address: address, formatter: self.formatter)
 				ret.append(item)
 			})
 		}
@@ -142,7 +210,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	func loadCoin() {
 		
 		self.hasCoin.value = false
-		let coin = self.getCoin.value?.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+		let coin = try? self.getCoin.value()?.trimmingCharacters(in: .whitespacesAndNewlines).uppercased() ?? ""
 		//TODO: Add isValidCoin
 		if (coin?.count ?? 0) >= 3 {
 			

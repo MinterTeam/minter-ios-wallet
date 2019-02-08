@@ -14,6 +14,7 @@ import BigInt
 import SwiftValidator
 
 
+
 struct AccountPickerItem {
 	
 	var title: String?
@@ -144,12 +145,16 @@ class SendViewModel: BaseViewModel {
 		return nil
 	}
 	
-	func canPayCommissionWithBaseCoin() -> Bool {
+	private func canPayCommissionWithBaseCoin() -> Bool {
 		let balance = self.baseCoinBalance
-		if balance >= (RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal) {
+		if balance >= currentCommission {
 			return true
 		}
 		return false
+	}
+	
+	private var currentCommission: Decimal {
+		return Decimal(Session.shared.currentGasPrice.value) * (RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal)
 	}
 	
 	private var lastSentTransactionHash: String?
@@ -159,6 +164,7 @@ class SendViewModel: BaseViewModel {
 	private var toAddress = Variable<String?>(nil)
 	private var amount = Variable<Decimal?>(nil)
 	private var nonce = Variable<Int?>(nil)
+	private var currentGas = Variable<Int>(RawTransactionDefaultGasPrice)
 	
 	private let accountManager = AccountManager()
 	private let infoManager = InfoManager.default
@@ -178,6 +184,12 @@ class SendViewModel: BaseViewModel {
 		return Observable.combineLatest(self.toAddress.asObservable(), self.amount.asObservable(), self.selectedCoin.asObservable(), forceRefreshSubmitButtonState.asObservable()).map({ (val) -> Bool in
 			
 			return (val.0?.isValidAddress() ?? false) && self.isAmountValid(amount: (val.1 ?? 0))
+		})
+	}
+	
+	var gasObservable: Observable<String> {
+		return currentGas.asObservable().map({ (gas) -> String in
+			return self.comissionText(for: gas)
 		})
 	}
 	
@@ -201,9 +213,9 @@ class SendViewModel: BaseViewModel {
 		}).disposed(by: disposeBag)
 		
 		sections.asObservable().subscribe(onNext: { [weak self] (items) in
-				self?._sections.value = items
+			self?._sections.value = items
 		}).disposed(by: disposeBag)
-
+		
 	}
 	
 	//MARK: - Sections
@@ -246,7 +258,8 @@ class SendViewModel: BaseViewModel {
 		
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell", identifier: cellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
-		fee.subtitle = "0.0100 " + (Coin.baseCoin().symbol ?? "")
+		fee.subtitle = self.comissionText(for: 1)
+		fee.subtitleObservable = self.gasObservable
 		
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: cellIdentifierPrefix.separator.rawValue)
 		
@@ -335,9 +348,7 @@ class SendViewModel: BaseViewModel {
 	}
 	
 	func isAmountValid(amount: Decimal) -> Bool {
-		return true
-		
-//		return amount <= (selectedAddressBalance ?? 0) && amount > 0
+		return AmountValidator.isValid(amount: amount)
 	}
 	
 	func getAddress() {
@@ -535,7 +546,31 @@ class SendViewModel: BaseViewModel {
 		forceRefreshSubmitButtonState.value = true
 	}
 	
+	func viewDidAppear() {
+		getGasPrice(completion: { [weak self] (gas) in
+			if nil != gas {
+				self?.currentGas.value = gas!
+			}
+		})
+	}
+	
 	//MARK: -
+	
+	func getGasPrice(completion: ((Int?) -> ())?) {
+		
+		GateManager.shared.minGasPrice(completion: { (gas, error) in
+			
+			var gs = 1
+			
+			defer {
+				completion?(gs)
+			}
+			
+			if nil != gas {
+				gs = gas!
+			}
+		})
+	}
 	
 	func getNonce(completion: ((Bool) -> ())?) {
 		
@@ -547,20 +582,31 @@ class SendViewModel: BaseViewModel {
 		
 		MinterExplorer.ExplorerTransactionManager.default.count(for: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
 		
-			var success = false
-			
-			defer {
-				self?.isLoadingNonce.value = false
-				completion?(success)
-			}
-			
-			guard nil == err, nil != count else {
-				success = false
-				return
-			}
-			
-			self?.nonce.value = NSDecimalNumber(decimal: count ?? 0).intValue + 1
-			success = true
+			self?.getGasPrice(completion: { (gas) in
+				if nil != gas {
+					
+					if (self?.currentGas.value ?? 1) != gas {
+						self?.notifiableError.value = NotifiableError(title: "Transaction fee changed".localized(), text: "Current fee is: " + self!.comissionText(for: gas!))
+					}
+				}
+				
+				self?.currentGas.value = gas!
+				
+				var success = false
+				
+				defer {
+					self?.isLoadingNonce.value = false
+					completion?(success)
+				}
+				
+				guard nil == err, nil != count else {
+					success = false
+					return
+				}
+				
+				self?.nonce.value = NSDecimalNumber(decimal: count ?? 0).intValue + 1
+				success = true
+			})
 		}
 	}
 	
@@ -616,6 +662,14 @@ class SendViewModel: BaseViewModel {
 				if isBaseCoin {
 					//In case of base coin just subtract static commission
 					/// - SeeAlso: https://minter-go-node.readthedocs.io/en/docs/commissions.html
+					let amountWithCommission = (self?.currentCommission ?? 0) + amount
+					guard (self?.selectedAddressBalance ?? 0) >= amountWithCommission else {
+						let needs = self?.formatter.string(from: amountWithCommission as NSNumber) ?? ""
+						self?.notifiableError.value = NotifiableError(title: "Not enough coins.", text: "Needs " + needs)
+						self?.showPopup.value = nil
+						return
+					}
+					
 					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal - RawTransactionType.sendCoin.commission()
 					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
 				}
@@ -758,9 +812,15 @@ class SendViewModel: BaseViewModel {
 		}
 	}
 	
+	private func comissionText(for gas: Int) -> String {
+		let val = RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal * Decimal(gas)
+		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: val, formatter: self.coinFormatter)
+		return balanceString + " " + (Coin.baseCoin().symbol ?? "")
+	}
+	
 	private func rawTransaction(nonce: BigUInt, gasCoin: String, to: String, value: BigUInt, coin: String) -> RawTransaction {
 		let cn = gasCoin
-		return SendCoinRawTransaction(nonce: nonce, gasCoin: cn, to: to, value: value, coin: coin.uppercased())
+		return SendCoinRawTransaction(nonce: nonce, gasPrice: currentGas.value, gasCoin: cn, to: to, value: value, coin: coin.uppercased())
 	}
 	
 	//MARK: -
@@ -796,7 +856,7 @@ class SendViewModel: BaseViewModel {
 			return nil
 		}
 		
-		return URL(string: MinterExplorerBaseURL + "/transactions/" + (lastSentTransactionHash ?? ""))
+		return URL(string: MinterExplorerBaseURL! + "/transactions/" + (lastSentTransactionHash ?? ""))
 	}
 	
 	//MARK: -

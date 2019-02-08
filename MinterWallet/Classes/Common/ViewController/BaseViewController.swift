@@ -14,6 +14,20 @@ import Reachability
 import YandexMobileMetrica
 
 
+protocol ControllerType: class {
+	associatedtype ViewModelType: ViewModelProtocol
+	/// Configurates controller with specified ViewModelProtocol subclass
+	///
+	/// - Parameter viewModel: CPViewModel subclass instance to configure with
+	func configure(with viewModel: ViewModelType)
+	/// Factory function for view controller instatiation
+	///
+	/// - Parameter viewModel: View model object
+	/// - Returns: View controller of concrete type
+//	static func create(with viewModel: ViewModelType) -> UIViewController
+}
+
+
 class BaseViewController : UIViewController {
 	
 	let hardImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
@@ -25,15 +39,6 @@ class BaseViewController : UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-//		try? DefaultReachabilityService().reachability.distinctUntilChanged({ (status1, status2) -> Bool in
-//			return status1.reachable == status2.reachable
-//		}).asObservable().subscribe(onNext: { (status) in
-//			if !status.reachable {
-//				let banner = NotificationBanner(title: "Network is not reachable".localized())
-//				banner.show()
-//			}
-//		})
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
