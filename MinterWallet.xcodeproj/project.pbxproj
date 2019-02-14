@@ -231,7 +231,6 @@
 		FADD8F2321930E7A00463F66 /* beep_digi_octave.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2221930E7A00463F66 /* beep_digi_octave.wav */; };
 		FADD8F2521930E8C00463F66 /* pop_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2421930E8B00463F66 /* pop_hi.wav */; };
 		FADD8F2721930E9F00463F66 /* pop_zap.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2621930E9F00463F66 /* pop_zap.wav */; };
-		FAE1676722118C8000935E7A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85720AAD3E900F26E11 /* Session.swift */; };
 		FAE43C9321539F2A002027D4 /* DelegateTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE43C9121539F2A002027D4 /* DelegateTransactionTableViewCell.swift */; };
 		FAE43C9421539F2A002027D4 /* DelegateTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE43C9221539F2A002027D4 /* DelegateTransactionTableViewCell.xib */; };
 		FAE5548C2118442800D4872C /* CoinsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5548B2118442800D4872C /* CoinsRouter.swift */; };
@@ -2191,7 +2190,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAE1676722118C8000935E7A /* Session.swift in Sources */,
 				FA669B80207239F200AD110A /* MinterWalletTests.swift in Sources */,
 				FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */,
 			);

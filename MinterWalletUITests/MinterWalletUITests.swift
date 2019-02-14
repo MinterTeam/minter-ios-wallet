@@ -83,13 +83,15 @@ class MinterWalletUITests: XCTestCase {
 	func testSendCoinAdvancedMode() {
 		loginAdvancedMode()
 		
+		isBalanceAvailable()
+		
 		if self.app.tabBars.buttons["Send"].exists {
 			self.app.tabBars.buttons["Send"].tap()
 			
 			let textView = self.app.textViews.firstMatch
 			
 			expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: textView, handler: nil)
-			waitForExpectations(timeout: 15, handler: nil)
+			waitForExpectations(timeout: 20, handler: nil)
 			
 			textView.tap()
 			textView.typeText("@ody344")
@@ -97,7 +99,13 @@ class MinterWalletUITests: XCTestCase {
 			self.app.textFields.element(boundBy: 1).tap()
 			self.app.textFields.element(boundBy: 1).typeText("0.000001")
 			
-			self.app.tables.buttons["SEND"].tap()
+			expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: self.app.buttons["SEND"]) {
+				self.app.tables.buttons["SEND"].tap()
+				return true
+			}
+			waitForExpectations(timeout: 20, handler: nil)
+			
+//			self.app.tables.buttons["SEND"].tap()
 			
 			let button = self.app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).buttons["SEND"]
 			
@@ -267,8 +275,8 @@ class MinterWalletUITests: XCTestCase {
 	func testLoginWithIncorrectCredentials() {
 		logout()
 		
-		let login = "testme1fdsfds"
-		let pwd = "12345fsdfsdf6"
+		let login = "testmedsad"
+		let pwd = "123456dasd"
 		
 		let app = XCUIApplication()
 		app.buttons["SIGN IN"].tap()
@@ -319,7 +327,7 @@ class MinterWalletUITests: XCTestCase {
 				self.app.tabBars.buttons["Coins"].tap()
 				
 				
-				for i in 0...100 {
+				for i in 0...5 {
 					let firstCell = app.staticTexts["My Coins"]
 					let start = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
 					let finish = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 16))
@@ -453,12 +461,12 @@ class MinterWalletUITests: XCTestCase {
 			if self.app.tabBars.buttons["Coins"].exists {
 				self.app.tabBars.buttons["Coins"].tap()
 				
-				for i in 0...5 {
-					let firstCell = self.app.staticTexts["My Coins"]
-					let start = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-					let finish = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 26))
-					start.press(forDuration: 0, thenDragTo: finish)
-				}
+//				for i in 0...5 {
+//					let firstCell = XCUIApplication().tables/*@START_MENU_TOKEN@*/.staticTexts["My Coins"]/*[[".otherElements[\"My Coins\"].staticTexts[\"My Coins\"]",".staticTexts[\"My Coins\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+//					let start = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
+//					let finish = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 26))
+//					start.press(forDuration: 0, thenDragTo: finish)
+//				}
 				
 				let balanceLabel = self.app.staticTexts["100.0000 MNT"]
 				
