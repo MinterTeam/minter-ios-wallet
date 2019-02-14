@@ -42,10 +42,6 @@ class RootViewModel: BaseViewModel {
 	override init() {
 		super.init()
 		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-			SessionHelper.reloadAccounts()
-		}
-		
 		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in
 			return isLoggedIn
 		}).subscribe(onNext: { (isLoggedIn) in
@@ -59,8 +55,11 @@ class RootViewModel: BaseViewModel {
 		
 		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable(), Session.shared.isLoggedIn.asObservable()).distinctUntilChanged({ (val1, val2) -> Bool in
 			return val1.1 == val2.1 || val1.2 == val2.2 || val1.1 == val2.1
+		}).filter({ (val) -> Bool in
+			let accounts = val.1
+			let loggedIn = val.2
+			return loggedIn || accounts.count > 0
 		}).subscribe(onNext: { [weak self] (state, accounts, loggedIn) in
-			
 			let addresses = accounts.map({ (account) -> String in
 				return "Mx" + account.address
 			})
@@ -83,6 +82,10 @@ class RootViewModel: BaseViewModel {
 			
 		}).disposed(by: disposeBag)
 		
+	}
+	
+	func didLoad() {
+		SessionHelper.reloadAccounts()
 	}
 	
 	let connectHandler = CentrifugueConnectHandler()
@@ -108,10 +111,12 @@ class RootViewModel: BaseViewModel {
 		client?.onMessage(messageHandler)
 		client?.onError(errorHandler)
 		
-		do {
-			try client?.connect()
-		} catch {
-			return
+		DispatchQueue.global(qos: .background).async { [weak self] in
+			do {
+				try self?.client?.connect()
+			} catch {
+				return
+			}
 		}
 	}
 	

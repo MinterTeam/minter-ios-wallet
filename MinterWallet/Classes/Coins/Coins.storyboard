@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="q4X-VK-tqr">
-    <device id="retina5_5" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="q4X-VK-tqr">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="Ubuntu-B.ttf">
             <string>Ubuntu-Bold</string>
+        </array>
+        <array key="Ubuntu-R.ttf">
+            <string>Ubuntu</string>
         </array>
     </customFonts>
     <scenes>
@@ -24,27 +26,27 @@
                         <viewControllerLayoutGuide type="bottom" id="NgQ-hK-ptl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gec-Hg-cGs">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="54" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="WIo-BM-mO4">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="623"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <color key="backgroundColor" red="0.25882352939999997" green="0.1450980392" blue="0.64313725489999995" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="separatorColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1OM-Ql-2PQ" customClass="ScreenHeader" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="96"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="96"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7g-aO-BzU">
-                                        <rect key="frame" x="20" y="20" width="378" height="17"/>
+                                        <rect key="frame" x="20" y="20" width="284" height="17"/>
                                         <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIV-Gf-6Jf">
-                                        <rect key="frame" x="20" y="40" width="384" height="36"/>
+                                        <rect key="frame" x="20" y="40" width="290" height="36"/>
                                         <attributedString key="attributedText">
                                             <fragment content="120 912">
                                                 <attributes>
@@ -83,14 +85,52 @@
                                     <constraint firstItem="b7g-aO-BzU" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="20" id="v3A-Rl-OwY"/>
                                 </constraints>
                             </view>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dotCircle" translatesAutoresizingMaskIntoConstraints="NO" id="RwL-jd-GYj">
+                                <rect key="frame" x="-24" y="286" width="192" height="192"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="192" id="Vpl-qs-BKi"/>
+                                    <constraint firstAttribute="width" constant="192" id="r71-pm-zcd"/>
+                                </constraints>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dotCircle" translatesAutoresizingMaskIntoConstraints="NO" id="Ai8-OP-VnN">
+                                <rect key="frame" x="217" y="114.5" width="192" height="192"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="192" id="Fbj-zy-qeW"/>
+                                    <constraint firstAttribute="height" constant="192" id="M23-8m-Sgd"/>
+                                </constraints>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="robot" translatesAutoresizingMaskIntoConstraints="NO" id="J8i-0I-4Si">
+                                <rect key="frame" x="25" y="335" width="124" height="118"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="124" id="Nap-6L-OlH"/>
+                                    <constraint firstAttribute="height" constant="118" id="nCI-Vt-bS1"/>
+                                </constraints>
+                            </imageView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops… Something went wrong. We're working on getting it fixed!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jjT-df-Zka">
+                                <rect key="frame" x="67.5" y="270.5" width="213" height="31.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="213" id="JXC-18-Dzd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="J8i-0I-4Si" firstAttribute="leading" secondItem="gec-Hg-cGs" secondAttribute="leadingMargin" constant="9" id="1vx-fs-PCb"/>
                             <constraint firstItem="WIo-BM-mO4" firstAttribute="leading" secondItem="gec-Hg-cGs" secondAttribute="leading" id="62a-Kh-ZlQ"/>
+                            <constraint firstItem="J8i-0I-4Si" firstAttribute="top" secondItem="jjT-df-Zka" secondAttribute="bottom" constant="33" id="8Ay-5F-oIO"/>
+                            <constraint firstItem="Ai8-OP-VnN" firstAttribute="centerX" secondItem="WIo-BM-mO4" secondAttribute="trailing" constant="-7" id="JiS-xT-eVh"/>
                             <constraint firstItem="NgQ-hK-ptl" firstAttribute="top" secondItem="WIo-BM-mO4" secondAttribute="bottom" id="KGJ-LL-zRS"/>
                             <constraint firstItem="1OM-Ql-2PQ" firstAttribute="top" secondItem="gec-Hg-cGs" secondAttribute="top" id="N7n-hV-Obi"/>
+                            <constraint firstItem="RwL-jd-GYj" firstAttribute="top" secondItem="J8i-0I-4Si" secondAttribute="top" constant="-49" id="P18-5b-TB8"/>
+                            <constraint firstItem="NgQ-hK-ptl" firstAttribute="top" secondItem="J8i-0I-4Si" secondAttribute="bottom" constant="2" id="WVK-YX-I0I"/>
                             <constraint firstItem="WIo-BM-mO4" firstAttribute="top" secondItem="gec-Hg-cGs" secondAttribute="top" id="dI4-Mk-wlD"/>
+                            <constraint firstItem="jjT-df-Zka" firstAttribute="centerX" secondItem="WIo-BM-mO4" secondAttribute="centerX" constant="14" id="f4P-ez-weY"/>
+                            <constraint firstItem="Ai8-OP-VnN" firstAttribute="centerY" secondItem="WIo-BM-mO4" secondAttribute="centerY" constant="-17" id="fqL-p2-xo1"/>
                             <constraint firstAttribute="trailing" secondItem="WIo-BM-mO4" secondAttribute="trailing" id="lPP-od-5BK"/>
+                            <constraint firstItem="RwL-jd-GYj" firstAttribute="leading" secondItem="J8i-0I-4Si" secondAttribute="leading" constant="-49" id="mjM-2t-BRq"/>
                             <constraint firstAttribute="trailing" secondItem="1OM-Ql-2PQ" secondAttribute="trailing" id="tNm-nR-f1z"/>
                             <constraint firstItem="1OM-Ql-2PQ" firstAttribute="leading" secondItem="gec-Hg-cGs" secondAttribute="leading" id="tR8-27-SPF"/>
                         </constraints>
@@ -109,8 +149,12 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="dotCircle1ImageView" destination="RwL-jd-GYj" id="fpO-Nk-4N7"/>
+                        <outlet property="dotCircle2ImageView" destination="Ai8-OP-VnN" id="fkk-EO-aAf"/>
+                        <outlet property="errorLabel" destination="jjT-df-Zka" id="lE9-IZ-MVT"/>
                         <outlet property="headerView" destination="1OM-Ql-2PQ" id="nj2-Q6-cqJ"/>
                         <outlet property="headerViewTitleLabel" destination="RIV-Gf-6Jf" id="aT8-bq-ew0"/>
+                        <outlet property="robotImageView" destination="J8i-0I-4Si" id="gPE-G3-gM0"/>
                         <outlet property="tableHeaderTopConstraint" destination="N7n-hV-Obi" id="d8n-Dj-aiQ"/>
                         <outlet property="tableView" destination="WIo-BM-mO4" id="QrX-Ng-w8P"/>
                         <outlet property="usernameView" destination="KgI-cv-0c8" id="Pvt-yW-LoK"/>
@@ -165,7 +209,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1008.8" y="184.85757121439281"/>
+            <point key="canvasLocation" x="1008.6956521739131" y="184.23913043478262"/>
         </scene>
         <!--Transactions-->
         <scene sceneID="MET-BI-cpk">
@@ -193,7 +237,7 @@
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="QgX-Pe-JCK">
-                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -209,5 +253,7 @@
     <resources>
         <image name="BipLogoSmall" width="37" height="26"/>
         <image name="circle" width="16" height="16"/>
+        <image name="dotCircle" width="190" height="190"/>
+        <image name="robot" width="124" height="118"/>
     </resources>
 </document>

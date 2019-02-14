@@ -12,7 +12,24 @@ import MinterMy
 
 
 
-class CreateWalletViewModel: AccountantBaseViewModel {
+class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
+	
+	//MARK: -
+	
+	struct Input {
+		var createButtonDidTap: AnyObserver<Void>
+	}
+	
+	struct Output {
+		var isButtonEnabled: Observable<Bool>
+		var isUsernameLoading: Observable<Bool>
+	}
+	
+	var input: CreateWalletViewModel.Input!
+	
+	var output: CreateWalletViewModel.Output!
+
+	//MARK: -
 	
 	enum registerFormError : Error {
 		case usernameTooShort
@@ -34,16 +51,19 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	//MARK: -
 	
 	var username = Variable<String?>(nil)
-	private var isUsernameTaken = true
+	private var isUsernameTaken = BehaviorSubject<Bool>(value: true)
 	var password = Variable<String?>(nil)
 	var confirmPassword = Variable<String?>(nil)
 	var email = Variable<String?>(nil)
 	var mobile = Variable<String?>(nil)
-
 	
 	var shouldReloadTable = Variable(false)
 	
 	var isLoading = Variable(false)
+	
+	//MARK: -
+	
+	private var createWalletDidTap = PublishSubject<Void>()
 	
 	//MARK: -
 	
@@ -54,6 +74,18 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 	private var sections = Variable([BaseTableSectionItem]())
 	
 	var notifiableError = Variable<NotifiableError?>(nil)
+	
+	var isButtonEnabled: Observable<Bool> {
+		return Observable.combineLatest(username.asObservable(), password.asObservable(), confirmPassword.asObservable(), isUsernameTaken.asObservable()).map({ (val) -> Bool in
+			
+			let (username, pwd, confirmPwd, isUsernameTkn) = val
+			return UsernameValidator.isValid(username: username) && PasswordValidator.isValid(password: pwd) && pwd == confirmPwd && !isUsernameTkn
+		})
+	}
+	
+	private var isUsernameLoading = PublishSubject<Bool>()
+	private var usernameState = PublishSubject<TextFieldTableViewCell.State>()
+	
 
 	//MARK: -
 
@@ -65,6 +97,17 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 
 	override init() {
 		super.init()
+		
+		self.input = Input(createButtonDidTap: createWalletDidTap.asObserver())
+		
+		self.output = Output(
+			isButtonEnabled: isButtonEnabled.asObservable(),
+			isUsernameLoading: isUsernameLoading.asObservable()
+		)
+		
+		createWalletDidTap.subscribe(onNext: { [weak self] _ in
+			self?.register()
+		}).disposed(by: disposeBag)
 		
 		createSections()
 	}
@@ -83,9 +126,8 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		username.value = self.username.value
 		username.state = .default
 		username.keyboardType = .emailAddress
-		
-//		var passwordId = cellIdentifierPrefix.password.rawValue + "_"
-//		passwordId += (self.password.value ?? "") + "_" + (self.confirmPassword.value ?? "")
+		username.isLoadingObservable = isUsernameLoading.asObservable()
+		username.stateObservable = usernameState.asObservable()
 		
 		let password = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.password.rawValue)
 		password.title = "CHOOSE PASSWORD".localized()
@@ -100,20 +142,9 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		confirmPassword.value = self.confirmPassword.value
 		confirmPassword.state = .default
 		
-//		let email = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.email.rawValue)
-//		email.title = "EMAIL (OPTIONAL *)".localized()
-//		email.value = self.email.value
-//		email.state = .default
-//		email.keyboardType = .emailAddress
-		
-//		let mobile = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.mobile.rawValue)
-//		mobile.title = "MOBILE NUMBER (OPTIONAL *)".localized()
-//		mobile.value = self.mobile.value
-//		mobile.keyboardType = .phonePad
-		
 		var section = BaseTableSectionItem(header: "")
 		section.identifier = "CreateWalletSection"
-		section.items = [username, password, confirmPassword/*, email*/]
+		section.items = [username, password, confirmPassword]
 		sctns.append(section)
 		
 		sections.value = sctns
@@ -134,23 +165,17 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		if item.identifier.hasPrefix(cellIdentifierPrefix.username.rawValue) {
 			self.username.value = value
 			
-			if value.count < 5 {
+			if !UsernameValidator.isValid(username: value) {
 				guard value != "" else {
 					completion?(nil, nil)
 					return
 				}
-				
-//				if !forceError {
-//					completion?(nil, nil)
-//				}
-//				else {
-//						completion?(false, registerFormError.usernameTooShort)
-//				}
+
 				completion?(false, registerFormError.usernameTooShort)
 				return
 			}
 			
-			isUsernameTaken = true
+			isUsernameTaken.onNext(true)
 			
 			if !isUsernameValid(username: value) {
 				completion?(false, registerFormError.incorrectUsername)
@@ -159,10 +184,10 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 			
 			self.checkUsername().subscribe(
 				onError: { [weak self] (err) in
-					self?.isUsernameTaken = true
+					self?.isUsernameTaken.onNext(true)
 					completion?(false, registerFormError.usernameTaken)
 				}, onCompleted: { [weak self] in
-					self?.isUsernameTaken = false
+					self?.isUsernameTaken.onNext(false)
 					completion?(true, nil)
 			}).disposed(by: disposeBag)
 		}
@@ -254,20 +279,24 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 		//formErrors.value[identifier] = "Some important error"
 		return Observable.create { [weak self] observer in
 			if let username = self?.username.value {
-
-				self?.authManager.isTaken(username: username) { (isTaken, error) in
-					guard nil == error else {
-						observer.onError(error!)
-						return
-					}
-					
+				
+				self?.authManager.isTaken(username: username).do(onError: { error in
+					self?.isUsernameLoading.onNext(false)
+				},
+				onCompleted: { [weak self] in
+					self?.isUsernameLoading.onNext(false)
+				}, onSubscribe: {
+					self?.isUsernameLoading.onNext(true)
+				}).subscribe(onNext: { (isTaken) in
 					if isTaken == true {
 						observer.onError(registerFormError.usernameTaken)
 					}
 					else {
 						observer.onCompleted()
 					}
-				}
+				}, onError: { (error) in
+					observer.onError(error)
+				}).disposed(by: self!.disposeBag)
 			}
 			else {
 				observer.onError(registerFormError.incorrectUsername)
@@ -290,7 +319,7 @@ class CreateWalletViewModel: AccountantBaseViewModel {
 			}
 		}
 		
-		guard let username = self.username.value, let password = self.password.value, let confirmPassword = self.confirmPassword.value, !isUsernameTaken else {
+		guard let username = self.username.value, let password = self.password.value, let confirmPassword = self.confirmPassword.value, try! !isUsernameTaken.value() else {
 //			self.notifiableError.value = NotifiableError(title: "Form is not valid".localized(), text: nil)
 			return
 		}

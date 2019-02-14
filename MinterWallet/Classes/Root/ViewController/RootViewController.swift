@@ -40,6 +40,8 @@ class RootViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		viewModel.didLoad()
+		
 		NotificationCenter.default.addObserver(self, selector: #selector(RootViewController.reachabilityChanged(_:)), name: Notification.Name.reachabilityChanged, object: nil)
 		
 		do {
@@ -47,14 +49,14 @@ class RootViewController: UIViewController {
 		} catch {
 			print("could not start reachability notifier")
 		}
-	
 		
-		Session.shared.isLoggedIn.asObservable().subscribe(onNext: { [weak self] (isLoggedIn) in
-			self?.nextStep(isLoggedIn: isLoggedIn)
-		}).disposed(by: disposeBag)
-		
-		Session.shared.accounts.asObservable().subscribe(onNext: { [weak self] (accounts) in
-			self?.nextStep(accounts: accounts, isLoggedIn: Session.shared.isLoggedIn.value)
+		Observable.combineLatest(Session.shared.accounts.asObservable(), Session.shared.isLoggedIn.asObservable()).asDriver(onErrorJustReturn: ([], false)).drive(onNext: { [weak self] (val) in
+			if val.0.count == 0 {
+				self?.nextStep(isLoggedIn: val.1)
+			}
+			else {
+				self?.nextStep(accounts: val.0, isLoggedIn: val.1)
+			}
 		}).disposed(by: disposeBag)
 		
 	}
@@ -84,7 +86,7 @@ class RootViewController: UIViewController {
 		}
 		self.presenting = true
 
-		if isLoggedIn || accounts.count > 0 {
+		if isLoggedIn || (!isLoggedIn && accounts.count > 0) {
 
 			//has local accounts, show wallet
 			

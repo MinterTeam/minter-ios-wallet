@@ -66,6 +66,7 @@ class Session {
 	//MARK: -
 	
 	private init() {
+		
 		_ = self.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
 			
 			var newBalance = [String : Decimal]()
@@ -97,9 +98,9 @@ class Session {
 			self?.loadBalances()
 		}).disposed(by: disposeBag)
 		
-		UIApplication.shared.rx.applicationDidBecomeActive.subscribe(onNext: { (state) in
-			self.loadTransactions()
-			self.loadBalances()
+		UIApplication.shared.rx.applicationDidBecomeActive.subscribe(onNext: { [weak self] (state) in
+			self?.loadTransactions()
+			self?.loadBalances()
 		}).disposed(by: disposeBag)
 		
 		restore()
@@ -194,10 +195,10 @@ class Session {
 		}).disposed(by: disposeBag)
 		
 		syncer.startSync()
-
+		
 	}
 	
-	private var isLoadingTransaction = false
+	var isLoadingTransaction = false
 	
 	func loadTransactions() {
 		
@@ -256,9 +257,15 @@ class Session {
 	
 	func loadBalances() {
 		
-		addressManager.addresses(addresses: accounts.value.map({ (account) -> String in
-			return "Mx" + account.address
-		})) { [weak self] (response, err) in
+		let addresses = accounts.value.map({ (account) -> String in
+			return "Mx" + account.address.stripMinterHexPrefix()
+		})
+		
+		guard addresses.count > 0 else {
+			return
+		}
+		
+		addressManager.addresses(addresses: addresses) { [weak self] (response, err) in
 			
 			guard (self?.isLoggedIn.value ?? false) || (self?.accounts.value ?? []).count > 0 else {
 				return

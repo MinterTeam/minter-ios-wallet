@@ -29,4 +29,5 @@ end
 
 target 'MinterWalletTests' do
 	pod 'CryptoSwift'
+	pod 'RxSwift', '4.3.1'
 end

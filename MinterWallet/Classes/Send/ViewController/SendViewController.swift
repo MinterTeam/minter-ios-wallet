@@ -15,7 +15,16 @@ import AVFoundation
 
 
 
-class SendViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate, TextViewTableViewCellDelegate, AddressTextViewTableViewCellDelegate {
+class SendViewController: BaseViewController, ControllerType, UITableViewDelegate, UITableViewDataSource, SendPopupViewControllerDelegate, SentPopupViewControllerDelegate, TextViewTableViewCellDelegate, AddressTextViewTableViewCellDelegate {
+	
+	
+	//MARK: - ControllerType
+	
+	typealias ViewModelType = SendViewModel
+	
+	func configure(with viewModel: SendViewModel) {
+		
+	}
 	
 	
 	//MARK: - IBOutlet
@@ -272,10 +281,11 @@ extension SendViewController {
 			guard let currentViewController = (inPopupViewController?.childViewControllers.last as? PopupViewController) ?? inPopupViewController else {
 				return
 			}
-			
+
 			currentViewController.addChildViewController(viewController)
 			
 			viewController.willMove(toParentViewController: currentViewController)
+			
 			currentViewController.didMove(toParentViewController: viewController)
 			
 			currentViewController.view.addSubview(viewController.view)
@@ -290,10 +300,10 @@ extension SendViewController {
 			popupView.center = CGPoint(x: popupView.center.x, y: currentViewController.view.center.y)
 			
 			UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseInOut, animations: {
-				
 				currentViewController.popupView.frame = CGRect(x: -currentViewController.popupView.frame.width, y: currentViewController.popupView.frame.origin.y, width: currentViewController.popupView.frame.width, height: currentViewController.popupView.frame.height)
 				popupView.center = currentViewController.view.center
 				viewController.view.alpha = 1.0
+				currentViewController.popupView.alpha = 0.0
 			})
 			return
 		}
@@ -312,7 +322,6 @@ extension SendViewController {
 		
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
-		
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupSendButton, params: nil)
 		

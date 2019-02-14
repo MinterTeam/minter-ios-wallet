@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SVProgressHUD
+import NotificationBannerSwift
 
 
 class AddressTableViewCellItem : BaseCellItem {
@@ -35,7 +35,8 @@ class AddressTableViewCell: BaseCell {
 		
 		UIPasteboard.general.string = addressLabel.text
 		
-		SVProgressHUD.showSuccess(withStatus: "Copied".localized())
+		let banner = NotificationBanner(title: "Copied".localized(), subtitle: nil, style: .info)
+		banner.show()
 	}
 	
 	//MARK: -

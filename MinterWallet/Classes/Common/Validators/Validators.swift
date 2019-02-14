@@ -23,5 +23,19 @@ class CoinValidator : BaseValidator {
 	class func isValid(coin: String?) -> Bool {
 		return (coin?.count ?? 0) >= 3
 	}
+}
+
+class UsernameValidator : BaseValidator {
+	
+	class func isValid(username: String?) -> Bool {
+		return (username?.count ?? 0) >= 6
+	}
+}
+
+class PasswordValidator : BaseValidator {
+	
+	class func isValid(password: String?) -> Bool {
+		return (password?.count ?? 0) >= 6
+	}
 	
 }

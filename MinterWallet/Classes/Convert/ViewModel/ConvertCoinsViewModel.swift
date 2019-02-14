@@ -60,7 +60,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	var coinIsLoading = Variable(false)
 	
-	var getCoin = BehaviorSubject<String?>(value: nil)
+	var getCoin = BehaviorSubject<String?>(value: "")
 	
 	var shouldClearForm = Variable(false)
 	

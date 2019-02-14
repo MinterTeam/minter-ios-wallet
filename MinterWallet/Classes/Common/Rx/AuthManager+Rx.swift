@@ -10,6 +10,10 @@ import Foundation
 import MinterMy
 import RxSwift
 
+enum AuthManagerErrorRx : Error {
+	case noToken
+	case wrongResponse
+}
 
 extension AuthManager {
 	
@@ -17,17 +21,29 @@ extension AuthManager {
 		return Observable<(String?, String?, User?)>.create { (observer) -> Disposable in
 			self.login(username: username, password: password) { (accessToken, refreshToken, user, error) in
 				
-				defer {
-					observer.onCompleted()
-				}
-				
 				guard nil == error && accessToken != nil && refreshToken != nil && user != nil else {
-					observer.onError(error!)
+					observer.onError(error ?? AuthManagerErrorRx.noToken)
 					return
 				}
 				
 				observer.onNext((accessToken, refreshToken, user))
+				observer.onCompleted()
 			}
+			return Disposables.create()
+		}
+	}
+	
+	func isTaken(username: String) -> Observable<Bool> {
+		return Observable<Bool>.create { (observer) -> Disposable in
+			self.isTaken(username: username, completion: { (isTaken, error) in
+				guard nil == error && isTaken != nil else {
+					observer.onError(error ?? AuthManagerErrorRx.wrongResponse)
+					return
+				}
+				
+				observer.onNext(isTaken!)
+				observer.onCompleted()
+			})
 			return Disposables.create()
 		}
 	}

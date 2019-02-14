@@ -12,7 +12,7 @@ PODS:
   - Fabric (1.7.12)
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
-  - MinterCore (0.1.15):
+  - MinterCore (0.1.16):
     - Alamofire (= 4.7.3)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 0.9)
@@ -135,7 +135,7 @@ SPEC CHECKSUMS:
   Fabric: d7387db9a31aadff63b147a4b91d982c53afaa4f
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
-  MinterCore: 4d4902eda863b39cf7362bbc0d619fab84b8c460
+  MinterCore: a920582e88a405fc769c40b44355ef0fefbfdfe6
   MinterExplorer: d676e9f951b9ef573140500277ac26002eee1517
   MinterMy: 99a32a3b0b914f73509715f9c0f7952715808591
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
@@ -156,6 +156,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 97b0506c029db3262cfd992cdcaa563ca9513a8a
+PODFILE CHECKSUM: 58a370bcbbb8b29c7476a488f5a9e9a98ef150d6
 
 COCOAPODS: 1.5.3

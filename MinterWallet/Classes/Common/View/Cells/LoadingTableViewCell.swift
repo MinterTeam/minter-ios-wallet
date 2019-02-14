@@ -40,7 +40,7 @@ class LoadingTableViewCell: BaseCell {
 		
 		if let item = item as? LoadingTableViewCellItem {
 			
-			item.isLoadingObservable?.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+			item.isLoadingObservable?.distinctUntilChanged().asDriver(onErrorJustReturn: false).drive(onNext: { [weak self] (val) in
 				if val {
 					self?.activityIndicator?.startAnimating()
 					self?.activityIndicator?.isHidden = false

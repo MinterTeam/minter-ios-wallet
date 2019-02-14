@@ -30,7 +30,7 @@ class ReceiveViewModel: BaseViewModel {
 	override init() {
 		super.init()
 		
-		Session.shared.accounts.asObservable().subscribe(onNext: { [weak self] (accounts) in
+		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (accounts) in
 			self?.createSections()
 		}).disposed(by: disposableBag)
 	}

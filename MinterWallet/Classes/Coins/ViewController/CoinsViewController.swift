@@ -57,6 +57,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 			tableView.contentInset = UIEdgeInsetsMake(95, 0, 0, 0)
 		}
 	}
+	@IBOutlet weak var dotCircle1ImageView: UIImageView!
+	@IBOutlet weak var dotCircle2ImageView: UIImageView!
+	@IBOutlet weak var robotImageView: UIImageView!
+	@IBOutlet weak var errorLabel: UILabel!
 	
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 	
@@ -136,13 +140,21 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 			self?.updateUsernameView()
 		}).disposed(by: disposeBag)
 		
-		
 		viewModel.totalBalanceObservable.subscribe(onNext: { [weak self] (balance) in
 			self?.headerViewTitleLabel.attributedText = self?.viewModel.headerViewTitleText(with: balance)
 		}).disposed(by: disposeBag)
-	
+		
+		viewModel.errorObservable.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
+			UIView.animate(withDuration: 0.25, animations: {
+				if val {
+					self?.showPlaceholderView()
+				}
+				else {
+					self?.hidePlaceholderView()
+				}
+			})
+		}).disposed(by: disposeBag)
 	}
-
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -158,7 +170,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		
 		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen, params: nil)
 		
-		updateUsernameView()
+//		updateUsernameView()a
 		
 	}
 	
@@ -181,6 +193,24 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	func updateUsernameView() {
 		usernameView.set(username: viewModel.rightButtonTitle, imageURL: viewModel.rightButtonImage)
 	}
+	
+	func hidePlaceholderView() {
+		self.tableView.backgroundColor = .white
+		self.dotCircle1ImageView.isHidden = true
+		self.dotCircle2ImageView.isHidden = true
+		self.robotImageView.isHidden = true
+		self.errorLabel.isHidden = true
+	}
+	
+	func showPlaceholderView() {
+		self.tableView.backgroundColor = UIColor(hex: 0x4225A4)
+		self.dotCircle1ImageView.isHidden = false
+		self.dotCircle2ImageView.isHidden = false
+		self.robotImageView.isHidden = false
+		self.errorLabel.isHidden = false
+	}
+	
+	//MARK: -
 	
 	@objc func didTapUsernameView() {
 		self.tabBarController?.selectedIndex = 3

@@ -37,13 +37,18 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			self?.checkAmountValue()
 		}).disposed(by: disposeBag)
 		
-		shouldClearForm.asObservable().subscribe(onNext: { (val) in
-			self.getAmount.value = nil
-			self.getCoin.onNext(nil)
+		shouldClearForm.asObservable().subscribe(onNext: { [weak self] (val) in
+			self?.getAmount.value = nil
+			self?.getCoin.onNext("")
+			self?.validateErrors()
 		}).disposed(by: disposeBag)
 		
 		getCoin.asObservable().subscribe(onNext: { [weak self] (val) in
 			self?.loadCoin()
+		}).disposed(by: disposeBag)
+		
+		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
+			self?.shouldClearForm.value = true
 		}).disposed(by: disposeBag)
 		
 		Session.shared.loadBalances()

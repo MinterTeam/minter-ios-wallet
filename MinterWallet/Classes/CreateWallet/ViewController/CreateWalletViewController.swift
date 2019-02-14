@@ -12,7 +12,24 @@ import RxDataSources
 import NotificationBannerSwift
 
 
-class CreateWalletViewController: BaseViewController, UITableViewDelegate {
+class CreateWalletViewController: BaseViewController, ControllerType, UITableViewDelegate {
+	
+	//MARK: - ControllerType
+	
+	typealias ViewModelType = CreateWalletViewModel
+	
+	func configure(with viewModel: CreateWalletViewModel) {
+		
+		//Input
+		
+		createWalletButton.rx.tap.asObservable().subscribe(viewModel.input.createButtonDidTap).disposed(by: disposeBag)
+		
+		//Output
+		
+		viewModel.isButtonEnabled.asDriver(onErrorJustReturn: true).drive(createWalletButton.rx.isEnabled).disposed(by: disposeBag)
+		
+		self.viewModel = viewModel
+	}
 
 	//MARK: - IBOutlets
 
@@ -28,17 +45,12 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 	@IBOutlet weak var createWalletButton: DefaultButton!
 	
 	@IBAction func createWalletDidTap(_ sender: Any) {
-		
 		tableView.endEditing(true)
-		
-		//validate all?
-		
-		viewModel.register()
 	}
 	
 	//MARK: -
-	
-	var viewModel = CreateWalletViewModel()
+	//TODO: remove
+	var viewModel: CreateWalletViewModel!
 	
 	private var disposeBag = DisposeBag()
 	private var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
@@ -48,6 +60,9 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		//TODO: move to Router
+		self.configure(with: CreateWalletViewModel())
+		
 		self.title = viewModel.title
 		self.tableView.tableFooterView = footerView
 		
@@ -56,7 +71,6 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 		
 		if #available(iOS 11.0, *) {
 			tableView.contentInset = UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0)
-			//				tableView.contentInsetAdjustmentBehavior = .always
 		} else {
 			// Fallback on earlier versions
 			tableView.contentInset = UIEdgeInsetsMake(-20.0, 0.0, 0.0, 0.0)
@@ -106,6 +120,10 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 			
 			cell.configure(item: item)
 			
+			if let textFieldCell = cell as? TextFieldTableViewCell {
+				textFieldCell.textField.rx.text.asObservable()
+			}
+			
 			var validatableCell = cell as? ValidatableCellProtocol
 			validatableCell?.validateDelegate = self
 			
@@ -122,14 +140,6 @@ class CreateWalletViewController: BaseViewController, UITableViewDelegate {
 	private func registerCells() {
 		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
 	}
-//
-//	func numberOfSections(in tableView: UITableView) -> Int {
-//		return 1
-//	}
-//
-//	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//		return viewModel.rowsCount(for: section)
-//	}
 	
 	//MARK: -
 
@@ -150,6 +160,7 @@ extension CreateWalletViewController : ValidatableCellDelegate {
 		
 		let value = cell.textField.text ?? ""
 		
+		cell.setDefault()
 		viewModel.validate(item: item, value: value) { [weak self] (isValid, err) in
 			
 			guard nil != isValid else {
@@ -173,9 +184,6 @@ extension CreateWalletViewController : ValidatableCellDelegate {
 	
 	func didValidateField(field: ValidatableCellProtocol?) {
 		if let cell = field as? TextFieldTableViewCell, let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-//			if let username = cell.textField.text, item.identifier.hasPrefix("TextFieldTableViewCell_Username") {
-//				viewModel.username.value = username
-//			}
 		}
 	}
 	

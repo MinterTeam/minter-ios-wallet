@@ -114,6 +114,10 @@ extension ConvertCoinsViewController: LUAutocompleteViewDataSource {
 extension ConvertCoinsViewController: LUAutocompleteViewDelegate {
 	
 	func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: String) {
+		//HACK: Remove after GetCoinsViewModel refactoring
+		if let vm = viewModel as? GetCoinsViewModel {
+			vm.getCoin.onNext(text)
+		}
 //		viewModel?.getCoin.value = text
 		//		print(text + " was selected from autocomplete view")
 	}

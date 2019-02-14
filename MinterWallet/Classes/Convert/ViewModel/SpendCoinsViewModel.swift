@@ -92,6 +92,9 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 				self?.hasCoin.value = false
 				self?.getCoinError.value = "COIN NOT FOUND".localized()
 			}
+			else {
+				self?.getCoinError.value = ""
+			}
 		}).map({ (term) -> String in
 			return term?.trimmingCharacters(in: .whitespacesAndNewlines).uppercased() ?? ""
 		}).filter({ (term) -> Bool in
@@ -176,13 +179,18 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 		
 		shouldClearForm.asObservable().subscribe(onNext: { [weak self] (val) in
 			self?.spendAmount.onNext(nil)
-			self?.getCoin.onNext(nil)
+			self?.getCoin.onNext("")
+			self?.validateErrors()
 		}).disposed(by: disposeBag)
 		
 		useMaxDidTap.subscribe(onNext: { [weak self] (_) in
 			guard let _self = self else { return }
 			let selectedAmount = CurrencyNumberFormatter.formattedDecimal(with: _self.selectedBalance ?? 0.0, formatter: _self.decimalFormatter)
 			self?.spendAmount.onNext(selectedAmount)
+		}).disposed(by: disposeBag)
+		
+		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
+			self?.shouldClearForm.value = true
 		}).disposed(by: disposeBag)
 		
 		Session.shared.loadBalances()

@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxDataSources
 import SVProgressHUD
+import NotificationBannerSwift
 
 
 class ReceiveViewController: BaseViewController, UITableViewDelegate {
@@ -122,8 +123,8 @@ extension ReceiveViewController : QRTableViewCellDelegate {
 			SoundHelper.playSoundIfAllowed(type: .click)
 			
 			UIPasteboard.general.image = img
-			
-			SVProgressHUD.showSuccess(withStatus: "Copied".localized())
+			let banner = NotificationBanner(title: "Copied".localized(), subtitle: nil, style: .info)
+			banner.show()
 		}
 	}
 }

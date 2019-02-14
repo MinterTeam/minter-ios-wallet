@@ -48,6 +48,12 @@ class CoinsViewModel: BaseViewModel {
 		return Session.shared.user.asObservable()
 	}
 	
+	var errorObservable: Observable<Bool> {
+		return sections.asObservable().map({ (items) -> Bool in
+			return false//!(items.count > 0)
+		})
+	}
+	
 	var rightButtonTitle: String {
 		return "@" + (Session.shared.user.value?.username ?? "")
 	}
@@ -171,7 +177,7 @@ class CoinsViewModel: BaseViewModel {
 			sctns.append(section1)
 		}
 		
-		if sctns.count == 0 {
+		if sctns.count == 0 && (Session.shared.isLoadingTransaction || Session.shared.isLoading.value) {
 			let loadingItem = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell", identifier: "LoadingTableViewCell")
 			loadingItem.isLoadingObservable = Session.shared.isLoading.asObservable()
 			let sctn = BaseTableSectionItem(header: "", items: [loadingItem])
@@ -271,7 +277,6 @@ class CoinsViewModel: BaseViewModel {
 		}
 		
 		return transactionCellItem
-
 	}
 	
 	func delegateTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
@@ -300,7 +305,6 @@ class CoinsViewModel: BaseViewModel {
 		}
 		
 		return transactionCellItem
-		
 	}
 	
 	//MARK: -

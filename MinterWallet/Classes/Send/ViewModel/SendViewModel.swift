@@ -29,7 +29,19 @@ struct AccountPickerItem {
 
 
 
-class SendViewModel: BaseViewModel {
+class SendViewModel: BaseViewModel, ViewModelProtocol {
+	
+	var input: SendViewModel.Input!
+	
+	var output: SendViewModel.Output!
+	
+	struct Input {
+		
+	}
+	
+	struct Output {
+		
+	}
 	
 	enum cellIdentifierPrefix : String {
 		case address = "TextFieldTableViewCell_Address"
@@ -216,6 +228,10 @@ class SendViewModel: BaseViewModel {
 			self?._sections.value = items
 		}).disposed(by: disposeBag)
 		
+		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
+			self?.clear()
+		}).disposed(by: disposeBag)
+		
 	}
 	
 	//MARK: - Sections
@@ -343,7 +359,7 @@ class SendViewModel: BaseViewModel {
 		}
 		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^@[a-zA-Z0-9_]{5,16}")
 		let usernameTest1 = NSPredicate(format:"SELF MATCHES %@", "^[a-zA-Z0-9_]{5,16}")
-		let addressTest = NSPredicate(format:"SELF MATCHES %@", "^Mx[a-zA-Z0-9]{40}$")
+		let addressTest = NSPredicate(format:"SELF MATCHES %@", "^Mx[a-fA-F0-9]{40}$")
 		return usernameTest.evaluate(with: to) || usernameTest1.evaluate(with: to) || addressTest.evaluate(with: to) || to.isValidEmail()
 	}
 	
@@ -362,7 +378,7 @@ class SendViewModel: BaseViewModel {
 				self.addressStateObservable.value = .invalid(error: "TOO MANY SYMBOLS".localized())
 				return
 			}
-			else if to == "" {
+			else if to == "" || to.count < 6 {
 				self.addressStateObservable.value = .default
 			}
 			else {
@@ -662,7 +678,7 @@ class SendViewModel: BaseViewModel {
 				if isBaseCoin {
 					//In case of base coin just subtract static commission
 					/// - SeeAlso: https://minter-go-node.readthedocs.io/en/docs/commissions.html
-					let amountWithCommission = (self?.currentCommission ?? 0) + amount
+					let amountWithCommission = max(0, amount - (self?.currentCommission ?? 0))
 					guard (self?.selectedAddressBalance ?? 0) >= amountWithCommission else {
 						let needs = self?.formatter.string(from: amountWithCommission as NSNumber) ?? ""
 						self?.notifiableError.value = NotifiableError(title: "Not enough coins.", text: "Needs " + needs)
@@ -670,7 +686,7 @@ class SendViewModel: BaseViewModel {
 						return
 					}
 					
-					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal - RawTransactionType.sendCoin.commission()
+					newAmount = amountWithCommission * TransactionCoinFactorDecimal
 					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
 				}
 				/// In case if we send not a base (e.g. BELTCOIN) coin we try to pay commission with base coin
