@@ -28,7 +28,7 @@ class CoinValidator : BaseValidator {
 class UsernameValidator : BaseValidator {
 	
 	class func isValid(username: String?) -> Bool {
-		return (username?.count ?? 0) >= 6
+		return (username?.count ?? 0) >= 5
 	}
 }
 

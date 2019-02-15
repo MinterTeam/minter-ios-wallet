@@ -183,8 +183,8 @@ extension CreateWalletViewController : ValidatableCellDelegate {
 	
 	
 	func didValidateField(field: ValidatableCellProtocol?) {
-		if let cell = field as? TextFieldTableViewCell, let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-		}
+//		if let cell = field as? TextFieldTableViewCell, let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+//		}
 	}
 	
 }

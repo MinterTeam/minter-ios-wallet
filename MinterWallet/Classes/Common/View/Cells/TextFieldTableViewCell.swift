@@ -121,7 +121,7 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 			validatorRules = item.rules
 			errorTitle.text = item.error
 			
-			item.stateObservable?.asObservable().subscribe(onNext: { (state) in
+			item.stateObservable?.share().asObservable().subscribe(onNext: { (state) in
 				switch state {
 				case .default:
 					self.setDefault()
@@ -147,7 +147,7 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 				}
 			}).disposed(by: disposeBag)
 			
-			textField?.rx.text.orEmpty.asObservable().subscribe(onNext: { [weak self] (val) in
+			textField?.rx.text.orEmpty.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
 				self?.validateDelegate?.validate(field: self, completion: {
 					//			print("Validation has been completed")
 				})
@@ -215,9 +215,9 @@ extension TextFieldTableViewCell : UITextFieldDelegate {
 		
 		validateDelegate?.didValidateField(field: self)
 		
-		validateDelegate?.validate(field: self, completion: {
-//			print("Validation has been completed")
-		})
+//		validateDelegate?.validate(field: self, completion: {
+////			print("Validation has been completed")
+//		})
 		
 		self.layoutIfNeeded()
 		

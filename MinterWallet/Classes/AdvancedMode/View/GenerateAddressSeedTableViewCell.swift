@@ -7,8 +7,7 @@
 //
 
 import UIKit
-import SVProgressHUD
-
+import NotificationBannerSwift
 
 class GenerateAddressSeedTableViewCellItem : BaseCellItem {
 
@@ -29,7 +28,8 @@ class GenerateAddressSeedTableViewCell: BaseCell {
 		
 		UIPasteboard.general.string = seedLabel.text
 		
-		SVProgressHUD.showSuccess(withStatus: "Copied")
+		let banner = NotificationBanner(title: "Copied".localized(), subtitle: nil, style: .info)
+		banner.show()
 	}
 
 	//MARK: -

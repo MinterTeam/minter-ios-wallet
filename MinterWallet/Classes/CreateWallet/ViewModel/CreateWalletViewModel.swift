@@ -57,6 +57,9 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 	var email = Variable<String?>(nil)
 	var mobile = Variable<String?>(nil)
 	
+	let passwordStateObserver = ReplaySubject<TextFieldTableViewCell.State>.create(bufferSize: 1)
+	let confirmPasswordObserver = ReplaySubject<TextFieldTableViewCell.State>.create(bufferSize: 1)
+	
 	var shouldReloadTable = Variable(false)
 	
 	var isLoading = Variable(false)
@@ -84,7 +87,7 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 	}
 	
 	private var isUsernameLoading = PublishSubject<Bool>()
-	private var usernameState = PublishSubject<TextFieldTableViewCell.State>()
+	private var usernameState = ReplaySubject<TextFieldTableViewCell.State>.create(bufferSize: 1)
 	
 
 	//MARK: -
@@ -135,12 +138,14 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 		password.value = self.password.value
 		password.prefix = nil
 		password.state = .default
+		password.stateObservable = passwordStateObserver.asObservable()
 		
 		let confirmPassword = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell", identifier: cellIdentifierPrefix.confirmPassword.rawValue)
 		confirmPassword.title = "CONFIRM PASSWORD".localized()
 		confirmPassword.isSecure = true
 		confirmPassword.value = self.confirmPassword.value
 		confirmPassword.state = .default
+		confirmPassword.stateObservable = confirmPasswordObserver.asObservable()
 		
 		var section = BaseTableSectionItem(header: "")
 		section.identifier = "CreateWalletSection"
@@ -163,6 +168,10 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 	func validate(item: BaseCellItem, value: String, forceError: Bool = false, completion: ((Bool?, registerFormError?) -> ())?) {
 
 		if item.identifier.hasPrefix(cellIdentifierPrefix.username.rawValue) {
+			if value == self.username.value {
+				return
+			}
+			
 			self.username.value = value
 			
 			if !UsernameValidator.isValid(username: value) {
@@ -172,6 +181,7 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 				}
 
 				completion?(false, registerFormError.usernameTooShort)
+				usernameState.onNext(.invalid(error: errorMessage(for: .usernameTooShort)))
 				return
 			}
 			
@@ -179,6 +189,7 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 			
 			if !isUsernameValid(username: value) {
 				completion?(false, registerFormError.incorrectUsername)
+				usernameState.onNext(.invalid(error: errorMessage(for: .incorrectUsername)))
 				return
 			}
 			
@@ -186,8 +197,10 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 				onError: { [weak self] (err) in
 					self?.isUsernameTaken.onNext(true)
 					completion?(false, registerFormError.usernameTaken)
+					self?.usernameState.onNext(.invalid(error: self?.errorMessage(for: .usernameTaken)))
 				}, onCompleted: { [weak self] in
 					self?.isUsernameTaken.onNext(false)
+					self?.usernameState.onNext(.valid)
 					completion?(true, nil)
 			}).disposed(by: disposeBag)
 		}
@@ -199,16 +212,23 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 				return
 			}
 			
-			if !isPasswordValid(password: value) {
-				completion?(false, registerFormError.passwordTooShort)
-			}
-			else {
-				if nil != self.confirmPassword.value && self.confirmPassword.value != self.password.value {
-					completion?(false, registerFormError.passwordsAreNotEqual)
+			if isPasswordValid(password: value) {
+				if self.confirmPassword.value == self.password.value {
+					confirmPasswordObserver.onNext(.valid)
 				}
 				else {
-					completion?(true, nil)
+					if self.confirmPassword.value != nil && self.confirmPassword.value != "" {
+						confirmPasswordObserver.onNext(.invalid(error: errorMessage(for: .passwordsAreNotEqual)))
+					}
+					else {
+						confirmPasswordObserver.onNext(.default)
+					}
 				}
+				completion?(true, nil)
+				return
+			}
+			else {
+				completion?(false, registerFormError.passwordTooShort)
 			}
 		}
 		else if item.identifier.hasPrefix(cellIdentifierPrefix.confirmPassword.rawValue) {
@@ -219,11 +239,25 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 				return
 			}
 			
-			if !isPasswordValid(password: value) || self.confirmPassword.value != self.password.value {
-				completion?(false, registerFormError.passwordsAreNotEqual)
+			if isPasswordValid(password: value) {
+				if self.password.value == nil || self.password.value == "" {
+					completion?(true, nil)
+					return
+				}
+				else {
+					if self.password.value != self.confirmPassword.value {
+						completion?(false, registerFormError.passwordsAreNotEqual)
+						return
+					}
+					else {
+						passwordStateObserver.onNext(.valid)
+						completion?(true, nil)
+						return
+					}
+				}
 			}
 			else {
-				completion?(true, nil)
+				completion?(false, registerFormError.passwordTooShort)
 			}
 		}
 		else if item.identifier.hasPrefix(cellIdentifierPrefix.email.rawValue) {
