@@ -12,6 +12,7 @@ import CryptoSwift
 
 enum WalletCoinManagerError : Error {
 	case wrongResponse
+	case custom(error: String)
 }
 
 class WalletCoinManager {
@@ -24,7 +25,7 @@ class WalletCoinManager {
 	
 	//MARK: -
 
-	func requestMNT(address: String, completion: ((Error?) -> ())?) {
+	func requestMNT(address: String, completion: ((WalletCoinManagerError?) -> ())?) {
 		
 		let signature = makeSignature(for: address)
 		
@@ -33,6 +34,12 @@ class WalletCoinManager {
 				completion?(nil)
 			}
 			else {
+				if let result = response.value as? [String : Any], let errors = result["errors"] as? [String : Any] {
+					if let firstKey = errors.keys.first, let firstKeyErrors = errors[firstKey] as? [String], let errorMessage = firstKeyErrors.first {
+						completion?(WalletCoinManagerError.custom(error: errorMessage))
+						return
+					}
+				}
 				completion?(WalletCoinManagerError.wrongResponse)
 			}
 		}

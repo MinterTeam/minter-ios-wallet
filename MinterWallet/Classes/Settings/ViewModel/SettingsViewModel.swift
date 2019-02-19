@@ -156,15 +156,26 @@ class SettingsViewModel: BaseViewModel {
 	
 	//MARK: -
 	
+	let manager = WalletCoinManager.shared
+	
 	func requestMNT() {
 		guard let address = Session.shared.accounts.value.first?.address else {
 			return
 		}
 		
-		WalletCoinManager.shared.requestMNT(address: "Mx" + address) { [weak self] (error) in
+		manager.requestMNT(address: "Mx" + address) { [weak self] (error) in
 			if nil != error {
 				var err = NotifiableError()
-				err.title = "You can request 100 MNT only once per hour"
+				
+				switch error! {
+				case .wrongResponse:
+					err.title = "You can request 100 MNT only once per hour"
+					break
+				case .custom(let message):
+					err.title = message
+					break
+				}
+				
 				self?.errorNotification.value = err
 			}
 			else {

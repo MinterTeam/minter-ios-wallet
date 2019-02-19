@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		MinterExplorerSDK.initialize(urlString: "https://testnet.explorer.minter.network", websocketUrlString: "wss://rtm2.explorer.minter.network/connection/websocket")
 
 		Fabric.with([Crashlytics.self])
-
+		
 		appearance()
 		
 		return true

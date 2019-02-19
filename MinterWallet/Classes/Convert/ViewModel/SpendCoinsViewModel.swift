@@ -438,9 +438,9 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 					let nonce = Decimal(val.0 + 1)
 		
 					var tx: RawTransaction!
-					let coin = _self.canPayComission() ? Coin.baseCoin().symbol! : coinFrom
+					let coin = _self.canPayComissionWithBaseCoin() ? Coin.baseCoin().symbol! : coinFrom
 					
-					if isMax {
+					if isMax && !_self.canPayComissionWithBaseCoin() {
 						tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minimumBuyVal)
 					}
 					else {

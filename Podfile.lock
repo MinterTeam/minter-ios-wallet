@@ -45,7 +45,6 @@ PODS:
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
-  - SVProgressHUD (2.2.5)
   - SwiftValidator (4.0.0)
   - TPKeyboardAvoiding (1.3.2)
   - XLPagerTabStrip (8.0.1)
@@ -69,7 +68,6 @@ DEPENDENCIES:
   - RxAppState (= 1.2.0)
   - RxDataSources (~> 3.0)
   - RxSwift (= 4.3.1)
-  - SVProgressHUD (from `https://github.com/SVProgressHUD/SVProgressHUD.git`)
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, branch `master`)
   - TPKeyboardAvoiding (~> 1.3)
   - XLPagerTabStrip (~> 8.0)
@@ -110,16 +108,11 @@ EXTERNAL SOURCES:
     :path: "../MinterExplorer"
   MinterMy:
     :path: "../MinterMy"
-  SVProgressHUD:
-    :git: https://github.com/SVProgressHUD/SVProgressHUD.git
   SwiftValidator:
     :branch: master
     :git: https://github.com/jpotts18/SwiftValidator.git
 
 CHECKOUT OPTIONS:
-  SVProgressHUD:
-    :commit: d860511141f71fa0fb40c3241a0701be06ad7838
-    :git: https://github.com/SVProgressHUD/SVProgressHUD.git
   SwiftValidator:
     :commit: c0ee801a2d107eca5f748d07932b449666d8effd
     :git: https://github.com/jpotts18/SwiftValidator.git
@@ -150,12 +143,11 @@ SPEC CHECKSUMS:
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
-  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 58a370bcbbb8b29c7476a488f5a9e9a98ef150d6
+PODFILE CHECKSUM: f7b31dddbad3a79e32e76d9f964352ef9191630e
 
 COCOAPODS: 1.5.3

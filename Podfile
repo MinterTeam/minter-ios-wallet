@@ -14,7 +14,6 @@ target 'MinterWallet' do
 	pod 'RxAppState', '1.2.0'
 	pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
 	pod 'TPKeyboardAvoiding', '~> 1.3'
-	pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 	pod 'KeychainSwift', '12.0.0'
 	pod 'RealmSwift', '3.11.0'
 	pod 'AFDateHelper', '~> 4.2.2'

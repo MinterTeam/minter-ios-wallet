@@ -147,7 +147,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			}
 			
 			//if we can pay commission with base coin - set normalized comission to zero
-			let normalizedCommission = (self?.canPayComission() ?? false) ? 0 : commission / TransactionCoinFactorDecimal
+			let normalizedCommission = (self?.canPayComissionWithBaseCoin() ?? false) ? 0 : commission / TransactionCoinFactorDecimal
 			let val = (ammnt / TransactionCoinFactorDecimal) + normalizedCommission
 			
 			self?.approximately.value = CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0 , formatter: self!.formatter) + " " + from
@@ -212,7 +212,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 					
 					let nonce = nnce + 1
 					
-					let coin = (self?.canPayComission() ?? false) ? Coin.baseCoin().symbol : coinFrom
+					let coin = (self?.canPayComissionWithBaseCoin() ?? false) ? Coin.baseCoin().symbol : coinFrom
 					let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
 					
 					let tx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: gas, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value, maximumValueToSell: maximumValueToSell)

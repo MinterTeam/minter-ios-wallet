@@ -126,7 +126,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 		return coinCount > 1
 	}
 	
-	func canPayComission() -> Bool {
+	func canPayComissionWithBaseCoin() -> Bool {
 		let balance = self.baseCoinBalance
 		if balance >= self.baseCoinCommission {
 			return true
