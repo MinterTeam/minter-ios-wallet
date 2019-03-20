@@ -7,7 +7,7 @@
 //
 
 import RxSwift
-import Centrifuge
+import SwiftCentrifuge
 import MinterCore
 import MinterExplorer
 import RxAppState
@@ -31,7 +31,7 @@ class RootViewModel: BaseViewModel {
 	
 	var isConnected: Bool = false {
 		didSet {
-			if self.isConnected == true {
+			if self.isConnected == true && !oldValue {
 				self.subscribeAccountBalanceChange()
 			}
 		}
@@ -54,7 +54,7 @@ class RootViewModel: BaseViewModel {
 		Session.shared.updateGas()
 		
 		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable(), Session.shared.isLoggedIn.asObservable()).distinctUntilChanged({ (val1, val2) -> Bool in
-			return val1.1 == val2.1 || val1.2 == val2.2 || val1.1 == val2.1
+			return val1.1 == val2.1 && val1.2 == val2.2
 		}).filter({ (val) -> Bool in
 			let accounts = val.1
 			let loggedIn = val.2
@@ -88,36 +88,17 @@ class RootViewModel: BaseViewModel {
 		SessionHelper.reloadAccounts()
 	}
 	
-	let connectHandler = CentrifugueConnectHandler()
-	
-	let disconnectHandler = CentrifugueDisconnectHandler()
-	
-	let messageHandler = CentrifugueMessageHandler()
-	let publishHandler = CentrifuguePublishHandler()
-	let errorHandler = CentrifugueErrorHandler()
-	let subscribeErrorHandler = CentrifugueSubscribeErrorHandler()
-	
 	func connect(completion: (() -> ())?) {
 		if nil == client {
-			client = CentrifugeNew(MinterExplorerWebSocketURL!.absoluteURL.absoluteString, CentrifugeDefaultConfig())
+			var config = CentrifugeClientConfig()
+//			config.debug = true
+//			config.tlsSkipVerify = true
+//			config.headers = ["Accept": "application/json;q=0.9,text/plain"]
+			client = CentrifugeClient(url: MinterExplorerWebSocketURL!.absoluteURL.absoluteString + "?format=protobuf", config: config, delegate: self)
 		}
 		
-		connectHandler.delegate = self
-		disconnectHandler.delegate = self
-		messageHandler.delegate = self
-		
-		client?.onConnect(connectHandler)
-		client?.onDisconnect(disconnectHandler)
-		client?.onMessage(messageHandler)
-		client?.onError(errorHandler)
-		
-		DispatchQueue.global(qos: .background).async { [weak self] in
-			do {
-				try self?.client?.connect()
-			} catch {
-				return
-			}
-		}
+		self.client?.connect()
+
 	}
 	
 	var sub: CentrifugeSubscription?
@@ -127,20 +108,11 @@ class RootViewModel: BaseViewModel {
 			return
 		}
 		do {
-			sub = try self.client?.newSubscription(cnl)
+			let sub = try client?.newSubscription(channel: cnl, delegate: self)
+			sub?.subscribe()
 		} catch {
-			return
+			print("Can not create subscription: \(error)")
 		}
-		
-		
-		sub?.onPublish(publishHandler)
-		sub?.onSubscribeError(subscribeErrorHandler)
-		do {
-			try sub?.subscribe()
-		} catch {
-			
-		}
-		
 	}
 	
 	private func unsubscribeAccountBalanceChange(completed: (() -> ())?) {
@@ -160,91 +132,18 @@ class RootViewModel: BaseViewModel {
 
 }
 
-
-
-extension RootViewModel : CentrifugueConnectHandlerDelegate, CentrifugueDisconnectHandlerDelegate, CentrifuguePublishHandlerDelegate {
+extension RootViewModel : CentrifugeClientDelegate, CentrifugeSubscriptionDelegate {
 	
 	//MARK: -
 	
-	func didConnect() {
+	func onConnect(_ client: CentrifugeClient, _ e: CentrifugeConnectEvent) {
 		self.isConnected = true
 	}
-	
-	func didDisconnect() {
+	func onDisconnect(_ client: CentrifugeClient, _ e: CentrifugeDisconnectEvent) {
 		self.isConnected = false
 	}
 	
-	func didPublish() {
-		DispatchQueue.main.async { [weak self] in
-			self?.reloadData()
-		}
+	func onPublish(_ s: CentrifugeSubscription, _ e: CentrifugePublishEvent) {
+		self.reloadData()
 	}
-	
-}
-
-//MARK: -
-
-protocol CentrifugueConnectHandlerDelegate : class {
-	func didConnect()
-}
-
-protocol CentrifugueDisconnectHandlerDelegate : class {
-	func didDisconnect()
-}
-
-protocol CentrifuguePublishHandlerDelegate : class {
-	func didPublish()
-}
-
-//MARK: -
-
-class CentrifugueConnectHandler : NSObject, CentrifugeConnectHandlerProtocol {
-	
-	weak var delegate: CentrifugueConnectHandlerDelegate?
-	
-	func onConnect(_ p0: CentrifugeClient!, p1: CentrifugeConnectEvent!) {
-		
-		delegate?.didConnect()
-	}
-}
-
-class CentrifugueDisconnectHandler : NSObject, CentrifugeDisconnectHandlerProtocol {
-	
-	weak var delegate: CentrifugueDisconnectHandlerDelegate?
-	
-	func onDisconnect(_ p0: CentrifugeClient!, p1: CentrifugeDisconnectEvent!) {
-		delegate?.didDisconnect()
-	}
-}
-
-class CentrifuguePublishHandler : NSObject, CentrifugePublishHandlerProtocol {
-	
-	weak var delegate: CentrifuguePublishHandlerDelegate?
-	
-	func onPublish(_ p0: CentrifugeSubscription!, p1: CentrifugePublishEvent!) {
-		delegate?.didPublish()
-	}
-}
-
-class CentrifugueMessageHandler : NSObject, CentrifugeMessageHandlerProtocol {
-	
-	weak var delegate: CentrifuguePublishHandlerDelegate?
-	
-	func onMessage(_ p0: CentrifugeClient!, p1: CentrifugeMessageEvent!) {
-		delegate?.didPublish()
-	}
-}
-
-class CentrifugueErrorHandler : NSObject, CentrifugeErrorHandlerProtocol {
-	
-	func onError(_ p0: CentrifugeClient!, p1: CentrifugeErrorEvent!) {
-	}
-}
-
-class CentrifugueSubscribeErrorHandler : NSObject, CentrifugeSubscribeErrorHandlerProtocol {
-	
-	func onSubscribeError(_ p0: CentrifugeSubscription!, p1: CentrifugeSubscribeErrorEvent!) {
-	}
-	
-	
 }

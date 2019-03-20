@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		
 		MinterCoreSDK.initialize(urlString: "https://minter-node-3.testnet.minter.network:8841")
-		MinterExplorerSDK.initialize(urlString: "https://testnet.explorer.minter.network", websocketUrlString: "wss://rtm2.explorer.minter.network/connection/websocket")
+		MinterExplorerSDK.initialize(APIURLString: "https://explorer-api.testnet.minter.network", WEBURLString: "https://testnet.explorer.minter.network", websocketURLString: "wss://explorer-rtm.testnet.minter.network/connection/websocket")
 
 		Fabric.with([Crashlytics.self])
 		

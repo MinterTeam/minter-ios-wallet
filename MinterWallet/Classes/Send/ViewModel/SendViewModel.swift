@@ -596,7 +596,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		}
 		isLoadingNonce.value = true
 		
-		MinterExplorer.ExplorerTransactionManager.default.count(for: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
+		GateManager.shared.nonce(for: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
 		
 			self?.getGasPrice(completion: { (gas) in
 				if nil != gas {
@@ -702,7 +702,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 					}
 					
 					/// Checking commission for the following tx
-					MinterExplorer.ExplorerTransactionManager.default.estimateCommission(for: signedTx, completion: { [weak self] (commission, error) in
+					GateManager.shared.estimateTXCommission(for: signedTx, completion: { [weak self] (commission, error) in
 						
 						guard error == nil, nil != commission else {
 							return
@@ -783,7 +783,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		
 		self.nonce.value = nil
 		
-		MinterExplorer.ExplorerTransactionManager.default.sendRawTransaction(rawTransaction: signedTx) { [weak self] (hash, err) in
+		GateManager.shared.sendRawTransaction(rawTransaction: signedTx) { [weak self] (hash, err) in
 			
 			var res = false
 			
@@ -814,7 +814,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		
 		let comission = RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal
 		
-		MinterExplorer.ExplorerTransactionManager.default.estimateCoinSell(coinFrom: forCoin, coinTo: Coin.baseCoin().symbol!, value: comission) { (result, commission, error) in
+		GateManager.shared.estimateCoinSell(coinFrom: forCoin, coinTo: Coin.baseCoin().symbol!, value: comission) { (result, commission, error) in
 			guard error == nil, let result = result, let commission = commission else {
 				completion?(nil)
 				return

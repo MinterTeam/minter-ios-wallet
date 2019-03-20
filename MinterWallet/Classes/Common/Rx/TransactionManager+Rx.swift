@@ -16,11 +16,11 @@ enum ExplorerTransactionManagerErrorRx : Error {
 	case noTransaction
 }
 
-extension ExplorerTransactionManager {
+extension GateManager {
 	
 	func estimateComission(tx: String) -> Observable<Decimal> {
 		return Observable.create { (observer) -> Disposable in
-			self.estimateCommission(for: tx) { (commission, error) in
+			self.estimateTXCommission(for: tx) { (commission, error) in
 				
 				guard let commission = commission, nil == error else {
 					observer.onError(error ?? ExplorerTransactionManagerErrorRx.noCommission)
@@ -50,9 +50,9 @@ extension ExplorerTransactionManager {
 		}
 	}
 	
-	func count(address: String) -> Observable<Int> {
+	func nonce(address: String) -> Observable<Int> {
 		return Observable.create { (observer) -> Disposable in
-			self.count(for: address) { (count, error) in
+			self.nonce(for: address) { (count, error) in
 				
 				guard let count = count, nil == error else {
 					observer.onError(error ?? ExplorerTransactionManagerErrorRx.noCount)
@@ -68,7 +68,7 @@ extension ExplorerTransactionManager {
 	
 	func minGas() -> Observable<Int> {
 		return Observable.create { (observer) -> Disposable in
-			self.minGas(completion: { (gas, error) in
+			self.minGasPrice(completion: { (gas, error) in
 				guard nil == error && gas != nil else {
 					observer.onError(error!)
 					return

@@ -18,6 +18,7 @@ class WalletTransactionManager {
 	
 	let transactionManager = MinterExplorer.ExplorerTransactionManager.default
 	let infoManager = MinterMy.InfoManager.default
+	let gateManager = GateManager.shared
 	
 	func transactions(addresses: [String]? = nil, page: Int = 0, completion: (([MinterExplorer.Transaction]?, [String : User]?, Error?) -> ())?) {
 		

@@ -143,7 +143,7 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	var spendCoinText: String {
 		let selected = (selectedCoin ?? "")
-		let bal = CurrencyNumberFormatter.formattedDecimal(with: (selectedBalance ?? 0.0), formatter: formatter) //formatter.string(from: (selectedBalance ?? 0.0) as NSDecimalNumber) ?? ""
+		let bal = CurrencyNumberFormatter.formattedDecimal(with: (selectedBalance ?? 0.0), formatter: formatter)
 		return selected + " (" + bal + ")"
 	}
 	
@@ -248,6 +248,5 @@ class ConvertCoinsViewModel : BaseViewModel {
 			}
 		}
 	}
-	
-	
+
 }

@@ -24,6 +24,7 @@ target 'MinterWallet' do
 	pod 'XLPagerTabStrip', '~> 8.0'
 	pod 'ReachabilitySwift', '~> 4.3'
 	pod 'YandexMobileMetrica/Dynamic', '3.2.0'
+	pod 'SwiftCentrifuge'
 end
 
 target 'MinterWalletTests' do

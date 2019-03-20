@@ -71,7 +71,6 @@
 		FA0F297921B179BB00E10F5E /* McPickerBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F297221B179BB00E10F5E /* McPickerBarButtonItem.swift */; };
 		FA0F297A21B179BB00E10F5E /* McTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F297321B179BB00E10F5E /* McTextField.swift */; };
 		FA0F297B21B179BB00E10F5E /* McPickerPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F297421B179BB00E10F5E /* McPickerPopoverViewController.swift */; };
-		FA101E2E21BC6DFE00DB1D3A /* Centrifuge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0AAE00219EC6BB0031585F /* Centrifuge.framework */; };
 		FA11EA62214ABFB300C8DFB0 /* CoinAutocompleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */; };
 		FA11EA64214ABFD300C8DFB0 /* CoinAutocompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */; };
 		FA16100C221401DE009F9255 /* ConvertCoinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA16100B221401DD009F9255 /* ConvertCoinsViewController.swift */; };
@@ -313,7 +312,6 @@
 		FA04028E20FDD6B900F1689F /* ConvertCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCoinsViewModel.swift; sourceTree = "<group>"; };
-		FA0AAE00219EC6BB0031585F /* Centrifuge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Centrifuge.framework; sourceTree = "<group>"; };
 		FA0AF8DA21B5297D000B571B /* NextGrowingInternalTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingInternalTextView.swift; sourceTree = "<group>"; };
 		FA0AF8DB21B5297D000B571B /* NextGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingTextView.swift; sourceTree = "<group>"; };
 		FA0AF8DF21B534EF000B571B /* UIImageViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
@@ -531,7 +529,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA101E2E21BC6DFE00DB1D3A /* Centrifuge.framework in Frameworks */,
 				BBEC25451D081255FEE27D0F /* Pods_MinterWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1090,7 +1087,6 @@
 		F1B9FBEAE725F311F68F278E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FA0AAE00219EC6BB0031585F /* Centrifuge.framework */,
 				9EBD75282FB7FF99C075E9B1 /* Pods_MinterWallet.framework */,
 				E5F7398A88DFF31468C6E439 /* Pods_MinterWalletTests.framework */,
 			);
@@ -1931,6 +1927,9 @@
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftCentrifuge/SwiftCentrifuge.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftValidator/SwiftValidator.framework",
 				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
 				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
@@ -1961,6 +1960,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftCentrifuge.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftValidator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",

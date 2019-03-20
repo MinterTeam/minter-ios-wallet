@@ -85,7 +85,7 @@ open class LUAutocompleteView: UIView {
     private var elements = [String]() {
         didSet {
             tableView.reloadData()
-            height = tableView.contentSize.height - 2
+            height = max(0, tableView.contentSize.height - 2)
         }
     }
     private var height: CGFloat = 0 {
@@ -169,7 +169,7 @@ open class LUAutocompleteView: UIView {
 			self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[tableView]-0-|", options: [], metrics: nil, views: ["tableView" : tableView]))
 			self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[tableView]-0-|", options: [], metrics: nil, views: ["tableView" : tableView]))
 			
-			heightConstraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: height)
+			heightConstraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: max(0, height))
 //			heightConstraint?.priority = .defaultLow
 			
 			self.addConstraint(heightConstraint!)

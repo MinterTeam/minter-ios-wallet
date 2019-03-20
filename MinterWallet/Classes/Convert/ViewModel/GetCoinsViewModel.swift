@@ -131,7 +131,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 		
 		isApproximatelyLoading.value = true
 		
-		MinterExplorer.ExplorerTransactionManager.default.estimateCoinBuy(coinFrom: from, coinTo: to, value: amnt * TransactionCoinFactorDecimal) { [weak self] (val, commission, error) in
+		GateManager.shared.estimateCoinBuy(coinFrom: from, coinTo: to, value: amnt * TransactionCoinFactorDecimal) { [weak self] (val, commission, error) in
 			
 			self?.isApproximatelyLoading.value = false
 			
@@ -173,7 +173,6 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 				self.errorNotification.onNext(NotifiableError(title: "Incorrect amount", text: nil))
 				return
 		}
-
 		
 		let ammnt = amount * TransactionCoinFactorDecimal
 		
@@ -198,7 +197,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			
 			let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
 			
-			MinterExplorer.ExplorerTransactionManager.default.count(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
+			GateManager.shared.nonce(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
 				
 				GateManager.shared.minGasPrice(completion: { (gasPrice, gasError) in
 					
@@ -218,7 +217,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 					let tx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: gas, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value, maximumValueToSell: maximumValueToSell)
 					let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
 					
-					MinterExplorer.ExplorerTransactionManager.default.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
+					GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
 						
 						self?.isLoading.onNext(false)
 						

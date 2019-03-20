@@ -285,7 +285,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 			return
 		}
 		
-		MinterExplorer.ExplorerTransactionManager.default.estimateCoinSell(coinFrom: fromCoin, coinTo: getCoin, value: value) { [weak self] (val, commission, error) in
+		GateManager.shared.estimateCoinSell(coinFrom: fromCoin, coinTo: getCoin, value: value) { [weak self] (val, commission, error) in
 			guard let _self = self else { return }
 			
 			guard nil == error, let ammnt = val, let commission = commission else {
@@ -434,21 +434,26 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 					return
 				}
 			
-				Observable.zip(_self.transactionManager.count(address: selectedAddress), GateManager.shared.minGasPrice()).flatMap({ (val) -> Observable<String?> in
+				Observable.zip(GateManager.shared.nonce(address: selectedAddress), GateManager.shared.minGasPrice()).flatMap({ (val) -> Observable<String?> in
 					let nonce = Decimal(val.0 + 1)
 		
 					var tx: RawTransaction!
 					let coin = _self.canPayComissionWithBaseCoin() ? Coin.baseCoin().symbol! : coinFrom
+					let isBaseCoin = Coin.baseCoin().symbol! == coinFrom
 					
-					if isMax && !_self.canPayComissionWithBaseCoin() {
-						tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minimumBuyVal)
+					if isMax {
+						if isBaseCoin || !_self.canPayComissionWithBaseCoin() {
+							tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minimumBuyVal)
+						} else {
+							tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, value: convertVal, minimumValueToBuy: minimumBuyVal)
+						}
 					}
 					else {
 						tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, value: convertVal, minimumValueToBuy: minimumBuyVal)
 					}
 		
 					let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk.raw.toHexString())
-					return _self.transactionManager.send(rawTx: signedTx)
+					return GateManager.shared.send(rawTx: signedTx)
 				}).subscribe(onNext: { [observer] (hash) in
 					observer.onNext(hash)
 					observer.onCompleted()

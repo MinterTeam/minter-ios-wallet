@@ -26,7 +26,11 @@ class ConvertCoinsViewController: BaseViewController {
 	
 	//MARK: - 
 	
-	@IBOutlet weak var feeLabel: UILabel!
+	@IBOutlet weak var feeLabel: UILabel! {
+		didSet {
+			feeLabel.layer.zPosition = -1
+		}
+	}
 	
 	@IBOutlet weak var approximately: UILabel!
 	

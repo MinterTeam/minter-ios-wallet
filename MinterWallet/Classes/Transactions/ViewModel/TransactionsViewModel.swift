@@ -41,7 +41,6 @@ class TransactionsViewModel: BaseViewModel {
 			self.addresses = addresses ?? []
 		}
 		
-		
 		let loadingItem = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell", identifier: "LoadingTableViewCell")
 		loadingItem.isLoadingObservable = isLoading.asObservable()
 		var section = BaseTableSectionItem(header: "", items: [loadingItem])
@@ -131,13 +130,19 @@ class TransactionsViewModel: BaseViewModel {
 					items[sectionIdentifier]?.append(separator)
 				}
 			}
+			else if transaction.type == .multisend {
+				if let transactionCellItem = self.multisendTransactionItem(with: item) {
+					items[sectionIdentifier]?.append(transactionCellItem)
+					items[sectionIdentifier]?.append(separator)
+				}
+			}
 			else if transaction.type == .buy || transaction.type == .sell {
 				if let transactionCellItem = self.convertTransactionItem(with: item) {
 					items[sectionIdentifier]?.append(transactionCellItem)
 					items[sectionIdentifier]?.append(separator)
 				}
 			}
-			else if transaction.type == .sellAllCoins {
+			else if transaction.type == .sellAll {
 				if let transactionCellItem = self.convertTransactionItem(with: item) {
 					items[sectionIdentifier]?.append(transactionCellItem)
 					items[sectionIdentifier]?.append(separator)
@@ -167,7 +172,6 @@ class TransactionsViewModel: BaseViewModel {
 			}
 		}
 	}
-	
 	
 	func sendTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
 		let user = transactionItem.user
@@ -206,6 +210,23 @@ class TransactionsViewModel: BaseViewModel {
 		return transactionCellItem
 	}
 	
+	func multisendTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
+		let item = sendTransactionItem(with: transactionItem)
+		if let item = item as? TransactionTableViewCellItem {
+			if let data = transactionItem.transaction?.data as? MultisendCoinTransactionData {
+				let val = data.values?.filter({ (val) -> Bool in
+					let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+						account.address.stripMinterHexPrefix().lowercased() == val.to.stripMinterHexPrefix().lowercased()
+					})
+					return hasAddress
+				}).first
+				item.to = val?.to
+				item.amount = val?.value
+			}
+		}
+		return item
+	}
+	
 	func convertTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
 		
 		let user = transactionItem.user
@@ -234,7 +255,7 @@ class TransactionsViewModel: BaseViewModel {
 		transactionCellItem.title = title
 		transactionCellItem.date = transaction.date
 		transactionCellItem.from = transaction.from
-		transactionCellItem.to = transaction.data?.to
+		transactionCellItem.to = transaction.from
 		
 		var arrowSign = " > "
 		if #available(iOS 11.0, *) {
@@ -254,7 +275,6 @@ class TransactionsViewModel: BaseViewModel {
 			transactionCellItem.amount = (data.value ?? 0)
 		}
 
-		
 		return transactionCellItem
 		
 	}

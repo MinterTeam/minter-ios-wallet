@@ -279,14 +279,14 @@ class Session {
 			
 			response?.forEach({ (address) in
 				
-				guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(), let coins = address["coins"] as? [[String : Any]] else {
+				guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(), let coins = address["balances"] as? [[String : Any]] else {
 					return
 				}
 				
 				let baseCoinBalance = coins.filter({ (dict) -> Bool in
 					return ((dict["coin"] as? String) ?? "").uppercased() == Coin.baseCoin().symbol!.uppercased()
 				}).map({ (dict) -> Decimal in
-					return Decimal(string: (dict["baseCoinAmount"] as? String) ?? "0.0") ?? 0.0
+					return Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
 				}).reduce(0, +)
 				
 				self?.baseCoinBalances.value[ads] = baseCoinBalance
