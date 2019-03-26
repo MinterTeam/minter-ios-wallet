@@ -122,7 +122,6 @@ extension ConvertCoinsViewController: LUAutocompleteViewDelegate {
 		if let vm = viewModel as? GetCoinsViewModel {
 			vm.getCoin.onNext(text)
 		}
-//		viewModel?.getCoin.value = text
-		//		print(text + " was selected from autocomplete view")
+		autocompleteView.textField?.sendActions(for: .valueChanged)
 	}
 }

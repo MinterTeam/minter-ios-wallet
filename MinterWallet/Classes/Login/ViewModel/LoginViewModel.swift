@@ -32,8 +32,6 @@ class LoginViewModel: BaseViewModel {
 	
 	var notifiableError = Variable<NotifiableError?>(nil)
 	
-	private let disposeBag = DisposeBag()
-	
 	var isButtonEnabled: Observable<Bool> {
 		return Observable.combineLatest(username.asObservable(), password.asObservable()).map({ (val) -> Bool in
 			return LoginForm.isUsernameValid(username: val.0 ?? "") && LoginForm.isPasswordValid(password: (val.1 ?? ""))

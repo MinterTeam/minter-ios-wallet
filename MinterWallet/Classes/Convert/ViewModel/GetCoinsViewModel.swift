@@ -213,8 +213,10 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 					
 					let coin = (self?.canPayComissionWithBaseCoin() ?? false) ? Coin.baseCoin().symbol : coinFrom
 					let coinData = coin?.data(using: .utf8)?.setLengthRight(10) ?? Data(repeating: 0, count: 10)
+					//TODO: remove after https://github.com/MinterTeam/minter-go-node/issues/224
+					let maxValueToSell = BigUInt(decimal: (self?.selectedBalance ?? 0) * TransactionCoinFactorDecimal) ?? BigUInt(0)//maximumValueToSell
 					
-					let tx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: gas, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value, maximumValueToSell: maximumValueToSell)
+					let tx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: gas, gasCoin: coinData, coinFrom: coinFrom, coinTo: coinTo, value: value, maximumValueToSell: maxValueToSell)
 					let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
 					
 					GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in

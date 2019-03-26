@@ -13,8 +13,6 @@ import MinterMy
 import BigInt
 import SwiftValidator
 
-
-
 struct AccountPickerItem {
 	
 	var title: String?
@@ -26,8 +24,6 @@ struct AccountPickerItem {
 	var coin: String?
 	
 }
-
-
 
 class SendViewModel: BaseViewModel, ViewModelProtocol {
 	
@@ -206,8 +202,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 	
 	var isCountingDown = false
-	
-	private let disposeBag = DisposeBag()
 	
 	//MARK: -
 

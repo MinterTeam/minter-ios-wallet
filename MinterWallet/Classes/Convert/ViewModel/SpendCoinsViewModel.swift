@@ -301,7 +301,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 				return
 			}
 			
-			let val = (ammnt / TransactionCoinFactorDecimal)
+			let val = ammnt / TransactionCoinFactorDecimal
 			
 			let appr = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0, formatter: _self.formatter)) + " " + getCoin
 			self?.approximately.onNext(appr)
@@ -410,17 +410,17 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 		
 		self.errorNotification.onNext(NotifiableError(title: title, text: text))
 	}
-	
+
 	func newExchange(coinFrom: String, coinTo: String, amount: String, selectedAddress: String, minimumBuyValue: Decimal) -> Observable<String?> {
 		return Observable<String?>.create { [weak self] observer -> Disposable in
-			
+
 			guard let _self = self else { return Disposables.create() }
-			
+
 			guard let amnt = Decimal(string: amount), let minimumBuyVal = BigUInt(decimal: minimumBuyValue), let convertVal = BigUInt(decimal: amnt * TransactionCoinFactorDecimal), convertVal > 0 else {
 				observer.onError(SpendCoindsViewModelError.incorrectParams)
 				return Disposables.create()
 			}
-			
+
 			//Getting comparable value, since we are comparing not exact numbers, but it's shortened versions
 			let maxComparableSelectedBalance = (Decimal(string: _self.decimalFormatter.string(from: (_self.selectedBalance ?? 0.0) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
 			
@@ -436,22 +436,25 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 			
 				Observable.zip(GateManager.shared.nonce(address: selectedAddress), GateManager.shared.minGasPrice()).flatMap({ (val) -> Observable<String?> in
 					let nonce = Decimal(val.0 + 1)
-		
+
 					var tx: RawTransaction!
 					let coin = _self.canPayComissionWithBaseCoin() ? Coin.baseCoin().symbol! : coinFrom
 					let isBaseCoin = Coin.baseCoin().symbol! == coinFrom
-					
+
+					//TODO: remove after https://github.com/MinterTeam/minter-go-node/issues/224
+					let minValBuy = /*minimumBuyVal*/BigUInt(0)
+
 					if isMax {
 						if isBaseCoin || !_self.canPayComissionWithBaseCoin() {
-							tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minimumBuyVal)
+							tx = SellAllCoinsRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, minimumValueToBuy: minValBuy)
 						} else {
-							tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, value: convertVal, minimumValueToBuy: minimumBuyVal)
+							tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, value: convertVal, minimumValueToBuy: minValBuy)
 						}
 					}
 					else {
-						tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, value: convertVal, minimumValueToBuy: minimumBuyVal)
+						tx = SellCoinRawTransaction(nonce: BigUInt(decimal: nonce)!, gasPrice: val.1, gasCoin: coin, coinFrom: coinFrom, coinTo: coinTo, value: convertVal, minimumValueToBuy: minValBuy)
 					}
-		
+
 					let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk.raw.toHexString())
 					return GateManager.shared.send(rawTx: signedTx)
 				}).subscribe(onNext: { [observer] (hash) in
@@ -461,7 +464,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 					observer.onError(err)
 				}).disposed(by: _self.disposeBag)
 			}
-			
+
 			return Disposables.create()
 		}.do(onCompleted: { [weak self] in
 			self?.isLoading.onNext(false)

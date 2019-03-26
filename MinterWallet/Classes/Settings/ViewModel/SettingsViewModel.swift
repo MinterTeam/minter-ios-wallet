@@ -28,8 +28,6 @@ class SettingsViewModel: BaseViewModel {
 	
 	var shouldReloadTable = Variable(false)
 	
-	private var disposeBag = DisposeBag()
-	
 	private var profileManager: ProfileManager?
 	
 	private var selectedImage: UIImage?

@@ -12,23 +12,20 @@ import MinterCore
 import MinterExplorer
 import RxAppState
 
-
 class RootViewModel: BaseViewModel {
-	
+
 	private let session = Session.shared
-	
-	private let disposeBag = DisposeBag()
-	
+
 	var title: String {
 		get {
 			return "Root".localized()
 		}
 	}
-	
+
 	var channel: String?
-	
+
 	var client: CentrifugeClient?
-	
+
 	var isConnected: Bool = false {
 		didSet {
 			if self.isConnected == true && !oldValue {
@@ -36,23 +33,22 @@ class RootViewModel: BaseViewModel {
 			}
 		}
 	}
-	
+
 	var addressManager = ExplorerAddressManager.default
-	
+
 	override init() {
 		super.init()
-		
+
 		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in
 			return isLoggedIn
 		}).subscribe(onNext: { (isLoggedIn) in
 			//show wallet
 			SessionHelper.reloadAccounts()
 			Session.shared.loadUser()
-			
 		}).disposed(by: disposeBag)
-		
+
 		Session.shared.updateGas()
-		
+
 		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable(), Session.shared.isLoggedIn.asObservable()).distinctUntilChanged({ (val1, val2) -> Bool in
 			return val1.1 == val2.1 && val1.2 == val2.2
 		}).filter({ (val) -> Bool in
@@ -63,46 +59,40 @@ class RootViewModel: BaseViewModel {
 			let addresses = accounts.map({ (account) -> String in
 				return "Mx" + account.address
 			})
-			
+
 			guard addresses.count > 0 else {
 				if self?.isConnected == true {
 					try? self?.client?.disconnect()
 				}
 				self?.unsubscribeAccountBalanceChange(completed: {
-					
+
 				})
 				return
 			}
-			
+
 			self?.channel = addresses.first
-			
+
 			self?.connect(completion: {
 
 			})
-			
 		}).disposed(by: disposeBag)
-		
 	}
-	
+
 	func didLoad() {
 		SessionHelper.reloadAccounts()
 	}
-	
+
 	func connect(completion: (() -> ())?) {
 		if nil == client {
 			var config = CentrifugeClientConfig()
-//			config.debug = true
-//			config.tlsSkipVerify = true
-//			config.headers = ["Accept": "application/json;q=0.9,text/plain"]
 			client = CentrifugeClient(url: MinterExplorerWebSocketURL!.absoluteURL.absoluteString + "?format=protobuf", config: config, delegate: self)
 		}
-		
-		self.client?.connect()
 
+		self.client?.connect()
 	}
-	
+
 	var sub: CentrifugeSubscription?
-	
+
 	private func subscribeAccountBalanceChange() {
 		guard self.isConnected == true, let cnl = self.channel else {
 			return
@@ -114,17 +104,17 @@ class RootViewModel: BaseViewModel {
 			print("Can not create subscription: \(error)")
 		}
 	}
-	
+
 	private func unsubscribeAccountBalanceChange(completed: (() -> ())?) {
-		
+
 		guard let cnl = self.channel else {
 			completed?()
 			return
 		}
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func reloadData() {
 		Session.shared.loadBalances()
 		Session.shared.loadTransactions()
@@ -133,16 +123,17 @@ class RootViewModel: BaseViewModel {
 }
 
 extension RootViewModel : CentrifugeClientDelegate, CentrifugeSubscriptionDelegate {
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func onConnect(_ client: CentrifugeClient, _ e: CentrifugeConnectEvent) {
 		self.isConnected = true
 	}
+
 	func onDisconnect(_ client: CentrifugeClient, _ e: CentrifugeDisconnectEvent) {
 		self.isConnected = false
 	}
-	
+
 	func onPublish(_ s: CentrifugeSubscription, _ e: CentrifugePublishEvent) {
 		self.reloadData()
 	}

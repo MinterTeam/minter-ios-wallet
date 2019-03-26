@@ -72,8 +72,6 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 	
 	private let authManager = AuthManager.default
 	
-	private let disposeBag = DisposeBag()
-	
 	private var sections = Variable([BaseTableSectionItem]())
 	
 	var notifiableError = Variable<NotifiableError?>(nil)

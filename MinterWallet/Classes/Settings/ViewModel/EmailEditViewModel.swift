@@ -33,8 +33,6 @@ class EmailEditViewModel: BaseViewModel {
 	
 	var successMessage = Variable<NotifiableSuccess?>(nil)
 	
-	private var disposeBag = DisposeBag()
-	
 	//MARK: -
 	
 	private var isLoading = Variable(false)

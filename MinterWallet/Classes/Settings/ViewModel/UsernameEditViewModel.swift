@@ -73,8 +73,6 @@ class UsernameEditViewModel : BaseViewModel {
 		}
 	}
 	
-	private var disposeBag = DisposeBag()
-	
 	private var isLoading = Variable(false)
 	private var isTakenLoading = Variable(false)
 	

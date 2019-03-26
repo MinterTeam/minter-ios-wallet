@@ -50,8 +50,6 @@ class ConvertCoinsViewModel : BaseViewModel {
 	
 	let coinManager = ExplorerCoinManager.default
 	
-	var disposeBag = DisposeBag()
-	
 	var selectedAddress: String?
 	
 	var selectedCoin: String?

@@ -17,7 +17,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, ControllerType, Indi
 	
 	typealias ViewModelType = SpendCoinsViewModel
 	
-	//MARK: -
+	// MARK: -
 	
 	var vm: SpendCoinsViewModel {
 		return viewModel as! SpendCoinsViewModel
@@ -25,7 +25,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, ControllerType, Indi
 	
 	private var formatter = CurrencyNumberFormatter.coinFormatter
 	
-	//MARK: - IBOutlet
+	// MARK: - IBOutlet
 	
 	@IBOutlet weak var useMaxButton: UIButton!
 	
@@ -176,7 +176,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, ControllerType, Indi
 		self.viewModel = viewModel
 	}
 	
-	//MARK: - UIViewController
+	// MARK: - UIViewController
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -199,7 +199,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, ControllerType, Indi
 		super.didReceiveMemoryWarning()
 	}
 
-	//MARK: - UITextFieldDelegate
+	// MARK: - UITextFieldDelegate
 	
 	func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 		
@@ -217,7 +217,7 @@ class SpendCoinsViewController: ConvertCoinsViewController, ControllerType, Indi
 		return (vm.pickerItems().count) > 1
 	}
 	
-	//MARK: -
+	// MARK: -
 	
 	func clearForm() {
 		self.spendAmountTextField.text = ""
@@ -247,13 +247,13 @@ class SpendCoinsViewController: ConvertCoinsViewController, ControllerType, Indi
 		}
 	}
 	
-	//MARK: - IndicatorInfoProvider
+	// MARK: - IndicatorInfoProvider
 	
 	func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
 		return IndicatorInfo(title: "SPEND".localized())
 	}
 	
-	//MARK: - Validatable
+	// MARK: - Validatable
 	
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 		
