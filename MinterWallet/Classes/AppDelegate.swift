@@ -17,18 +17,19 @@ import MinterExplorer
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
+	let isTestnet = (Bundle.main.infoDictionary?["CFBundleName"] as? String)?.contains("Testnet") ?? false
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-		
+
 		let conf = Configuration()
-		
-		MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL)
+
+		MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
 		MinterExplorerSDK.initialize(APIURLString: conf.environment.explorerAPIBaseURL, WEBURLString: conf.environment.explorerWebURL, websocketURLString: conf.environment.explorerWebsocketURL)
 
 		Fabric.with([Crashlytics.self])
-		
+
 		appearance()
-		
+
 		return true
 	}
 

@@ -10,8 +10,6 @@ import RxSwift
 import MinterCore
 import MinterMy
 
-
-
 class SettingsViewModel: BaseViewModel {
 	
 	//MARK: -
@@ -115,9 +113,9 @@ class SettingsViewModel: BaseViewModel {
 		button.buttonPattern = "blank"
 		button.title = "LOG OUT".localized()
 		
-		let getMNTButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Get100")
-		getMNTButton.buttonPattern = "purple"
-		getMNTButton.title = "GET 100 MNT".localized()
+//		let getMNTButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Get100")
+//		getMNTButton.buttonPattern = "purple"
+//		getMNTButton.title = "GET 100 \(Coin.baseCoin().symbol!)".localized()
 		
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: "BlankTableViewCell")
 		blank.color = .clear
@@ -127,7 +125,7 @@ class SettingsViewModel: BaseViewModel {
 		switchItem.isOn.value = AppSettingsManager.shared.isSoundsEnabled
 		
 		var section1 = BaseTableSectionItem(header: " ")
-		section1.items = [addresses, separator, switchItem, blank, getMNTButton, button]
+		section1.items = [addresses, separator, switchItem, blank, /*getMNTButton,*/ button]
 		sctns.append(section1)
 		
 		sections = sctns
@@ -167,7 +165,7 @@ class SettingsViewModel: BaseViewModel {
 				
 				switch error! {
 				case .wrongResponse:
-					err.title = "You can request 100 MNT only once per hour"
+					err.title = "You can request 100 \(Coin.baseCoin().symbol!) only once per hour"
 					break
 				case .custom(let message):
 					err.title = message
@@ -178,7 +176,7 @@ class SettingsViewModel: BaseViewModel {
 			}
 			else {
 				var mes = NotifiableSuccess()
-				mes.title = "MNT has been deposited to your account"
+				mes.title = "\(Coin.baseCoin().symbol!) has been deposited to your account"
 				self?.successMessage.value = mes
 			}
 		}

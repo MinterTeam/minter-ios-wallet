@@ -18,7 +18,7 @@ PODS:
     - CryptoSwift (~> 0.9)
     - ObjectMapper (~> 3.1)
     - secp256k1.swift (~> 0.1)
-  - MinterExplorer (0.1.10):
+  - MinterExplorer (0.1.11):
     - MinterCore
   - MinterMy (0.1.4):
     - MinterCore
@@ -138,7 +138,7 @@ SPEC CHECKSUMS:
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   MinterCore: 91f2b5088ed78a7e89a67014fb2682d93fcbe4df
-  MinterExplorer: d676e9f951b9ef573140500277ac26002eee1517
+  MinterExplorer: 42faf193e5d992d9dd157d6dcad70384700efd36
   MinterMy: 99a32a3b0b914f73509715f9c0f7952715808591
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
   ObjectMapper: 0d4402610f4e468903ae64629eec4784531e5c51
@@ -160,6 +160,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: e4807b2087eea6cb2e48923c2f487248c56c3cf8
+PODFILE CHECKSUM: 9c5e4ae0150c5effed04a769dc3a5a46b0693e7e
 
 COCOAPODS: 1.5.3

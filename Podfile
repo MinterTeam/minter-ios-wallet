@@ -3,7 +3,7 @@ use_frameworks!
 
 platform :ios, '10.0'
 
-target 'MinterWallet' do
+def shared_pods
 	pod 'MinterCore', :path => '../MinterCore'
 	pod 'MinterMy', :path => '../MinterMy'
 	pod 'MinterExplorer', :path => '../MinterExplorer'
@@ -25,6 +25,14 @@ target 'MinterWallet' do
 	pod 'ReachabilitySwift', '~> 4.3'
 	pod 'YandexMobileMetrica/Dynamic', '3.2.0'
 	pod 'SwiftCentrifuge'
+end
+
+target 'MinterWallet' do
+	shared_pods
+end
+
+target 'MinterWalletTestnet' do
+	shared_pods
 end
 
 target 'MinterWalletTests' do

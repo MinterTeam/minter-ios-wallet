@@ -644,7 +644,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		
 		let isBaseCoin = selectedCoin == Coin.baseCoin().symbol!
 		
-		
 		DispatchQueue.global().async { [weak self] in
 			
 			guard let mnemonic = self?.accountManager.mnemonic(for: self!.selectedAddress!), let seed = self?.accountManager.seed(mnemonic: mnemonic) else {
@@ -756,46 +755,47 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 	
 	private func sendTx(seed: Data, nonce: Int, to: String, coin: String, commissionCoin: String, amount: Decimal, completion: ((Bool?) -> ())? = nil) {
-		
+
 		let newPk = self.accountManager.privateKey(from: seed)
 		let nonce = BigUInt(nonce)
-		
+
 		let decimalAmount = BigUInt(decimal: amount)
-		
+
 		guard let value = decimalAmount else {
 			completion?(false)
 			return
 		}
-		
+
 		let tx = self.rawTransaction(nonce: nonce, gasCoin: commissionCoin, to: to, value: value, coin: coin)
 		let pkString = newPk.raw.toHexString()
-		
+
 		guard let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pkString) else {
 			completion?(false)
 			return
 		}
-		
+
 		self.nonce.value = nil
-		
+
 		GateManager.shared.sendRawTransaction(rawTransaction: signedTx) { [weak self] (hash, err) in
-			
+
 			var res = false
-			
+
 			defer {
 				completion?(res)
 			}
-			
+
 			guard err == nil && nil != hash else {
-				
+
 				if let error = err as? HTTPClientError {
 					if let errorMessage = error.userData?["log"] as? String {
 						self?.txError.value =  NotifiableError(title: "An Error Occurred".localized(), text: errorMessage)
+					} else {
+						self?.txError.value = NotifiableError(title: "An Error Occurred".localized(), text: "Unable to send transaction".localized())
 					}
-				}
-				else {
+				} else {
 					self?.txError.value = NotifiableError(title: "An Error Occurred".localized(), text: "Unable to send transaction".localized())
 				}
-				
+
 				res = false
 				return
 			}
@@ -803,25 +803,25 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			self?.lastSentTransactionHash = hash
 		}
 	}
-	
+
 	private func getComission(forCoin: String, completion: ((Decimal?) -> ())?) {
-		
+
 		let comission = RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal
-		
+
 		GateManager.shared.estimateCoinSell(coinFrom: forCoin, coinTo: Coin.baseCoin().symbol!, value: comission) { (result, commission, error) in
 			guard error == nil, let result = result, let commission = commission else {
 				completion?(nil)
 				return
 			}
-			
+
 			let val = result / TransactionCoinFactorDecimal
 			let com = comission / TransactionCoinFactorDecimal
-			
+
 			completion?(val + com)
-			
+
 		}
 	}
-	
+
 	private func comissionText(for gas: Int) -> String {
 		let val = RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal * Decimal(gas)
 		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: val, formatter: self.coinFormatter)
@@ -832,11 +832,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		let cn = gasCoin
 		return SendCoinRawTransaction(nonce: nonce, gasPrice: currentGas.value, gasCoin: cn, to: to, value: value, coin: coin.uppercased())
 	}
-	
+
 	//MARK: -
-	
+
 	func sendPopupViewModel(to: String, address: String, amount: Decimal) -> SendPopupViewModel {
-		
+
 		let vm = SendPopupViewModel()
 		vm.amount = amount
 		vm.coin = selectedCoin.value
@@ -847,9 +847,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		vm.cancelTitle = "CANCEL".localized()
 		return vm
 	}
-	
+
 	func sentViewModel(to: String, address: String) -> SentPopupViewModel {
-		
+
 		let vm = SentPopupViewModel()
 		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
 		vm.avatarImage = MinterMyAPIURL.avatarAddress(address: address).url()
@@ -858,17 +858,17 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		vm.title = "Success!".localized()
 		return vm
 	}
-	
+
 	//MARK: -
-	
+
 	func lastTransactionExplorerURL() -> URL? {
 		guard nil != lastSentTransactionHash else {
 			return nil
 		}
-		
+
 		return URL(string: MinterExplorerBaseURL! + "/transactions/" + (lastSentTransactionHash ?? ""))
 	}
-	
+
 	//MARK: -
 
 }

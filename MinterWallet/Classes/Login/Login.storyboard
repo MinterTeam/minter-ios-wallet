@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QJx-xv-bsg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QJx-xv-bsg">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -92,11 +92,24 @@
                             <constraint firstItem="xZM-8Z-bGe" firstAttribute="leading" secondItem="HFS-Nl-chi" secondAttribute="leading" constant="10" id="qXn-8W-ZT4"/>
                             <constraint firstItem="HFS-Nl-chi" firstAttribute="bottom" secondItem="xZM-8Z-bGe" secondAttribute="bottom" constant="20" id="rsJ-Ef-eSP"/>
                             <constraint firstItem="iOM-tb-IdR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="krd-eP-hp4" secondAttribute="bottom" constant="125" id="ryT-LW-Ys3"/>
+                            <constraint firstItem="fcS-ck-472" firstAttribute="leading" secondItem="HFS-Nl-chi" secondAttribute="leading" constant="10" id="vTN-IX-Pd9"/>
                             <constraint firstItem="HFS-Nl-chi" firstAttribute="trailing" secondItem="fcS-ck-472" secondAttribute="trailing" constant="10" id="weA-NL-ul8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="HFS-Nl-chi"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="vTN-IX-Pd9"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="LCo-EC-6KZ"/>
+                    <connections>
+                        <outlet property="createWalletButton" destination="iOM-tb-IdR" id="MrV-dN-mz9"/>
+                        <outlet property="helpButton" destination="fcS-ck-472" id="uE5-fy-rzm"/>
+                        <outlet property="helpFakeLeadingConstraint" destination="vTN-IX-Pd9" id="fGH-M6-hzQ"/>
+                        <outlet property="helpLeadingConstraint" destination="N83-Q5-i2J" id="DZh-D6-xmM"/>
+                        <outlet property="signInButton" destination="xZM-8Z-bGe" id="4fm-n4-a8Z"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ded-03-Hic" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
