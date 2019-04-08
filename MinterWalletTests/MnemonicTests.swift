@@ -8,7 +8,7 @@
 
 import XCTest
 import CryptoSwift
-@testable import MinterCore
+//@testable import MinterCore
 @testable import MinterWallet
 
 
@@ -96,7 +96,4 @@ class MnemonicTests: XCTestCase {
 		XCTAssert(adds?.uppercased() == "676138799eE899a214D6d878B4658Fc77e2f0922".uppercased())
 
 	}
-	
-	
-	
 }

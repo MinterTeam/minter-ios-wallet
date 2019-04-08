@@ -35,7 +35,6 @@
 		A08CF6C1636FE9E554D1A14B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25784C6ACDA695190875E917 /* Login.storyboard */; };
 		AA57EF7A25AE98A4499A49DB /* Pods_MinterWalletTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F7398A88DFF31468C6E439 /* Pods_MinterWalletTests.framework */; };
 		AF44D30C07B56ACF70021D25 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3B74651449146698C1EC /* SettingsViewController.swift */; };
-		BBEC25451D081255FEE27D0F /* Pods_MinterWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EBD75282FB7FF99C075E9B1 /* Pods_MinterWallet.framework */; };
 		BF9CD1287559A6F7E3AAD242 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6719CF909F82E3872F3A93D9 /* LoginViewModel.swift */; };
 		D08EF152AB24CD864B6F2E40 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A971869C2A1BA233AE2C2A3 /* RootViewController.swift */; };
 		D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE33369DFC5C8FED0CA345C /* SendViewController.swift */; };
@@ -487,6 +486,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		FA146DE0224E2A7400306502 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA669B5D207239F100AD110A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA332F9C224A4B3C003B4763;
+			remoteInfo = MinterWallet;
+		};
 		FA669B7C207239F200AD110A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FA669B5D207239F100AD110A /* Project object */;
@@ -591,7 +597,7 @@
 		FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDataBaseModel.swift; sourceTree = "<group>"; };
 		FA332F5922439F61003B4763 /* ConfigurationTestnet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationTestnet.swift; sourceTree = "<group>"; };
 		FA333093224A4B3C003B4763 /* MinterWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinterWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA333094224A4B3C003B4763 /* MinterWallet copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MinterWallet copy-Info.plist"; path = "/Users/alex/Documents/MinterWallet/MinterWallet copy-Info.plist"; sourceTree = "<absolute>"; };
+		FA333094224A4B3C003B4763 /* MinterWalletTestnet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MinterWalletTestnet-Info.plist"; path = "/Users/alex/Documents/MinterWallet/MinterWalletTestnet-Info.plist"; sourceTree = "<absolute>"; };
 		FA333095224A4F1D003B4763 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RawTransactionAddress.swift"; sourceTree = "<group>"; };
 		FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsTableViewHeaderView.swift; sourceTree = "<group>"; };
@@ -618,7 +624,7 @@
 		FA669B6F207239F200AD110A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA669B71207239F200AD110A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA669B74207239F200AD110A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		FA669B76207239F200AD110A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA669B76207239F200AD110A /* Info1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info1.plist; sourceTree = "<group>"; };
 		FA669B7B207239F200AD110A /* MinterWalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinterWalletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA669B7F207239F200AD110A /* MinterWalletTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinterWalletTests.swift; sourceTree = "<group>"; };
 		FA669B81207239F200AD110A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -782,7 +788,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBEC25451D081255FEE27D0F /* Pods_MinterWallet.framework in Frameworks */,
 				FACC4A6FFE58CCF99D9B2115 /* Pods_MinterWalletTestnet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1563,7 +1568,6 @@
 				FA669B66207239F200AD110A /* Products */,
 				2F10CF4C649F6B65163FBDBE /* Pods */,
 				F1B9FBEAE725F311F68F278E /* Frameworks */,
-				FA333094224A4B3C003B4763 /* MinterWallet copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1603,7 +1607,8 @@
 				FA669B6E207239F200AD110A /* Main.storyboard */,
 				FA669B71207239F200AD110A /* Assets.xcassets */,
 				FA669B73207239F200AD110A /* LaunchScreen.storyboard */,
-				FA669B76207239F200AD110A /* Info.plist */,
+				FA669B76207239F200AD110A /* Info1.plist */,
+				FA333094224A4B3C003B4763 /* MinterWalletTestnet-Info.plist */,
 				FAA2605920920997009FF3DE /* MinterWallet-Bridging-Header.h */,
 			);
 			path = MinterWallet;
@@ -1988,6 +1993,7 @@
 			);
 			dependencies = (
 				FA669B88207239F200AD110A /* PBXTargetDependency */,
+				FA146DE1224E2A7400306502 /* PBXTargetDependency */,
 			);
 			name = MinterWalletUITests;
 			productName = MinterWalletUITests;
@@ -2862,6 +2868,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FA146DE1224E2A7400306502 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA332F9C224A4B3C003B4763 /* MinterWallet */;
+			targetProxy = FA146DE0224E2A7400306502 /* PBXContainerItemProxy */;
+		};
 		FA669B7D207239F200AD110A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FA669B64207239F200AD110A /* MinterWalletTestnet */;
@@ -2912,7 +2923,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
-				INFOPLIST_FILE = "MinterWallet copy-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/Info1.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
@@ -2944,7 +2955,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
-				INFOPLIST_FILE = "MinterWallet copy-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/Info1.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
@@ -3082,7 +3093,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
-				INFOPLIST_FILE = MinterWallet/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
@@ -3114,7 +3125,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
-				INFOPLIST_FILE = MinterWallet/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
@@ -3175,7 +3186,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MinterWallet;
+				TEST_TARGET_NAME = MinterWalletTestnet;
 			};
 			name = Debug;
 		};
@@ -3191,7 +3202,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MinterWallet;
+				TEST_TARGET_NAME = MinterWalletTestnet;
 			};
 			name = Release;
 		};

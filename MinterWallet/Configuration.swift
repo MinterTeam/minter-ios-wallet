@@ -55,4 +55,27 @@ enum Environment: String {
 		case .production: return "wss://explorer-rtm.testnet.minter.network/connection/websocket"
 		}
 	}
+	
+	var testExplorerAPIBaseURL: String {
+		switch self {
+		case .staging: return "https://tst.api.explorer.minter.network"
+		case .production: return "https://tst.api.explorer.minter.network"
+		}
+	}
+	
+	var testExplorerWebURL: String {
+		switch self {
+		case .staging: return "https://tst.api.explorer.minter.network"
+		case .production: return "https://tst.api.explorer.minter.network"
+		}
+	}
+	
+	var testExplorerWebsocketURL: String {
+		switch self {
+		case .staging: return "wss://tst.rtm.minter.network/connection/websocket"
+		case .production: return "wss://tst.rtm.minter.network/connection/websocket"
+		}
+	}
+	
+	
 }

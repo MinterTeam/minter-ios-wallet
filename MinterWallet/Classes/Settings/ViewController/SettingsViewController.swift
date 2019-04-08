@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxAppState
 import NotificationBannerSwift
 
 
@@ -84,7 +85,12 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 		let build = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
 		
-		infoLabel.text = "Version: \(version) (\(build))"
+		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy,
+			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate,
+			appDele.isTestnet {
+
+				infoLabel.text = "Version: \(version) (\(build))"
+		}
 		tableView.tableFooterView = bottomView
 		
 	}

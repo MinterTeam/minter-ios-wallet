@@ -23,8 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		let conf = Configuration()
 
-		MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
-		MinterExplorerSDK.initialize(APIURLString: conf.environment.explorerAPIBaseURL, WEBURLString: conf.environment.explorerWebURL, websocketURLString: conf.environment.explorerWebsocketURL)
+		if ProcessInfo.processInfo.arguments.contains("UITesting") {
+			MinterGateBaseURLString = "https://tst.gate.minter.network/api/v1/"
+			MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
+			MinterExplorerSDK.initialize(APIURLString: conf.environment.testExplorerAPIBaseURL, WEBURLString: conf.environment.testExplorerWebURL, websocketURLString: conf.environment.testExplorerWebsocketURL)
+		}
+		else {
+			MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
+			MinterExplorerSDK.initialize(APIURLString: conf.environment.explorerAPIBaseURL, WEBURLString: conf.environment.explorerWebURL, websocketURLString: conf.environment.explorerWebsocketURL)
+		}
 
 		Fabric.with([Crashlytics.self])
 

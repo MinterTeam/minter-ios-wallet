@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import MinterWallet
+//@testable import MinterWallet
 
 class MinterWalletTests: XCTestCase {
     

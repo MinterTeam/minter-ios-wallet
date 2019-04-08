@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import MinterCore
 
-private let MinterGateBaseURLString = "https://gate.minter.network/api/v1/"
+var MinterGateBaseURLString = "https://gate.minter.network/api/v1/"
 
 enum GateManagerError : Error {
 	case wrongResponse
