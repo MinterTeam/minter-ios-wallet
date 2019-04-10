@@ -281,7 +281,6 @@
 		FA333063224A4B3C003B4763 /* CoinsTableViewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4542792106106200DB6634 /* CoinsTableViewHeaderView.xib */; };
 		FA333064224A4B3C003B4763 /* pop_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2421930E8B00463F66 /* pop_hi.wav */; };
 		FA333065224A4B3C003B4763 /* AddressTextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA670A3D20E63431000A5169 /* AddressTextViewTableViewCell.xib */; };
-		FA333066224A4B3C003B4763 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA669B71207239F200AD110A /* Assets.xcassets */; };
 		FA333067224A4B3C003B4763 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B6E207239F200AD110A /* Main.storyboard */; };
 		FA333068224A4B3C003B4763 /* pop_zap.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2621930E9F00463F66 /* pop_zap.wav */; };
 		FA333069224A4B3C003B4763 /* Ubuntu-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BB12072483100AD110A /* Ubuntu-R.ttf */; };
@@ -330,6 +329,12 @@
 		FA4DF4B02108FA1500E64F1B /* AmountTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4DF4AE2108FA1500E64F1B /* AmountTextFieldTableViewCell.swift */; };
 		FA4DF4B12108FA1500E64F1B /* AmountTextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4DF4AF2108FA1500E64F1B /* AmountTextFieldTableViewCell.xib */; };
 		FA505ADD20E24D7C00DA90C0 /* QRTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA505ADC20E24D7C00DA90C0 /* QRTableViewCell.swift */; };
+		FA52DD0C225B5E6400A5B554 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA669B71207239F200AD110A /* Assets.xcassets */; };
+		FA52DD0D225B5E7700A5B554 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA669B71207239F200AD110A /* Assets.xcassets */; };
+		FA52DD0F225C879F00A5B554 /* MultisendTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA52DD0E225C879F00A5B554 /* MultisendTransactionTableViewCell.xib */; };
+		FA52DD11225C889600A5B554 /* MultisendTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA52DD10225C889600A5B554 /* MultisendTransactionTableViewCell.swift */; };
+		FA52DD12225C889900A5B554 /* MultisendTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA52DD10225C889600A5B554 /* MultisendTransactionTableViewCell.swift */; };
+		FA52DD13225C889C00A5B554 /* MultisendTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA52DD0E225C879F00A5B554 /* MultisendTransactionTableViewCell.xib */; };
 		FA531E2C219B1E9400A7AD9F /* AppSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA531E2B219B1E9400A7AD9F /* AppSettingsModel.swift */; };
 		FA531E2E219B1F1900A7AD9F /* AppSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */; };
 		FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA557E55207BA7490095459B /* DefaultHeader.swift */; };
@@ -342,7 +347,6 @@
 		FA6259E820F899CB003B8BEF /* Forms.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6259E720F899CB003B8BEF /* Forms.swift */; };
 		FA669B69207239F200AD110A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B68207239F200AD110A /* AppDelegate.swift */; };
 		FA669B70207239F200AD110A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B6E207239F200AD110A /* Main.storyboard */; };
-		FA669B72207239F200AD110A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA669B71207239F200AD110A /* Assets.xcassets */; };
 		FA669B75207239F200AD110A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B73207239F200AD110A /* LaunchScreen.storyboard */; };
 		FA669B80207239F200AD110A /* MinterWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B7F207239F200AD110A /* MinterWalletTests.swift */; };
 		FA669B8B207239F200AD110A /* MinterWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B8A207239F200AD110A /* MinterWalletUITests.swift */; };
@@ -608,6 +612,8 @@
 		FA4DF4AE2108FA1500E64F1B /* AmountTextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountTextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		FA4DF4AF2108FA1500E64F1B /* AmountTextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmountTextFieldTableViewCell.xib; sourceTree = "<group>"; };
 		FA505ADC20E24D7C00DA90C0 /* QRTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRTableViewCell.swift; sourceTree = "<group>"; };
+		FA52DD0E225C879F00A5B554 /* MultisendTransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultisendTransactionTableViewCell.xib; sourceTree = "<group>"; };
+		FA52DD10225C889600A5B554 /* MultisendTransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisendTransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FA531E2B219B1E9400A7AD9F /* AppSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsModel.swift; sourceTree = "<group>"; };
 		FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsManager.swift; sourceTree = "<group>"; };
 		FA557E55207BA7490095459B /* DefaultHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeader.swift; sourceTree = "<group>"; };
@@ -1535,6 +1541,8 @@
 				FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */,
 				FAE43C9121539F2A002027D4 /* DelegateTransactionTableViewCell.swift */,
 				FAE43C9221539F2A002027D4 /* DelegateTransactionTableViewCell.xib */,
+				FA52DD0E225C879F00A5B554 /* MultisendTransactionTableViewCell.xib */,
+				FA52DD10225C889600A5B554 /* MultisendTransactionTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2074,7 +2082,6 @@
 				FA333063224A4B3C003B4763 /* CoinsTableViewHeaderView.xib in Resources */,
 				FA333064224A4B3C003B4763 /* pop_hi.wav in Resources */,
 				FA333065224A4B3C003B4763 /* AddressTextViewTableViewCell.xib in Resources */,
-				FA333066224A4B3C003B4763 /* Assets.xcassets in Resources */,
 				FA333067224A4B3C003B4763 /* Main.storyboard in Resources */,
 				FA333068224A4B3C003B4763 /* pop_zap.wav in Resources */,
 				FA333069224A4B3C003B4763 /* Ubuntu-R.ttf in Resources */,
@@ -2083,6 +2090,7 @@
 				FA33306C224A4B3C003B4763 /* Ubuntu-L.ttf in Resources */,
 				FA33306D224A4B3C003B4763 /* TransactionFoldingTableViewCell.xib in Resources */,
 				FA33306E224A4B3C003B4763 /* AmountTextFieldTableViewCell.xib in Resources */,
+				FA52DD0D225B5E7700A5B554 /* Assets.xcassets in Resources */,
 				FA33306F224A4B3C003B4763 /* TransactionTableViewCell.xib in Resources */,
 				FA333070224A4B3C003B4763 /* ButtonTableViewCell.xib in Resources */,
 				FA333071224A4B3C003B4763 /* Login.storyboard in Resources */,
@@ -2104,6 +2112,7 @@
 				FA333081224A4B3C003B4763 /* Transactions.storyboard in Resources */,
 				FA333082224A4B3C003B4763 /* TransactionExpandedTableViewCell.xib in Resources */,
 				FA333083224A4B3C003B4763 /* PickerTableViewCell.xib in Resources */,
+				FA52DD0F225C879F00A5B554 /* MultisendTransactionTableViewCell.xib in Resources */,
 				FA333084224A4B3C003B4763 /* Send.storyboard in Resources */,
 				FA333085224A4B3C003B4763 /* Popup.storyboard in Resources */,
 				FA333086224A4B3C003B4763 /* LoadingTableViewCell.xib in Resources */,
@@ -2139,7 +2148,6 @@
 				FA45427A2106106200DB6634 /* CoinsTableViewHeaderView.xib in Resources */,
 				FADD8F2521930E8C00463F66 /* pop_hi.wav in Resources */,
 				FA670A3F20E63431000A5169 /* AddressTextViewTableViewCell.xib in Resources */,
-				FA669B72207239F200AD110A /* Assets.xcassets in Resources */,
 				FA669B70207239F200AD110A /* Main.storyboard in Resources */,
 				FADD8F2721930E9F00463F66 /* pop_zap.wav in Resources */,
 				FA669BC52072483100AD110A /* Ubuntu-R.ttf in Resources */,
@@ -2148,6 +2156,7 @@
 				FA669BBF2072483100AD110A /* Ubuntu-L.ttf in Resources */,
 				FA45427E2108754D00DB6634 /* TransactionFoldingTableViewCell.xib in Resources */,
 				FA4DF4B12108FA1500E64F1B /* AmountTextFieldTableViewCell.xib in Resources */,
+				FA52DD0C225B5E6400A5B554 /* Assets.xcassets in Resources */,
 				FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */,
 				FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */,
 				A08CF6C1636FE9E554D1A14B /* Login.storyboard in Resources */,
@@ -2169,6 +2178,7 @@
 				02A6A0A6DB602A40AB4A4C29 /* Transactions.storyboard in Resources */,
 				FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */,
 				FAA234EB2084A42A00F999DE /* PickerTableViewCell.xib in Resources */,
+				FA52DD13225C889C00A5B554 /* MultisendTransactionTableViewCell.xib in Resources */,
 				2E776157C3BE73E6DF25F7C2 /* Send.storyboard in Resources */,
 				419C54AF2049C56F7120C6B2 /* Popup.storyboard in Resources */,
 				FAF70FF920E791390067B5E0 /* LoadingTableViewCell.xib in Resources */,
@@ -2494,6 +2504,7 @@
 				FA332FA7224A4B3C003B4763 /* ReceiveRouter.swift in Sources */,
 				FA332FA8224A4B3C003B4763 /* String+RawTransactionAddress.swift in Sources */,
 				FA332FA9224A4B3C003B4763 /* ActionBarButtonItem.swift in Sources */,
+				FA52DD11225C889600A5B554 /* MultisendTransactionTableViewCell.swift in Sources */,
 				FA332FAA224A4B3C003B4763 /* QRTableViewCell.swift in Sources */,
 				FA332FAB224A4B3C003B4763 /* AddressManager+Default.swift in Sources */,
 				FA332FAC224A4B3C003B4763 /* SoundHelper.swift in Sources */,
@@ -2678,6 +2689,7 @@
 				FAE5548E2118472800D4872C /* ReceiveRouter.swift in Sources */,
 				FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */,
 				FAE7945A208DDC3F0006CB0B /* ActionBarButtonItem.swift in Sources */,
+				FA52DD12225C889900A5B554 /* MultisendTransactionTableViewCell.swift in Sources */,
 				FA505ADD20E24D7C00DA90C0 /* QRTableViewCell.swift in Sources */,
 				FA7935FF20D3B3D70012642E /* AddressManager+Default.swift in Sources */,
 				FADD8F2121930B2300463F66 /* SoundHelper.swift in Sources */,
@@ -3079,7 +3091,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33CCC11E350993C29DD8EE53 /* Pods-MinterWalletTestnet.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -3111,7 +3123,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 95D467FDBF66D3C775394F18 /* Pods-MinterWalletTestnet.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

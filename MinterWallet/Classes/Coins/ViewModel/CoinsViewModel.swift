@@ -206,24 +206,9 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
 		return sections.value[safe: section]?.items[safe: row]
 	}
-	
+
 	//MARK: -
-	
-	func explorerURL(section: Int, row: Int) -> URL? {
-		if let item = self.cellItem(section: section, row: row) as? TransactionTableViewCellItem {
-			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
-		}
-		else	if let item = self.cellItem(section: section, row: row) as? ConvertTransactionTableViewCellItem {
-			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
-		}
-		else	if let item = self.cellItem(section: section, row: row) as? DelegateTransactionTableViewCellItem {
-			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
-		}
-		return nil
-	}
-	
-	//MARK: -
-	
+
 	func updateData() {
 		Session.shared.loadTransactions()
 	}

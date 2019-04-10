@@ -733,7 +733,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 	
 	private func proceedSend(seed: Data, nonce: Int, to: String, toFld: String?, commissionCoin: String, amount: Decimal) {
-		
+
 		self.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin.value!, commissionCoin: commissionCoin, amount: amount) { [weak self, toFld] res in
 			
 			if res == true {

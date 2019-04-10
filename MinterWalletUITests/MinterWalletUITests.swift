@@ -176,7 +176,7 @@ class MinterWalletUITests: XCTestCase {
 			waitForExpectations(timeout: 15, handler: nil)
 			
 			textView.tap()
-			textView.typeText("Mx228e5a68b847d169da439ec15f727f08233a7ca6")
+			textView.typeText("Mxeeda61bbe9929bf883af6b22f5796e4b92563ba4")
 			
 			self.app.tables.buttons["USE MAX"].tap()
 			
@@ -308,106 +308,8 @@ class MinterWalletUITests: XCTestCase {
 		isBalanceAvailable()
 	}
 	
-	func testLoginAdvancedModeNewAccountAskForFree() {
-		
-		loginAdvancedModeNewAccount()
-		
-		isBalanceAvailable()
-		
-		if self.app.tabBars.buttons["Settings"].exists {
-			self.app.tabBars.buttons["Settings"].tap()
-			
-			self.app.buttons["GET 100 MNT"].tap()
-			
-			let label = app.staticTexts["MNT has been deposited to your account"]
-			
-			expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label, handler: nil)
-			waitForExpectations(timeout: 15, handler: nil)
-			
-			
-			if self.app.tabBars.buttons["Coins"].exists {
-				self.app.tabBars.buttons["Coins"].tap()
-				
-				
-				for i in 0...5 {
-					let firstCell = app.staticTexts["My Coins"]
-					let start = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-					let finish = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 16))
-					start.press(forDuration: 0, thenDragTo: finish)
-				}
-				
-				let balanceLabel = app.staticTexts["100.0000 MNT"]
-				
-				expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: balanceLabel, handler: nil)
-				waitForExpectations(timeout: 250, handler: nil)
-				
-			}
-			
-			
-			if self.app.tabBars.buttons["Send"].exists {
-				self.app.tabBars.buttons["Send"].tap()
-				
-				let textView = self.app.textViews.firstMatch
-				
-				expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: textView, handler: nil)
-				waitForExpectations(timeout: 15, handler: nil)
-				
-				textView.tap()
-				textView.typeText("@admin")
-				
-				self.app.textFields.element(boundBy: 1).tap()
-				self.app.textFields.element(boundBy: 1).typeText("99.9")
-				
-				self.app.tables.buttons["SEND"].tap()
-				
-				let button = self.app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).buttons["SEND"]
-				
-				expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: button, handler: nil)
-				waitForExpectations(timeout: 15, handler: nil)
-				
-				button.tap()
-				
-				let label1 = app.staticTexts["Coins are received by"]
-				
-				expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label1, handler: nil)
-				waitForExpectations(timeout: 15, handler: nil)
-				
-				closeModal()
-				
-			}
-		}
-	}
-	
 	func testConvertCoin() {
 		loginAdvancedMode()
-		
-//		if self.app.tabBars.buttons["Settings"].exists {
-//			self.app.tabBars.buttons["Settings"].tap()
-//
-//			self.app.buttons["GET 100 MNT"].tap()
-//
-//			let label = self.app.staticTexts["MNT has been deposited to your account"]
-//
-//			expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label, handler: nil)
-//			waitForExpectations(timeout: 15, handler: nil)
-//
-//
-//			if self.app.tabBars.buttons["Coins"].exists {
-//				self.app.tabBars.buttons["Coins"].tap()
-//
-//				for i in 0...5 {
-//					let firstCell = self.app.staticTexts["My Coins"]
-//					let start = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-//					let finish = firstCell.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 26))
-//					start.press(forDuration: 0, thenDragTo: finish)
-//				}
-//
-//				let balanceLabel = self.app.staticTexts["100.0000 MNT"]
-//
-//				expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: balanceLabel, handler: nil)
-//				waitForExpectations(timeout: 30, handler: nil)
-//
-//			}
 		
 			let app = XCUIApplication()
 			let tablesQuery = app.tables
@@ -425,12 +327,15 @@ class MinterWalletUITests: XCTestCase {
 			
 			app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).tap()
 
+			let amountEl = app.scrollViews.otherElements.scrollViews.children(matching: .textField).element(boundBy: 1)
+			amountEl.tap()
+			amountEl.typeText("1")
+		
 			let elementsQuery1 = app.scrollViews.otherElements
-			elementsQuery1/*@START_MENU_TOKEN@*/.buttons["USE MAX"]/*[[".scrollViews.buttons[\"USE MAX\"]",".buttons[\"USE MAX\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
 
 			let textField = elementsQuery1.scrollViews.children(matching: .textField).element(boundBy: 2)
 			textField.tap()
-			textField.typeText("VALIDATOR")
+			textField.typeText("USD")
 			
 			textField.swipeDown()
 			textField.swipeUp()
@@ -462,7 +367,7 @@ class MinterWalletUITests: XCTestCase {
 			
 				let elem = XCUIApplication().scrollViews.otherElements.scrollViews.children(matching: .textField).element(boundBy: 0)
 			elem.tap()
-			elem.typeText("VALIDATOR")
+			elem.typeText("USD")
 			
 			elem.swipeDown()
 			elem.swipeUp()

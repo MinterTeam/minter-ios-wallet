@@ -15,13 +15,12 @@ enum ExplorerCoinManagerRxError : Error {
 	case noCoin
 }
 
-
 extension ExplorerCoinManager {
-	
+
 	func coin(by term: String) -> Observable<Coin?> {
 		return Observable.create { (observer) -> Disposable in
 			self.coins(term: term) { (coins, error) in
-				
+
 				guard error == nil else {
 					observer.onError(error!)
 					return
@@ -39,7 +38,7 @@ extension ExplorerCoinManager {
 			return Disposables.create()
 		}
 	}
-	
+
 	func coins(term: String) -> Observable<[Coin]?> {
 		return Observable.create { (observer) -> Disposable in
 			self.coins(term: term) { (coins, error) in

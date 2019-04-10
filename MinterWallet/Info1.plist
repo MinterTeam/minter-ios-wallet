@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.8</string>
 	<key>CFBundleVersion</key>
-	<string>149</string>
+	<string>151</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -40,6 +40,13 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>explorer-rtm.apps.minter.network</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>explorer.minter.network</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -47,7 +54,14 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
-			<key>minter-node-2.testnet.minter.network</key>
+			<key>gate.apps.minter.network</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>minter-node.apps.minter.network</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
@@ -55,13 +69,6 @@
 				<true/>
 			</dict>
 			<key>my.beta.minter.network</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
-			<key>testnet.explorer.minter.network</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>

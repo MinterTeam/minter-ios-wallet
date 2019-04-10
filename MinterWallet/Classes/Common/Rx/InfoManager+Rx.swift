@@ -16,10 +16,10 @@ enum InfoManagerErrorRx : Error {
 
 
 extension InfoManager {
-	
+
 	func address(term: String) -> Observable<String> {
 		return Observable.create { (observer) -> Disposable in
-			
+
 			func completion(address: String?, user: User?, error: Error?) {
 				guard error == nil && address != nil else {
 					observer.onError(error ?? InfoManagerErrorRx.noAddress)
@@ -28,7 +28,7 @@ extension InfoManager {
 				observer.onNext(address!)
 				return
 			}
-			
+
 			if term.isValidEmail() {
 				self.address(email: term, completion: { (address, user, error) in
 					completion(address: address, user: user, error: error)

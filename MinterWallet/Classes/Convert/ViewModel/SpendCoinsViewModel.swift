@@ -12,8 +12,6 @@ import MinterCore
 import MinterExplorer
 import BigInt
 
-
-
 enum SpendCoindsViewModelError : Error {
 	case incorrectParams
 	case noPrivateKey
@@ -285,22 +283,28 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 			return
 		}
 		
-		GateManager.shared.estimateCoinSell(coinFrom: fromCoin, coinTo: getCoin, value: value) { [weak self] (val, commission, error) in
-			guard let _self = self else { return }
+		GateManager.shared.estimateCoinSell(coinFrom: fromCoin, coinTo: getCoin, value: value, isAll: isMax).do(onNext: { (res) in
 			
-			guard nil == error, let ammnt = val, let commission = commission else {
-				
-				if let err = error as? HTTPClientError, let log = err.userData?["message"] as? String {
-					self?.approximately.onNext(log)
-					return
-				}
-				
-				if self?.hasCoin.value == true {
-					self?.approximately.onNext("Estimate can't be calculated at the moment".localized())
-				}
+		}, onError: { [weak self] (error) in
+			if let err = error as? HTTPClientError, let log = err.userData?["message"] as? String {
+				self?.approximately.onNext(log)
 				return
 			}
 			
+			if self?.hasCoin.value == true {
+				self?.approximately.onNext("Estimate can't be calculated at the moment".localized())
+			}
+		}, onCompleted: {
+			
+		}, onSubscribe: {
+			
+		}) {
+			
+		}.subscribe(onNext: { [weak self] (res) in
+
+			guard let _self = self else { return }
+			
+			let ammnt = res.0
 			let val = ammnt / TransactionCoinFactorDecimal
 			
 			let appr = (CurrencyNumberFormatter.formattedDecimal(with: val > 0 ? val : 0, formatter: _self.formatter)) + " " + getCoin
@@ -314,7 +318,12 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 			if getCoin == gtCoin {
 				self?.approximatelyReady.value = true
 			}
-		}
+		}, onError: { (error) in
+				
+		}, onCompleted: {
+				
+		}).disposed(by: disposeBag)
+
 	}
 
 	override func validateErrors() {

@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.8</string>
 	<key>CFBundleVersion</key>
-	<string>149</string>
+	<string>151</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -47,7 +47,7 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
-			<key>minter-node-2.testnet.minter.network</key>
+			<key>minter-node-3.testnet.minter.network</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>

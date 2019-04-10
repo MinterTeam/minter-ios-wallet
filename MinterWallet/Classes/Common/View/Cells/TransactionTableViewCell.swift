@@ -97,7 +97,7 @@ class TransactionTableViewCell: ExpandableCell {
 			if let url = transaction.image {
 				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 17.0))
 			}
-			amount.text = amountText(amount: transaction.amount ?? 0)
+			amount.text = amountText(amount: transaction.amount)
 			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
 			
 			fromAddressLabel.text = transaction.from
@@ -116,8 +116,13 @@ class TransactionTableViewCell: ExpandableCell {
 		self.layoutIfNeeded()
 	}
 	
-	private func amountText(amount: Decimal) -> String {
-		return CurrencyNumberFormatter.formattedDecimal(with: amount, formatter: CurrencyNumberFormatter.transactionFormatter)
+	private func amountText(amount: Decimal?) -> String {
+		
+		guard amount != nil else {
+			return ""
+		}
+		
+		return CurrencyNumberFormatter.formattedDecimal(with: amount ?? 0, formatter: CurrencyNumberFormatter.transactionFormatter)
 	}
 	
 	//MARK: -

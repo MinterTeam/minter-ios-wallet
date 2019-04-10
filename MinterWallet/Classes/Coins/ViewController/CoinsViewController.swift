@@ -12,75 +12,74 @@ import RxDataSources
 import SafariServices
 import AlamofireImage
 
-
-
 class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
-	
+
 	//MARK: -
-	
+
 	lazy var refreshControl: UIRefreshControl = {
 		let refreshControl = UIRefreshControl()
 		refreshControl.addTarget(self, action:
 			#selector(CoinsViewController.handleRefresh(_:)),
 														 for: UIControlEvents.valueChanged)
-		
+
 		return refreshControl
 	}()
-	
+
 	@objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-		
+
 		SoundHelper.playSoundIfAllowed(type: .refresh)
-		
+
 		//TODO: move to VM
 		Session.shared.loadBalances()
 		Session.shared.loadTransactions()
-		
+
 		refreshControl.endRefreshing()
 	}
-	
+
 	@IBOutlet weak var usernameBarItem: UIBarButtonItem!
-	
+
 	@IBOutlet weak var usernameButton: UIButton!
-	
+
 	@IBOutlet var headerView: ScreenHeader? {
 		didSet {
 			headerView?.delegate = self
 		}
 	}
-	
+
 	@IBOutlet var usernameView: UsernameView!
-	
+
 	@IBOutlet weak var headerViewTitleLabel: UILabel!
-	
+
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
 			tableView.contentInset = UIEdgeInsetsMake(95, 0, 0, 0)
 		}
 	}
+
 	@IBOutlet weak var dotCircle1ImageView: UIImageView!
 	@IBOutlet weak var dotCircle2ImageView: UIImageView!
 	@IBOutlet weak var robotImageView: UIImageView!
 	@IBOutlet weak var errorLabel: UILabel!
-	
+
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
-	
+
 	@IBOutlet var tableHeaderTopConstraint: NSLayoutConstraint?
-	
+
 	var tableHeaderTopPadding: Double {
 		return -95
 	}
-	
+
 	//MARK: -
-	
+
 	var viewModel = CoinsViewModel()
-	
+
 	private var disposeBag = DisposeBag()
 
 	// MARK: Life cycle
-	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+
 		registerCells()
 		
 		self.tableView.addSubview(self.refreshControl)
@@ -108,6 +107,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 				
 				if let delegateCell = cell as? DelegateTransactionTableViewCell {
 					delegateCell.delegate = self
+				}
+				
+				if let multisendCell = cell as? MultisendTransactionTableViewCell {
+					multisendCell.delegate = self
 				}
 				
 				return cell
@@ -155,29 +158,24 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 			})
 		}).disposed(by: disposeBag)
 	}
-	
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
+
 		tableView.reloadData()
-		
 	}
-	
+
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
+
 		self.tableView.reloadData()
-		
 		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen, params: nil)
-		
-//		updateUsernameView()a
-		
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func registerCells() {
-		
+
 		tableView.register(UINib(nibName: "CoinsTableViewHeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "CoinsTableViewHeaderView")
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
 		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "ConvertTransactionTableViewCell")
@@ -186,14 +184,15 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingTableViewCell")
 		tableView.register(UINib(nibName: "DelegateTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "DelegateTransactionTableViewCell")
+		tableView.register(UINib(nibName: "MultisendTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "MultisendTransactionTableViewCell")
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func updateUsernameView() {
 		usernameView.set(username: viewModel.rightButtonTitle, imageURL: viewModel.rightButtonImage)
 	}
-	
+
 	func hidePlaceholderView() {
 		self.tableView.backgroundColor = .white
 		self.dotCircle1ImageView.isHidden = true
@@ -201,7 +200,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		self.robotImageView.isHidden = true
 		self.errorLabel.isHidden = true
 	}
-	
+
 	func showPlaceholderView() {
 		self.tableView.backgroundColor = UIColor(hex: 0x4225A4)
 		self.dotCircle1ImageView.isHidden = false
@@ -209,18 +208,17 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		self.robotImageView.isHidden = false
 		self.errorLabel.isHidden = false
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	@objc func didTapUsernameView() {
 		self.tabBarController?.selectedIndex = 3
-		
+
 		AnalyticsHelper.defaultAnalytics.track(event: .CoinsUsernameButton, params: nil)
-		
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 
 		guard let section = viewModel.section(index: section) else {
@@ -241,16 +239,16 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		super.tableView(tableView, didSelectRowAt: indexPath)
-		
+
 		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
 			return
 		}
 
 		performSegue(for: item.identifier)
 	}
-	
+
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		
+
 		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 			if item.reuseIdentifier == "ButtonTableViewCell" {
 				return 70.0
@@ -259,25 +257,28 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 				return 1.0
 			}
 		}
-		
+
 		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
+			if nil != cell as? MultisendTransactionTableViewCell {
+				return expandedIdentifiers.contains(cell.identifier) ? 310 : 55
+			}
 			return expandedIdentifiers.contains(cell.identifier) ? 430 : 55
 		}
 		return 55
 	}
-	
-	//MARK: - ScreenHeaderProtocol
-	
+
+	// MARK: - ScreenHeaderProtocol
+
 	func additionalUpdateHeaderViewFromScrollEvent(_ scrollView: UIScrollView) {
-		
+
 	}
 
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		headerView?.updateHeaderViewFromScrollEvent(scrollView)
 	}
-	
+
 	//MARK: - Segues
-	
+
 	func performSegue(for cellIdentifier: String) {
 		
 		let vm = type(of: self.viewModel)
@@ -313,7 +314,7 @@ extension CoinsViewController : ButtonTableViewCellDelegate {
 	}
 }
 
-extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate, DelegateTransactionTableViewCellDelegate {
+extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate, DelegateTransactionTableViewCellDelegate, MultisendTransactionTableViewCellDelegate {
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		
@@ -338,9 +339,9 @@ extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransac
 			presentExplorerController(with: url)
 		}
 	}
-	
+
 	func didTapExpandedButton(cell: DelegateTransactionTableViewCell) {
-		
+
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
 		
@@ -351,5 +352,16 @@ extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransac
 		}
 	}
 	
-}
+	func didTapExpandedButton(cell: MultisendTransactionTableViewCell) {
 
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		
+		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			presentExplorerController(with: url)
+		}
+	}
+
+}

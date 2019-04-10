@@ -12,7 +12,6 @@ import MinterExplorer
 import MinterMy
 import AFDateHelper
 
-
 class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 
 	//MARK: -
@@ -50,7 +49,6 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 		loadData()
 		
 		createSections(with: [])
-		
 	}
 	
 	private var sectionTitleDateFormatter = DateFormatter()
@@ -285,18 +283,5 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 	}
 	
 	//MARK: -
-	
-	func explorerURL(section: Int, row: Int) -> URL? {
-		if let item = self.cellItem(section: section, row: row) as? TransactionTableViewCellItem {
-			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
-		}
-		else if let item = self.cellItem(section: section, row: row) as? ConvertTransactionTableViewCellItem {
-			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
-		}
-		else	if let item = self.cellItem(section: section, row: row) as? DelegateTransactionTableViewCellItem {
-			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
-		}
-		return nil
-	}
-	
+
 }

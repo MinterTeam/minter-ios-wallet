@@ -16,23 +16,23 @@ enum AuthManagerErrorRx : Error {
 }
 
 extension AuthManager {
-	
+
 	func login(username: String, password: String) -> Observable<(String?, String?, User?)> {
 		return Observable<(String?, String?, User?)>.create { (observer) -> Disposable in
 			self.login(username: username, password: password) { (accessToken, refreshToken, user, error) in
-				
+
 				guard nil == error && accessToken != nil && refreshToken != nil && user != nil else {
 					observer.onError(error ?? AuthManagerErrorRx.noToken)
 					return
 				}
-				
+
 				observer.onNext((accessToken, refreshToken, user))
 				observer.onCompleted()
 			}
 			return Disposables.create()
 		}
 	}
-	
+
 	func isTaken(username: String) -> Observable<Bool> {
 		return Observable<Bool>.create { (observer) -> Disposable in
 			self.isTaken(username: username, completion: { (isTaken, error) in
@@ -40,7 +40,7 @@ extension AuthManager {
 					observer.onError(error ?? AuthManagerErrorRx.wrongResponse)
 					return
 				}
-				
+
 				observer.onNext(isTaken!)
 				observer.onCompleted()
 			})

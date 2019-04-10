@@ -68,6 +68,10 @@ class TransactionsViewController: BaseTableViewController {
 					delegateCell.delegate = self
 				}
 				
+				if let multisendCell = cell as? MultisendTransactionTableViewCell {
+					multisendCell.delegate = self
+				}
+				
 				return cell
 		})
 		
@@ -102,6 +106,8 @@ class TransactionsViewController: BaseTableViewController {
 		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingTableViewCell")
 		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "ConvertTransactionTableViewCell")
 		tableView.register(UINib(nibName: "DelegateTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "DelegateTransactionTableViewCell")
+		tableView.register(UINib(nibName: "MultisendTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "MultisendTransactionTableViewCell")
+		
 	}
 	
 	//MARK: - Expandable
@@ -113,7 +119,9 @@ class TransactionsViewController: BaseTableViewController {
 		}
 		
 		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
-		
+			if nil != cell as? MultisendTransactionTableViewCell {
+				return expandedIdentifiers.contains(cell.identifier) ? 310 : 55
+			}
 			return expandedIdentifiers.contains(cell.identifier) ? 430 : 55
 		}
 		
@@ -176,7 +184,7 @@ class TransactionsViewController: BaseTableViewController {
 
 }
 
-extension TransactionsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate, DelegateTransactionTableViewCellDelegate {
+extension TransactionsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate, DelegateTransactionTableViewCellDelegate, MultisendTransactionTableViewCellDelegate {
 	
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		
@@ -206,6 +214,19 @@ extension TransactionsViewController : TransactionTableViewCellDelegate, Convert
 	
 	func didTapExpandedButton(cell: DelegateTransactionTableViewCell) {
 		
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		
+		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			let vc = BaseSafariViewController(url: url)
+			self.present(vc, animated: true) {}
+		}
+	}
+	
+	func didTapExpandedButton(cell: MultisendTransactionTableViewCell) {
+
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
 		

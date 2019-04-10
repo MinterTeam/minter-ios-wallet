@@ -30,15 +30,15 @@ enum Environment: String {
 	
 	var nodeBaseURL: String {
 		switch self {
-		case .staging: return "https://minter-node-2.testnet.minter.network:8841"
-		case .production: return "https://minter-node-3.testnet.minter.network:8841"
+		case .staging: return "https://minter-node.apps.minter.network:8841"
+		case .production: return "https://minter-node.apps.minter.network:8841"
 		}
 	}
 	
 	var explorerAPIBaseURL: String {
 		switch self {
-		case .staging: return "https://explorer-api.testnet.minter.network"
-		case .production: return "https://explorer-api.testnet.minter.network"
+		case .staging: return "https://explorer-api.apps.minter.network"
+		case .production: return "https://explorer-api.apps.minter.network"
 		}
 	}
 	
@@ -51,8 +51,8 @@ enum Environment: String {
 	
 	var explorerWebsocketURL: String {
 		switch self {
-		case .staging: return "wss://explorer-rtm.testnet.minter.network/connection/websocket"
-		case .production: return "wss://explorer-rtm.testnet.minter.network/connection/websocket"
+		case .staging: return "wss://explorer-rtm.apps.minter.network/connection/websocket"
+		case .production: return "wss://explorer-rtm.apps.minter.network/connection/websocket"
 		}
 	}
 	

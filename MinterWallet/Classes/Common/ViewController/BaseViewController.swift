@@ -13,7 +13,6 @@ import NotificationBannerSwift
 import Reachability
 import YandexMobileMetrica
 
-
 protocol ControllerType: class {
 	associatedtype ViewModelType: ViewModelProtocol
 	/// Configurates controller with specified ViewModelProtocol subclass
@@ -26,7 +25,6 @@ protocol ControllerType: class {
 	/// - Returns: View controller of concrete type
 //	static func create(with viewModel: ViewModelType) -> UIViewController
 }
-
 
 class BaseViewController : UIViewController {
 	
@@ -48,8 +46,6 @@ class BaseViewController : UIViewController {
 	}
 
 }
-
-
 
 class BaseTableViewController : AccordionTableViewController {
 	
@@ -103,7 +99,6 @@ class BaseSafariViewController : SFSafariViewController {
 		
 		self.setNeedsStatusBarAppearanceUpdate()
 	}
-	
 }
 
 class BaseAlertController : UIAlertController {
