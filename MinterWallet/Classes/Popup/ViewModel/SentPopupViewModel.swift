@@ -6,20 +6,20 @@
 //  Copyright © 2018 Minter. All rights reserved.
 //
 
-
 import UIKit
 
+class SentPopupViewModel: PopupViewModel {
 
-class SentPopupViewModel : PopupViewModel {
-	
 	var coin: String?
-	
-	var avatarImage: URL?
-	
+
+	var avatarImage: UIImage?
+
+	var avatarImageURL: URL?
+
 	var username: String?
-	
+
 	var actionButtonTitle: String?
-	
+
 	var secondButtonTitle: String?
-	
+
 }

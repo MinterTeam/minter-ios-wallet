@@ -45,7 +45,7 @@ enum Environment: String {
 	var explorerWebURL: String {
 		switch self {
 		case .staging: return "https://testnet.explorer.minter.network"
-		case .production: return "https://testnet.explorer.minter.network"
+		case .production: return "https://explorer.minter.network"
 		}
 	}
 	
@@ -76,6 +76,14 @@ enum Environment: String {
 		case .production: return "wss://tst.rtm.minter.network/connection/websocket"
 		}
 	}
-	
-	
+
+	// MY Minter
+
+	var myAPIBaseURL: String {
+		switch self {
+		case .staging: return "https://my.beta.minter.network"
+		case .production: return "https://my.apps.minter.network"
+		}
+	}
+
 }

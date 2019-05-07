@@ -9,16 +9,17 @@
 import RxSwift
 
 class PopupViewModel: BaseViewModel {
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	var popupTitle: String?
 
 	var title: String?
-	
-	//MARK: -
+
+	// MARK: -
 
 	override init() {
 		super.init()
 	}
+
 }

@@ -40,7 +40,7 @@ class WalletTransactionManager {
 				return
 			}
 
-			let users = Array(Set((transactions?.map({ (transaction) -> String? in
+			var users = Array(Set((transactions?.map({ (transaction) -> String? in
 				let from = transaction.from
 				let to = transaction.data?.to
 
@@ -53,6 +53,8 @@ class WalletTransactionManager {
 				return user != nil
 			}) as! [String])))
 
+			users.append(contentsOf: ads ?? [])
+			
 			if users.count > 0 {
 				self.infoManager.info(by: users, completion: { (res, err) in
 

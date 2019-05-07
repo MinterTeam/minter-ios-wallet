@@ -57,7 +57,19 @@ extension GateManager {
 	func estimateCoinSell(coinFrom: String, coinTo: String, value: Decimal, isAll: Bool = false) -> Observable<(Decimal, Decimal)> {
 		return Observable.create { (observer) -> Disposable in
 //			if isAll {
-//				observer.onError(GateManagerErrorRx.noCommission)
+//				self.estimateCoinSellAll(coinFrom: coinFrom,
+//																 coinTo: coinTo,
+//																 value: value,
+//																 gasPrice: gasPrice,
+//																 completion: { (res1, res2, error) in
+//					guard error == nil && res1 != nil && res2 != nil else {
+//						observer.onError(error ?? GateManagerErrorRx.noCommission)
+//						return
+//					}
+//
+//					observer.onNext((res1!, res2!))
+//					observer.onCompleted()
+//				})
 //			} else {
 				self.estimateCoinSell(coinFrom: coinFrom, coinTo: coinTo, value: value, completion: { (res1, res2, error) in
 					guard error == nil && res1 != nil && res2 != nil else {
@@ -69,8 +81,8 @@ extension GateManager {
 					observer.onCompleted()
 				})
 				return Disposables.create()
-			}
-//		}
+//			}
+		}
 	}
 
 	func nonce(address: String) -> Observable<Int> {

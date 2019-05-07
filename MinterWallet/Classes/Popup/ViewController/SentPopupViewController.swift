@@ -9,19 +9,17 @@
 import UIKit
 import AlamofireImage
 
-
 protocol SentPopupViewControllerDelegate : class {
 	func didTapActionButton(viewController: SentPopupViewController)
 	func didTapSecondButton(viewController: SentPopupViewController)
 }
 
-
 class SentPopupViewController: PopupViewController {
 
 	weak var delegate: SentPopupViewControllerDelegate?
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	@IBOutlet weak var receiverLabel: UILabel!
 	@IBOutlet weak var avatarImageView: UIImageView! {
 		didSet {
@@ -29,9 +27,9 @@ class SentPopupViewController: PopupViewController {
 //			avatarImageView?.layer.cornerRadius = 25.0
 			
 			avatarImageView?.makeBorderWithCornerRadius(radius: 25, borderColor: .clear, borderWidth: 4)
-			
 		}
 	}
+
 	@IBOutlet weak var actionButton: DefaultButton!
 	@IBOutlet weak var secondButton: DefaultButton!
 	@IBOutlet weak var avatarWrapper: UIView! {
@@ -40,49 +38,49 @@ class SentPopupViewController: PopupViewController {
 			avatarWrapper?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
 		}
 	}
-	
+
 	@IBAction func actionBtnDidTap(_ sender: Any) {
 		delegate?.didTapActionButton(viewController: self)
 	}
-	
+
 	@IBAction func secondButtonDidTap(_ sender: Any) {
 		delegate?.didTapSecondButton(viewController: self)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	var shadowLayer = CAShapeLayer()
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
 		updateUI()
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	private func updateUI() {
-		
+
 		guard let vm = viewModel as? SentPopupViewModel else {
 			return
 		}
-		
+
 		self.receiverLabel.text = vm.username
 		self.avatarImageView.image = UIImage(named: "AvatarPlaceholderImage")
-		if let url = vm.avatarImage {
+		if let url = vm.avatarImageURL {
 			self.avatarImageView.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 25.0))
+		} else if let img = vm.avatarImage {
+			self.avatarImageView.image = img
 		}
 		self.actionButton.setTitle(vm.actionButtonTitle, for: .normal)
 		self.secondButton.setTitle(vm.secondButtonTitle, for: .normal)
-		
 	}
-	
+
 	func dropShadow() {
 		shadowLayer.removeFromSuperlayer()
 		shadowLayer.frame = avatarImageView.frame
@@ -97,12 +95,11 @@ class SentPopupViewController: PopupViewController {
 		shadowLayer.rasterizationScale = UIScreen.main.scale
 		avatarImageView.superview?.layer.insertSublayer(shadowLayer, at: 0)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		
 //		dropShadow()
 	}
 

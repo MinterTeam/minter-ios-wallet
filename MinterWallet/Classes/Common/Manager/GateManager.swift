@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import MinterCore
 
-var MinterGateBaseURLString = "https://gate.minter.network/api/v1/"
+var MinterGateBaseURLString = "https://gate.minter.network"
 
 enum GateManagerError : Error {
 	case wrongResponse
@@ -22,6 +22,7 @@ enum MinterGateAPIURL {
 	case minGasPrice
 	case estimateTXComission
 	case estimateCoinSell
+	case estimateCoinSellAll
 	case estimateCoinBuy
 	case send
 
@@ -29,22 +30,25 @@ enum MinterGateAPIURL {
 		switch self {
 
 		case .nonce(let address):
-			return URL(string: MinterGateBaseURLString + "nonce/" + address)!
+			return URL(string: MinterGateBaseURLString + "/api/v1/nonce/" + address)!
 
 		case .estimateCoinBuy:
-			return URL(string: MinterGateBaseURLString + "estimate/coin-buy")!
+			return URL(string: MinterGateBaseURLString + "/api/v1/estimate/coin-buy")!
 
 		case .estimateCoinSell:
-			return URL(string: MinterGateBaseURLString + "estimate/coin-sell")!
+			return URL(string: MinterGateBaseURLString + "/api/v1/estimate/coin-sell")!
+			
+		case .estimateCoinSellAll:
+			return URL(string: MinterGateBaseURLString + "/api/v1/estimate/coin-sell-all")!
 
 		case .estimateTXComission:
-			return URL(string: MinterGateBaseURLString + "estimate/tx-commission")!
+			return URL(string: MinterGateBaseURLString + "/api/v1/estimate/tx-commission")!
 
 		case .minGasPrice:
-			return URL(string: MinterGateBaseURLString + "min-gas")!
+			return URL(string: MinterGateBaseURLString + "/api/v1/min-gas")!
 
 		case .send:
-			return URL(string: MinterGateBaseURLString + "transaction/push")!
+			return URL(string: MinterGateBaseURLString + "/api/v1/transaction/push")!
 
 		}
 	}
@@ -152,6 +156,43 @@ class GateManager : BaseManager {
 		let url = MinterGateAPIURL.estimateCoinSell.url()
 		
 		self.httpClient.getRequest(url, parameters: ["coinToBuy" : coinTo, "coinToSell" : coinFrom, "valueToSell" : value]) { (response, error) in
+			
+			var willGet: Decimal?
+			var com: Decimal?
+			var err: Error?
+			
+			defer {
+				completion?(willGet, com, err)
+			}
+			
+			guard nil == error else {
+				err = error
+				return
+			}
+			
+			if let data = response.data as? [String : String], let get = data["will_get"], let commission = data["commission"] {
+				willGet = Decimal(string: get)
+				com = Decimal(string: commission)
+			}
+			else {
+				err = GateManagerError.wrongResponse
+			}
+		}
+	}
+	
+	/// Method retreives estimate coin sell
+	///
+	/// - Parameters:
+	///   - coinFrom: coin to sell (e.g. MNT)
+	///   - coinTo: coin to buy (e.g. BELTCOIN)
+	///		- value: value to calculate estimates for
+	///		- gasPrice: gas price
+	///   - completion: method which will be called after request finished
+	public func estimateCoinSellAll(coinFrom: String, coinTo: String, value: Decimal, gasPrice: Int, completion: ((Decimal?, Decimal?, Error?) -> ())?) {
+		
+		let url = MinterGateAPIURL.estimateCoinSellAll.url()
+		
+		self.httpClient.getRequest(url, parameters: ["coinToBuy" : coinTo, "coinToSell" : coinFrom, "valueToSell" : value, "gasPrice" : gasPrice]) { (response, error) in
 			
 			var willGet: Decimal?
 			var com: Decimal?

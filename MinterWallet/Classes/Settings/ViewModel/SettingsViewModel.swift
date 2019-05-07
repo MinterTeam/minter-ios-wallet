@@ -152,38 +152,6 @@ class SettingsViewModel: BaseViewModel {
 	
 	//MARK: -
 	
-	let manager = WalletCoinManager.shared
-	
-	func requestMNT() {
-		guard let address = Session.shared.accounts.value.first?.address else {
-			return
-		}
-		
-		manager.requestMNT(address: "Mx" + address) { [weak self] (error) in
-			if nil != error {
-				var err = NotifiableError()
-				
-				switch error! {
-				case .wrongResponse:
-					err.title = "You can request 100 \(Coin.baseCoin().symbol!) only once per hour"
-					break
-				case .custom(let message):
-					err.title = message
-					break
-				}
-				
-				self?.errorNotification.value = err
-			}
-			else {
-				var mes = NotifiableSuccess()
-				mes.title = "\(Coin.baseCoin().symbol!) has been deposited to your account"
-				self?.successMessage.value = mes
-			}
-		}
-	}
-	
-	//MARK: -
-	
 	func rightButtonTapped() {
 		Session.shared.logout()
 	}
@@ -234,7 +202,7 @@ class SettingsViewModel: BaseViewModel {
 					user.avatar = url?.absoluteString
 					Session.shared.user.value = user
 				}
-				
+
 				Session.shared.loadUser()
 			})
 		}

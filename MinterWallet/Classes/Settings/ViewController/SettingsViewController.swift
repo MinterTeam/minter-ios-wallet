@@ -11,10 +11,9 @@ import RxSwift
 import RxAppState
 import NotificationBannerSwift
 
-
 class SettingsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 
-	//MARK: - IBOutput
+	// MARK: - IBOutput
 	
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
@@ -32,7 +31,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 	
 	@IBOutlet weak var infoLabel: UILabel!
 	
-	//MARK: -
+	// MARK: -
 	
 	var viewModel = SettingsViewModel()
 	
@@ -114,7 +113,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		tableView.register(UINib(nibName: "DefaultHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "DefaultHeader")
 	}
 	
-	//MARK: - TableView
+	// MARK: - TableView
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return viewModel.sectionsCount()
@@ -193,7 +192,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		}
 	}
 	
-	//MARK: - ImagePicker
+	// MARK: - ImagePicker
 	
 	func showImagePicker(sender: UIView?) {
 		
@@ -224,7 +223,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		present(actionSheet, animated: true, completion: nil)
 	}
 	
-	//MARK: - Segues
+	// MARK: - Segues
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		
@@ -284,7 +283,7 @@ extension SettingsViewController : ButtonTableViewCellDelegate {
 		
 		if let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), item.identifier == "ButtonTableViewCell_Get100" {
 			SoundHelper.playSoundIfAllowed(type: .bip)
-			viewModel.requestMNT()
+//			viewModel.requestMNT()
 			return
 		}
 		

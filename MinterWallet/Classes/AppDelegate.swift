@@ -11,7 +11,7 @@ import Fabric
 import Crashlytics
 import MinterCore
 import MinterExplorer
-
+import MinterMy
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,18 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let conf = Configuration()
 
 		if ProcessInfo.processInfo.arguments.contains("UITesting") {
-			MinterGateBaseURLString = "https://tst.gate.minter.network/api/v1/"
+			MinterGateBaseURLString = "https://tst.gate.minter.network"
 			MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
 			MinterExplorerSDK.initialize(APIURLString: conf.environment.testExplorerAPIBaseURL, WEBURLString: conf.environment.testExplorerWebURL, websocketURLString: conf.environment.testExplorerWebsocketURL)
-		}
-		else {
+		} else {
 			if !isTestnet {
 				MinterGateBaseURLString = "https://gate.apps.minter.network"
 			}
-
 			MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
 			MinterExplorerSDK.initialize(APIURLString: conf.environment.explorerAPIBaseURL, WEBURLString: conf.environment.explorerWebURL, websocketURLString: conf.environment.explorerWebsocketURL)
 		}
+		MinterMySDK.initialize(network: isTestnet ? .testnet : .mainnet)
 
 		Fabric.with([Crashlytics.self])
 
@@ -65,11 +64,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func appearance() {
-		
+
 		UINavigationBar.appearance().tintColor = .white
 		UINavigationBar.appearance().barTintColor = UIColor(hex: 0x502EC2)
 		UINavigationBar.appearance().titleTextAttributes = [
@@ -79,31 +78,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		if #available(iOS 11.0, *) {
 			UINavigationBar.appearance().setTitleVerticalPositionAdjustment(-2, for: .default)
 		}
-		
+
 		UIBarButtonItem.appearance().setTitleTextAttributes([
 				NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
 				NSAttributedStringKey.foregroundColor: UIColor.white,
 				NSAttributedStringKey.baselineOffset : 1
 			], for: .normal
 		)
-		
+
 		UIBarButtonItem.appearance().setTitleTextAttributes([
 			NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
 			NSAttributedStringKey.foregroundColor : UIColor.white,
 			NSAttributedStringKey.baselineOffset : 1
 			], for: .highlighted
 		)
-		
+
 		UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -2)
 
-		
 		let img = UIImage(named: "BackIcon")?.resizableImage(withCapInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0))
 		img?.stretchableImage(withLeftCapWidth: 0, topCapHeight: 20)
 		UINavigationBar.appearance().backIndicatorTransitionMaskImage = img
 		UINavigationBar.appearance().backIndicatorImage = img
 		UINavigationBar.appearance().isTranslucent = false
-		
-		
+
 		UITabBarItem.appearance().setTitleTextAttributes([
 			NSAttributedStringKey.foregroundColor : UIColor(hex: 0x8A8A8F)!,
 			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
@@ -114,7 +111,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		], for: .selected)
 		
 	}
-
-
 }
-

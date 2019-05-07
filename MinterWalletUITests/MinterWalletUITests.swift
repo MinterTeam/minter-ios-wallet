@@ -79,7 +79,6 @@ class MinterWalletUITests: XCTestCase {
 		
 		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label, handler: nil)
 		waitForExpectations(timeout: 15, handler: nil)
-		
 	}
 	
 	func testSendCoinAdvancedMode() {
@@ -311,74 +310,74 @@ class MinterWalletUITests: XCTestCase {
 	func testConvertCoin() {
 		loginAdvancedMode()
 		
-			let app = XCUIApplication()
-			let tablesQuery = app.tables
-			self.app.tables.firstMatch.swipeUp()
-			self.app.tables.firstMatch.swipeUp()
-			
-			tablesQuery/*@START_MENU_TOKEN@*/.buttons["CONVERT"]/*[[".cells.buttons[\"CONVERT\"]",".buttons[\"CONVERT\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
-			
-			let elementsQuery = app.scrollViews.otherElements
-			let scrollViewsQuery = elementsQuery.scrollViews
-			scrollViewsQuery.children(matching: .textField).element(boundBy: 0).tap()
-			app.pickerWheels.firstMatch.swipeUp()
-
-			XCUIApplication().children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).tap()
-			
-			app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).tap()
-
-			let amountEl = app.scrollViews.otherElements.scrollViews.children(matching: .textField).element(boundBy: 1)
-			amountEl.tap()
-			amountEl.typeText("1")
+		let app = XCUIApplication()
+		let tablesQuery = app.tables
+		self.app.tables.firstMatch.swipeUp()
+		self.app.tables.firstMatch.swipeUp()
 		
-			let elementsQuery1 = app.scrollViews.otherElements
+		tablesQuery/*@START_MENU_TOKEN@*/.buttons["CONVERT"]/*[[".cells.buttons[\"CONVERT\"]",".buttons[\"CONVERT\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+		
+		let elementsQuery = app.scrollViews.otherElements
+		let scrollViewsQuery = elementsQuery.scrollViews
+		scrollViewsQuery.children(matching: .textField).element(boundBy: 0).tap()
+		app.pickerWheels.firstMatch.swipeUp()
 
-			let textField = elementsQuery1.scrollViews.children(matching: .textField).element(boundBy: 2)
-			textField.tap()
-			textField.typeText("USD")
-			
-			textField.swipeDown()
-			textField.swipeUp()
-			
-			app.buttons["EXCHANGE"].tap()
-			
-			let sucLabel = self.app.staticTexts["Coins have been successfully spent"]
-			
-			expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: sucLabel, handler: nil)
-			waitForExpectations(timeout: 15, handler: nil)
+		XCUIApplication().children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).tap()
+		
+		app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).tap()
+
+		let amountEl = app.scrollViews.otherElements.scrollViews.children(matching: .textField).element(boundBy: 1)
+		amountEl.tap()
+		amountEl.typeText("1")
+	
+		let elementsQuery1 = app.scrollViews.otherElements
+
+		let textField = elementsQuery1.scrollViews.children(matching: .textField).element(boundBy: 2)
+		textField.tap()
+		textField.typeText("USD")
+		
+		textField.swipeDown()
+		textField.swipeUp()
+		
+		app.buttons["EXCHANGE"].tap()
+		
+		let sucLabel = self.app.staticTexts["Coins have been successfully spent"]
+		
+		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: sucLabel, handler: nil)
+		waitForExpectations(timeout: 15, handler: nil)
 //		}
 	}
 	
 	func testConvertCoinGet() {
 		loginAdvancedMode()
 			
-			let app = XCUIApplication()
-			let tablesQuery = app.tables
-			self.app.tables.firstMatch.swipeUp()
-			self.app.tables.firstMatch.swipeUp()
-			
-			tablesQuery/*@START_MENU_TOKEN@*/.buttons["CONVERT"]/*[[".cells.buttons[\"CONVERT\"]",".buttons[\"CONVERT\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+		let app = XCUIApplication()
+		let tablesQuery = app.tables
+		self.app.tables.firstMatch.swipeUp()
+		self.app.tables.firstMatch.swipeUp()
+		
+		tablesQuery/*@START_MENU_TOKEN@*/.buttons["CONVERT"]/*[[".cells.buttons[\"CONVERT\"]",".buttons[\"CONVERT\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
 
-			XCUIApplication().scrollViews.otherElements/*@START_MENU_TOKEN@*/.scrollViews.containing(.staticText, identifier:"COIN YOU HAVE").element/*[[".scrollViews.containing(.button, identifier:\"EXCHANGE\").element",".scrollViews.containing(.staticText, identifier:\"The final amount depends on the exchange rate at the moment of transaction.\").element",".scrollViews.containing(.staticText, identifier:\"COIN YOU WANT\").element",".scrollViews.containing(.image, identifier:\"convertIcon\").element",".scrollViews.containing(.button, identifier:\"USE MAX\").element",".scrollViews.containing(.staticText, identifier:\"AMOUNT\").element",".scrollViews.containing(.staticText, identifier:\"COIN YOU HAVE\").element"],[[[-1,6],[-1,5],[-1,4],[-1,3],[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.swipeLeft()
-			
-			let amountEl = app.scrollViews.otherElements.scrollViews.children(matching: .textField).element(boundBy: 1)
-			amountEl.tap()
-			amountEl.typeText("1")
-			
-				let elem = XCUIApplication().scrollViews.otherElements.scrollViews.children(matching: .textField).element(boundBy: 0)
-			elem.tap()
-			elem.typeText("USD")
-			
-			elem.swipeDown()
-			elem.swipeUp()
-			
-			app.buttons["EXCHANGE"].tap()
-			
-			let sucLabel = self.app.staticTexts["Coins have been successfully bought"]
-			
-			expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: sucLabel, handler: nil)
-			waitForExpectations(timeout: 15, handler: nil)
-		}
+		XCUIApplication().scrollViews.otherElements/*@START_MENU_TOKEN@*/.scrollViews.containing(.staticText, identifier:"COIN YOU HAVE").element/*[[".scrollViews.containing(.button, identifier:\"EXCHANGE\").element",".scrollViews.containing(.staticText, identifier:\"The final amount depends on the exchange rate at the moment of transaction.\").element",".scrollViews.containing(.staticText, identifier:\"COIN YOU WANT\").element",".scrollViews.containing(.image, identifier:\"convertIcon\").element",".scrollViews.containing(.button, identifier:\"USE MAX\").element",".scrollViews.containing(.staticText, identifier:\"AMOUNT\").element",".scrollViews.containing(.staticText, identifier:\"COIN YOU HAVE\").element"],[[[-1,6],[-1,5],[-1,4],[-1,3],[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.swipeLeft()
+		
+		let amountEl = app.scrollViews.otherElements.scrollViews.children(matching: .textField).element(boundBy: 1)
+		amountEl.tap()
+		amountEl.typeText("1")
+		
+			let elem = XCUIApplication().scrollViews.otherElements.scrollViews.children(matching: .textField).element(boundBy: 0)
+		elem.tap()
+		elem.typeText("USD")
+		
+		elem.swipeDown()
+		elem.swipeUp()
+		
+		app.buttons["EXCHANGE"].tap()
+		
+		let sucLabel = self.app.staticTexts["Coins have been successfully bought"]
+		
+		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: sucLabel, handler: nil)
+		waitForExpectations(timeout: 15, handler: nil)
+	}
 //	}
 
 }
