@@ -113,9 +113,9 @@ class AddressViewModel: BaseViewModel {
 			return section
 		}
 		
-		let annotation = BaseCellItem(reuseIdentifier: "annotationCell", identifier: "annotationCell")
-		let annotationSection = BaseTableSectionItem(header: "", items: [annotation])
-		sctns.insert(annotationSection, at: 0)
+//		let annotation = BaseCellItem(reuseIdentifier: "annotationCell", identifier: "annotationCell")
+//		let annotationSection = BaseTableSectionItem(header: "", items: [annotation])
+//		sctns.insert(annotationSection, at: 0)
 		sections.value = sctns
 	}
 	

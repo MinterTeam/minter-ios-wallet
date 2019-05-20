@@ -98,7 +98,7 @@ class AddressViewController: BaseViewController, UITableViewDelegate {
 		
 		self.navigationController?.navigationItem.rightBarButtonItem = nil
 		
-		tableView.contentInset = UIEdgeInsetsMake(-40, 0, 0, 0)
+		tableView.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0)
 		
 	}
 	

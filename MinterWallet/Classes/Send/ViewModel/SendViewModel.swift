@@ -687,10 +687,18 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 					newAmount = amountWithCommission * TransactionCoinFactorDecimal
 					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
 				}
-				/// In case if we send not a base (e.g. BELTCOIN) coin we try to pay commission with base coin
+				/// In case if we send not a base coin (e.g. BELTCOIN) we try to pay commission with base coin
 				else if !(self?.canPayCommissionWithBaseCoin() ?? true) {
+
+					let tx: RawTransaction?
+					if to.isValidPublicKey() {
+						tx = self?.delegateRawTransaction(nonce: BigUInt(nonce), gasCoin: self!.selectedCoin.value!, to: to, value: BigUInt(decimal: newAmount)!, coin: self!.selectedCoin.value!)
+					} else {
+						tx = self?.sendRawTransaction(nonce: BigUInt(nonce), gasCoin: self!.selectedCoin.value!, to: to, value: BigUInt(decimal: newAmount)!, coin: self!.selectedCoin.value!)
+					}
+
 					//we make fake tx to get it's commission
-					guard let tx = self?.sendRawTransaction(nonce: BigUInt(nonce), gasCoin: self!.selectedCoin.value!, to: to, value: BigUInt(decimal: newAmount)!, coin: self!.selectedCoin.value!), /*let pk = self?.accountManager.privateKey(from: seed)*/ let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: self?.fakePK ?? "") else {
+					guard let fakeTx = tx, /*let pk = self?.accountManager.privateKey(from: seed)*/ let signedTx = RawTransactionSigner.sign(rawTx: fakeTx, privateKey: self?.fakePK ?? "") else {
 
 						DispatchQueue.main.async {
 							self?.notifiableError.value = NotifiableError(title: "Can't check tx".localized(), text: nil)
@@ -773,7 +781,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		}
 
 		let tx: RawTransaction
-
 		if to.isValidPublicKey() {
 			tx = self.delegateRawTransaction(nonce: nonce, gasCoin: commissionCoin, to: to, value: value, coin: coin)
 		} else {

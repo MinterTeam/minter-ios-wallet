@@ -2936,7 +2936,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/Info1.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2968,7 +2968,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/Info1.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3106,7 +3106,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3138,7 +3138,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
