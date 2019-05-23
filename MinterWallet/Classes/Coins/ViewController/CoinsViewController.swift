@@ -11,10 +11,11 @@ import RxSwift
 import RxDataSources
 import SafariServices
 import AlamofireImage
+import NotificationBannerSwift
 
 class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 
-	//MARK: -
+	// MARK: -
 
 	lazy var refreshControl: UIRefreshControl = {
 		let refreshControl = UIRefreshControl()
@@ -35,27 +36,20 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 
 		refreshControl.endRefreshing()
 	}
-
 	@IBOutlet weak var usernameBarItem: UIBarButtonItem!
-
 	@IBOutlet weak var usernameButton: UIButton!
-
 	@IBOutlet var headerView: ScreenHeader? {
 		didSet {
 			headerView?.delegate = self
 		}
 	}
-
 	@IBOutlet var usernameView: UsernameView!
-
 	@IBOutlet weak var headerViewTitleLabel: UILabel!
-
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
 			tableView.contentInset = UIEdgeInsetsMake(95, 0, 0, 0)
 		}
 	}
-
 	@IBOutlet weak var dotCircle1ImageView: UIImageView!
 	@IBOutlet weak var dotCircle2ImageView: UIImageView!
 	@IBOutlet weak var robotImageView: UIImageView!
@@ -262,7 +256,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 			if nil != cell as? MultisendTransactionTableViewCell {
 				return expandedIdentifiers.contains(cell.identifier) ? 310 : 55
 			}
-			return expandedIdentifiers.contains(cell.identifier) ? 430 : 55
+			return expandedIdentifiers.contains(cell.identifier) ? 444 : 55
 		}
 		return 55
 	}
@@ -277,27 +271,26 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		headerView?.updateHeaderViewFromScrollEvent(scrollView)
 	}
 
-	//MARK: - Segues
+	// MARK: - Segues
 
 	func performSegue(for cellIdentifier: String) {
-		
 		let vm = type(of: self.viewModel)
-		
+
 		//Move to router?
 		switch cellIdentifier {
 		case vm.cellIdentifierPrefix.convert.rawValue:
 			perform(segue: CoinsViewController.Segue.showConvert)
 			break
-			
+
 		case vm.cellIdentifierPrefix.transactions.rawValue:
 			perform(segue: CoinsViewController.Segue.showTransactions)
 			break
-			
+
 		default:
 			break
 		}
 	}
-	
+
 	func presentExplorerController(with url: URL) {
 		self.present(CoinsRouter.explorerViewController(url: url), animated: true) {}
 	}
@@ -305,62 +298,158 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 }
 
 extension CoinsViewController : ButtonTableViewCellDelegate {
-	
+
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-		
-		guard let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else { return }
+		guard let indexPath = tableView.indexPath(for: cell),
+			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else { return }
 		
 		self.performSegue(for: item.identifier)
 	}
 }
 
-extension CoinsViewController : TransactionTableViewCellDelegate, ConvertTransactionTableViewCellDelegate, DelegateTransactionTableViewCellDelegate, MultisendTransactionTableViewCellDelegate {
-	
+extension CoinsViewController: TransactionTableViewCellDelegate,
+ConvertTransactionTableViewCellDelegate,
+DelegateTransactionTableViewCellDelegate,
+MultisendTransactionTableViewCellDelegate {
+
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
-		
-		lightImpactFeedbackGenerator.prepare()
-		lightImpactFeedbackGenerator.impactOccurred()
-		
+		performLightImpact()
+
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-		
-		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			presentExplorerController(with: url)
 		}
 	}
-	
+
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
-		
-		lightImpactFeedbackGenerator.prepare()
-		lightImpactFeedbackGenerator.impactOccurred()
-		
+		performLightImpact()
+
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-		
-		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			presentExplorerController(with: url)
 		}
 	}
 
 	func didTapExpandedButton(cell: DelegateTransactionTableViewCell) {
+		performLightImpact()
 
-		lightImpactFeedbackGenerator.prepare()
-		lightImpactFeedbackGenerator.impactOccurred()
-		
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-		
-		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			presentExplorerController(with: url)
 		}
 	}
-	
-	func didTapExpandedButton(cell: MultisendTransactionTableViewCell) {
 
-		lightImpactFeedbackGenerator.prepare()
-		lightImpactFeedbackGenerator.impactOccurred()
-		
+	func didTapExpandedButton(cell: MultisendTransactionTableViewCell) {
+		performLightImpact()
+
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-		
-		if let indexPath = tableView.indexPath(for: cell), let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let url = viewModel.explorerURL(section: indexPath.section,
+																			row: indexPath.row) {
 			presentExplorerController(with: url)
+		}
+	}
+
+	func didTapFromButton(cell: TransactionTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? TransactionTableViewCellItem,
+			let from = cellItem.from {
+				UIPasteboard.general.string = from
+
+				BannerHelper.performCopiedNotification()
+		}
+	}
+
+	func didTapToButton(cell: TransactionTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? TransactionTableViewCellItem,
+			let to = cellItem.to {
+			UIPasteboard.general.string = to
+
+			BannerHelper.performCopiedNotification()
+		}
+	}
+
+	func didTapFromButton(cell: DelegateTransactionTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? DelegateTransactionTableViewCellItem,
+			let from = cellItem.from {
+
+			UIPasteboard.general.string = from
+
+			BannerHelper.performCopiedNotification()
+		}
+	}
+
+	func didTapToButton(cell: DelegateTransactionTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? DelegateTransactionTableViewCellItem,
+			let to = cellItem.to {
+
+			UIPasteboard.general.string = to
+
+			BannerHelper.performCopiedNotification()
+		}
+	}
+
+	func didTapFromButton(cell: MultisendTransactionTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? MultisendTransactionTableViewCellItem,
+			let from = cellItem.from {
+
+			UIPasteboard.general.string = from
+
+			BannerHelper.performCopiedNotification()
+		}
+	}
+
+	func didTapFromButton(cell: ConvertTransactionTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? ConvertTransactionTableViewCellItem,
+			let from = cellItem.from {
+
+			UIPasteboard.general.string = from
+
+			BannerHelper.performCopiedNotification()
+		}
+	}
+
+	func didTapToButton(cell: ConvertTransactionTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? ConvertTransactionTableViewCellItem,
+			let to = cellItem.to {
+
+			UIPasteboard.general.string = to
+
+			BannerHelper.performCopiedNotification()
 		}
 	}
 

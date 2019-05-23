@@ -11,6 +11,7 @@ import AlamofireImage
 
 protocol SentPopupViewControllerDelegate : class {
 	func didTapActionButton(viewController: SentPopupViewController)
+	func didTapSecondActionButton(viewController: SentPopupViewController)
 	func didTapSecondButton(viewController: SentPopupViewController)
 }
 
@@ -24,18 +25,24 @@ class SentPopupViewController: PopupViewController {
 	@IBOutlet weak var avatarImageView: UIImageView! {
 		didSet {
 			avatarImageView?.backgroundColor = .white
-//			avatarImageView?.layer.cornerRadius = 25.0
-			
-			avatarImageView?.makeBorderWithCornerRadius(radius: 25, borderColor: .clear, borderWidth: 4)
+			avatarImageView?.makeBorderWithCornerRadius(radius: 25,
+																									borderColor: .clear,
+																									borderWidth: 4)
 		}
 	}
 
 	@IBOutlet weak var actionButton: DefaultButton!
+	@IBOutlet weak var seconActionButton: DefaultButton!
 	@IBOutlet weak var secondButton: DefaultButton!
 	@IBOutlet weak var avatarWrapper: UIView! {
 		didSet {
 			avatarWrapper?.layer.cornerRadius = 25.0
-			avatarWrapper?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
+			avatarWrapper?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!,
+																						 alpha: 1,
+																						 x: 0,
+																						 y: 2,
+																						 blur: 18,
+																						 spread: 0)
 		}
 	}
 
@@ -45,6 +52,10 @@ class SentPopupViewController: PopupViewController {
 
 	@IBAction func secondButtonDidTap(_ sender: Any) {
 		delegate?.didTapSecondButton(viewController: self)
+	}
+
+	@IBAction func secondActionButtonDidTap(_ sender: Any) {
+		delegate?.didTapSecondActionButton(viewController: self)
 	}
 
 	// MARK: -

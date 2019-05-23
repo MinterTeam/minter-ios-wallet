@@ -201,29 +201,29 @@ class Session {
 	var isLoadingTransaction = false
 	
 	func loadTransactions() {
-		
+
 		if isLoadingTransaction {
 			return
 		}
 		isLoadingTransaction = true
-		
+
 		let addresses = accounts.value.map { (acc) -> String in
 			return "Mx" + acc.address
 		}
-		
+
 		guard addresses.count > 0 else {
 			isLoadingTransaction = false
 			return
 		}
-		
+
 		//TODO: move to helper
-		
+
 		self.isLoading.value = true
-		
+
 		transactionManger.transactions { [weak self] (transactions, users, error) in
 			self?.isLoadingTransaction = false
 			self?.isLoading.value = false
-			
+
 			guard (self?.isLoggedIn.value ?? false) || (self?.accounts.value ?? []).count > 0 else {
 				return
 			}
@@ -252,9 +252,9 @@ class Session {
 			}) ?? []
 
 		}
-		
+
 	}
-	
+
 	func loadBalances() {
 		
 		let addresses = accounts.value.map({ (account) -> String in

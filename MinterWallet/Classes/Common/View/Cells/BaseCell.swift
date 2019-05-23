@@ -9,66 +9,62 @@
 import UIKit
 import RxSwift
 
-
 protocol Configurable where Self : UITableViewCell {
 	func configure(item: BaseCellItem)
 }
 
 typealias ConfigurableCell = UITableViewCell & Configurable
 
-
 class BaseCell : ConfigurableCell {
-	
+
 	var disposeBag = DisposeBag()
-	
+
 	func configure(item: BaseCellItem) {}
-	
+
 	override func prepareForReuse() {
 		super.prepareForReuse()
-		
 		disposeBag = DisposeBag()
 	}
-	
+
 }
 
-
 class ExpandableCell : AccordionTableViewCell, Configurable {
-	
+
 	var disposeBag = DisposeBag()
-	
+
 	func configure(item: BaseCellItem) {}
-	
+
 	@IBOutlet weak var detailView: UIView?
-	
+
 	var expandable = true
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func setExpanded(_ expanded: Bool, animated: Bool) {
 		super.setExpanded(expanded, animated: animated)
-		
+
 		self.toggle(expanded, animated: animated)
 	}
-	
+
 	override func willToggleCell(animated: Bool) {
 		if !expanded {
 			self.toggle(!expanded, animated: animated)
 		}
 	}
-	
+
 	override func didToggleCell(animated: Bool) {
 		if !expanded {
 			self.toggle(expanded, animated: animated)
 		}
 	}
-	
+
 	override func toggle(_ expanded: Bool, animated: Bool) {
 		guard detailView != nil && !toggling else {
 			return
 		}
-		
+
 		toggling = true
-		
+
 		if animated {
 			let alwaysOptions: UIViewAnimationOptions = [.allowUserInteraction,
 																									 .beginFromCurrentState,
@@ -76,7 +72,7 @@ class ExpandableCell : AccordionTableViewCell, Configurable {
 			let expandedOptions: UIViewAnimationOptions = [.curveEaseInOut]
 			let collapsedOptions: UIViewAnimationOptions = [.curveEaseInOut]
 			let options = expanded ? alwaysOptions.union(expandedOptions) : alwaysOptions.union(collapsedOptions)
-			
+
 			UIView.transition(with: detailView!, duration: 0.3, options: options, animations: { [weak self] in
 				self?.toggleCell(expanded)
 				}, completion: { (completed) in
@@ -87,18 +83,18 @@ class ExpandableCell : AccordionTableViewCell, Configurable {
 			toggling = false
 		}
 	}
-	
+
 	// MARK: Helpers
-	
+
 	private func toggleCell(_ val: Bool) {
 //		detailView?.isHidden = !val
 		detailView?.isHidden = false
 		detailView?.alpha = val ? 1.0 : 0.0
 	}
-	
+
 	override func prepareForReuse() {
 		super.prepareForReuse()
-		
+
 		disposeBag = DisposeBag()
 	}
 

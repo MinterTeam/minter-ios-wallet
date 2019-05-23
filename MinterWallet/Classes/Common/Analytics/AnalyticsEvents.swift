@@ -51,6 +51,7 @@ class Analytics {
 		
 		//SentCoinPopupScreen
 		case SentCoinPopupViewTransactionButton
+		case SentCoinPopupShareTransactionButton
 		case SentCoinPopupCloseButton
 		
 		//ReceiveScreen

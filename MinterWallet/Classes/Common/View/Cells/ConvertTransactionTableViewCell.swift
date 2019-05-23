@@ -9,8 +9,7 @@
 import UIKit
 import AlamofireImage
 
-
-class ConvertTransactionTableViewCellItem : BaseCellItem {
+class ConvertTransactionTableViewCellItem: BaseCellItem {
 	var txHash: String?
 	var title: String?
 	var image: UIImage?
@@ -22,14 +21,16 @@ class ConvertTransactionTableViewCellItem : BaseCellItem {
 	var amount: Decimal?
 	var expandable: Bool?
 }
-	
-protocol ConvertTransactionTableViewCellDelegate : class {
+
+protocol ConvertTransactionTableViewCellDelegate: class {
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell)
+	func didTapFromButton(cell: ConvertTransactionTableViewCell)
+	func didTapToButton(cell: ConvertTransactionTableViewCell)
 }
-	
+
 class ConvertTransactionTableViewCell: ExpandableCell {
 
-	//MARK: -
+	// MARK: -
 
 	let formatter = CurrencyNumberFormatter.transactionFormatter
 	let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
@@ -38,10 +39,9 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 
 	weak var delegate: ConvertTransactionTableViewCellDelegate?
 
-	//MARK: - IBOutlets
+	// MARK: - IBOutlet
 
 	@IBOutlet weak var title: UILabel!
-
 	@IBOutlet weak var coinImageWrapper: UIView! {
 		didSet {
 			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
@@ -51,27 +51,22 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 	@IBOutlet weak var coinImage: UIImageView! {
 		didSet {
 			coinImage.layer.cornerRadius = 17.0
-			coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .clear, borderWidth: 2.0)
+			coinImage.makeBorderWithCornerRadius(radius: 17.0,
+																					 borderColor: .clear,
+																					 borderWidth: 2.0)
 		}
 	}
 
 	@IBOutlet weak var amount: UILabel!
-
 	@IBOutlet weak var coin: UILabel!
-
-	@IBOutlet weak var fromAddressLabel: UILabel!
-
-	@IBOutlet weak var toAddressLabel: UILabel!
-
+	@IBOutlet weak var fromAddressButton: UIButton!
+	@IBOutlet weak var toAddressButton: UIButton!
 	@IBOutlet weak var expandedAmountLabel: UILabel!
-
 	@IBOutlet weak var coinLabel: UILabel!
-
 	@IBOutlet weak var dateLabel: UILabel!
-
 	@IBOutlet weak var timeLabel: UILabel!
 
-	//MARK: -
+	// MARK: -
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
@@ -85,7 +80,7 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 		super.setSelected(selected, animated: animated)
 	}
 
-	//MARK: -
+	// MARK: -
 
 	override func configure(item: BaseCellItem) {
 		if let transaction = item as? ConvertTransactionTableViewCellItem {
@@ -97,47 +92,42 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 			}
 			if nil == transaction.amount {
 				amount.text = ""
-			}
-			else {
+			} else {
 				amount.text = amountText(amount: transaction.amount ?? 0)
 			}
 			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
-			
-			fromAddressLabel.text = transaction.from
-			toAddressLabel.text = transaction.to
-			expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0), formatter: CurrencyNumberFormatter.coinFormatter)
-			
+
+			fromAddressButton.setTitle(transaction.from, for: .normal)
+			toAddressButton.setTitle(transaction.to, for: .normal)
+
+			expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0),
+																																					formatter: CurrencyNumberFormatter.coinFormatter)
+
 			coinLabel.text = transaction.toCoin
 			dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 			timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
-			
+
 			coin.text = transaction.toCoin
 			expandable = transaction.expandable ?? false
 		}
 	}
 
 	private func amountText(amount: Decimal) -> String {
-		return CurrencyNumberFormatter.formattedDecimal(with: amount, formatter: 	CurrencyNumberFormatter.transactionFormatter)
+		return CurrencyNumberFormatter.formattedDecimal(with: amount,
+																										formatter: 	CurrencyNumberFormatter.transactionFormatter)
 	}
 
-	//MARK: -
+	// MARK: -
 
 	@IBAction func didTapExpandedButton(_ sender: Any) {
 		delegate?.didTapExpandedButton(cell: self)
 	}
 
-	//MARK: -
-
-	override func layoutSubviews() {
-		super.layoutSubviews()
+	@IBAction func didTapFromButton(_ sender: Any) {
+		delegate?.didTapFromButton(cell: self)
 	}
 
-	override func prepareForReuse() {
-		super.prepareForReuse()
-		if expanded {
-			
-		}
-
+	@IBAction func didTapToButton(_ sender: Any) {
+		delegate?.didTapToButton(cell: self)
 	}
-
 }

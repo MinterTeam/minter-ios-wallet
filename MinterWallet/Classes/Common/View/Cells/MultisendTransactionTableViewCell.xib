@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -95,50 +95,55 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mx" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7d1-xV-fP2">
-                                <rect key="frame" x="20" y="37" width="1118" height="18"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="piR-qm-Pug" customClass="TransactionAddressButton" customModule="MinterWallet" customModuleProvider="target">
+                                <rect key="frame" x="20" y="37" width="1138" height="54"/>
                                 <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="9" maxX="20" maxY="27"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapFromButton:" destination="GlX-8G-YbI" eventType="touchUpInside" id="J74-dM-SJo"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u7b-CQ-7wj">
-                                <rect key="frame" x="20" y="73" width="26.5" height="14"/>
+                                <rect key="frame" x="20" y="91" width="26.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16 March 2018" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b4U-wA-Yhh">
-                                <rect key="frame" x="20" y="87.5" width="117" height="18"/>
+                                <rect key="frame" x="20" y="109" width="117" height="18"/>
                                 <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAg-8r-GfV">
-                                <rect key="frame" x="609" y="73" width="27" height="14"/>
+                                <rect key="frame" x="609" y="91" width="27" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18:34:53" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwT-k3-Uau">
-                                <rect key="frame" x="609" y="87.5" width="72" height="18"/>
+                                <rect key="frame" x="609" y="109" width="72" height="18"/>
                                 <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oIu-XP-FKg">
-                                <rect key="frame" x="20" y="123.5" width="44" height="13.5"/>
+                                <rect key="frame" x="20" y="143" width="44" height="13.5"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.55" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftY-fh-hd7">
-                                <rect key="frame" x="20" y="137.5" width="1133" height="18"/>
+                                <rect key="frame" x="20" y="160.5" width="1133" height="18"/>
                                 <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="My9-zP-nmH" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="10" y="171.5" width="1138" height="50"/>
+                                <rect key="frame" x="10" y="194.5" width="1138" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="OqO-Nu-Tho"/>
                                 </constraints>
@@ -154,25 +159,25 @@
                         <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstItem="b4U-wA-Yhh" firstAttribute="leading" secondItem="u7b-CQ-7wj" secondAttribute="leading" id="3O1-bM-lQZ"/>
-                            <constraint firstItem="u7b-CQ-7wj" firstAttribute="top" secondItem="7d1-xV-fP2" secondAttribute="bottom" constant="18" id="Bfd-Z0-9Ov"/>
+                            <constraint firstItem="piR-qm-Pug" firstAttribute="top" secondItem="hoY-UE-EIp" secondAttribute="bottom" constant="4" id="55q-jN-GtZ"/>
+                            <constraint firstItem="piR-qm-Pug" firstAttribute="leading" secondItem="ssB-3c-LY4" secondAttribute="leading" constant="20" id="D7G-GY-NpO"/>
                             <constraint firstItem="My9-zP-nmH" firstAttribute="leading" secondItem="ssB-3c-LY4" secondAttribute="leading" constant="10" id="Erw-BF-kzQ"/>
                             <constraint firstItem="My9-zP-nmH" firstAttribute="top" secondItem="ftY-fh-hd7" secondAttribute="bottom" constant="16" id="Es7-FW-Yrx"/>
-                            <constraint firstItem="ftY-fh-hd7" firstAttribute="top" secondItem="oIu-XP-FKg" secondAttribute="bottom" constant="0.5" id="FEI-vw-JMz"/>
-                            <constraint firstAttribute="trailing" secondItem="7d1-xV-fP2" secondAttribute="trailing" constant="20" id="GO2-SU-p7V"/>
+                            <constraint firstItem="ftY-fh-hd7" firstAttribute="top" secondItem="oIu-XP-FKg" secondAttribute="bottom" constant="4" id="FEI-vw-JMz"/>
                             <constraint firstAttribute="trailing" secondItem="My9-zP-nmH" secondAttribute="trailing" constant="10" id="HYh-gG-ryZ"/>
-                            <constraint firstItem="oIu-XP-FKg" firstAttribute="top" secondItem="b4U-wA-Yhh" secondAttribute="bottom" constant="18" id="J32-ju-dwA"/>
-                            <constraint firstItem="7d1-xV-fP2" firstAttribute="leading" secondItem="hoY-UE-EIp" secondAttribute="leading" id="KSP-GM-fP0"/>
-                            <constraint firstItem="b4U-wA-Yhh" firstAttribute="top" secondItem="u7b-CQ-7wj" secondAttribute="bottom" constant="0.5" id="UgR-Jc-5LB"/>
+                            <constraint firstItem="oIu-XP-FKg" firstAttribute="top" secondItem="b4U-wA-Yhh" secondAttribute="bottom" constant="16" id="J32-ju-dwA"/>
+                            <constraint firstAttribute="trailing" secondItem="piR-qm-Pug" secondAttribute="trailing" id="KrA-v9-csc"/>
+                            <constraint firstItem="u7b-CQ-7wj" firstAttribute="top" secondItem="piR-qm-Pug" secondAttribute="bottom" id="Qul-6u-qRz"/>
+                            <constraint firstItem="b4U-wA-Yhh" firstAttribute="top" secondItem="u7b-CQ-7wj" secondAttribute="bottom" constant="4" id="UgR-Jc-5LB"/>
                             <constraint firstItem="hoY-UE-EIp" firstAttribute="top" secondItem="ssB-3c-LY4" secondAttribute="top" constant="20" id="ZCr-DA-5Sq"/>
                             <constraint firstItem="oIu-XP-FKg" firstAttribute="leading" secondItem="b4U-wA-Yhh" secondAttribute="leading" id="ZmC-Gj-zIa"/>
                             <constraint firstItem="PAg-8r-GfV" firstAttribute="centerY" secondItem="u7b-CQ-7wj" secondAttribute="centerY" id="deI-qL-qHz"/>
                             <constraint firstItem="nwT-k3-Uau" firstAttribute="leading" secondItem="PAg-8r-GfV" secondAttribute="leading" id="dnb-hQ-pDi"/>
                             <constraint firstItem="hoY-UE-EIp" firstAttribute="leading" secondItem="ssB-3c-LY4" secondAttribute="leading" constant="20" id="eSb-7Z-Nij"/>
                             <constraint firstItem="PAg-8r-GfV" firstAttribute="leading" secondItem="ssB-3c-LY4" secondAttribute="centerX" constant="30" id="giW-2U-WKh"/>
-                            <constraint firstItem="7d1-xV-fP2" firstAttribute="top" secondItem="hoY-UE-EIp" secondAttribute="bottom" constant="4" id="iyl-fm-UxU"/>
                             <constraint firstItem="u7b-CQ-7wj" firstAttribute="leading" secondItem="hoY-UE-EIp" secondAttribute="leading" id="jLE-IM-X0j"/>
                             <constraint firstItem="ftY-fh-hd7" firstAttribute="leading" secondItem="oIu-XP-FKg" secondAttribute="leading" id="sTh-GX-gli"/>
-                            <constraint firstItem="nwT-k3-Uau" firstAttribute="top" secondItem="PAg-8r-GfV" secondAttribute="bottom" constant="0.5" id="tv1-S2-Bxn"/>
+                            <constraint firstItem="nwT-k3-Uau" firstAttribute="top" secondItem="PAg-8r-GfV" secondAttribute="bottom" constant="4" id="tv1-S2-Bxn"/>
                             <constraint firstAttribute="trailing" secondItem="ftY-fh-hd7" secondAttribute="trailing" constant="5" id="vDM-Km-Ael"/>
                         </constraints>
                     </view>
@@ -207,11 +212,11 @@
                 <outlet property="dateLabel" destination="b4U-wA-Yhh" id="iLz-xE-aMj"/>
                 <outlet property="detailView" destination="ssB-3c-LY4" id="7Vu-wy-lJU"/>
                 <outlet property="expandedAmountLabel" destination="ftY-fh-hd7" id="3RR-9B-OWE"/>
-                <outlet property="fromAddressLabel" destination="7d1-xV-fP2" id="Cmp-uP-O96"/>
+                <outlet property="fromAddressButton" destination="piR-qm-Pug" id="e8i-UP-eZ3"/>
                 <outlet property="timeLabel" destination="nwT-k3-Uau" id="Z4Y-0g-BUb"/>
                 <outlet property="title" destination="AVV-Rv-Kks" id="EQe-0d-Ing"/>
             </connections>
-            <point key="canvasLocation" x="510" y="153"/>
+            <point key="canvasLocation" x="508.80000000000001" y="152.47376311844079"/>
         </tableViewCell>
     </objects>
 </document>

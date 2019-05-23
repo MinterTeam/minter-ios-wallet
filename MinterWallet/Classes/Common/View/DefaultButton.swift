@@ -12,7 +12,7 @@ import RxSwift
 
 @IBDesignable
 class DefaultButton: UIButton {
-	
+
 	@IBInspectable
 	dynamic open var animateButtonTouch: Bool = true {
 		didSet {
@@ -23,15 +23,15 @@ class DefaultButton: UIButton {
 			}
 		}
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	@IBInspectable var pattern: String? {
 		didSet {
 			self.updateAppearance()
 		}
 	}
-	
+
 	func updateAppearance() {
 
 		if pattern == "blank" {
@@ -66,9 +66,8 @@ class DefaultButton: UIButton {
 		if state == .disabled {
 			clearShadow()
 		}
-		
 	}
-	
+
 	func addShadow() {
 		self.layer.shadowColor = UIColor(hex: 0x502EC2, alpha: 0.3)?.cgColor
 		self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.layer.cornerRadius).cgPath
@@ -92,9 +91,6 @@ class DefaultButton: UIButton {
 		self.layer.cornerRadius = 16.0
 		self.updateAppearance()
 		self.animateButtonTouch = true
-		
-//		self.rx.observe
-		
 	}
 	
 	override func layoutSubviews() {

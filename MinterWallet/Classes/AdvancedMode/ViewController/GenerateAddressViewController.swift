@@ -9,40 +9,38 @@
 import UIKit
 import RxSwift
 
-
 protocol GenerateAddressViewControllerDelegate : class {
 	func GenerateAddressViewControllerDelegateDidAddAccount()
 }
 
-
 class GenerateAddressViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, ButtonTableViewCellDelegate, SwitchTableViewCellDelegate {
-	
-	//MARK: - IBOutlet
-	
+
+	// MARK: - IBOutlet
+
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
 			tableView.rowHeight = UITableViewAutomaticDimension
 			tableView.estimatedRowHeight = 75.0
 		}
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	var viewModel = GenerateAddressViewModel()
-	
+
 	private var disposeBag = DisposeBag()
-	
+
 	weak var delegate: GenerateAddressViewControllerDelegate?
-	
-	//MARK: -
+
+	// MARK: -
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+
 		self.title = viewModel.title
-		
+
 		registerCells()
-		
+
 		viewModel.proceedAvailable.asObservable().subscribe(onNext: { [weak self] (val) in
 			if let cell = self?.tableView.cellForRow(at: IndexPath(row: 7, section: 0)) as? ButtonTableViewCell {
 				cell.button.isEnabled = val
@@ -54,21 +52,20 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 	}
-	
-	//MARK: - TableView
+
+	// MARK: - TableView
 
 	private func registerCells() {
-		
+
 		tableView.register(UINib(nibName: "GenerateAddressSeedTableViewCell", bundle: nil), forCellReuseIdentifier: "GenerateAddressSeedTableViewCell")
 		tableView.register(UINib(nibName: "GenerateAddressLabelTableViewCell", bundle: nil), forCellReuseIdentifier: "GenerateAddressLabelTableViewCell")
 		tableView.register(UINib(nibName: "SettingsSwitchTableViewCell", bundle: nil), forCellReuseIdentifier: "SettingsSwitchTableViewCell")
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
 		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil), forCellReuseIdentifier: "BlankTableViewCell")
-		
 	}
 
-	//MARK: -
+	// MARK: -
 
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return viewModel.sectionsCount()
@@ -79,11 +76,11 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
+
 		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
 			return UITableViewCell()
 		}
-		
+
 		cell.configure(item: item)
 		
 		if let buttonCell = cell as? ButtonTableViewCell {
@@ -92,32 +89,31 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 		if let switchCell = cell as? SwitchTableViewCell {
 			switchCell.delegate = self
 		}
-		
+
 		return cell
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		
+
 		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
 			return
 		}
 
 	}
 
-	//MARK: - ButtonTableViewCellDelegate
-	
+	// MARK: - ButtonTableViewCellDelegate
+
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-		
+
 		SoundHelper.playSoundIfAllowed(type: .click)
-		
+
 		viewModel.activate()
-		
+
 		delegate?.GenerateAddressViewControllerDelegateDidAddAccount()
-		
 	}
-	
-	//MARK: - SwitchTableViewCellDelegate
-	
+
+	// MARK: - SwitchTableViewCellDelegate
+
 	func didSwitch(isOn: Bool, cell: SwitchTableViewCell) {
 		viewModel.setMnemonicChecked(isChecked: isOn)
 	}

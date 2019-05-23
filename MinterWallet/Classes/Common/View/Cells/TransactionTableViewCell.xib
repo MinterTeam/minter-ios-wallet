@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -88,79 +88,78 @@
                         <rect key="frame" x="0.0" y="54" width="320" height="400.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SvH-5w-0eX">
-                                <rect key="frame" x="20" y="74" width="13.5" height="14"/>
+                                <rect key="frame" x="20" y="92" width="13.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mx" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vPZ-3A-S6I">
-                                <rect key="frame" x="20" y="92" width="280" height="18"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="0Lm-yT-IzK" customClass="TransactionAddressButton" customModule="MinterWallet" customModuleProvider="target">
+                                <rect key="frame" x="20" y="110" width="300" height="54"/>
                                 <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="9" maxX="20" maxY="27"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" red="0.31372549019607843" green="0.1803921568627451" blue="0.76078431372549016" alpha="1" colorSpace="deviceRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapToButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Voe-Rx-T4q"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D6F-fZ-xAm">
-                                <rect key="frame" x="20" y="20" width="28.5" height="14"/>
+                                <rect key="frame" x="20" y="20" width="28" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mx" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PiN-if-Tc6">
-                                <rect key="frame" x="20" y="38" width="280" height="18"/>
-                                <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eun-Fx-e9f">
-                                <rect key="frame" x="20" y="176.5" width="24.5" height="14"/>
+                                <rect key="frame" x="20" y="216" width="25" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.55" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LGm-mH-vX2">
-                                <rect key="frame" x="20" y="239.5" width="32" height="18"/>
+                                <rect key="frame" x="20" y="286" width="32" height="18"/>
                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16 March 2018" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waT-d7-hOy">
-                                <rect key="frame" x="20" y="142.5" width="108" height="18"/>
+                                <rect key="frame" x="20" y="182" width="108" height="18"/>
                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18:34:53" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ihi-fg-pO4">
-                                <rect key="frame" x="190" y="142.5" width="63.5" height="18"/>
+                                <rect key="frame" x="190" y="182" width="63.5" height="18"/>
                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xb0-6a-Pfp">
-                                <rect key="frame" x="20" y="225" width="44" height="14"/>
+                                <rect key="frame" x="20" y="268" width="44" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GnC-WK-naU">
-                                <rect key="frame" x="190" y="128" width="27" height="14"/>
+                                <rect key="frame" x="190" y="164" width="27" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MCD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8s8-pC-0Qz">
-                                <rect key="frame" x="20" y="191" width="36" height="18"/>
+                                <rect key="frame" x="20" y="234" width="36" height="18"/>
                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ET-1I-DW9">
-                                <rect key="frame" x="20" y="128" width="26.5" height="14"/>
+                                <rect key="frame" x="20" y="164" width="26.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufu-IR-SAD" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="10" y="273.5" width="300" height="50"/>
+                                <rect key="frame" x="10" y="320" width="300" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Z3P-yv-Iwb"/>
                                 </constraints>
@@ -172,39 +171,50 @@
                                     <action selector="didTapExpandedButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="s6s-wi-Zjq"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="7vp-L0-p2z" customClass="TransactionAddressButton" customModule="MinterWallet" customModuleProvider="target">
+                                <rect key="frame" x="20" y="38" width="300" height="54"/>
+                                <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="9" maxX="20" maxY="27"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapFromButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="m7D-dB-4tJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
-                            <constraint firstItem="vPZ-3A-S6I" firstAttribute="top" secondItem="SvH-5w-0eX" secondAttribute="bottom" constant="4" id="08t-NA-OLD"/>
-                            <constraint firstAttribute="trailing" secondItem="vPZ-3A-S6I" secondAttribute="trailing" constant="20" id="3F6-fa-pbn"/>
+                            <constraint firstAttribute="trailing" secondItem="7vp-L0-p2z" secondAttribute="trailing" id="0kd-cv-wI9"/>
                             <constraint firstAttribute="trailing" secondItem="ufu-IR-SAD" secondAttribute="trailing" constant="10" id="7q8-QA-NwD"/>
+                            <constraint firstItem="7vp-L0-p2z" firstAttribute="leading" secondItem="pW1-3w-baO" secondAttribute="leading" constant="20" id="9y2-GT-8u9"/>
                             <constraint firstItem="1ET-1I-DW9" firstAttribute="leading" secondItem="D6F-fZ-xAm" secondAttribute="leading" id="B82-dx-bB6"/>
                             <constraint firstItem="LGm-mH-vX2" firstAttribute="leading" secondItem="Xb0-6a-Pfp" secondAttribute="leading" id="Bhb-UW-pGQ"/>
                             <constraint firstItem="8s8-pC-0Qz" firstAttribute="leading" secondItem="eun-Fx-e9f" secondAttribute="leading" id="Bsg-pK-cEu"/>
-                            <constraint firstAttribute="trailing" secondItem="PiN-if-Tc6" secondAttribute="trailing" constant="20" id="C0k-ya-0HS"/>
-                            <constraint firstItem="Ihi-fg-pO4" firstAttribute="top" secondItem="GnC-WK-naU" secondAttribute="bottom" constant="0.5" id="Gia-TC-gLU"/>
-                            <constraint firstItem="PiN-if-Tc6" firstAttribute="top" secondItem="D6F-fZ-xAm" secondAttribute="bottom" constant="4" id="HSf-hj-RGo"/>
+                            <constraint firstItem="0Lm-yT-IzK" firstAttribute="leading" secondItem="pW1-3w-baO" secondAttribute="leading" constant="20" id="ETP-c8-mSJ"/>
+                            <constraint firstItem="Ihi-fg-pO4" firstAttribute="top" secondItem="GnC-WK-naU" secondAttribute="bottom" constant="4" id="Gia-TC-gLU"/>
                             <constraint firstItem="SvH-5w-0eX" firstAttribute="leading" secondItem="D6F-fZ-xAm" secondAttribute="leading" id="I5D-xu-GWL"/>
                             <constraint firstAttribute="height" id="NUu-HM-SLH"/>
-                            <constraint firstItem="vPZ-3A-S6I" firstAttribute="leading" secondItem="SvH-5w-0eX" secondAttribute="leading" id="Pkv-EZ-4kl"/>
+                            <constraint firstItem="1ET-1I-DW9" firstAttribute="top" secondItem="0Lm-yT-IzK" secondAttribute="bottom" id="OlW-nx-kQT"/>
                             <constraint firstItem="eun-Fx-e9f" firstAttribute="leading" secondItem="1ET-1I-DW9" secondAttribute="leading" id="PpT-02-c8Z"/>
                             <constraint firstItem="eun-Fx-e9f" firstAttribute="top" secondItem="waT-d7-hOy" secondAttribute="bottom" constant="16" id="Riv-g6-QoY"/>
                             <constraint firstItem="ufu-IR-SAD" firstAttribute="top" secondItem="LGm-mH-vX2" secondAttribute="bottom" constant="16" id="TVy-ke-M5c"/>
                             <constraint firstItem="Ihi-fg-pO4" firstAttribute="leading" secondItem="GnC-WK-naU" secondAttribute="leading" id="UHE-pS-r3F"/>
+                            <constraint firstItem="SvH-5w-0eX" firstAttribute="top" secondItem="7vp-L0-p2z" secondAttribute="bottom" id="XRU-uW-9ki"/>
                             <constraint firstItem="waT-d7-hOy" firstAttribute="leading" secondItem="1ET-1I-DW9" secondAttribute="leading" id="ZmT-W1-rek"/>
-                            <constraint firstItem="1ET-1I-DW9" firstAttribute="top" secondItem="vPZ-3A-S6I" secondAttribute="bottom" constant="18" id="a29-WQ-qlq"/>
-                            <constraint firstItem="SvH-5w-0eX" firstAttribute="top" secondItem="PiN-if-Tc6" secondAttribute="bottom" constant="18" id="d1f-P0-RR0"/>
+                            <constraint firstItem="0Lm-yT-IzK" firstAttribute="top" secondItem="SvH-5w-0eX" secondAttribute="bottom" constant="4" id="duc-Od-kNa"/>
                             <constraint firstItem="D6F-fZ-xAm" firstAttribute="leading" secondItem="pW1-3w-baO" secondAttribute="leading" constant="20" id="dx4-M5-ks2"/>
-                            <constraint firstItem="LGm-mH-vX2" firstAttribute="top" secondItem="Xb0-6a-Pfp" secondAttribute="bottom" constant="0.5" id="frz-Rc-5cN"/>
+                            <constraint firstItem="LGm-mH-vX2" firstAttribute="top" secondItem="Xb0-6a-Pfp" secondAttribute="bottom" constant="4" id="frz-Rc-5cN"/>
+                            <constraint firstAttribute="trailing" secondItem="0Lm-yT-IzK" secondAttribute="trailing" id="hI5-6U-22K"/>
+                            <constraint firstItem="7vp-L0-p2z" firstAttribute="top" secondItem="D6F-fZ-xAm" secondAttribute="bottom" constant="4" id="hXZ-ef-Vtf"/>
                             <constraint firstItem="GnC-WK-naU" firstAttribute="leading" secondItem="pW1-3w-baO" secondAttribute="centerX" constant="30" id="jC0-ja-nI0"/>
-                            <constraint firstItem="8s8-pC-0Qz" firstAttribute="top" secondItem="eun-Fx-e9f" secondAttribute="bottom" constant="0.5" id="oEO-do-c3m"/>
+                            <constraint firstItem="8s8-pC-0Qz" firstAttribute="top" secondItem="eun-Fx-e9f" secondAttribute="bottom" constant="4" id="oEO-do-c3m"/>
                             <constraint firstItem="Xb0-6a-Pfp" firstAttribute="top" secondItem="8s8-pC-0Qz" secondAttribute="bottom" constant="16" id="qUy-bo-Gpx"/>
                             <constraint firstItem="Xb0-6a-Pfp" firstAttribute="leading" secondItem="eun-Fx-e9f" secondAttribute="leading" id="syG-84-pwO"/>
                             <constraint firstItem="ufu-IR-SAD" firstAttribute="leading" secondItem="pW1-3w-baO" secondAttribute="leading" constant="10" id="tJa-6H-PMu"/>
                             <constraint firstItem="D6F-fZ-xAm" firstAttribute="top" secondItem="pW1-3w-baO" secondAttribute="top" constant="20" id="tNB-9Y-2ek"/>
-                            <constraint firstItem="PiN-if-Tc6" firstAttribute="leading" secondItem="D6F-fZ-xAm" secondAttribute="leading" id="tuk-20-nwf"/>
                             <constraint firstItem="GnC-WK-naU" firstAttribute="centerY" secondItem="1ET-1I-DW9" secondAttribute="centerY" id="u48-C4-cTN"/>
-                            <constraint firstItem="waT-d7-hOy" firstAttribute="top" secondItem="1ET-1I-DW9" secondAttribute="bottom" constant="0.5" id="xHl-JS-O8d"/>
+                            <constraint firstItem="waT-d7-hOy" firstAttribute="top" secondItem="1ET-1I-DW9" secondAttribute="bottom" constant="4" id="xHl-JS-O8d"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -243,13 +253,13 @@
                 <outlet property="dateLabel" destination="waT-d7-hOy" id="Ymg-S6-aDR"/>
                 <outlet property="detailView" destination="pW1-3w-baO" id="pvE-lH-EfO"/>
                 <outlet property="expandedAmountLabel" destination="LGm-mH-vX2" id="MS4-Oi-us5"/>
-                <outlet property="fromAddressLabel" destination="PiN-if-Tc6" id="k8q-Wi-cKI"/>
+                <outlet property="fromAddressButton" destination="7vp-L0-p2z" id="YBP-MH-Wdo"/>
                 <outlet property="heightCoinstraint" destination="NUu-HM-SLH" id="gQH-pH-Xih"/>
                 <outlet property="timeLabel" destination="Ihi-fg-pO4" id="Cao-E3-Sxw"/>
                 <outlet property="title" destination="QCK-HX-lCr" id="1YS-TV-HvE"/>
-                <outlet property="toAddressLabel" destination="vPZ-3A-S6I" id="uiK-mq-nfu"/>
+                <outlet property="toAddressButton" destination="0Lm-yT-IzK" id="Ea2-6t-mID"/>
             </connections>
-            <point key="canvasLocation" x="32" y="366.5"/>
+            <point key="canvasLocation" x="32" y="365.66716641679164"/>
         </tableViewCell>
     </objects>
 </document>

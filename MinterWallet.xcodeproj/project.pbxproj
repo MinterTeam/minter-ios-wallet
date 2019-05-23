@@ -79,6 +79,8 @@
 		FA17817D21F73E4200FECDED /* InfoManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817C21F73E4200FECDED /* InfoManager+Rx.swift */; };
 		FA17817F21F8789200FECDED /* RawTransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817E21F8789200FECDED /* RawTransactionBuilder.swift */; };
 		FA18359F220B141C00310CAF /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA18359E220B141C00310CAF /* Validators.swift */; };
+		FA294E9A2294012D00382D82 /* ActivityRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA294E992294012D00382D82 /* ActivityRouter.swift */; };
+		FA294E9B2294012D00382D82 /* ActivityRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA294E992294012D00382D82 /* ActivityRouter.swift */; };
 		FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */; };
 		FA2F56B8210B31E1002C72DC /* AccordionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */; };
 		FA2F56BA210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */; };
@@ -443,6 +445,14 @@
 		FAA2608620946456009FF3DE /* UIViewController+HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608520946456009FF3DE /* UIViewController+HideKeyboard.swift */; };
 		FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */; };
 		FAA2608B2094ABA7009FF3DE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */; };
+		FAA2AAE12296C5BE00581D47 /* TransactionTitleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE02296C5BE00581D47 /* TransactionTitleHelper.swift */; };
+		FAA2AAE22296C5BE00581D47 /* TransactionTitleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE02296C5BE00581D47 /* TransactionTitleHelper.swift */; };
+		FAA2AAE42296C7F100581D47 /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE32296C7F100581D47 /* String+Subscript.swift */; };
+		FAA2AAE52296C7F100581D47 /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE32296C7F100581D47 /* String+Subscript.swift */; };
+		FAA2AAE72296CE4100581D47 /* BannerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE62296CE4100581D47 /* BannerHelper.swift */; };
+		FAA2AAE82296CE4100581D47 /* BannerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE62296CE4100581D47 /* BannerHelper.swift */; };
+		FAA2AAEA2296E42300581D47 /* TransactionAddressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */; };
+		FAA2AAEB2296E42300581D47 /* TransactionAddressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */; };
 		FAA3DD09211358BF0054D27E /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3DD08211358BF0054D27E /* ReachabilityService.swift */; };
 		FAB61CFA213D341F002762A7 /* Decimal+Fractional.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB61CF8213D3396002762A7 /* Decimal+Fractional.swift */; };
 		FAB7AA1720F600230003D0DE /* ConvertTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB7AA1520F600230003D0DE /* ConvertTransactionTableViewCell.swift */; };
@@ -594,6 +604,7 @@
 		FA17817E21F8789200FECDED /* RawTransactionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionBuilder.swift; sourceTree = "<group>"; };
 		FA18359E220B141C00310CAF /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
 		FA1835A0220C7D8A00310CAF /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
+		FA294E992294012D00382D82 /* ActivityRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRouter.swift; sourceTree = "<group>"; };
 		FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTextViewTableViewCell1.xib; sourceTree = "<group>"; };
 		FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AlamofireCache.swift"; sourceTree = "<group>"; };
 		FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDateFormatter.swift; sourceTree = "<group>"; };
@@ -732,6 +743,10 @@
 		FAA2608520946456009FF3DE /* UIViewController+HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+HideKeyboard.swift"; sourceTree = "<group>"; };
 		FAA2608820946943009FF3DE /* CurrencyNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyNumberFormatter.swift; sourceTree = "<group>"; };
 		FAA2608A2094ABA7009FF3DE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		FAA2AAE02296C5BE00581D47 /* TransactionTitleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTitleHelper.swift; sourceTree = "<group>"; };
+		FAA2AAE32296C7F100581D47 /* String+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Subscript.swift"; sourceTree = "<group>"; };
+		FAA2AAE62296CE4100581D47 /* BannerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerHelper.swift; sourceTree = "<group>"; };
+		FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAddressButton.swift; sourceTree = "<group>"; };
 		FAA3DD06211358600054D27E /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		FAA3DD08211358BF0054D27E /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
 		FAB61CF8213D3396002762A7 /* Decimal+Fractional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Fractional.swift"; sourceTree = "<group>"; };
@@ -1710,6 +1725,9 @@
 				FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */,
 				FADD8F2021930B2300463F66 /* SoundHelper.swift */,
 				FA77578021B92B20006CE586 /* Decimal+Flaoting.swift */,
+				FAA2AAE02296C5BE00581D47 /* TransactionTitleHelper.swift */,
+				FAA2AAE32296C7F100581D47 /* String+Subscript.swift */,
+				FAA2AAE62296CE4100581D47 /* BannerHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1728,6 +1746,7 @@
 				FAA2607720933984009FF3DE /* GrowingDefaultTextView.swift */,
 				FA3154AD20B851F7005D9F21 /* GroupedPickerView.swift */,
 				FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */,
+				FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1764,6 +1783,7 @@
 			isa = PBXGroup;
 			children = (
 				FA669BD8207267DA00AD110A /* BaseRouter.swift */,
+				FA294E992294012D00382D82 /* ActivityRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -2585,6 +2605,7 @@
 				FA332FF7224A4B3C003B4763 /* QRCodeReaderResult.swift in Sources */,
 				FA332FF8224A4B3C003B4763 /* AppSettingsManager.swift in Sources */,
 				FA332FF9224A4B3C003B4763 /* SwitchCameraButton.swift in Sources */,
+				FAA2AAE72296CE4100581D47 /* BannerHelper.swift in Sources */,
 				FA332FFA224A4B3C003B4763 /* GateManager.swift in Sources */,
 				FA332FFB224A4B3C003B4763 /* BaseViewController.swift in Sources */,
 				FA332FFC224A4B3C003B4763 /* Toucan.swift in Sources */,
@@ -2620,6 +2641,7 @@
 				FA33301A224A4B3C003B4763 /* TransactionExpandedTableViewCell.swift in Sources */,
 				FA33301B224A4B3C003B4763 /* CoinManager+Rx.swift in Sources */,
 				FA33301C224A4B3C003B4763 /* GenerateAddressViewModel.swift in Sources */,
+				FAA2AAEA2296E42300581D47 /* TransactionAddressButton.swift in Sources */,
 				FA33301D224A4B3C003B4763 /* SentPopupViewModel.swift in Sources */,
 				FA33301E224A4B3C003B4763 /* InfoManager+Rx.swift in Sources */,
 				FA33301F224A4B3C003B4763 /* UIView+Roundify.swift in Sources */,
@@ -2627,11 +2649,13 @@
 				FA333021224A4B3C003B4763 /* QRCodeReaderViewController.swift in Sources */,
 				FA333022224A4B3C003B4763 /* GenerateAddressSeedTableViewCell.swift in Sources */,
 				FA333023224A4B3C003B4763 /* AuthManager+Rx.swift in Sources */,
+				FA294E9A2294012D00382D82 /* ActivityRouter.swift in Sources */,
 				FA333024224A4B3C003B4763 /* TransactionsViewModel.swift in Sources */,
 				FA333025224A4B3C003B4763 /* GrowingDefaultTextView.swift in Sources */,
 				FA333026224A4B3C003B4763 /* SessionAddressSyncer.swift in Sources */,
 				FA333027224A4B3C003B4763 /* SettingsSwitchTableViewCell.swift in Sources */,
 				FA333028224A4B3C003B4763 /* SendViewController.swift in Sources */,
+				FAA2AAE12296C5BE00581D47 /* TransactionTitleHelper.swift in Sources */,
 				FA333029224A4B3C003B4763 /* SendViewModel.swift in Sources */,
 				FA33302A224A4B3C003B4763 /* NextGrowingTextView.swift in Sources */,
 				FA33302B224A4B3C003B4763 /* AccordionTableViewController.swift in Sources */,
@@ -2659,6 +2683,7 @@
 				FA333041224A4B3C003B4763 /* String+Random.swift in Sources */,
 				FA333042224A4B3C003B4763 /* AddressViewController.swift in Sources */,
 				FA333043224A4B3C003B4763 /* AddressViewModel.swift in Sources */,
+				FAA2AAE42296C7F100581D47 /* String+Subscript.swift in Sources */,
 				FA333044224A4B3C003B4763 /* LoadingTableViewCell.swift in Sources */,
 				FA333045224A4B3C003B4763 /* Manager+Default.swift in Sources */,
 				FA333046224A4B3C003B4763 /* SentPopupViewController.swift in Sources */,
@@ -2770,6 +2795,7 @@
 				FA0F296921B1740800E10F5E /* QRCodeReaderResult.swift in Sources */,
 				FA531E2E219B1F1900A7AD9F /* AppSettingsManager.swift in Sources */,
 				FA0F296621B1740800E10F5E /* SwitchCameraButton.swift in Sources */,
+				FAA2AAE82296CE4100581D47 /* BannerHelper.swift in Sources */,
 				FA83186621F8C268007F268D /* GateManager.swift in Sources */,
 				FA669B9E207244FF00AD110A /* BaseViewController.swift in Sources */,
 				FA0F296E21B1773A00E10F5E /* Toucan.swift in Sources */,
@@ -2805,6 +2831,7 @@
 				FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */,
 				FA83186A21FF003F007F268D /* CoinManager+Rx.swift in Sources */,
 				FAA2607C209355BD009FF3DE /* GenerateAddressViewModel.swift in Sources */,
+				FAA2AAEB2296E42300581D47 /* TransactionAddressButton.swift in Sources */,
 				FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */,
 				FA17817D21F73E4200FECDED /* InfoManager+Rx.swift in Sources */,
 				FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */,
@@ -2812,11 +2839,13 @@
 				FA0F296721B1740800E10F5E /* QRCodeReaderViewController.swift in Sources */,
 				FAA2608320935E8B009FF3DE /* GenerateAddressSeedTableViewCell.swift in Sources */,
 				FA17816F21EF455300FECDED /* AuthManager+Rx.swift in Sources */,
+				FA294E9B2294012D00382D82 /* ActivityRouter.swift in Sources */,
 				1091290DC26B4D7128B4DA92 /* TransactionsViewModel.swift in Sources */,
 				FAA2607820933984009FF3DE /* GrowingDefaultTextView.swift in Sources */,
 				FA7935FB20D30B710012642E /* SessionAddressSyncer.swift in Sources */,
 				FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */,
 				D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */,
+				FAA2AAE22296C5BE00581D47 /* TransactionTitleHelper.swift in Sources */,
 				EFCE6415FD145CE2E62EF813 /* SendViewModel.swift in Sources */,
 				FA0AF8DD21B5297E000B571B /* NextGrowingTextView.swift in Sources */,
 				FA2F56B8210B31E1002C72DC /* AccordionTableViewController.swift in Sources */,
@@ -2844,6 +2873,7 @@
 				FA8AE85D20AC638900F26E11 /* String+Random.swift in Sources */,
 				550C26104C6471B011F52123 /* AddressViewController.swift in Sources */,
 				1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */,
+				FAA2AAE52296C7F100581D47 /* String+Subscript.swift in Sources */,
 				FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */,
 				FA01604220B4533B00746B51 /* Manager+Default.swift in Sources */,
 				FA7A9BF820BED28900E3CCDA /* SentPopupViewController.swift in Sources */,

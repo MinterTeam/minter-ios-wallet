@@ -10,7 +10,6 @@ import UIKit
 import AlamofireImage
 
 class MultisendTransactionTableViewCellItem : BaseCellItem {
-
 	var txHash: String?
 	var title: String?
 	var image: URL?
@@ -24,6 +23,7 @@ class MultisendTransactionTableViewCellItem : BaseCellItem {
 
 protocol MultisendTransactionTableViewCellDelegate : class {
 	func didTapExpandedButton(cell: MultisendTransactionTableViewCell)
+	func didTapFromButton(cell: MultisendTransactionTableViewCell)
 }
 
 class MultisendTransactionTableViewCell: ExpandableCell {
@@ -42,31 +42,28 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 	// MARK: - IBOutlets
 
 	@IBOutlet weak var title: UILabel!
-
 	@IBOutlet weak var coinImageWrapper: UIView! {
 		didSet {
-			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
+			coinImageWrapper.layer
+				.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!,
+													 alpha: 1,
+													 x: 0,
+													 y: 2,
+													 blur: 18,
+													 spread: 0)
 		}
 	}
-
 	@IBOutlet weak var coinImage: UIImageView! {
 		didSet {
 			coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .clear, borderWidth: 2.0)
 		}
 	}
-
 	@IBOutlet weak var amountTitleLabel: UILabel!
-
 	@IBOutlet weak var amount: UILabel!
-
 	@IBOutlet weak var coin: UILabel!
-
-	@IBOutlet weak var fromAddressLabel: UILabel!
-
+	@IBOutlet weak var fromAddressButton: UIButton!
 	@IBOutlet weak var expandedAmountLabel: UILabel!
-
 	@IBOutlet weak var dateLabel: UILabel!
-
 	@IBOutlet weak var timeLabel: UILabel!
 
 	// MARK: -
@@ -89,7 +86,7 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 		amountTitleLabel.alpha = 1.0
 		if let transaction = item as? MultisendTransactionTableViewCellItem {
 			identifier = item.identifier
-			title.text = transaction.title
+			title.text = TransactionTitleHelper.title(from: transaction.title ?? "")
 			coinImage.image = UIImage(named: "AvatarPlaceholderImage")
 			if let url = transaction.image {
 				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 17.0))
@@ -97,7 +94,8 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 			amount.text = amountText(amount: transaction.amount)
 			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
 
-			fromAddressLabel.text = transaction.from
+			fromAddressButton.setTitle(transaction.from, for: .normal)
+
 			if transaction.amount == nil {
 				expandedAmountLabel.text = ""
 				amountTitleLabel.alpha = 0.0
@@ -129,6 +127,10 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 
 	@IBAction func didTapExpandedButton(_ sender: Any) {
 		delegate?.didTapExpandedButton(cell: self)
+	}
+
+	@IBAction func didTapFromButton(_ sender: Any) {
+		delegate?.didTapFromButton(cell: self)
 	}
 
 	// MARK: -

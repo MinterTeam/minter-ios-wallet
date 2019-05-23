@@ -148,6 +148,11 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 					items[sectionIdentifier]?.append(transactionCellItem)
 					items[sectionIdentifier]?.append(separator)
 				}
+			} else if transaction.type == .redeemCheck {
+				if let transactionCellItem = self.redeemCheckTransactionItem(with: item) {
+					items[sectionIdentifier]?.append(transactionCellItem)
+					items[sectionIdentifier]?.append(separator)
+				}
 			}
 		})
 		

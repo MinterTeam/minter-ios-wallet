@@ -26,28 +26,52 @@ protocol ControllerType: class {
 //	static func create(with viewModel: ViewModelType) -> UIViewController
 }
 
-class BaseViewController : UIViewController {
+protocol UIImpactFeedbackProtocol {
+
+	var hardImpactFeedbackGenerator: UIImpactFeedbackGenerator { get }
+	var lightImpactFeedbackGenerator: UIImpactFeedbackGenerator { get }
+
+	func performLightImpact()
 	
+	func performHardImpact()
+}
+
+extension UIImpactFeedbackProtocol {
+
+	func performLightImpact() {
+		self.lightImpactFeedbackGenerator.prepare()
+		self.lightImpactFeedbackGenerator.impactOccurred()
+	}
+
+	func performHardImpact() {
+		self.hardImpactFeedbackGenerator.prepare()
+		self.hardImpactFeedbackGenerator.impactOccurred()
+	}
+
+}
+
+class BaseViewController: UIViewController, UIImpactFeedbackProtocol {
+
 	let hardImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
 	let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-	
+
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
-	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 	}
-	
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
+
 		self.setNeedsStatusBarAppearanceUpdate()
 	}
 
 }
 
-class BaseTableViewController : AccordionTableViewController {
+class BaseTableViewController: AccordionTableViewController, UIImpactFeedbackProtocol {
 	
 	let hardImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
 	let lightImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)

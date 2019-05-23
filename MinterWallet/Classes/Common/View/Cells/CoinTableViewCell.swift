@@ -9,9 +9,7 @@
 import UIKit
 import AlamofireImage
 
-
 class CoinTableViewCellItem : BaseCellItem {
-	
 	var title: String?
 	var image: UIImage?
 	var imageURL: URL?
@@ -20,48 +18,37 @@ class CoinTableViewCellItem : BaseCellItem {
 	var amount: Decimal?
 }
 
-
 class CoinTableViewCell: BaseCell {
-	
-	//MARK: -
+
+	// MARK: -
 	
 	private let formatter = CurrencyNumberFormatter.coinFormatter
-	
-	//MARK: - IBOutlets
+
+	// MARK: - IBOutlet
 
 	@IBOutlet weak var title: UILabel!
-	
 	@IBOutlet weak var coinImage: UIImageView! {
 		didSet {
 			coinImage.makeBorderWithCornerRadius(radius: 17, borderColor: .clear, borderWidth: 2)
 		}
 	}
-	
 	@IBOutlet weak var amount: UILabel!
-	
 	@IBOutlet weak var coin: UILabel!
-	
 	@IBOutlet weak var amountLeadingConstraint: NSLayoutConstraint! {
 		didSet {
 			amountLeadingConstraints = amountLeadingConstraint
 		}
 	}
 	var amountLeadingConstraints: NSLayoutConstraint?
-	
 	@IBOutlet weak var amountBottomConstraint: NSLayoutConstraint!
-	
 	@IBOutlet weak var coinImageWrapper: UIView! {
 		didSet {
 			coinImageWrapper.backgroundColor = .clear
 			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
 		}
 	}
-	
-	
 	private var isShowingCoin = false
-	
 	@IBAction func didTapCell(_ sender: Any) {
-		
 		if self.title.frame.width > self.amount.frame.width {
 			return
 		}
@@ -77,9 +64,7 @@ class CoinTableViewCell: BaseCell {
 			}) { [weak self] (finished) in
 				self?.isShowingCoin = true
 			}
-		}
-		else {
-			
+		} else {
 				amount.adjustsFontSizeToFitWidth = false
 				self.amountLeadingConstraint?.isActive = true
 				UIView.animate(withDuration: 0.2, animations: { [weak self] in
@@ -89,8 +74,6 @@ class CoinTableViewCell: BaseCell {
 					self?.isShowingCoin = false
 				}
 		}
-		
-		
 	}
 	
 	//MARK: -

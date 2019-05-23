@@ -348,6 +348,46 @@ class MinterWalletUITests: XCTestCase {
 //		}
 	}
 	
+		func testMnemonics() {
+
+			let app = self.app!
+			app.buttons["ADVANCED MODE"].tap()
+			app.buttons["GENERATE ADDRESS"].tap()
+			
+			let app2 = app
+			app2.tables/*@START_MENU_TOKEN@*/.buttons["Copy"]/*[[".cells.buttons[\"Copy\"]",".buttons[\"Copy\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+			let textView = app.webViews.otherElements["BIP39 - Mnemonic Code"].children(matching: .other).element(boundBy: 4).children(matching: .textView).element(boundBy: 0)
+			textView.tap()
+			var text = UIPasteboard.general.string ?? ""
+			print("-----TEST STARTED----")
+			print(text)
+//			text = "forget token answer whip crowd faith inquiry size secret reopen cabbage also"
+			textView.typeText(text)
+			
+			
+			let element = XCUIApplication().webViews.otherElements["BIP39 - Mnemonic Code"].children(matching: .other).element(boundBy: 4)
+			XCUIApplication().webViews.otherElements["BIP39 - Mnemonic Code"].children(matching: .other).element(boundBy: 4).children(matching: .textView).element(boundBy: 2).tap()
+			let val = element.children(matching: .textView).element(boundBy: 2).value as? String
+			if (val ?? "") == "" {
+				print("MNEMONICS: " + text)
+				print("MNEMONICS: -----TEST ENDED FAILED----")
+				fatalError(val ?? "")
+			} else {
+				print("MNEMONICS: " + text)
+				print("MNEMONICS: Seed:" + (val ?? ""))
+				print("MNEMONICS: -----TEST ENDED SUC----")
+			}
+
+			app.navigationBars["Generate Address"].buttons["Back"].tap()
+			app.navigationBars["Advanced Mode"].buttons["Back"].tap()
+	}
+	
+	func testMnemonicsAgain() {
+		for _ in 0...10000 {
+			testMnemonics()
+		}
+	}
+	
 	func testConvertCoinGet() {
 		loginAdvancedMode()
 			

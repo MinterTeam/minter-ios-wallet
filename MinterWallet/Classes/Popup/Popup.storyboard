@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fsb-YM-YKJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fsb-YM-YKJ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,10 +33,10 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dc8-FK-Mm0" customClass="DroppableView" customModule="MinterWallet" customModuleProvider="target">
-                                            <rect key="frame" x="27.5" y="104" width="320" height="379"/>
+                                            <rect key="frame" x="27.5" y="103.5" width="320" height="380.5"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tV1-KQ-pfy">
-                                                    <rect key="frame" x="10" y="10" width="300" height="359"/>
+                                                    <rect key="frame" x="10" y="10" width="300" height="360.5"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d66-Ev-bW4">
                                                             <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
@@ -57,19 +57,19 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.245 BIP" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cv6-0d-M6o">
-                                                            <rect key="frame" x="5" y="80" width="290" height="27"/>
+                                                            <rect key="frame" x="5" y="80" width="290" height="28"/>
                                                             <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="24"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="to" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zZ9-w6-FEV">
-                                                            <rect key="frame" x="143" y="117" width="14" height="16"/>
+                                                            <rect key="frame" x="144" y="118" width="12.5" height="16"/>
                                                             <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rer-ZR-RJL">
-                                                            <rect key="frame" x="125" y="143" width="50" height="50"/>
+                                                            <rect key="frame" x="125" y="144" width="50" height="50"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AvatarPlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="e9J-AW-NRL">
                                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -88,13 +88,13 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0wF-bw-Idp">
-                                                            <rect key="frame" x="25" y="203" width="250" height="16"/>
+                                                            <rect key="frame" x="25" y="204" width="250" height="16.5"/>
                                                             <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yhr-iR-Vgl" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                                            <rect key="frame" x="10" y="239" width="280" height="50"/>
+                                                            <rect key="frame" x="10" y="240.5" width="280" height="50"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="50" id="umC-Cq-Syk"/>
                                                             </constraints>
@@ -107,7 +107,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sV6-os-OKN" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                                            <rect key="frame" x="10" y="299" width="280" height="50"/>
+                                                            <rect key="frame" x="10" y="300.5" width="280" height="50"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="50" id="vsu-h1-p9h"/>
                                                             </constraints>
@@ -120,7 +120,7 @@
                                                             </connections>
                                                         </button>
                                                         <activityIndicatorView opaque="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="bUA-Yc-3Dh">
-                                                            <rect key="frame" x="131.5" y="245.5" width="37" height="37"/>
+                                                            <rect key="frame" x="131.5" y="247" width="37" height="37"/>
                                                         </activityIndicatorView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -215,10 +215,10 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Il-XT-rwG" customClass="DroppableView" customModule="MinterWallet" customModuleProvider="target">
-                                            <rect key="frame" x="37.5" y="167.5" width="300" height="332"/>
+                                            <rect key="frame" x="37.5" y="137.5" width="300" height="392.5"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ha-rn-GNz">
-                                                    <rect key="frame" x="10" y="10" width="280" height="312"/>
+                                                    <rect key="frame" x="10" y="10" width="280" height="372.5"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CqZ-j3-nfM">
                                                             <rect key="frame" x="0.0" y="0.0" width="280" height="50"/>
@@ -240,7 +240,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coins are received by" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h6U-TR-Z3p">
-                                                            <rect key="frame" x="73" y="70" width="134" height="16"/>
+                                                            <rect key="frame" x="72.5" y="70" width="135.5" height="16"/>
                                                             <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -265,26 +265,26 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eX8-4T-odh">
-                                                            <rect key="frame" x="25" y="156" width="230" height="16"/>
+                                                            <rect key="frame" x="25" y="156" width="230" height="16.5"/>
                                                             <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OQs-Ri-1BK" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                                            <rect key="frame" x="10" y="192" width="260" height="50"/>
+                                                            <rect key="frame" x="10" y="192.5" width="260" height="50"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="50" id="w2q-EH-gE7"/>
                                                             </constraints>
                                                             <state key="normal" title="Button"/>
                                                             <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="actionBtnDidTap:" destination="bWo-dA-5gC" eventType="touchUpInside" id="0kb-Sk-hMg"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7sq-up-q09" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                                            <rect key="frame" x="10" y="252" width="260" height="50"/>
+                                                            <rect key="frame" x="10" y="312.5" width="260" height="50"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="50" id="P6N-z0-vH1"/>
                                                             </constraints>
@@ -294,6 +294,19 @@
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="secondButtonDidTap:" destination="bWo-dA-5gC" eventType="touchUpInside" id="BWE-yp-r5n"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Rf-Ag-NSL" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
+                                                            <rect key="frame" x="10" y="252.5" width="260" height="50"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="50" id="dIi-pQ-8ei"/>
+                                                            </constraints>
+                                                            <state key="normal" title="SHARE TRANSACTION"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="purple"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="secondActionButtonDidTap:" destination="bWo-dA-5gC" eventType="touchUpInside" id="oKd-m0-CRA"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -306,16 +319,19 @@
                                                         <constraint firstItem="EWP-Xi-TlV" firstAttribute="top" secondItem="h6U-TR-Z3p" secondAttribute="bottom" constant="10" id="BAS-rG-lzs"/>
                                                         <constraint firstAttribute="trailing" secondItem="CqZ-j3-nfM" secondAttribute="trailing" id="FF5-9A-Jt8"/>
                                                         <constraint firstItem="CqZ-j3-nfM" firstAttribute="top" secondItem="9Ha-rn-GNz" secondAttribute="top" id="J2d-Yj-aoB"/>
+                                                        <constraint firstItem="7sq-up-q09" firstAttribute="top" secondItem="7Rf-Ag-NSL" secondAttribute="bottom" constant="10" id="JUF-xD-e4Z"/>
                                                         <constraint firstItem="CqZ-j3-nfM" firstAttribute="leading" secondItem="9Ha-rn-GNz" secondAttribute="leading" id="MPy-IS-cuY"/>
+                                                        <constraint firstItem="7Rf-Ag-NSL" firstAttribute="trailing" secondItem="OQs-Ri-1BK" secondAttribute="trailing" id="PFT-q3-7wa"/>
                                                         <constraint firstItem="OQs-Ri-1BK" firstAttribute="top" secondItem="eX8-4T-odh" secondAttribute="bottom" constant="20" id="V9b-SY-CmW"/>
                                                         <constraint firstItem="eX8-4T-odh" firstAttribute="top" secondItem="EWP-Xi-TlV" secondAttribute="bottom" constant="10" id="ZF2-xM-Oyk"/>
+                                                        <constraint firstItem="7Rf-Ag-NSL" firstAttribute="leading" secondItem="OQs-Ri-1BK" secondAttribute="leading" id="h2X-W4-aKA"/>
                                                         <constraint firstAttribute="trailing" secondItem="OQs-Ri-1BK" secondAttribute="trailing" constant="10" id="hPU-St-yfh"/>
                                                         <constraint firstAttribute="bottom" secondItem="7sq-up-q09" secondAttribute="bottom" constant="10" id="jZT-rK-26z"/>
                                                         <constraint firstItem="7sq-up-q09" firstAttribute="trailing" secondItem="OQs-Ri-1BK" secondAttribute="trailing" id="kFM-dQ-aCW"/>
                                                         <constraint firstItem="OQs-Ri-1BK" firstAttribute="leading" secondItem="9Ha-rn-GNz" secondAttribute="leading" constant="10" id="ksO-iC-BFL"/>
                                                         <constraint firstItem="EWP-Xi-TlV" firstAttribute="centerX" secondItem="9Ha-rn-GNz" secondAttribute="centerX" id="tak-PY-ElA"/>
                                                         <constraint firstItem="7sq-up-q09" firstAttribute="leading" secondItem="OQs-Ri-1BK" secondAttribute="leading" id="uxH-7k-TMS"/>
-                                                        <constraint firstItem="7sq-up-q09" firstAttribute="top" secondItem="OQs-Ri-1BK" secondAttribute="bottom" constant="10" id="yYr-Nd-PC1"/>
+                                                        <constraint firstItem="7Rf-Ag-NSL" firstAttribute="top" secondItem="OQs-Ri-1BK" secondAttribute="bottom" constant="10" id="wts-Gu-y3H"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -360,6 +376,7 @@
                         <outlet property="popupTitle" destination="twk-kn-uvE" id="KZT-hX-d10"/>
                         <outlet property="popupView" destination="8Il-XT-rwG" id="WOk-UD-TgN"/>
                         <outlet property="receiverLabel" destination="eX8-4T-odh" id="Pi0-bg-lNV"/>
+                        <outlet property="seconActionButton" destination="7Rf-Ag-NSL" id="NyL-1O-p6D"/>
                         <outlet property="secondButton" destination="7sq-up-q09" id="Co8-66-cyR"/>
                     </connections>
                 </viewController>

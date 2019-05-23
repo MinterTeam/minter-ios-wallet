@@ -198,6 +198,32 @@ extension TransactionViewableViewModel {
 		return transactionCellItem
 	}
 
+	func redeemCheckTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
+		let user = transactionItem.user
+		guard let transaction = transactionItem.transaction else {
+			return nil
+		}
+
+		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
+
+		let signMultiplier = 1.0
+		let toAddress = "Mx" + (Session.shared.accounts.value.first?.address ?? "").stripMinterHexPrefix()
+		let title = user?.username != nil ? "@" + user!.username! : toAddress
+
+		let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
+		transactionCellItem.txHash = transaction.hash
+		transactionCellItem.title = title
+		transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")).url()
+		transactionCellItem.date = transaction.date
+		transactionCellItem.to = toAddress
+		if let data = transaction.data as? MinterExplorer.RedeemCheckRawTransactionData {
+			transactionCellItem.coin = data.coin
+			transactionCellItem.amount = (data.value ?? 0) * Decimal(signMultiplier)
+			transactionCellItem.from = data.sender
+		}
+		return transactionCellItem
+	}
+
 	func explorerURL(section: Int, row: Int) -> URL? {
 		if let item = self.cellItem(section: section, row: row) as? TransactionTableViewCellItem {
 			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))

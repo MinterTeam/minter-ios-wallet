@@ -11,36 +11,35 @@ import MinterCore
 import RxSwift
 
 class GenerateAddressViewModel : AccountantBaseViewModel {
-	
-	
+
 	let proceedAvailable = Variable(false)
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	var title: String {
 		get {
 			return "Generate Address".localized()
 		}
 	}
-	
+
 	private var mnemonic: String?
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	private let databaseStorage = RealmDatabaseStorage.shared
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	private let isLoading = Variable(false)
-	
+
 	func activate() {
-		
+
 		isLoading.value = true
 		
 		guard let mnemonic = mnemonic else {
 			return
 		}
-		
+
 		self.saveAccount(id: -1, mnemonic: mnemonic)
 		
 		isLoading.value = false
@@ -50,7 +49,7 @@ class GenerateAddressViewModel : AccountantBaseViewModel {
 		proceedAvailable.value = isChecked
 	}
 	
-	//MARK: -
+	// MARK: -
 	
 	private var sections: [BaseTableSectionItem] = []
 	
@@ -90,13 +89,13 @@ class GenerateAddressViewModel : AccountantBaseViewModel {
 		sections.append(section)
 	}
 	
-	//MARK: -
+	// MARK: -
 	
 	private func generateMnemonic() -> String? {
 		return String.generateMnemonicString()
 	}
 	
-	//MARK: - TableView
+	// MARK: - TableView
 	
 	func section(index: Int) -> BaseTableSectionItem? {
 		return sections[safe: index]
