@@ -10,34 +10,32 @@ import UIKit
 import NotificationBannerSwift
 import RxSwift
 
-
 class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
-	
-	//MARK: - IBOutlets
-	
+
+	// MARK: - IBOutlet
+
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
 			tableView.tableFooterView = UIView()
 			tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
 		}
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	var viewModel = PasswordEditViewModel()
-	
+
 	private var disposeBag = DisposeBag()
-	
-	//MARK: - ViewController
-	
+
+	// MARK: - ViewController
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+
 		self.title = viewModel.title
-		
+
 		registerCells()
-		
-		
+
 		viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
 		}).subscribe(onNext: { (notification) in
@@ -51,27 +49,32 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
 			banner.show()
 		}).disposed(by: disposeBag)
-		
+
+		if self.shouldShowTestnetToolbar {
+			self.tableView.contentInset = UIEdgeInsets(top: 65, left: 0, bottom: 0, right: 0)
+			self.view.addSubview(self.testnetToolbarView)
+		}
 	}
-	
+
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
+
 		showKeyboard()
-		
+
 		AnalyticsHelper.defaultAnalytics.track(event: .PasswordEditScreen, params: nil)
 	}
-	
-	
+
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 	}
-	
-	//MARK: - TableView
-	
+
+	// MARK: - TableView
+
 	private func registerCells() {
-		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
-		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
+		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "TextFieldTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "ButtonTableViewCell")
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -89,35 +92,32 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 		}
 		
 		cell.configure(item: item)
-		
+
 		if let buttonCell = (cell as? ButtonTableViewCell) {
 			buttonCell.delegate = self
 		}
-		
+
 		if var textFieldCell = cell as? ValidatableCellProtocol {
 			textFieldCell.validateDelegate = self
 		}
-		
-		
+
 		return cell
 	}
 	
-	//MARK: -
-	
+	// MARK: -
+
 	func showKeyboard() {
 		
 		if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
 			cell.startEditing()
 		}
-		
 	}
-	
 }
 
-extension PasswordEditViewController : ButtonTableViewCellDelegate, ValidatableCellDelegate {
-	
-	//MARK: -
-	
+extension PasswordEditViewController: ButtonTableViewCellDelegate, ValidatableCellDelegate {
+
+	// MARK: -
+
 	func didValidateField(field: ValidatableCellProtocol?) {
 		if let ip = tableView.indexPath(for: field as! UITableViewCell) {
 			if ip.row == 0 {
@@ -128,7 +128,7 @@ extension PasswordEditViewController : ButtonTableViewCellDelegate, ValidatableC
 			}
 		}
 	}
-	
+
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
 		if let ip = tableView.indexPath(for: field as! UITableViewCell) {
 			if ip.row == 0 {
@@ -147,18 +147,17 @@ extension PasswordEditViewController : ButtonTableViewCellDelegate, ValidatableC
 				}
 			}
 		}
-
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-		
+
 		SoundHelper.playSoundIfAllowed(type: .click)
-		
+
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		
+
 		viewModel.changePassword()
 	}
 

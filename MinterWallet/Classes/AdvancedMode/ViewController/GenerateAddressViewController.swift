@@ -13,7 +13,11 @@ protocol GenerateAddressViewControllerDelegate : class {
 	func GenerateAddressViewControllerDelegateDidAddAccount()
 }
 
-class GenerateAddressViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, ButtonTableViewCellDelegate, SwitchTableViewCellDelegate {
+class GenerateAddressViewController: BaseViewController,
+UITableViewDataSource,
+UITableViewDelegate,
+ButtonTableViewCellDelegate,
+SwitchTableViewCellDelegate {
 
 	// MARK: - IBOutlet
 
@@ -47,6 +51,14 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 			}
 		}).disposed(by: disposeBag)
 
+		if self.shouldShowTestnetToolbar {
+			self.tableView.contentInset = UIEdgeInsets(top: 50,
+																								 left: 0,
+																								 bottom: 0,
+																								 right: 0)
+			self.view.addSubview(self.testnetToolbarView)
+		}
+
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -56,13 +68,18 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 	// MARK: - TableView
 
 	private func registerCells() {
-
-		tableView.register(UINib(nibName: "GenerateAddressSeedTableViewCell", bundle: nil), forCellReuseIdentifier: "GenerateAddressSeedTableViewCell")
-		tableView.register(UINib(nibName: "GenerateAddressLabelTableViewCell", bundle: nil), forCellReuseIdentifier: "GenerateAddressLabelTableViewCell")
-		tableView.register(UINib(nibName: "SettingsSwitchTableViewCell", bundle: nil), forCellReuseIdentifier: "SettingsSwitchTableViewCell")
-		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
-		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
-		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil), forCellReuseIdentifier: "BlankTableViewCell")
+		tableView.register(UINib(nibName: "GenerateAddressSeedTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "GenerateAddressSeedTableViewCell")
+		tableView.register(UINib(nibName: "GenerateAddressLabelTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "GenerateAddressLabelTableViewCell")
+		tableView.register(UINib(nibName: "SettingsSwitchTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SettingsSwitchTableViewCell")
+		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SeparatorTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "ButtonTableViewCell")
+		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "BlankTableViewCell")
 	}
 
 	// MARK: -
@@ -98,7 +115,6 @@ class GenerateAddressViewController: BaseViewController, UITableViewDataSource, 
 		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
 			return
 		}
-
 	}
 
 	// MARK: - ButtonTableViewCellDelegate

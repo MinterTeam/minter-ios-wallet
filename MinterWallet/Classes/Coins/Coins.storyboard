@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="q4X-VK-tqr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="q4X-VK-tqr">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -149,10 +149,13 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="balanceBottomConstraint" destination="Ul2-Jj-AnY" id="leg-rh-fG8"/>
+                        <outlet property="balanceTopConstraint" destination="PMt-ql-XFh" id="XtY-Mf-anu"/>
                         <outlet property="dotCircle1ImageView" destination="RwL-jd-GYj" id="fpO-Nk-4N7"/>
                         <outlet property="dotCircle2ImageView" destination="Ai8-OP-VnN" id="fkk-EO-aAf"/>
                         <outlet property="errorLabel" destination="jjT-df-Zka" id="lE9-IZ-MVT"/>
                         <outlet property="headerView" destination="1OM-Ql-2PQ" id="nj2-Q6-cqJ"/>
+                        <outlet property="headerViewHeightConstraint" destination="1Tf-ya-4PI" id="Slr-43-8k2"/>
                         <outlet property="headerViewTitleLabel" destination="RIV-Gf-6Jf" id="aT8-bq-ew0"/>
                         <outlet property="robotImageView" destination="J8i-0I-4Si" id="gPE-G3-gM0"/>
                         <outlet property="tableHeaderTopConstraint" destination="N7n-hV-Obi" id="d8n-Dj-aiQ"/>

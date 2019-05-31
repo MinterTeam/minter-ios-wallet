@@ -86,4 +86,22 @@ enum Environment: String {
 		}
 	}
 
+	var appstoreURLString: String {
+		switch self {
+		case .staging:
+			return "https://itunes.apple.com/us/app/bip-wallet/id1457843214?ls=1&mt=8"
+		case .production:
+			return "https://itunes.apple.com/us/app/bip-wallet/id1457843214?ls=1&mt=8"
+		}
+	}
+
+	var appstoreTestnetURLString: String {
+		switch self {
+		case .staging:
+			return "https://itunes.apple.com/us/app/bip-wallet-testnet/id1436988091?ls=1&mt=8"
+		case .production:
+			return "https://itunes.apple.com/us/app/bip-wallet-testnet/id1436988091?ls=1&mt=8"
+		}
+	}
+
 }

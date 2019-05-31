@@ -145,6 +145,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="errorLabel" destination="K3V-Kc-kJQ" id="jZs-wH-Cno"/>
+                        <outlet property="generateAddressTopConstraint" destination="sVU-o5-2FL" id="1SR-r3-Pst"/>
                         <outlet property="textView" destination="Chj-Ue-PPa" id="i4V-vG-G5R"/>
                     </connections>
                 </viewController>

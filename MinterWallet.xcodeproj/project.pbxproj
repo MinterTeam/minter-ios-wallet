@@ -453,6 +453,8 @@
 		FAA2AAE82296CE4100581D47 /* BannerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE62296CE4100581D47 /* BannerHelper.swift */; };
 		FAA2AAEA2296E42300581D47 /* TransactionAddressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */; };
 		FAA2AAEB2296E42300581D47 /* TransactionAddressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */; };
+		FAA2AAEF2297DB4C00581D47 /* Tabbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAEE2297DB4C00581D47 /* Tabbar.swift */; };
+		FAA2AAF02297DB4C00581D47 /* Tabbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2AAEE2297DB4C00581D47 /* Tabbar.swift */; };
 		FAA3DD09211358BF0054D27E /* ReachabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3DD08211358BF0054D27E /* ReachabilityService.swift */; };
 		FAB61CFA213D341F002762A7 /* Decimal+Fractional.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB61CF8213D3396002762A7 /* Decimal+Fractional.swift */; };
 		FAB7AA1720F600230003D0DE /* ConvertTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB7AA1520F600230003D0DE /* ConvertTransactionTableViewCell.swift */; };
@@ -497,6 +499,10 @@
 		FAF5FDB2214949CB00911619 /* LUAutocompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5FDAE214949CB00911619 /* LUAutocompleteViewDataSource.swift */; };
 		FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */; };
 		FAF70FF920E791390067B5E0 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */; };
+		FAFBF2162298231B00D053C7 /* RedeemCheckTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFBF2142298231B00D053C7 /* RedeemCheckTableViewCell.swift */; };
+		FAFBF2172298231B00D053C7 /* RedeemCheckTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFBF2142298231B00D053C7 /* RedeemCheckTableViewCell.swift */; };
+		FAFBF2182298231B00D053C7 /* RedeemCheckTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAFBF2152298231B00D053C7 /* RedeemCheckTableViewCell.xib */; };
+		FAFBF2192298231B00D053C7 /* RedeemCheckTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAFBF2152298231B00D053C7 /* RedeemCheckTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -747,6 +753,7 @@
 		FAA2AAE32296C7F100581D47 /* String+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Subscript.swift"; sourceTree = "<group>"; };
 		FAA2AAE62296CE4100581D47 /* BannerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerHelper.swift; sourceTree = "<group>"; };
 		FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAddressButton.swift; sourceTree = "<group>"; };
+		FAA2AAEE2297DB4C00581D47 /* Tabbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabbar.swift; sourceTree = "<group>"; };
 		FAA3DD06211358600054D27E /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		FAA3DD08211358BF0054D27E /* ReachabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityService.swift; sourceTree = "<group>"; };
 		FAB61CF8213D3396002762A7 /* Decimal+Fractional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Fractional.swift"; sourceTree = "<group>"; };
@@ -793,6 +800,8 @@
 		FAF5FDAE214949CB00911619 /* LUAutocompleteViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LUAutocompleteViewDataSource.swift; sourceTree = "<group>"; };
 		FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
+		FAFBF2142298231B00D053C7 /* RedeemCheckTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemCheckTableViewCell.swift; sourceTree = "<group>"; };
+		FAFBF2152298231B00D053C7 /* RedeemCheckTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RedeemCheckTableViewCell.xib; sourceTree = "<group>"; };
 		FE933B2B31E592FF04BA244B /* CoinsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoinsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1558,6 +1567,8 @@
 				FAE43C9221539F2A002027D4 /* DelegateTransactionTableViewCell.xib */,
 				FA52DD0E225C879F00A5B554 /* MultisendTransactionTableViewCell.xib */,
 				FA52DD10225C889600A5B554 /* MultisendTransactionTableViewCell.swift */,
+				FAFBF2142298231B00D053C7 /* RedeemCheckTableViewCell.swift */,
+				FAFBF2152298231B00D053C7 /* RedeemCheckTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1747,6 +1758,7 @@
 				FA3154AD20B851F7005D9F21 /* GroupedPickerView.swift */,
 				FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */,
 				FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */,
+				FAA2AAEE2297DB4C00581D47 /* Tabbar.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2128,6 +2140,7 @@
 				FA33307D224A4B3C003B4763 /* CreateWallet.storyboard in Resources */,
 				FA33307E224A4B3C003B4763 /* GenerateAddressLabelTableViewCell.xib in Resources */,
 				FA33307F224A4B3C003B4763 /* beep_digi_octave.wav in Resources */,
+				FAFBF2182298231B00D053C7 /* RedeemCheckTableViewCell.xib in Resources */,
 				FA333080224A4B3C003B4763 /* Root.storyboard in Resources */,
 				FA333081224A4B3C003B4763 /* Transactions.storyboard in Resources */,
 				FA333082224A4B3C003B4763 /* TransactionExpandedTableViewCell.xib in Resources */,
@@ -2194,6 +2207,7 @@
 				15A1B86305F7B488825D223C /* CreateWallet.storyboard in Resources */,
 				FAA2608020935C36009FF3DE /* GenerateAddressLabelTableViewCell.xib in Resources */,
 				FADD8F2321930E7A00463F66 /* beep_digi_octave.wav in Resources */,
+				FAFBF2192298231B00D053C7 /* RedeemCheckTableViewCell.xib in Resources */,
 				6C405281D86D42CB85997A3F /* Root.storyboard in Resources */,
 				02A6A0A6DB602A40AB4A4C29 /* Transactions.storyboard in Resources */,
 				FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */,
@@ -2685,6 +2699,7 @@
 				FA333043224A4B3C003B4763 /* AddressViewModel.swift in Sources */,
 				FAA2AAE42296C7F100581D47 /* String+Subscript.swift in Sources */,
 				FA333044224A4B3C003B4763 /* LoadingTableViewCell.swift in Sources */,
+				FAA2AAEF2297DB4C00581D47 /* Tabbar.swift in Sources */,
 				FA333045224A4B3C003B4763 /* Manager+Default.swift in Sources */,
 				FA333046224A4B3C003B4763 /* SentPopupViewController.swift in Sources */,
 				FA333047224A4B3C003B4763 /* GetCoinsViewModel.swift in Sources */,
@@ -2692,6 +2707,7 @@
 				FA333049224A4B3C003B4763 /* ReachabilityService.swift in Sources */,
 				FA33304A224A4B3C003B4763 /* CurrencyNumberFormatter.swift in Sources */,
 				FA33304B224A4B3C003B4763 /* Session.swift in Sources */,
+				FAFBF2162298231B00D053C7 /* RedeemCheckTableViewCell.swift in Sources */,
 				FA33304C224A4B3C003B4763 /* AdvancedModeViewController.swift in Sources */,
 				FA33304D224A4B3C003B4763 /* CoinAutocompleteCell.swift in Sources */,
 				FA33304E224A4B3C003B4763 /* AmountTextFieldTableViewCell.swift in Sources */,
@@ -2875,6 +2891,7 @@
 				1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */,
 				FAA2AAE52296C7F100581D47 /* String+Subscript.swift in Sources */,
 				FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */,
+				FAA2AAF02297DB4C00581D47 /* Tabbar.swift in Sources */,
 				FA01604220B4533B00746B51 /* Manager+Default.swift in Sources */,
 				FA7A9BF820BED28900E3CCDA /* SentPopupViewController.swift in Sources */,
 				FA04029320FDD6E000F1689F /* GetCoinsViewModel.swift in Sources */,
@@ -2882,6 +2899,7 @@
 				FAA3DD09211358BF0054D27E /* ReachabilityService.swift in Sources */,
 				FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */,
 				FA8AE85820AAD3E900F26E11 /* Session.swift in Sources */,
+				FAFBF2172298231B00D053C7 /* RedeemCheckTableViewCell.swift in Sources */,
 				932D4DBEAAA04834E8868AAF /* AdvancedModeViewController.swift in Sources */,
 				FA11EA62214ABFB300C8DFB0 /* CoinAutocompleteCell.swift in Sources */,
 				FA4DF4B02108FA1500E64F1B /* AmountTextFieldTableViewCell.swift in Sources */,
@@ -2966,7 +2984,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/Info1.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2998,7 +3016,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/Info1.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3136,7 +3154,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3168,7 +3186,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";

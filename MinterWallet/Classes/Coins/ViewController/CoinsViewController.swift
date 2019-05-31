@@ -36,6 +36,9 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 
 		refreshControl.endRefreshing()
 	}
+	@IBOutlet weak var balanceBottomConstraint: NSLayoutConstraint!
+	@IBOutlet weak var balanceTopConstraint: NSLayoutConstraint!
+	@IBOutlet weak var headerViewHeightConstraint: NSLayoutConstraint!
 	@IBOutlet weak var usernameBarItem: UIBarButtonItem!
 	@IBOutlet weak var usernameButton: UIButton!
 	@IBOutlet var headerView: ScreenHeader? {
@@ -63,7 +66,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		return -95
 	}
 
-	//MARK: -
+	// MARK: -
 
 	var viewModel = CoinsViewModel()
 
@@ -75,82 +78,96 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		super.viewDidLoad()
 
 		registerCells()
-		
+
 		self.tableView.addSubview(self.refreshControl)
-		
+
 		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
 			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
 
-				guard let item = self?.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
+				guard let item = self?.viewModel.cellItem(section: indexPath.section,
+																									row: indexPath.row),
+					let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
 					return UITableViewCell()
 				}
-				
+
 				cell.configure(item: item)
-				
+
 				if let buttonCell = cell as? ButtonTableViewCell {
 					buttonCell.delegate = self
 				}
-				
+
 				if let transactionCell = cell as? TransactionTableViewCell {
 					transactionCell.delegate = self
 				}
-				
+
 				if let convertCell = cell as? ConvertTransactionTableViewCell {
 					convertCell.delegate = self
 				}
-				
+
 				if let delegateCell = cell as? DelegateTransactionTableViewCell {
 					delegateCell.delegate = self
 				}
-				
+
 				if let multisendCell = cell as? MultisendTransactionTableViewCell {
 					multisendCell.delegate = self
 				}
-				
+
+				if let redeemCheckCell = cell as? RedeemCheckTableViewCell {
+					redeemCheckCell.delegate = self
+				}
+
 				return cell
 		})
-		
-		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top, reloadAnimation: .automatic, deleteAnimation: .automatic)
-		
+
+		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
+																																	reloadAnimation: .automatic,
+																																	deleteAnimation: .automatic)
+
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)
-		
+
 		viewModel.sectionsObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
-		
+
 		shouldAnimateCellToggle = true
-		
+
 		hidesBottomBarWhenPushed = false
-		
+
 		let username = UIBarButtonItem(customView: usernameView)
 		username.width = 250
-		
+
 		self.navigationItem.rightBarButtonItems = [username]
-		
+
 		let usernameViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapUsernameView))
 		usernameView?.addGestureRecognizer(usernameViewTapGesture)
-		
+
 		//Move to viewModel
 		Session.shared.isLoggedIn.asObservable().map({ (val) -> Bool in
 			return !val
 		}).bind(to: usernameView.rx.isHidden).disposed(by: disposeBag)
-		
+
 		viewModel.usernameViewObservable.asObservable().subscribe(onNext: { [weak self] (user) in
 			self?.updateUsernameView()
 		}).disposed(by: disposeBag)
-		
+
 		viewModel.totalBalanceObservable.subscribe(onNext: { [weak self] (balance) in
 			self?.headerViewTitleLabel.attributedText = self?.viewModel.headerViewTitleText(with: balance)
 		}).disposed(by: disposeBag)
-		
+
 		viewModel.errorObservable.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
 			UIView.animate(withDuration: 0.25, animations: {
 				if val {
 					self?.showPlaceholderView()
-				}
-				else {
+				} else {
 					self?.hidePlaceholderView()
 				}
 			})
 		}).disposed(by: disposeBag)
+
+		if self.shouldShowTestnetToolbar {
+			self.headerView?.addSubview(self.testnetToolbarView)
+			self.balanceTopConstraint.constant = 60
+			self.balanceBottomConstraint.constant = 10
+		}
+
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -169,16 +186,26 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	// MARK: -
 
 	func registerCells() {
-
-		tableView.register(UINib(nibName: "CoinsTableViewHeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "CoinsTableViewHeaderView")
-		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
-		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "ConvertTransactionTableViewCell")
-		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
-		tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil), forCellReuseIdentifier: "CoinTableViewCell")
-		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
-		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "LoadingTableViewCell")
-		tableView.register(UINib(nibName: "DelegateTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "DelegateTransactionTableViewCell")
-		tableView.register(UINib(nibName: "MultisendTransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "MultisendTransactionTableViewCell")
+		tableView.register(UINib(nibName: "CoinsTableViewHeaderView",bundle: nil),
+											 forHeaderFooterViewReuseIdentifier: "CoinsTableViewHeaderView")
+		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "TransactionTableViewCell")
+		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "ConvertTransactionTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "ButtonTableViewCell")
+		tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "CoinTableViewCell")
+		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SeparatorTableViewCell")
+		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "LoadingTableViewCell")
+		tableView.register(UINib(nibName: "DelegateTransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "DelegateTransactionTableViewCell")
+		tableView.register(UINib(nibName: "MultisendTransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "MultisendTransactionTableViewCell")
+		tableView.register(UINib(nibName: "RedeemCheckTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "RedeemCheckTableViewCell")
 	}
 
 	// MARK: -
@@ -246,15 +273,14 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 			if item.reuseIdentifier == "ButtonTableViewCell" {
 				return 70.0
-			}
-			else if item.reuseIdentifier == "SeparatorTableViewCell" {
+			} else if item.reuseIdentifier == "SeparatorTableViewCell" {
 				return 1.0
 			}
 		}
 
 		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
 			if nil != cell as? MultisendTransactionTableViewCell {
-				return expandedIdentifiers.contains(cell.identifier) ? 310 : 55
+				return expandedIdentifiers.contains(cell.identifier) ? 315 : 55
 			}
 			return expandedIdentifiers.contains(cell.identifier) ? 444 : 55
 		}
@@ -307,10 +333,12 @@ extension CoinsViewController : ButtonTableViewCellDelegate {
 	}
 }
 
+//TODO: refactor it to a one protocol
 extension CoinsViewController: TransactionTableViewCellDelegate,
 ConvertTransactionTableViewCellDelegate,
 DelegateTransactionTableViewCellDelegate,
-MultisendTransactionTableViewCellDelegate {
+MultisendTransactionTableViewCellDelegate,
+RedeemCheckTableViewCellDelegate {
 
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		performLightImpact()
@@ -450,6 +478,47 @@ MultisendTransactionTableViewCellDelegate {
 			UIPasteboard.general.string = to
 
 			BannerHelper.performCopiedNotification()
+		}
+	}
+	
+	// MARK: - RedeemCheckTableViewCellDelegate
+	
+	func didTapToButton(cell: RedeemCheckTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
+			let to = cellItem.to {
+			
+			UIPasteboard.general.string = to
+			
+			BannerHelper.performCopiedNotification()
+		}
+	}
+	
+	func didTapFromButton(cell: RedeemCheckTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
+			let from = cellItem.from {
+			
+			UIPasteboard.general.string = from
+			
+			BannerHelper.performCopiedNotification()
+		}
+	}
+	
+	func didTapExpandedButton(cell: RedeemCheckTableViewCell) {
+		performLightImpact()
+		
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		
+		if let indexPath = tableView.indexPath(for: cell),
+			let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			presentExplorerController(with: url)
 		}
 	}
 

@@ -41,6 +41,7 @@ class DelegateTransactionTableViewCell: ExpandableCell {
 
 	// MARK: - IBOutlet
 
+	@IBOutlet weak var toAddressTopConstraint: NSLayoutConstraint!
 	@IBOutlet weak var typeTitleLabel: UILabel!
 	@IBOutlet weak var title: UILabel!
 	@IBOutlet weak var coinImageWrapper: UIView! {
@@ -153,6 +154,11 @@ class DelegateTransactionTableViewCell: ExpandableCell {
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
+		
+		//HACK:
+		if self.bounds.width <= 320 {
+			toAddressTopConstraint.constant = 10
+		}
 	}
 
 	override func prepareForReuse() {

@@ -10,15 +10,16 @@ import Foundation
 import UIKit
 import XLPagerTabStrip
 
+class NewConvertViewController: ButtonBarPagerTabStripViewController {
 
-class NewConvertViewController : ButtonBarPagerTabStripViewController {
-	
-	//MARK: -
-	
+	// MARK: -
+
+	@IBOutlet weak var containerViewTopConstraint: NSLayoutConstraint!
+
 	override func viewDidLoad() {
-		
+
 		self.title = "Convert Coins".localized()
-		
+
 		settings.style.selectedBarHeight = 3
 		settings.style.buttonBarBackgroundColor = .white
 		settings.style.buttonBarHeight = 48.0
@@ -27,14 +28,18 @@ class NewConvertViewController : ButtonBarPagerTabStripViewController {
 		settings.style.buttonBarItemsShouldFillAvailiableWidth = true
 		settings.style.buttonBarItemTitleColor = UIColor(hex: 0x502EC2)
 		settings.style.selectedBarBackgroundColor = UIColor(hex: 0x502EC2)!
-		
-		changeCurrentIndexProgressive = { (oldCell: ButtonBarViewCell?, newCell: ButtonBarViewCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
+
+		changeCurrentIndexProgressive = { (oldCell: ButtonBarViewCell?,
+			newCell: ButtonBarViewCell?,
+			progressPercentage: CGFloat,
+			changeCurrentIndex: Bool, animated: Bool) -> Void in
+
 			guard changeCurrentIndex == true else { return }
-			
+
 			oldCell?.label.textColor = .black
 			newCell?.label.textColor = UIColor(hex: 0x502EC2)
 		}
-		
+
 		super.viewDidLoad()
 		
 		let separatorView = UIView(frame: CGRect(x: 0, y: 47, width: view.bounds.width, height: 1.0))
@@ -42,19 +47,41 @@ class NewConvertViewController : ButtonBarPagerTabStripViewController {
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
 		
 		self.view.addSubview(separatorView)
-		self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-47-[separator(1)]", options: [], metrics: nil, views: ["separator" : separatorView]))
-		self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[separator]-0-|", options: [], metrics: nil, views: ["separator" : separatorView]))
-		
+
+		if self.shouldShowTestnetToolbar {
+			self.containerViewTopConstraint.constant = 57
+			self.view.addSubview(self.testnetToolbarView)
+
+			buttonBarView.frame = CGRect(x: 0,
+																	 y: 57,
+																	 width: buttonBarView.bounds.width,
+																	 height: buttonBarView.bounds.height)
+
+			self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-104-[separator(1)]",
+																															options: [],
+																															metrics: nil,
+																															views: ["separator" : separatorView]))
+		} else {
+			self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-47-[separator(1)]",
+																															options: [],
+																															metrics: nil,
+																															views: ["separator" : separatorView]))
+		}
+
+		self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[separator]-0-|",
+																														options: [],
+																														metrics: nil,
+																														views: ["separator" : separatorView]))
 	}
-	
+
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override public func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
 		return [Storyboards.Convert.instantiateSpendCoinsViewController(), Storyboards.Convert.instantiateGetCoinsViewController()]
 	}
-	
+
 }

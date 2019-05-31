@@ -14,7 +14,6 @@ class BannerHelper {
 	class func performCopiedNotification(title: String? = nil) {
 		let banner = NotificationBanner(title: title ?? "Copied".localized(), subtitle: nil, style: .info)
 		banner.duration = 0.3
-//		banner.haptic = .none
 		banner.show()
 	}
 

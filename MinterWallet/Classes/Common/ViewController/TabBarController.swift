@@ -11,7 +11,7 @@ import RxSwift
 
 class TabBarController: UITabBarController {
 	
-	//MARK: -
+	// MARK: -
 	
 	let disposeBag = DisposeBag()
 
@@ -28,6 +28,11 @@ class TabBarController: UITabBarController {
 				}
 			})
 		}).disposed(by: disposeBag)
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.tabBar.invalidateIntrinsicContentSize()
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -48,6 +53,10 @@ class TabBarController: UITabBarController {
 		}
 		
 		return vc
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
 	}
 
 }

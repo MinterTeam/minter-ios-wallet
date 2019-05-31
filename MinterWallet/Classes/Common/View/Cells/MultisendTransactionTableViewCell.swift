@@ -9,10 +9,11 @@
 import UIKit
 import AlamofireImage
 
-class MultisendTransactionTableViewCellItem : BaseCellItem {
+class MultisendTransactionTableViewCellItem: BaseCellItem {
 	var txHash: String?
 	var title: String?
-	var image: URL?
+	var imageURL: URL?
+	var image: UIImage?
 	var date: Date?
 	var from: String?
 	var to: String?
@@ -21,7 +22,7 @@ class MultisendTransactionTableViewCellItem : BaseCellItem {
 	var expandable: Bool?
 }
 
-protocol MultisendTransactionTableViewCellDelegate : class {
+protocol MultisendTransactionTableViewCellDelegate: class {
 	func didTapExpandedButton(cell: MultisendTransactionTableViewCell)
 	func didTapFromButton(cell: MultisendTransactionTableViewCell)
 }
@@ -88,8 +89,10 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 			identifier = item.identifier
 			title.text = TransactionTitleHelper.title(from: transaction.title ?? "")
 			coinImage.image = UIImage(named: "AvatarPlaceholderImage")
-			if let url = transaction.image {
+			if let url = transaction.imageURL {
 				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 17.0))
+			} else if let image = transaction.image {
+				coinImage.image = image
 			}
 			amount.text = amountText(amount: transaction.amount)
 			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black

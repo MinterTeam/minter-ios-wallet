@@ -39,6 +39,39 @@ class HomeViewController: BaseViewController {
 			}
 		}
 
+		if self.shouldShowTestnetToolbar {
+			let statusBarHeight = UIApplication.shared.statusBarFrame.height
+
+			let toolbar = self.testnetToolbarView
+			toolbar.translatesAutoresizingMaskIntoConstraints = false
+			self.view.addSubview(toolbar)
+			
+			let underview = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: statusBarHeight))
+			underview.translatesAutoresizingMaskIntoConstraints = false
+			underview.backgroundColor = UIColor(red: 241/255,
+																					green: 60/255,
+																					blue: 60/255,
+																					alpha: 1.0)
+			self.view.addSubview(underview)
+
+			self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[underview(height)]-0-[toolbar(toolbarHeight)]",
+																															options: [],
+																															metrics: ["height": statusBarHeight,
+																																				"toolbarHeight": toolbar.bounds.height],
+																															views: ["toolbar": toolbar,
+																																			"underview": underview
+				]))
+
+			self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[toolbar]-0-|",
+																															options: [],
+																															metrics: nil,
+																															views: ["toolbar": toolbar]))
+
+			self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[underview]-0-|",
+																															options: [],
+																															metrics: nil,
+																															views: ["underview": underview]))
+		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

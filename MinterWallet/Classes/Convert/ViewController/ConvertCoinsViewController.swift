@@ -10,80 +10,70 @@ import UIKit
 import RxSwift
 import NotificationBannerSwift
 
-
 class ConvertCoinsViewController: BaseViewController {
-	
+
+	// MARK: -
+
 	var viewModel: ConvertCoinsViewModel? {
 		didSet {
 			viewModel?.feeObservable.asDriver(onErrorJustReturn: "").drive(feeLabel.rx.text).disposed(by: self.disposableBag)
-//			viewModel?.feeObservable.subscribe(onNext: { (val) in
-//				self.feeLabel.text = val
-//			}).disposed(by: self.disposableBag)
 		}
 	}
-	
+
 	let coinFormatter = CurrencyNumberFormatter.coinFormatter
-	
-	//MARK: - 
-	
+
+	// MARK: -
+
 	@IBOutlet weak var feeLabel: UILabel! {
 		didSet {
 			feeLabel.layer.zPosition = -1
 		}
 	}
-	
 	@IBOutlet weak var approximately: UILabel!
-	
 	@IBOutlet weak var buttonActivityIndicator: UIActivityIndicatorView!
-	
 	@IBOutlet weak var getActivityIndicator: UIActivityIndicatorView!
-	
 	@IBOutlet weak var exchangeButton: DefaultButton!
-	
 	@IBOutlet weak var autocompleteViewWrapper: UIView!
-	
 	@IBOutlet weak var autocompleteView: LUAutocompleteView! {
 		didSet {
 			autocompleteView.autocompleteCellNibName = "CoinAutocompleteCell"
 		}
 	}
-	
 	@IBOutlet weak var getCoinTextField: ValidatableTextField! {
 		didSet {
 			setAppearance(for: getCoinTextField)
 		}
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	var disposableBag = DisposeBag()
-	
-	//MARK: -
+
+	// MARK: -
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		autocompleteView.textField = getCoinTextField
-		
+
 		autocompleteView.dataSource = self
 		autocompleteView.delegate = self
 	}
-	
+
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .default
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func toggleTextFieldBorder(textField: UITextField?) {
 		if textField?.isEditing == true {
 			textField?.layer.borderColor = UIColor(hex: 0x502EC2)?.cgColor
-		}
-		else {
+		} else {
 			textField?.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
 		}
 	}
-	
+
 	func setAppearance(for textField: UITextField) {
 		textField.layer.cornerRadius = 8.0
 		textField.layer.borderWidth = 2
@@ -101,7 +91,7 @@ class ConvertCoinsViewController: BaseViewController {
 
 extension ConvertCoinsViewController: LUAutocompleteViewDataSource {
 	func autocompleteView(_ autocompleteView: LUAutocompleteView, elementsFor text: String, completion: @escaping ([String]) -> Void) {
-		
+
 		viewModel?.coinNames(by: text) { (coins) in
 			if coins.count == 1 && (coins.first ?? "") == text {
 				completion([])

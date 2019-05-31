@@ -40,7 +40,7 @@ extension TransactionViewableViewModel {
 		}
 
 		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
-		
+
 		var signMultiplier = 1.0
 		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
 			account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
@@ -57,7 +57,7 @@ extension TransactionViewableViewModel {
 		let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.title = title
-		transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")).url()
+		transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")).url()
 		transactionCellItem.date = transaction.date
 		transactionCellItem.from = transaction.from
 		transactionCellItem.to = transaction.data?.to
@@ -73,7 +73,7 @@ extension TransactionViewableViewModel {
 		guard let transaction = transactionItem.transaction else {
 			return nil
 		}
-		
+
 		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
 		
 		var signMultiplier = 1.0
@@ -92,7 +92,8 @@ extension TransactionViewableViewModel {
 		let transactionCellItem = MultisendTransactionTableViewCellItem(reuseIdentifier: "MultisendTransactionTableViewCell", identifier: "MultisendTransactionTableViewCell_\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.title = title
-		transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")).url()
+		transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")).url()
+//		transactionCellItem.image = UIImage(named: "multisendIcon")
 		transactionCellItem.date = transaction.date
 		transactionCellItem.from = transaction.from
 		transactionCellItem.to = transaction.data?.to
@@ -109,10 +110,10 @@ extension TransactionViewableViewModel {
 					transactionCellItem.amount = payload.value
 					transactionCellItem.coin = payload.coin
 					if hasAddress {
-						transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: payload.to).url()
+						transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: payload.to).url()
 					} else {
 						if let from = transaction.from {
-							transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: from).url()
+							transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: from).url()
 						}
 					}
 				}
@@ -121,7 +122,7 @@ extension TransactionViewableViewModel {
 			if (transactionCellItem.title?.count ?? 0) == 0 {
 				transactionCellItem.title = transactionItem.transaction?.from
 				if let from = transactionItem.transaction?.from {
-					transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: from).url()
+					transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: from).url()
 				}
 			}
 		}
@@ -210,21 +211,26 @@ extension TransactionViewableViewModel {
 		let toAddress = "Mx" + (Session.shared.accounts.value.first?.address ?? "").stripMinterHexPrefix()
 		let title = user?.username != nil ? "@" + user!.username! : toAddress
 
-		let transactionCellItem = TransactionTableViewCellItem(reuseIdentifier: "TransactionTableViewCell", identifier: "TransactionTableViewCell_\(sectionId)")
+		let transactionCellItem = RedeemCheckTableViewCellItem(reuseIdentifier: "RedeemCheckTableViewCell", identifier: "RedeemCheckTableViewCell\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.title = title
-		transactionCellItem.image = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")).url()
+		transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")).url()
 		transactionCellItem.date = transaction.date
 		transactionCellItem.to = toAddress
 		if let data = transaction.data as? MinterExplorer.RedeemCheckRawTransactionData {
 			transactionCellItem.coin = data.coin
 			transactionCellItem.amount = (data.value ?? 0) * Decimal(signMultiplier)
 			transactionCellItem.from = data.sender
+			if let sender = data.sender {
+				transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: sender).url()
+				transactionCellItem.title = TransactionTitleHelper.title(from: sender)
+			}
 		}
 		return transactionCellItem
 	}
 
 	func explorerURL(section: Int, row: Int) -> URL? {
+		//TODO: refactor to one protocol
 		if let item = self.cellItem(section: section, row: row) as? TransactionTableViewCellItem {
 			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
 		} else if let item = self.cellItem(section: section, row: row) as? ConvertTransactionTableViewCellItem {
@@ -232,6 +238,8 @@ extension TransactionViewableViewModel {
 		} else if let item = self.cellItem(section: section, row: row) as? DelegateTransactionTableViewCellItem {
 			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
 		} else if let item = self.cellItem(section: section, row: row) as? MultisendTransactionTableViewCellItem {
+			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
+		} else if let item = self.cellItem(section: section, row: row) as? RedeemCheckTableViewCellItem {
 			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))
 		}
 		return nil

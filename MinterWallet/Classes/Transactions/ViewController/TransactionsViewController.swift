@@ -73,6 +73,10 @@ class TransactionsViewController: BaseTableViewController {
 				if let multisendCell = cell as? MultisendTransactionTableViewCell {
 					multisendCell.delegate = self
 				}
+				
+				if let redeemCheckCell = cell as? RedeemCheckTableViewCell {
+					redeemCheckCell.delegate = self
+				}
 
 				return cell
 		})
@@ -90,6 +94,15 @@ class TransactionsViewController: BaseTableViewController {
 				self.tableView.backgroundView = nil
 			}
 		}).disposed(by: disposeBag)
+
+		if self.shouldShowTestnetToolbar {
+			self.view.addSubview(self.testnetToolbarView)
+			self.tableView.contentInset = UIEdgeInsets(top: 0,
+																								 left: 0,
+																								 bottom: 0,
+																								 right: 0)
+//			self.tableView.contentOffset = CGPoint(x: 0, y: -57)
+		}
 
 	}
 
@@ -114,6 +127,8 @@ class TransactionsViewController: BaseTableViewController {
 											 forCellReuseIdentifier: "DelegateTransactionTableViewCell")
 		tableView.register(UINib(nibName: "MultisendTransactionTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "MultisendTransactionTableViewCell")
+		tableView.register(UINib(nibName: "RedeemCheckTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "RedeemCheckTableViewCell")
 	}
 
 	// MARK: - Expandable
@@ -126,7 +141,7 @@ class TransactionsViewController: BaseTableViewController {
 
 		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
 			if nil != cell as? MultisendTransactionTableViewCell {
-				return expandedIdentifiers.contains(cell.identifier) ? 310 : 55
+				return expandedIdentifiers.contains(cell.identifier) ? 315 : 55
 			}
 			return expandedIdentifiers.contains(cell.identifier) ? 444 : 55
 		}
@@ -193,7 +208,8 @@ class TransactionsViewController: BaseTableViewController {
 extension TransactionsViewController: TransactionTableViewCellDelegate,
 ConvertTransactionTableViewCellDelegate,
 DelegateTransactionTableViewCellDelegate,
-MultisendTransactionTableViewCellDelegate {
+MultisendTransactionTableViewCellDelegate,
+RedeemCheckTableViewCellDelegate {
 
 	func didTapExpandedButton(cell: TransactionTableViewCell) {
 		performLightImpact()
@@ -348,6 +364,50 @@ MultisendTransactionTableViewCellDelegate {
 			UIPasteboard.general.string = to
 
 			BannerHelper.performCopiedNotification()
+		}
+	}
+	
+	// MARK: - RedeemCheckTableViewCellDelegate
+	
+	func didTapToButton(cell: RedeemCheckTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
+			let to = cellItem.to {
+			
+			UIPasteboard.general.string = to
+			
+			BannerHelper.performCopiedNotification()
+		}
+	}
+	
+	func didTapFromButton(cell: RedeemCheckTableViewCell) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+		
+		if let indexPath = tableView.indexPath(for: cell),
+			let cellItem = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
+			let from = cellItem.from {
+			
+			UIPasteboard.general.string = from
+			
+			BannerHelper.performCopiedNotification()
+		}
+	}
+
+	func didTapExpandedButton(cell: RedeemCheckTableViewCell) {
+		performLightImpact()
+
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+
+		if let indexPath = tableView.indexPath(for: cell),
+			let url = viewModel.explorerURL(section: indexPath.section,
+																			row: indexPath.row) {
+
+			let vc = BaseSafariViewController(url: url)
+			self.present(vc, animated: true) {}
 		}
 	}
 

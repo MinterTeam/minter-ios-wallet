@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hrV-P9-6ZS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hrV-P9-6ZS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -34,11 +34,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Uqw-AW-24T" secondAttribute="trailing" id="JHo-Fz-XVW"/>
-                            <constraint firstItem="ZQz-9g-loQ" firstAttribute="top" secondItem="Uqw-AW-24T" secondAttribute="bottom" id="dpd-QL-eze"/>
+                            <constraint firstAttribute="bottom" secondItem="Uqw-AW-24T" secondAttribute="bottom" id="dpd-QL-eze"/>
                             <constraint firstItem="Uqw-AW-24T" firstAttribute="leading" secondItem="vnA-YH-H9y" secondAttribute="leading" id="eQU-4Z-bhx"/>
                             <constraint firstItem="Uqw-AW-24T" firstAttribute="top" secondItem="vnA-YH-H9y" secondAttribute="top" id="xRF-aE-yVg"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
                         <outlet property="noTransactionsLabel" destination="bbl-T4-esr" id="dlY-O9-0Iz"/>
                         <outlet property="tableView" destination="Uqw-AW-24T" id="1Ab-s2-8NQ"/>

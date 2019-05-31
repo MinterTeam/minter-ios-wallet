@@ -77,6 +77,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 														 Session.shared.balances.asObservable(),
 														 Session.shared.allBalances.asObservable(),
 														 Session.shared.isLoggedIn.asObservable().distinctUntilChanged())
+//		.debounce(0.1, scheduler: MainScheduler.instance)
 		.subscribe(onNext: { [weak self] (transactions) in
 			self?.createSection()
 		}).disposed(by: disposeBag)
@@ -152,7 +153,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 		}).forEach { (key) in
 
 			let bal = Session.shared.balances.value
-
 			let balanceKey = CurrencyNumberFormatter.decimalShortFormatter.string(from: (bal[key] ?? 0) as NSNumber)
 			let cellAdditionalId = "\(key)_\(balanceKey ?? "")"
 

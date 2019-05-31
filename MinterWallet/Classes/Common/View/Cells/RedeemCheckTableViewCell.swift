@@ -1,19 +1,19 @@
 //
-//  TransactionTableViewCell.swift
+//  RedeemCheckTableViewCell.swift
 //  MinterWallet
 //
-//  Created by Alexey Sidorov on 09/04/2018.
-//  Copyright © 2018 Minter. All rights reserved.
+//  Created by Alexey Sidorov on 24/05/2019.
+//  Copyright © 2019 Minter. All rights reserved.
 //
 
 import UIKit
 import AlamofireImage
 
-class TransactionTableViewCellItem: BaseCellItem {
+class RedeemCheckTableViewCellItem: BaseCellItem {
 	var txHash: String?
 	var title: String?
-	var image: UIImage?
 	var imageURL: URL?
+	var image: UIImage?
 	var date: Date?
 	var from: String?
 	var to: String?
@@ -22,13 +22,17 @@ class TransactionTableViewCellItem: BaseCellItem {
 	var expandable: Bool?
 }
 
-protocol TransactionTableViewCellDelegate: class {
-	func didTapExpandedButton(cell: TransactionTableViewCell)
-	func didTapFromButton(cell: TransactionTableViewCell)
-	func didTapToButton(cell: TransactionTableViewCell)
+protocol RedeemCheckTableViewCellDelegate: class {
+	func didTapExpandedButton(cell: RedeemCheckTableViewCell)
+	func didTapFromButton(cell: RedeemCheckTableViewCell)
+	func didTapToButton(cell: RedeemCheckTableViewCell)
 }
 
-class TransactionTableViewCell: ExpandableCell {
+class RedeemCheckTableViewCell: ExpandableCell {
+
+	// MARK: -
+
+	weak var delegate: RedeemCheckTableViewCellDelegate?
 
 	// MARK: -
 
@@ -37,9 +41,7 @@ class TransactionTableViewCell: ExpandableCell {
 	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
 
-	weak var delegate: TransactionTableViewCellDelegate?
-
-	// MARK: - IBOutlet
+	// MARK: - IBOutlets
 
 	@IBOutlet weak var title: UILabel!
 	@IBOutlet weak var coinImageWrapper: UIView! {
@@ -55,27 +57,25 @@ class TransactionTableViewCell: ExpandableCell {
 	}
 	@IBOutlet weak var coinImage: UIImageView! {
 		didSet {
-			coinImage.makeBorderWithCornerRadius(radius: 17.0,
-																					 borderColor: .clear,
-																					 borderWidth: 2.0)
+			coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .clear, borderWidth: 2.0)
 		}
 	}
+//	@IBOutlet weak var amountTitleLabel: UILabel!
 	@IBOutlet weak var amount: UILabel!
 	@IBOutlet weak var coin: UILabel!
 	@IBOutlet weak var fromAddressButton: UIButton!
 	@IBOutlet weak var toAddressButton: UIButton!
 	@IBOutlet weak var expandedAmountLabel: UILabel!
-	@IBOutlet weak var coinLabel: UILabel!
 	@IBOutlet weak var dateLabel: UILabel!
 	@IBOutlet weak var timeLabel: UILabel!
-	@IBOutlet weak var heightCoinstraint: NSLayoutConstraint!
+	@IBOutlet weak var coinLabel: UILabel!
 
 	// MARK: -
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 	}
-	
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
 	}
@@ -87,28 +87,33 @@ class TransactionTableViewCell: ExpandableCell {
 	// MARK: -
 
 	override func configure(item: BaseCellItem) {
-		if let transaction = item as? TransactionTableViewCellItem {
+
+//		amountTitleLabel.alpha = 1.0
+		if let transaction = item as? RedeemCheckTableViewCellItem {
 			identifier = item.identifier
 			title.text = TransactionTitleHelper.title(from: transaction.title ?? "")
 			coinImage.image = UIImage(named: "AvatarPlaceholderImage")
 			if let url = transaction.imageURL {
-				coinImage.af_setImage(withURL: url,
-															filter: RoundedCornersFilter(radius: 17.0))
+				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 17.0))
 			} else if let image = transaction.image {
 				coinImage.image = image
 			}
 			amount.text = amountText(amount: transaction.amount)
 			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
+			coinLabel.text = transaction.coin
 
 			fromAddressButton.setTitle(transaction.from, for: .normal)
 			toAddressButton.setTitle(transaction.to, for: .normal)
-			expandedAmountLabel.text = CurrencyNumberFormatter
-				.formattedDecimal(with: (transaction.amount ?? 0),
-													formatter: CurrencyNumberFormatter.coinFormatter)
-			coinLabel.text = transaction.coin
+
+			if transaction.amount == nil {
+				expandedAmountLabel.text = ""
+//				amountTitleLabel.alpha = 0.0
+			} else {
+				expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0), formatter: CurrencyNumberFormatter.coinFormatter)
+			}
 			dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 			timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
-			
+
 			coin.text = transaction.coin
 			expandable = transaction.expandable ?? false
 		}
@@ -119,9 +124,11 @@ class TransactionTableViewCell: ExpandableCell {
 	}
 
 	private func amountText(amount: Decimal?) -> String {
+
 		guard amount != nil else {
 			return ""
 		}
+
 		return CurrencyNumberFormatter.formattedDecimal(with: amount ?? 0,
 																										formatter: CurrencyNumberFormatter.transactionFormatter)
 	}
@@ -135,7 +142,7 @@ class TransactionTableViewCell: ExpandableCell {
 	@IBAction func didTapFromButton(_ sender: Any) {
 		delegate?.didTapFromButton(cell: self)
 	}
-
+	
 	@IBAction func didTapToButton(_ sender: Any) {
 		delegate?.didTapToButton(cell: self)
 	}
@@ -148,10 +155,10 @@ class TransactionTableViewCell: ExpandableCell {
 
 	override func prepareForReuse() {
 		super.prepareForReuse()
-
+		
 		detailView?.setNeedsLayout()
 		detailView?.layoutIfNeeded()
-
+		
 		self.setNeedsLayout()
 		self.layoutIfNeeded()
 	}

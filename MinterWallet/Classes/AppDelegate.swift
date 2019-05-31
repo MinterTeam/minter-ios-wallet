@@ -79,6 +79,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			UINavigationBar.appearance().setTitleVerticalPositionAdjustment(-2, for: .default)
 		}
 
+//		UINavigationBar.appearance().setBackgroundImage(UIImage(named: "testnetNavigationBarBackground")!
+//			.resizableImage(withCapInsets: UIEdgeInsets.zero,
+//											resizingMode: .stretch),
+//																										for: .default)
+
 		UIBarButtonItem.appearance().setTitleTextAttributes([
 				NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
 				NSAttributedStringKey.foregroundColor: UIColor.white,

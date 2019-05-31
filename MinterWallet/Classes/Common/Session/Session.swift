@@ -17,7 +17,6 @@ fileprivate let SessionAccessTokenKey = "AccessToken"
 fileprivate let SessionRefreshTokenKey = "RefreshToken"
 fileprivate let SessionUserKey = "User"
 
-
 class Session {
 	
 	static let shared = Session()
@@ -39,7 +38,7 @@ class Session {
 	private let localStorage = LocalStorage()
 	private let dataBaseStorage = RealmDatabaseStorage.shared
 	
-	//MARK: -
+	// MARK: -
 	
 	var isLoading = Variable(true)
 	
@@ -63,7 +62,7 @@ class Session {
 	
 	var currentGasPrice = Variable<Int>(1)
 
-	//MARK: -
+	// MARK: -
 	
 	private init() {
 		
@@ -89,8 +88,7 @@ class Session {
 		}).subscribe(onNext: { [weak self] (at, rt) in
 			self?.isLoggedIn.value = at != nil && rt != nil
 		}).disposed(by: disposeBag)
-		
-		
+
 		accounts.asObservable().distinctUntilChanged().filter({ (accs) -> Bool in
 			return accs.count > 0
 		}).subscribe(onNext: { [weak self] (accounts) in

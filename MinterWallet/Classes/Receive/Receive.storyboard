@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14087.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="2sW-XW-a6e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="2sW-XW-a6e">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14075.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -23,11 +23,11 @@
                         <viewControllerLayoutGuide type="bottom" id="G59-i0-2ls"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6Qo-RS-pYP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="1S2-k1-emM">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ReceiveAddressTableViewCell" rowHeight="74" id="S2v-JK-95T" customClass="ReceiveAddressTableViewCell" customModule="MinterWallet" customModuleProvider="target">
@@ -66,14 +66,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OMa-wU-Ld9">
-                                                    <rect key="frame" x="117.5" y="21.5" width="140" height="140"/>
+                                                    <rect key="frame" x="117.5" y="21" width="140" height="140"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="140" id="Lug-F3-lRv"/>
                                                         <constraint firstAttribute="width" constant="140" id="t7y-aD-1yl"/>
                                                     </constraints>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="38s-tC-Z9h">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="182"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                                     <connections>
                                                         <action selector="copyButtonDidTap:" destination="0r5-uD-Mvw" eventType="touchUpInside" id="SX0-Rw-3mw"/>
                                                     </connections>
@@ -105,6 +105,7 @@
                             <constraint firstAttribute="trailing" secondItem="1S2-k1-emM" secondAttribute="trailing" id="kr4-0p-0RQ"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Receive Coins" id="CcE-qa-Zc0"/>
                     <connections>
                         <outlet property="footerView" destination="7Rj-Ao-rz5" id="r1y-zo-IhT"/>
