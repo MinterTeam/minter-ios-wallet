@@ -10,8 +10,6 @@ import RxSwift
 import MinterCore
 import MinterMy
 
-
-
 class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 	
 	//MARK: -

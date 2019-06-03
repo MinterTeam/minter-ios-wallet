@@ -151,14 +151,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14C-I7-O2a">
-                                <rect key="frame" x="20" y="266" width="44" height="13.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount Spent" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="14C-I7-O2a">
+                                <rect key="frame" x="20" y="266" width="79" height="13.5"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.55" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pco-d0-X2b">
-                                <rect key="frame" x="20" y="283.5" width="1133" height="18"/>
+                                <rect key="frame" x="20" y="283.5" width="584" height="18"/>
                                 <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -187,20 +187,34 @@
                                     <action selector="didTapToButton:" destination="Lr9-WC-2P6" eventType="touchUpInside" id="6d4-Gx-qzv"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount Received" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JpT-5Q-FAl">
+                                <rect key="frame" x="609" y="266" width="96" height="13.5"/>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.55" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pes-y9-zuK">
+                                <rect key="frame" x="609" y="283.5" width="544" height="18"/>
+                                <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstItem="ynf-TC-ZaB" firstAttribute="top" secondItem="b1A-Ec-2nC" secondAttribute="bottom" id="1IB-4Q-VNg"/>
                             <constraint firstItem="CsB-Pi-iAd" firstAttribute="leading" secondItem="Hdv-4s-hMD" secondAttribute="leading" constant="20" id="1Lb-rt-Bln"/>
                             <constraint firstItem="Kq1-fP-cdR" firstAttribute="leading" secondItem="Hdv-4s-hMD" secondAttribute="leading" constant="20" id="31g-iD-jw5"/>
-                            <constraint firstAttribute="trailing" secondItem="Pco-d0-X2b" secondAttribute="trailing" constant="5" id="3zt-zW-ZkE"/>
                             <constraint firstItem="ynf-TC-ZaB" firstAttribute="leading" secondItem="Kq1-fP-cdR" secondAttribute="leading" id="8bT-PL-tF1"/>
+                            <constraint firstItem="Pes-y9-zuK" firstAttribute="centerY" secondItem="Pco-d0-X2b" secondAttribute="centerY" id="9SL-TS-DNW"/>
                             <constraint firstItem="14C-I7-O2a" firstAttribute="top" secondItem="1xY-34-mWT" secondAttribute="bottom" constant="16" id="BVJ-DZ-u0O"/>
                             <constraint firstItem="eHv-Ji-VVA" firstAttribute="leading" secondItem="Kq1-fP-cdR" secondAttribute="leading" id="DSa-Q7-yDo"/>
                             <constraint firstItem="14C-I7-O2a" firstAttribute="leading" secondItem="0Ry-0s-WvR" secondAttribute="leading" id="DVO-wA-DfZ"/>
+                            <constraint firstItem="Pes-y9-zuK" firstAttribute="leading" secondItem="JpT-5Q-FAl" secondAttribute="leading" id="JWw-2s-NNB"/>
                             <constraint firstItem="y62-Ae-j4y" firstAttribute="top" secondItem="ynf-TC-ZaB" secondAttribute="bottom" constant="4" id="OeL-eb-Fh9"/>
                             <constraint firstItem="Kq1-fP-cdR" firstAttribute="top" secondItem="Hdv-4s-hMD" secondAttribute="top" constant="20" id="PuW-XK-r33"/>
                             <constraint firstItem="LAv-Wi-Zbt" firstAttribute="leading" secondItem="Hdv-4s-hMD" secondAttribute="leading" constant="10" id="QAQ-Ry-6iG"/>
+                            <constraint firstItem="JpT-5Q-FAl" firstAttribute="centerY" secondItem="14C-I7-O2a" secondAttribute="centerY" id="SEn-64-Km3"/>
                             <constraint firstItem="CsB-Pi-iAd" firstAttribute="top" secondItem="Kq1-fP-cdR" secondAttribute="bottom" constant="4" id="TqT-FH-sat"/>
                             <constraint firstItem="oQn-pv-8lP" firstAttribute="leading" secondItem="RFv-5p-TDv" secondAttribute="leading" id="Twy-k5-4cQ"/>
                             <constraint firstItem="b1A-Ec-2nC" firstAttribute="top" secondItem="eHv-Ji-VVA" secondAttribute="bottom" constant="4" id="VBH-2T-A0I"/>
@@ -208,11 +222,15 @@
                             <constraint firstItem="Pco-d0-X2b" firstAttribute="top" secondItem="14C-I7-O2a" secondAttribute="bottom" constant="4" id="XvS-LU-0IA"/>
                             <constraint firstItem="eHv-Ji-VVA" firstAttribute="top" secondItem="CsB-Pi-iAd" secondAttribute="bottom" id="Z43-dE-b0N"/>
                             <constraint firstAttribute="trailing" secondItem="LAv-Wi-Zbt" secondAttribute="trailing" constant="10" id="aVu-BZ-kiK"/>
+                            <constraint firstAttribute="trailing" secondItem="Pes-y9-zuK" secondAttribute="trailing" constant="5" id="auE-vQ-x2i"/>
                             <constraint firstItem="y62-Ae-j4y" firstAttribute="leading" secondItem="ynf-TC-ZaB" secondAttribute="leading" id="c5V-ca-dAc"/>
                             <constraint firstItem="RFv-5p-TDv" firstAttribute="leading" secondItem="Hdv-4s-hMD" secondAttribute="centerX" constant="30" id="cEr-7y-tN6"/>
                             <constraint firstItem="1xY-34-mWT" firstAttribute="top" secondItem="0Ry-0s-WvR" secondAttribute="bottom" constant="4" id="dmA-1K-Nag"/>
+                            <constraint firstItem="Pes-y9-zuK" firstAttribute="top" secondItem="JpT-5Q-FAl" secondAttribute="bottom" constant="4" id="ecW-15-ueO"/>
                             <constraint firstItem="Pco-d0-X2b" firstAttribute="leading" secondItem="14C-I7-O2a" secondAttribute="leading" id="etD-3S-HOg"/>
                             <constraint firstItem="b1A-Ec-2nC" firstAttribute="leading" secondItem="Hdv-4s-hMD" secondAttribute="leading" constant="20" id="goj-7L-VyP"/>
+                            <constraint firstItem="Pes-y9-zuK" firstAttribute="leading" secondItem="oQn-pv-8lP" secondAttribute="leading" id="gu6-7U-5Wn"/>
+                            <constraint firstItem="oQn-pv-8lP" firstAttribute="leading" secondItem="Pco-d0-X2b" secondAttribute="trailing" constant="5" id="hv5-dE-uu7"/>
                             <constraint firstAttribute="trailing" secondItem="b1A-Ec-2nC" secondAttribute="trailing" id="koZ-6Z-hmM"/>
                             <constraint firstItem="oQn-pv-8lP" firstAttribute="top" secondItem="RFv-5p-TDv" secondAttribute="bottom" constant="4" id="lKc-CT-YRL"/>
                             <constraint firstItem="0Ry-0s-WvR" firstAttribute="top" secondItem="y62-Ae-j4y" secondAttribute="bottom" constant="16" id="mVR-r0-WDA"/>
@@ -220,6 +238,7 @@
                             <constraint firstAttribute="trailing" secondItem="CsB-Pi-iAd" secondAttribute="trailing" id="qhh-hO-1D5"/>
                             <constraint firstItem="0Ry-0s-WvR" firstAttribute="leading" secondItem="ynf-TC-ZaB" secondAttribute="leading" id="rAG-S4-VVS"/>
                             <constraint firstItem="RFv-5p-TDv" firstAttribute="centerY" secondItem="ynf-TC-ZaB" secondAttribute="centerY" id="w3r-e9-b9p"/>
+                            <constraint firstItem="JpT-5Q-FAl" firstAttribute="leading" secondItem="RFv-5p-TDv" secondAttribute="leading" id="wVS-z1-q3Q"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -253,6 +272,7 @@
                 <outlet property="dateLabel" destination="y62-Ae-j4y" id="ZDo-Cf-uPF"/>
                 <outlet property="detailView" destination="Hdv-4s-hMD" id="NZz-Fa-iAs"/>
                 <outlet property="expandedAmountLabel" destination="Pco-d0-X2b" id="pOs-IZ-uIJ"/>
+                <outlet property="expandedReceivedAmountLabel" destination="Pes-y9-zuK" id="pyk-Jd-R2j"/>
                 <outlet property="fromAddressButton" destination="CsB-Pi-iAd" id="0gv-AV-2uP"/>
                 <outlet property="timeLabel" destination="oQn-pv-8lP" id="aZ4-US-lEU"/>
                 <outlet property="title" destination="d6H-CN-ptJ" id="hD7-vG-Vnu"/>

@@ -27,6 +27,7 @@ AddressTextViewTableViewCellDelegate {
 	typealias ViewModelType = SendViewModel
 
 	func configure(with viewModel: SendViewModel) {
+//		viewModel.input
 		
 	}
 
@@ -61,6 +62,8 @@ AddressTextViewTableViewCellDelegate {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		configure(with: viewModel)
 
 		if self.shouldShowTestnetToolbar {
 			self.tableView.contentInset = UIEdgeInsets(top: 70, left: 0, bottom: 0, right: 0)
@@ -107,8 +110,7 @@ AddressTextViewTableViewCellDelegate {
 			if self?.popupViewController == nil {
 				self?.showPopup(viewController: popup!)
 				self?.popupViewController = popup
-			}
-			else {
+			} else {
 				self?.showPopup(viewController: popup!, inPopupViewController: self!.popupViewController)
 			}
 		}).disposed(by: disposeBag)
@@ -139,15 +141,26 @@ AddressTextViewTableViewCellDelegate {
 	// MARK: -
 
 	private func registerCells() {
-		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "TextFieldTableViewCell")
-		tableView.register(UINib(nibName: "AmountTextFieldTableViewCell", bundle: nil), forCellReuseIdentifier: "AmountTextFieldTableViewCell")
-		tableView.register(UINib(nibName: "AddressTextViewTableViewCell1", bundle: nil), forCellReuseIdentifier: "AddressTextViewTableViewCell1")
-		tableView.register(UINib(nibName: "PickerTableViewCell", bundle: nil), forCellReuseIdentifier: "PickerTableViewCell")
-		tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil), forCellReuseIdentifier: "SwitchTableViewCell")
-		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil), forCellReuseIdentifier: "TwoTitleTableViewCell")
-		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil), forCellReuseIdentifier: "SeparatorTableViewCell")
-		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "ButtonTableViewCell")
-		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil), forCellReuseIdentifier: "BlankTableViewCell")
+		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "TextFieldTableViewCell")
+		tableView.register(UINib(nibName: "PayloadTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "PayloadTableViewCell")
+		tableView.register(UINib(nibName: "AmountTextFieldTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "AmountTextFieldTableViewCell")
+		tableView.register(UINib(nibName: "AddressTextViewTableViewCell1", bundle: nil),
+											 forCellReuseIdentifier: "AddressTextViewTableViewCell1")
+		tableView.register(UINib(nibName: "PickerTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "PickerTableViewCell")
+		tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SwitchTableViewCell")
+		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "TwoTitleTableViewCell")
+		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SeparatorTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "ButtonTableViewCell")
+		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "BlankTableViewCell")
 	}
 
 	// MARK: -
@@ -181,6 +194,9 @@ AddressTextViewTableViewCellDelegate {
 		
 		if let textViewCell = cell as? TextViewTableViewCell {
 			textViewCell.delegate = self
+			if nil != textViewCell as? PayloadTableViewCell {
+				textViewCell.textView.rx.text.subscribe(viewModel.input.payload).disposed(by: self.disposeBag)
+			}
 		}
 		
 		if let textField = cell as? AmountTextFieldTableViewCell {
@@ -300,11 +316,18 @@ extension SendViewController {
 				return
 			}
 			
-			popupView.frame = CGRect(x: currentViewController.view.frame.width, y: popupView.frame.origin.y, width: popupView.frame.width, height: popupView.frame.height)
-			popupView.center = CGPoint(x: popupView.center.x, y: currentViewController.view.center.y)
+			popupView.frame = CGRect(x: currentViewController.view.frame.width,
+															 y: popupView.frame.origin.y,
+															 width: popupView.frame.width,
+															 height: popupView.frame.height)
+			popupView.center = CGPoint(x: popupView.center.x,
+																 y: currentViewController.view.center.y)
 			
 			UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseInOut, animations: {
-				currentViewController.popupView.frame = CGRect(x: -currentViewController.popupView.frame.width, y: currentViewController.popupView.frame.origin.y, width: currentViewController.popupView.frame.width, height: currentViewController.popupView.frame.height)
+				currentViewController.popupView.frame = CGRect(x: -currentViewController.popupView.frame.width,
+																											 y: currentViewController.popupView.frame.origin.y,
+																											 width: currentViewController.popupView.frame.width,
+																											 height: currentViewController.popupView.frame.height)
 				popupView.center = currentViewController.view.center
 				viewController.view.alpha = 1.0
 				currentViewController.popupView.alpha = 0.0
@@ -483,6 +506,8 @@ extension SendViewController : AmountTextFieldTableViewCellDelegate {
 	
 	func didTapUseMax() {
 		
+		self.view.endEditing(true)
+		
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsUseMaxButton, params: nil)
 		
 		let indexPath = IndexPath(row: 2, section: 0)
@@ -499,15 +524,3 @@ extension SendViewController : AmountTextFieldTableViewCellDelegate {
 	}
 
 }
-
-//extension SendViewController: TestnetToolbarProtocol {
-//
-////	var testnetToolbarView: UIView {
-////		return self.testnetToolbarView
-////	}
-//
-////	func updateLayoutForTestnetToolbar() {
-////
-////	}
-//
-//}

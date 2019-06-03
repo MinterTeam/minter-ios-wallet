@@ -47,9 +47,9 @@ class TwoTitleTableViewCell: BaseCell {
 		if let item = item as? TwoTitleTableViewCellItem {
 			label.text = item.title
 			sublabel.text = item.subtitle
-			
-			item.subtitleObservable?.bind(to: sublabel.rx.text).disposed(by: disposeBag)
-			
+
+			item.subtitleObservable?.asDriver(onErrorJustReturn: "").drive(sublabel.rx.text).disposed(by: disposeBag)
+
 		}
 	}
 

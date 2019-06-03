@@ -10,6 +10,8 @@ PODS:
   - CryptoSwift (0.14.0)
   - Differentiator (3.1.0)
   - Fabric (1.9.0)
+  - GoldenKeystore (1.0.3):
+    - TrezorCrypto (= 0.0.9)
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
   - MinterCore (0.1.20):
@@ -20,7 +22,7 @@ PODS:
     - secp256k1.swift (~> 0.1)
   - MinterExplorer (0.1.11):
     - MinterCore
-  - MinterMy (0.1.4):
+  - MinterMy (0.1.6):
     - MinterCore
   - NotificationBannerSwift (1.8.0):
     - MarqueeLabel/Swift (~> 3.2.0)
@@ -52,6 +54,7 @@ PODS:
   - SwiftProtobuf (1.3.1)
   - SwiftValidator (4.0.0)
   - TPKeyboardAvoiding (1.3.2)
+  - TrezorCrypto (0.0.9)
   - XLPagerTabStrip (8.1.1)
   - YandexMobileMetrica/Dynamic (3.2.0)
 
@@ -62,6 +65,7 @@ DEPENDENCIES:
   - Crashlytics (~> 3.10)
   - CryptoSwift
   - Fabric (~> 1.7)
+  - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - KeychainSwift (= 12.0.0)
   - MinterCore (from `../MinterCore`)
   - MinterExplorer (from `../MinterExplorer`)
@@ -107,10 +111,13 @@ SPEC REPOS:
     - SwiftCentrifuge
     - SwiftProtobuf
     - TPKeyboardAvoiding
+    - TrezorCrypto
     - XLPagerTabStrip
     - YandexMobileMetrica
 
 EXTERNAL SOURCES:
+  GoldenKeystore:
+    :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterCore:
     :path: "../MinterCore"
   MinterExplorer:
@@ -122,6 +129,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/jpotts18/SwiftValidator.git
 
 CHECKOUT OPTIONS:
+  GoldenKeystore:
+    :commit: 2f58a6eb405561bec305d5a197bcaa1514eed77e
+    :git: https://github.com/sidorov-panda/GoldenKeystore
   SwiftValidator:
     :commit: c0ee801a2d107eca5f748d07932b449666d8effd
     :git: https://github.com/jpotts18/SwiftValidator.git
@@ -135,11 +145,12 @@ SPEC CHECKSUMS:
   CryptoSwift: 35a10419f4dbf0619c13f8c1c180037e115323fa
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
+  GoldenKeystore: 75140cafd42e881fafe7bf0d7b8bc17ef5c1a0d0
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
-  MinterCore: 5835705724f2e53375c6eba20d70300fbc4b659c
-  MinterExplorer: 42faf193e5d992d9dd157d6dcad70384700efd36
-  MinterMy: 99a32a3b0b914f73509715f9c0f7952715808591
+  MinterCore: 1cd84b62503f2fe48be21d95b355a0550fadec05
+  MinterExplorer: 59d7f15bf6217825ab2113efebe0ade25cf53b75
+  MinterMy: 9a3ae2ae14fe7a834b4f714c5fc1ac2e4cd750dd
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
   ObjectMapper: 0d4402610f4e468903ae64629eec4784531e5c51
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
@@ -157,9 +168,10 @@ SPEC CHECKSUMS:
   SwiftProtobuf: 84cd6b8f4fd2fc3d9fbd80a0aaf2e957d52824ec
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
+  TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 9c5e4ae0150c5effed04a769dc3a5a46b0693e7e
+PODFILE CHECKSUM: 63ed99ec0f35c08266a0d927d0c8b2c887de4bee
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.2

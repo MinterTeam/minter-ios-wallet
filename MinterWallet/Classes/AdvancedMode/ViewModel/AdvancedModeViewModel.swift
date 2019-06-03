@@ -7,8 +7,7 @@
 //
 
 import RxSwift
-
-
+import GoldenKeystore
 
 class AdvancedModeViewModel: AccountantBaseViewModel {
 	
@@ -50,6 +49,17 @@ class AdvancedModeViewModel: AccountantBaseViewModel {
 		dbModel.encryptedBy = account.encryptedBy.rawValue
 
 		databaseStorage.add(object: dbModel)
+	}
+	
+	func isCorrect(mnemonic: String) -> ValidationError? {
+		let array = mnemonic.split(separator: " ")
+		guard array.count == 12 else {
+			return .wrongMnemonic
+		}
+		if GoldenKeystore.mnemonicIsValid(mnemonic) {
+			return nil
+		}
+		return .wrongMnemonic
 	}
 	
 	func validationText(for error: ValidationError) -> String {

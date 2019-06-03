@@ -172,14 +172,11 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-
-		tableView.reloadData()
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		self.tableView.reloadData()
 		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen, params: nil)
 	}
 

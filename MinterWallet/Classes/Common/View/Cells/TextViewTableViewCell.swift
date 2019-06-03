@@ -30,10 +30,12 @@ class TextViewTableViewCellItem : BaseCellItem {
 	
 	var keybordType: UIKeyboardType?
 	
+	var titleObservable: Observable<String?>?
+	
 }
 
 
-class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
+class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 	
 	enum State {
 		case `default`
@@ -131,7 +133,8 @@ class TextViewTableViewCell : BaseCell, AutoGrowingTextViewDelegate {
 					
 				})
 			}).disposed(by: disposeBag)
-			
+
+			item.titleObservable?.asDriver(onErrorJustReturn: "").drive(textView.rx.text).disposed(by: disposeBag)
 		}
 	}
 	

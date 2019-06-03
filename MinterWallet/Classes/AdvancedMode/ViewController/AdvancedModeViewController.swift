@@ -36,7 +36,7 @@ class AdvancedModeViewController: BaseViewController {
 
 		let mnemonicText = textView.text.split(separator: " ")
 
-		guard mnemonicText.count == 12 else {
+		guard viewModel.isCorrect(mnemonic: textView.text) == nil else {
 			let err = type(of: viewModel).ValidationError.wrongMnemonic
 			textView.setInvalid()
 			errorLabel.text = viewModel.validationText(for: err)

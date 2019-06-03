@@ -18,7 +18,8 @@ class ConvertTransactionTableViewCellItem: BaseCellItem {
 	var to: String?
 	var fromCoin: String?
 	var toCoin: String?
-	var amount: Decimal?
+	var fromAmount: Decimal?
+	var toAmount: Decimal?
 	var expandable: Bool?
 }
 
@@ -62,6 +63,7 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 	@IBOutlet weak var fromAddressButton: UIButton!
 	@IBOutlet weak var toAddressButton: UIButton!
 	@IBOutlet weak var expandedAmountLabel: UILabel!
+	@IBOutlet weak var expandedReceivedAmountLabel: UILabel!
 	@IBOutlet weak var coinLabel: UILabel!
 	@IBOutlet weak var dateLabel: UILabel!
 	@IBOutlet weak var timeLabel: UILabel!
@@ -90,18 +92,21 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 			if let image = transaction.image {
 				coinImage.image = image
 			}
-			if nil == transaction.amount {
+			if nil == transaction.toAmount {
 				amount.text = ""
 			} else {
-				amount.text = amountText(amount: transaction.amount ?? 0)
+				amount.text = amountText(amount: transaction.toAmount ?? 0)
 			}
-			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
+			amount.textColor = ((transaction.toAmount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
 
 			fromAddressButton.setTitle(transaction.from, for: .normal)
 			toAddressButton.setTitle(transaction.to, for: .normal)
 
-			expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0),
+			expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.fromAmount ?? 0),
 																																					formatter: CurrencyNumberFormatter.coinFormatter)
+			expandedReceivedAmountLabel.text = CurrencyNumberFormatter
+				.formattedDecimal(with: (transaction.toAmount ?? 0),
+																																									formatter: CurrencyNumberFormatter.coinFormatter)
 
 			coinLabel.text = transaction.toCoin
 			dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())

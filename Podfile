@@ -4,9 +4,9 @@ use_frameworks!
 platform :ios, '10.0'
 
 def shared_pods
-	pod 'MinterCore'#, :path => '../MinterCore'
-	pod 'MinterMy'#, :path => '../MinterMy'
-	pod 'MinterExplorer'#, :path => '../MinterExplorer'
+	pod 'MinterCore', :path => '../MinterCore'
+	pod 'MinterMy', :path => '../MinterMy'
+	pod 'MinterExplorer', :path => '../MinterExplorer'
 	pod 'Alamofire', '4.7.3'
 	pod 'AlamofireImage', '3.4.1'
 	pod 'RxSwift', '4.3.1'
@@ -25,6 +25,7 @@ def shared_pods
 	pod 'ReachabilitySwift', '~> 4.3'
 	pod 'YandexMobileMetrica/Dynamic', '3.2.0'
 	pod 'SwiftCentrifuge'
+	pod 'GoldenKeystore', :git => 'https://github.com/sidorov-panda/GoldenKeystore'
 end
 
 target 'MinterWallet' do

@@ -55,6 +55,10 @@
 		FA0AF8E621B534EF000B571B /* CIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8E021B534EF000B571B /* CIImageExtension.swift */; };
 		FA0AF8E721B534EF000B571B /* CIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8E221B534EF000B571B /* CIColorExtension.swift */; };
 		FA0AF8E821B534EF000B571B /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8E321B534EF000B571B /* QRCode.swift */; };
+		FA0D3C1022A16966004F5AE1 /* PayloadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0D3C0E22A16966004F5AE1 /* PayloadTableViewCell.swift */; };
+		FA0D3C1122A16966004F5AE1 /* PayloadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0D3C0E22A16966004F5AE1 /* PayloadTableViewCell.swift */; };
+		FA0D3C1222A16966004F5AE1 /* PayloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0D3C0F22A16966004F5AE1 /* PayloadTableViewCell.xib */; };
+		FA0D3C1322A16966004F5AE1 /* PayloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0D3C0F22A16966004F5AE1 /* PayloadTableViewCell.xib */; };
 		FA0F296121B1740800E10F5E /* ReaderOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295721B1740600E10F5E /* ReaderOverlayView.swift */; };
 		FA0F296221B1740800E10F5E /* ToggleTorchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295821B1740600E10F5E /* ToggleTorchButton.swift */; };
 		FA0F296321B1740800E10F5E /* QRCodeReaderViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295921B1740600E10F5E /* QRCodeReaderViewContainer.swift */; };
@@ -585,6 +589,8 @@
 		FA0AF8E021B534EF000B571B /* CIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIImageExtension.swift; sourceTree = "<group>"; };
 		FA0AF8E221B534EF000B571B /* CIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIColorExtension.swift; sourceTree = "<group>"; };
 		FA0AF8E321B534EF000B571B /* QRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
+		FA0D3C0E22A16966004F5AE1 /* PayloadTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayloadTableViewCell.swift; sourceTree = "<group>"; };
+		FA0D3C0F22A16966004F5AE1 /* PayloadTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PayloadTableViewCell.xib; sourceTree = "<group>"; };
 		FA0F295721B1740600E10F5E /* ReaderOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderOverlayView.swift; sourceTree = "<group>"; };
 		FA0F295821B1740600E10F5E /* ToggleTorchButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleTorchButton.swift; sourceTree = "<group>"; };
 		FA0F295921B1740600E10F5E /* QRCodeReaderViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewContainer.swift; sourceTree = "<group>"; };
@@ -1140,6 +1146,8 @@
 				FA4DF4AE2108FA1500E64F1B /* AmountTextFieldTableViewCell.swift */,
 				FA4DF4AF2108FA1500E64F1B /* AmountTextFieldTableViewCell.xib */,
 				FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell1.xib */,
+				FA0D3C0E22A16966004F5AE1 /* PayloadTableViewCell.swift */,
+				FA0D3C0F22A16966004F5AE1 /* PayloadTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2140,6 +2148,7 @@
 				FA33307D224A4B3C003B4763 /* CreateWallet.storyboard in Resources */,
 				FA33307E224A4B3C003B4763 /* GenerateAddressLabelTableViewCell.xib in Resources */,
 				FA33307F224A4B3C003B4763 /* beep_digi_octave.wav in Resources */,
+				FA0D3C1222A16966004F5AE1 /* PayloadTableViewCell.xib in Resources */,
 				FAFBF2182298231B00D053C7 /* RedeemCheckTableViewCell.xib in Resources */,
 				FA333080224A4B3C003B4763 /* Root.storyboard in Resources */,
 				FA333081224A4B3C003B4763 /* Transactions.storyboard in Resources */,
@@ -2207,6 +2216,7 @@
 				15A1B86305F7B488825D223C /* CreateWallet.storyboard in Resources */,
 				FAA2608020935C36009FF3DE /* GenerateAddressLabelTableViewCell.xib in Resources */,
 				FADD8F2321930E7A00463F66 /* beep_digi_octave.wav in Resources */,
+				FA0D3C1322A16966004F5AE1 /* PayloadTableViewCell.xib in Resources */,
 				FAFBF2192298231B00D053C7 /* RedeemCheckTableViewCell.xib in Resources */,
 				6C405281D86D42CB85997A3F /* Root.storyboard in Resources */,
 				02A6A0A6DB602A40AB4A4C29 /* Transactions.storyboard in Resources */,
@@ -2249,7 +2259,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
@@ -2260,7 +2270,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MinterWalletTests/Pods-MinterWalletTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5583E2DD58E82DCB9403EEA7 /* [CP] Check Pods Manifest.lock */ = {
@@ -2305,13 +2315,14 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MinterWalletTestnet/Pods-MinterWalletTestnet-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-MinterWalletTestnet/Pods-MinterWalletTestnet-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFDateHelper/AFDateHelper.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
+				"${BUILT_PRODUCTS_DIR}/GoldenKeystore/GoldenKeystore.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterCore/MinterCore.framework",
@@ -2333,6 +2344,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftValidator/SwiftValidator.framework",
 				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
+				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
 				"${PODS_ROOT}/YandexMobileMetrica/dynamic/YandexMobileMetrica.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
@@ -2345,6 +2357,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoldenKeystore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterCore.framework",
@@ -2366,13 +2379,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftValidator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YandexMobileMetrica.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MinterWalletTestnet/Pods-MinterWalletTestnet-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MinterWalletTestnet/Pods-MinterWalletTestnet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FA332F9D224A4B3C003B4763 /* [CP] Check Pods Manifest.lock */ = {
@@ -2425,13 +2439,14 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MinterWallet/Pods-MinterWallet-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-MinterWallet/Pods-MinterWallet-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFDateHelper/AFDateHelper.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
+				"${BUILT_PRODUCTS_DIR}/GoldenKeystore/GoldenKeystore.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterCore/MinterCore.framework",
@@ -2453,6 +2468,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftValidator/SwiftValidator.framework",
 				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
+				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
 				"${PODS_ROOT}/YandexMobileMetrica/dynamic/YandexMobileMetrica.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
@@ -2465,6 +2481,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoldenKeystore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterCore.framework",
@@ -2486,13 +2503,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftValidator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YandexMobileMetrica.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MinterWallet/Pods-MinterWallet-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MinterWallet/Pods-MinterWallet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FA380F0920EE2AC3004B91C9 /* ShellScript */ = {
@@ -2658,6 +2676,7 @@
 				FAA2AAEA2296E42300581D47 /* TransactionAddressButton.swift in Sources */,
 				FA33301D224A4B3C003B4763 /* SentPopupViewModel.swift in Sources */,
 				FA33301E224A4B3C003B4763 /* InfoManager+Rx.swift in Sources */,
+				FA0D3C1022A16966004F5AE1 /* PayloadTableViewCell.swift in Sources */,
 				FA33301F224A4B3C003B4763 /* UIView+Roundify.swift in Sources */,
 				FA333020224A4B3C003B4763 /* TransactionsViewController.swift in Sources */,
 				FA333021224A4B3C003B4763 /* QRCodeReaderViewController.swift in Sources */,
@@ -2850,6 +2869,7 @@
 				FAA2AAEB2296E42300581D47 /* TransactionAddressButton.swift in Sources */,
 				FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */,
 				FA17817D21F73E4200FECDED /* InfoManager+Rx.swift in Sources */,
+				FA0D3C1122A16966004F5AE1 /* PayloadTableViewCell.swift in Sources */,
 				FA89A79920873A280019226D /* UIView+Roundify.swift in Sources */,
 				833CF747F604B61E37401C11 /* TransactionsViewController.swift in Sources */,
 				FA0F296721B1740800E10F5E /* QRCodeReaderViewController.swift in Sources */,

@@ -30,11 +30,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	var output: SendViewModel.Output!
 
 	struct Input {
-		
+		var payload: AnyObserver<String?>
 	}
 
 	struct Output {
-		
+
 	}
 
 	// MARK: -
@@ -95,6 +95,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	//State obervables
 	private var addressStateObservable = Variable(TextViewTableViewCell.State.default)
 	private var amountStateObservable = Variable(TextFieldTableViewCell.State.default)
+	private var payloadStateObservable = PublishSubject<TextViewTableViewCell.State>()
 
 	private var selectedAddress: String?
 	private var selectedAddressBalance: Decimal? {
@@ -110,13 +111,18 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	var selectedBalanceText: String? {
-		return CurrencyNumberFormatter.formattedDecimal(with: selectedAddressBalance ?? 0, formatter: formatter)
+		return CurrencyNumberFormatter.formattedDecimal(with: selectedAddressBalance ?? 0,
+																										formatter: formatter)
 	}
 
 	var baseCoinBalance: Decimal {
 		let balances = Session.shared.allBalances.value
-		if let ads = selectedAddress, let cn = Coin.baseCoin().symbol, let smt = balances[ads], let blnc = smt[cn] {
-			return blnc
+		if let ads = selectedAddress,
+			let cn = Coin.baseCoin().symbol,
+			let smt = balances[ads],
+			let blnc = smt[cn] {
+
+				return blnc
 		}
 		return 0
 	}
@@ -128,29 +134,30 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		return selectedCoin.value == Coin.baseCoin().symbol!
 	}
 
-	func coinToPayComission(amount: Decimal) -> String? {
-		guard let selectedCoin = self.selectedCoin.value else {
-			return nil
-		}
-
-		if isBaseCoin == true {
-			let balance = self.baseCoinBalance * TransactionCoinFactorDecimal
-			if balance >= amount + RawTransactionType.sendCoin.commission() {
-				return Coin.baseCoin().symbol!
-			}
-		} else {
-			//If it's not base coin we try pay commission from base coin
-			if canPayCommissionWithBaseCoin() {
-				return Coin.baseCoin().symbol!
-			}
-			//If it's impossible we try to pay comission from the selected coin
-			let selectedBalance = (self.selectedAddressBalance ?? 0.0) * TransactionCoinFactorDecimal
-			if selectedBalance >= amount + (RawTransactionType.sendCoin.commission()) {
-				return selectedCoin
-			}
-		}
-		return nil
-	}
+//	func coinToPayComission(amount: Decimal) -> String? {
+//		let payloadCom = payloadComission() * TransactionCoinFactorDecimal
+//		guard let selectedCoin = self.selectedCoin.value else {
+//			return nil
+//		}
+//
+//		if isBaseCoin == true {
+//			let balance = self.baseCoinBalance * TransactionCoinFactorDecimal
+//			if balance >= amount + payloadCom + RawTransactionType.sendCoin.commission() {
+//				return Coin.baseCoin().symbol!
+//			}
+//		} else {
+//			//If it's not base coin we try pay commission from base coin
+//			if canPayCommissionWithBaseCoin() {
+//				return Coin.baseCoin().symbol!
+//			}
+//			//If it's impossible we try to pay comission from the selected coin
+//			let selectedBalance = (self.selectedAddressBalance ?? 0.0) * TransactionCoinFactorDecimal
+//			if selectedBalance >= amount + payloadCom + (RawTransactionType.sendCoin.commission()) {
+//				return selectedCoin
+//			}
+//		}
+//		return nil
+//	}
 
 	private func canPayCommissionWithBaseCoin() -> Bool {
 		let balance = self.baseCoinBalance
@@ -161,10 +168,21 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	private var currentCommission: Decimal {
+		let payloadCom = payloadComission() * TransactionCoinFactorDecimal
 		if (toField ?? "").isValidPublicKey() {
-			return Decimal(Session.shared.currentGasPrice.value) * (RawTransactionType.delegate.commission() / TransactionCoinFactorDecimal)
+			let val = (payloadCom + RawTransactionType.delegate.commission()) / TransactionCoinFactorDecimal
+			return Decimal(Session.shared.currentGasPrice.value) * val
 		}
-		return Decimal(Session.shared.currentGasPrice.value) * (RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal)
+		let val = (payloadCom + RawTransactionType.sendCoin.commission()) / TransactionCoinFactorDecimal
+		return Decimal(Session.shared.currentGasPrice.value) * val
+	}
+
+	private func payloadComission() -> Decimal {
+		return Decimal((try? clearPayloadSubject.value() ?? "")?.count ?? 0) * 0.002
+	}
+	
+	private func payload() -> String {
+		return (try? clearPayloadSubject.value() ?? "") ?? ""
 	}
 
 	private var lastSentTransactionHash: String?
@@ -177,6 +195,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	private var forceUpdateFee = PublishSubject<Void>()
 	private let accountManager = AccountManager()
 	private let infoManager = InfoManager.default
+	private let payloadSubject = BehaviorSubject<String?>(value: "")
+	private let clearPayloadSubject = BehaviorSubject<String?>(value: "")
 
 	var notifiableError = Variable<NotifiableError?>(nil)
 	var txError = Variable<NotifiableError?>(nil)
@@ -204,18 +224,42 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	var gasObservable: Observable<String> {
 		return Observable.combineLatest(forceUpdateFee.asObservable(),
-																		currentGas.asObservable())
-			.map({ (obj) -> String in
-				return self.comissionText(for: obj.1)
+																		currentGas.asObservable(),
+																		clearPayloadSubject.asObservable(),
+																		payloadSubject.asObservable())
+			.map({ [weak self] (obj) -> String in
+				let payloadData = obj.2?.data(using: .utf8)
+				return self?.comissionText(for: obj.1, payloadData: payloadData) ?? ""
 		})
 	}
-
-	var isCountingDown = false
 
 	// MARK: -
 
 	override init() {
 		super.init()
+
+		self.input = Input(payload: payloadSubject.asObserver())
+		self.output = Output()
+
+		payloadSubject.asObservable().subscribe(onNext: { (payld) in
+			self.forceUpdateFee.onNext(())
+			let data = (payld ?? "").data(using: .utf8) ?? Data()
+			if data.count > 1024 {
+				self.payloadStateObservable.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
+			} else {
+				self.payloadStateObservable.onNext(.default)
+			}
+		}).disposed(by: disposeBag)
+
+		payloadSubject.asObservable().map({ (val) -> String? in
+			var newVal = val
+			while newVal?.data(using: .utf8)?.count ?? 0 > 1024 {
+				newVal?.removeLast()
+			}
+			return newVal
+		}).subscribe(onNext: { (val) in
+			self.clearPayloadSubject.onNext(val)
+		}).disposed(by: disposeBag)
 
 		Session.shared.allBalances.asObservable().distinctUntilChanged().filter({ (_) -> Bool in
 			return true //nil == self.selectedAddress
@@ -240,21 +284,23 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	func createSections() -> [BaseTableSectionItem] {
 
-		let username = AddressTextViewTableViewCellItem(reuseIdentifier: "AddressTextViewTableViewCell1", identifier: cellIdentifierPrefix.address.rawValue)
-		
+		let username = AddressTextViewTableViewCellItem(reuseIdentifier: "AddressTextViewTableViewCell1",
+																										identifier: cellIdentifierPrefix.address.rawValue)
+
 		username.title = "TO (MX ADDRESS OR PUBLIC KEY)".localized()
 		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy,
 			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate,
 			appDele.isTestnet {
 			username.title = "TO (@USERNAME, EMAIL, MX ADDRESS OR PUBLIC KEY)".localized()
 		}
-		
+
 		username.isLoadingObservable = isLoadingAddress.asObservable()
 		username.stateObservable = addressStateObservable.asObservable()
 		username.value = toField ?? ""
 		username.keybordType = .emailAddress
 
-		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell", identifier: cellIdentifierPrefix.coin.rawValue + (selectedBalanceText ?? ""))
+		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell",
+																			 identifier: cellIdentifierPrefix.coin.rawValue + (selectedBalanceText ?? ""))
 		coin.title = "COIN".localized()
 		if nil != self.selectedAddress && nil != self.selectedCoin.value {
 			let item = accountPickerItems().filter { (item) -> Bool in
@@ -273,24 +319,37 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 				selectedCoin.value = object.coin
 			}
 		}
-		
-		let amount = AmountTextFieldTableViewCellItem(reuseIdentifier: "AmountTextFieldTableViewCell", identifier: cellIdentifierPrefix.amount.rawValue)
+
+		let amount = AmountTextFieldTableViewCellItem(reuseIdentifier: "AmountTextFieldTableViewCell",
+																									identifier: cellIdentifierPrefix.amount.rawValue)
 		amount.title = "AMOUNT".localized()
 		amount.rules = [FloatRule(message: "INCORRECT AMOUNT".localized())]
 		amount.value = self.amountField ?? ""
 		amount.stateObservable = amountStateObservable.asObservable()
 		amount.keyboardType = .decimalPad
 
-		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell", identifier: cellIdentifierPrefix.fee.rawValue)
+		let payload = TextViewTableViewCellItem(reuseIdentifier: "PayloadTableViewCell",
+																						identifier: "PayloadTableViewCell_Payload")
+		payload.title = "PAYLOAD MESSAGE (max 1024 symbols)".localized()
+		payload.keybordType = .default
+		payload.stateObservable = payloadStateObservable.asObservable()
+		payload.titleObservable = clearPayloadSubject.asObservable()
+
+		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell",
+																				identifier: cellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
-		fee.subtitle = self.comissionText(for: 1)
+		let payloadData = (try? clearPayloadSubject.value() ?? "")?.data(using: .utf8)
+		fee.subtitle = self.comissionText(for: 1, payloadData: payloadData)
 		fee.subtitleObservable = self.gasObservable
 
-		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: cellIdentifierPrefix.separator.rawValue)
+		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+																							 identifier: cellIdentifierPrefix.separator.rawValue)
 
-		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell", identifier: cellIdentifierPrefix.blank.rawValue)
+		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+																			 identifier: cellIdentifierPrefix.blank.rawValue)
 
-		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: cellIdentifierPrefix.button.rawValue)
+		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+																				 identifier: cellIdentifierPrefix.button.rawValue)
 		button.title = "SEND".localized()
 		button.buttonPattern = "purple"
 		button.isButtonEnabled = validate().count == 0
@@ -298,7 +357,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		button.isButtonEnabledObservable = isSubmitButtonEnabledObservable.asObservable()
 
 		var section = BaseTableSectionItem(header: "")
-		section.items = [coin, username, amount, fee, separator, blank, button]
+		section.items = [coin, username, amount, payload, fee, separator, blank, button]
 		return [section]
 	}
 
@@ -349,8 +408,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 			if isAmountValid(amount: self.amount.value ?? 0) || self.amountField == "" {
 				amountStateObservable.value = .default
-			}
-			else {
+			} else {
 				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
 			}
 		}
@@ -393,8 +451,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		if to.isValidAddress() {
 			toAddress.value = toField
 			addressStateObservable.value = .default
-		}
-		else if to.isValidEmail() {
+		} else if to.isValidEmail() {
 			//get by email
 
 			isLoadingAddress.value = true
@@ -410,8 +467,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 				if address.isValidAddress(), let toFld = self?.toField?.lowercased(), let usr = user?.email?.lowercased(), toFld == usr {
 					self?.toAddress.value = address
 					self?.addressStateObservable.value = .default
-				}
-				else {
+				} else {
 					self?.addressStateObservable.value = .invalid(error: "EMAIL CAN NOT BE FOUND".localized())
 					//Show address error
 				}
@@ -430,7 +486,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			infoManager.address(username: val) { [weak self] (address, user, error) in
 				self?.isLoadingAddress.value = false
 				self?.forceRefreshSubmitButtonState.value = true
-				
+
 				guard nil == error, let address = address else {
 					self?.addressStateObservable.value = .invalid(error: "USERNAME CAN NOT BE FOUND".localized())
 					return
@@ -526,6 +582,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		self.amountField = nil
 		self.nonce.value = nil
 		self.toAddress.value = nil
+		self.clearPayloadSubject.onNext(nil)
 	}
 
 	func sendButtonTaped() {
@@ -603,7 +660,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			self?.getGasPrice(completion: { (gas) in
 				if nil != gas {
 					if (self?.currentGas.value ?? 1) != gas {
-						self?.notifiableError.value = NotifiableError(title: "Transaction fee changed".localized(), text: "Current fee is: " + self!.comissionText(for: gas!))
+						let payloadData = (try? self?.clearPayloadSubject.value() ?? "")?.data(using: .utf8)
+						self?.notifiableError.value = NotifiableError(title: "Transaction fee changed".localized(),
+																													text: "Current fee is: " + self!.comissionText(for: gas!, payloadData: payloadData))
 					}
 				}
 
@@ -629,7 +688,10 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	func sendTX() {
 		let amount = self.amount.value ?? 0.0
-		guard let to = self.toAddress.value, let selectedCoin = self.selectedCoin.value, let nonce = self.nonce.value else {
+		guard let to = self.toAddress.value,
+			let selectedCoin = self.selectedCoin.value,
+			let nonce = self.nonce.value else {
+
 			self.notifiableError.value = NotifiableError(title: "Transaction can't be sent".localized(), text: nil)
 			return
 		}
@@ -648,10 +710,12 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		let isMax = (value > 0 && value == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
 
 		let isBaseCoin = selectedCoin == Coin.baseCoin().symbol!
+		let payload = self.payload()
 
 		DispatchQueue.global().async { [weak self] in
 
-			guard let mnemonic = self?.accountManager.mnemonic(for: self!.selectedAddress!), let seed = self?.accountManager.seed(mnemonic: mnemonic) else {
+			guard let mnemonic = self?.accountManager.mnemonic(for: self!.selectedAddress!),
+				let seed = self?.accountManager.seed(mnemonic: mnemonic) else {
 				//Error no Private key found
 				assert(true)
 				DispatchQueue.main.async {
@@ -679,26 +743,43 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 					let amountWithCommission = max(0, amount - (self?.currentCommission ?? 0))
 					guard (self?.selectedAddressBalance ?? 0) >= amountWithCommission else {
 						let needs = self?.formatter.string(from: amountWithCommission as NSNumber) ?? ""
-						self?.notifiableError.value = NotifiableError(title: "Not enough coins.", text: "Needs " + needs)
+						self?.notifiableError.value = NotifiableError(title: "Not enough coins.",
+																													text: "Needs " + needs)
 						self?.showPopup.value = nil
 						return
 					}
 
 					newAmount = amountWithCommission * TransactionCoinFactorDecimal
-					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
-				}
-				/// In case if we send not a base coin (e.g. BELTCOIN) we try to pay commission with base coin
-				else if !(self?.canPayCommissionWithBaseCoin() ?? true) {
-
+					self?.proceedSend(seed: seed,
+														nonce: nonce,
+														to: to,
+														toFld: toFld,
+														commissionCoin: Coin.baseCoin().symbol!,
+														amount: newAmount,
+														payload: payload)
+				} else if !(self?.canPayCommissionWithBaseCoin() ?? true) {
+					/// In case if we send not a base coin (e.g. BELTCOIN) we try to pay commission with base coin
 					let tx: RawTransaction?
 					if to.isValidPublicKey() {
-						tx = self?.delegateRawTransaction(nonce: BigUInt(nonce), gasCoin: self!.selectedCoin.value!, to: to, value: BigUInt(decimal: newAmount)!, coin: self!.selectedCoin.value!)
+						tx = self?.delegateRawTransaction(nonce: BigUInt(nonce),
+																							gasCoin: self!.selectedCoin.value!,
+																							to: to,
+																							value: BigUInt(decimal: newAmount)!,
+																							coin: self!.selectedCoin.value!,
+																							payload: payload)
 					} else {
-						tx = self?.sendRawTransaction(nonce: BigUInt(nonce), gasCoin: self!.selectedCoin.value!, to: to, value: BigUInt(decimal: newAmount)!, coin: self!.selectedCoin.value!)
+						tx = self?.sendRawTransaction(nonce: BigUInt(nonce),
+																					gasCoin: self!.selectedCoin.value!,
+																					to: to,
+																					value: BigUInt(decimal: newAmount)!,
+																					coin: self!.selectedCoin.value!,
+																					payload: payload)
 					}
 
 					//we make fake tx to get it's commission
-					guard let fakeTx = tx, /*let pk = self?.accountManager.privateKey(from: seed)*/ let signedTx = RawTransactionSigner.sign(rawTx: fakeTx, privateKey: self?.fakePK ?? "") else {
+					guard let fakeTx = tx, /*let pk = self?.accountManager.privateKey(from: seed)*/
+						let signedTx = RawTransactionSigner.sign(rawTx: fakeTx,
+																										 privateKey: self?.fakePK ?? "") else {
 
 						DispatchQueue.main.async {
 							self?.notifiableError.value = NotifiableError(title: "Can't check tx".localized(), text: nil)
@@ -708,7 +789,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 					}
 
 					/// Checking commission for the following tx
-					GateManager.shared.estimateTXCommission(for: signedTx, completion: { [weak self] (commission, error) in
+					GateManager.shared.estimateTXCommission(for: signedTx,
+																									completion: { [weak self] (commission, error) in
 
 						guard error == nil, nil != commission else {
 							return
@@ -726,23 +808,53 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 							return
 						}
 
-						self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: selectedCoin, amount: normalizedAmount * TransactionCoinFactorDecimal)
+						self?.proceedSend(seed: seed,
+															nonce: nonce,
+															to: to,
+															toFld: toFld,
+															commissionCoin: selectedCoin,
+															amount: normalizedAmount * TransactionCoinFactorDecimal,
+															payload: payload)
 					})
 				} else {
 					//otherwise just multiply decimal amount to factor
 					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal
-					self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: Coin.baseCoin().symbol!, amount: newAmount)
+					self?.proceedSend(seed: seed,
+														nonce: nonce,
+														to: to,
+														toFld: toFld,
+														commissionCoin: Coin.baseCoin().symbol!,
+														amount: newAmount,
+														payload: payload)
 				}
 			} else {
 				let commissionCoin = (self?.canPayCommissionWithBaseCoin() ?? false) ? Coin.baseCoin().symbol! : selectedCoin
-				self?.proceedSend(seed: seed, nonce: nonce, to: to, toFld: toFld, commissionCoin: commissionCoin, amount: newAmount)
+				self?.proceedSend(seed: seed,
+													nonce: nonce,
+													to: to,
+													toFld: toFld,
+													commissionCoin: commissionCoin,
+													amount: newAmount,
+													payload: payload)
 			}
 		}
 	}
 
-	private func proceedSend(seed: Data, nonce: Int, to: String, toFld: String?, commissionCoin: String, amount: Decimal) {
+	private func proceedSend(seed: Data,
+													 nonce: Int,
+													 to: String,
+													 toFld: String?,
+													 commissionCoin: String,
+													 amount: Decimal,
+													 payload: String) {
 
-		self.sendTx(seed: seed, nonce: nonce, to: to, coin: selectedCoin.value!, commissionCoin: commissionCoin, amount: amount) { [weak self, toFld] res in
+		self.sendTx(seed: seed,
+								nonce: nonce,
+								to: to,
+								coin: selectedCoin.value!,
+								commissionCoin: commissionCoin,
+								amount: amount,
+								payload: payload) { [weak self, toFld] res in
 
 			if res == true {
 
@@ -751,7 +863,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 				self?.sections.value = self?.createSections() ?? []
 
 				DispatchQueue.main.async {
-					self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: toFld ?? to, address: to))
+					self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: self!.sentViewModel(to: toFld ?? to,address: to))
 				}
 
 				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
@@ -768,6 +880,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 											coin: String,
 											commissionCoin: String,
 											amount: Decimal,
+											payload: String,
 											completion: ((Bool?) -> ())? = nil) {
 
 		let newPk = self.accountManager.privateKey(from: seed)
@@ -782,9 +895,19 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 		let tx: RawTransaction
 		if to.isValidPublicKey() {
-			tx = self.delegateRawTransaction(nonce: nonce, gasCoin: commissionCoin, to: to, value: value, coin: coin)
+			tx = self.delegateRawTransaction(nonce: nonce,
+																			 gasCoin: commissionCoin,
+																			 to: to,
+																			 value: value,
+																			 coin: coin,
+																			 payload: payload)
 		} else {
-			tx = self.sendRawTransaction(nonce: nonce, gasCoin: commissionCoin, to: to, value: value, coin: coin)
+			tx = self.sendRawTransaction(nonce: nonce,
+																	 gasCoin: commissionCoin,
+																	 to: to,
+																	 value: value,
+																	 coin: coin,
+																	 payload: payload)
 		}
 
 		let pkString = newPk.raw.toHexString()
@@ -800,7 +923,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 			guard let hash = hash else {
 //				self?.handle(error: Error())
-				
+
 				completion?(false)
 				return
 			}
@@ -812,42 +935,13 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		}).subscribe(onNext: { (val) in
 //			completion?(true)
 		}).disposed(by: disposeBag)
-
-//		GateManager.shared.sendRawTransaction(rawTransaction: signedTx) { [weak self] (hash, err) in
-//
-//			var res = false
-//
-//			defer {
-//				completion?(res)
-//			}
-//
-//			guard err == nil && nil != hash else {
-//
-//				if let error = err as? HTTPClientError {
-//					if let errorMessage = error.userData?["log"] as? String {
-//						self?.txError.value =  NotifiableError(title: "An Error Occurred".localized(), text: errorMessage)
-//					} else {
-//						self?.txError.value = NotifiableError(title: "An Error Occurred".localized(), text: "Unable to send transaction".localized())
-//					}
-//				} else {
-//					self?.txError.value = NotifiableError(title: "An Error Occurred".localized(), text: "Unable to send transaction".localized())
-//				}
-//
-//				res = false
-//				return
-//			}
-//
-//			res = true
-//			self?.lastSentTransactionHash = hash
-//		}
 	}
 
-	private func comissionText(for gas: Int) -> String {
-		var commission = RawTransactionType.sendCoin.commission() / TransactionCoinFactorDecimal * Decimal(gas)
+	private func comissionText(for gas: Int, payloadData: Data? = nil) -> String {
+		let payloadCom = Decimal((payloadData ?? Data()).count) * 0.002 * TransactionCoinFactorDecimal
+		var commission = (RawTransactionType.sendCoin.commission() + payloadCom) / TransactionCoinFactorDecimal * Decimal(gas)
 		if (toField ?? "").isValidPublicKey() {
-			commission = RawTransactionType.delegate.commission() / TransactionCoinFactorDecimal * Decimal(gas)
-		} else {
-			
+			commission = (RawTransactionType.delegate.commission() + payloadCom) / TransactionCoinFactorDecimal * Decimal(gas)
 		}
 
 		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: commission, formatter: self.coinFormatter)
@@ -858,27 +952,32 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 																	gasCoin: String,
 																	to: String,
 																	value: BigUInt,
-																	coin: String) -> RawTransaction {
+																	coin: String,
+																	payload: String) -> RawTransaction {
 
-		return SendCoinRawTransaction(nonce: nonce,
-																	gasPrice: currentGas.value,
-																	gasCoin: gasCoin,
-																	to: to,
-																	value: value,
-																	coin: coin.uppercased())
+		let tx = SendCoinRawTransaction(nonce: nonce,
+																		gasPrice: currentGas.value,
+																		gasCoin: gasCoin,
+																		to: to,
+																		value: value,
+																		coin: coin.uppercased())
+		tx.payload = payload.data(using: .utf8) ?? Data()
+		return tx
 	}
 
 	private func delegateRawTransaction(nonce: BigUInt,
 																			gasCoin: String,
 																			to: String,
 																			value: BigUInt,
-																			coin: String) -> RawTransaction {
-
-		return DelegateRawTransaction(nonce: nonce,
-																	gasCoin: gasCoin,
-																	publicKey: to,
-																	coin: coin,
-																	value: value)
+																			coin: String,
+																			payload: String) -> RawTransaction {
+		let tx = DelegateRawTransaction(nonce: nonce,
+																		gasCoin: gasCoin,
+																		publicKey: to,
+																		coin: coin,
+																		value: value)
+		tx.payload = payload.data(using: .utf8) ?? Data()
+		return tx
 	}
 
 	// MARK: -

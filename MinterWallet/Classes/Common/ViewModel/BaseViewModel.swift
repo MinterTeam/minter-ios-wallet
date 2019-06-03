@@ -163,13 +163,16 @@ extension TransactionViewableViewModel {
 		if let data = transaction.data as? MinterExplorer.ConvertTransactionData {
 			transactionCellItem.toCoin = data.toCoin
 			transactionCellItem.fromCoin = data.fromCoin
-			transactionCellItem.amount = (data.valueToBuy ?? 0)
+			transactionCellItem.toAmount = (data.valueToBuy ?? 0)
+			transactionCellItem.fromAmount = (data.valueToSell ?? 0)
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 		} else if let data = transaction.data as? MinterExplorer.SellAllCoinsTransactionData {
 			transactionCellItem.toCoin = data.toCoin
 			transactionCellItem.fromCoin = data.fromCoin
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
-			transactionCellItem.amount = (data.value ?? 0)
+			transactionCellItem.toAmount = (data.valueToBuy ?? 0)
+			transactionCellItem.fromAmount = (data.valueToSell ?? 0)
+			
 		}
 		return transactionCellItem
 	}
