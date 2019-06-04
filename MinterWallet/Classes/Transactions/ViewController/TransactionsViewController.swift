@@ -142,6 +142,8 @@ class TransactionsViewController: BaseTableViewController {
 		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
 			if nil != cell as? MultisendTransactionTableViewCell {
 				return expandedIdentifiers.contains(cell.identifier) ? 315 : 55
+			} else if nil != cell as? ConvertTransactionTableViewCell {
+				return expandedIdentifiers.contains(cell.identifier) ? 295 : 55
 			}
 			return expandedIdentifiers.contains(cell.identifier) ? 444 : 55
 		}

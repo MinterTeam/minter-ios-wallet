@@ -25,8 +25,6 @@ class ConvertTransactionTableViewCellItem: BaseCellItem {
 
 protocol ConvertTransactionTableViewCellDelegate: class {
 	func didTapExpandedButton(cell: ConvertTransactionTableViewCell)
-	func didTapFromButton(cell: ConvertTransactionTableViewCell)
-	func didTapToButton(cell: ConvertTransactionTableViewCell)
 }
 
 class ConvertTransactionTableViewCell: ExpandableCell {
@@ -60,10 +58,9 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 
 	@IBOutlet weak var amount: UILabel!
 	@IBOutlet weak var coin: UILabel!
-	@IBOutlet weak var fromAddressButton: UIButton!
-	@IBOutlet weak var toAddressButton: UIButton!
 	@IBOutlet weak var expandedAmountLabel: UILabel!
 	@IBOutlet weak var expandedReceivedAmountLabel: UILabel!
+	@IBOutlet weak var expandedToCoinLabel: UILabel!
 	@IBOutlet weak var coinLabel: UILabel!
 	@IBOutlet weak var dateLabel: UILabel!
 	@IBOutlet weak var timeLabel: UILabel!
@@ -99,16 +96,14 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 			}
 			amount.textColor = ((transaction.toAmount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
 
-			fromAddressButton.setTitle(transaction.from, for: .normal)
-			toAddressButton.setTitle(transaction.to, for: .normal)
-
 			expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.fromAmount ?? 0),
 																																					formatter: CurrencyNumberFormatter.coinFormatter)
 			expandedReceivedAmountLabel.text = CurrencyNumberFormatter
 				.formattedDecimal(with: (transaction.toAmount ?? 0),
 																																									formatter: CurrencyNumberFormatter.coinFormatter)
 
-			coinLabel.text = transaction.toCoin
+			coinLabel.text = transaction.fromCoin
+			expandedToCoinLabel.text = transaction.toCoin
 			dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 			timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
 
@@ -126,13 +121,5 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 
 	@IBAction func didTapExpandedButton(_ sender: Any) {
 		delegate?.didTapExpandedButton(cell: self)
-	}
-
-	@IBAction func didTapFromButton(_ sender: Any) {
-		delegate?.didTapFromButton(cell: self)
-	}
-
-	@IBAction func didTapToButton(_ sender: Any) {
-		delegate?.didTapToButton(cell: self)
 	}
 }
