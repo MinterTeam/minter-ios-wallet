@@ -16,7 +16,7 @@ protocol PayloadTableViewCellDelegate: class {
 
 class PayloadTableViewCell: TextViewTableViewCell {
 
-	var maxLength = 550
+	var maxLength = 1024
 
 	override var textView: UITextView! {
 		get {
@@ -36,14 +36,14 @@ class PayloadTableViewCell: TextViewTableViewCell {
 			self.textViewScroll.textView.showsHorizontalScrollIndicator = false
 			
 			self.textViewScroll.minNumberOfLines = 1
-			self.textViewScroll.maxNumberOfLines = 500
+			self.textViewScroll.maxNumberOfLines = 1024
 			self.textViewScroll.textView.font = UIFont.mediumFont(of: 16.0)
 			self.textViewScroll.textView.textContainerInset = UIEdgeInsetsMake(16, 10, 14, 60)
 			
 			textViewScroll.delegates.willChangeHeight = { [weak self] height in
 				guard let `self` = self else { return }
 				
-				`self`.delegate?.heightDidChange(cell: `self`)
+				`self`.delegate?.heightWillChange(cell: `self`)
 			}
 			
 			textViewScroll.delegates.didChangeHeight = { [weak self] height in

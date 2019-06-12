@@ -13,27 +13,85 @@ import SafariServices
 import AlamofireImage
 import NotificationBannerSwift
 
-class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
+class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, ControllerType {
+
+	// MARK: - ControllerType
+
+	typealias ViewModelType = CoinsViewModel
+
+	func configure(with viewModel: CoinsViewModel) {
+
+		refreshControl.rx.controlEvent([.valueChanged])
+			.subscribe(viewModel.input.didRefresh).disposed(by: disposeBag)
+
+		viewModel.output
+			.totalDelegatedBalance
+			.asDriver(onErrorJustReturn: "").drive(onNext: { [weak self] (val) in
+				var shouldLayout = false
+				if val == nil {
+					if self?.delegatedHeaderTopConstraint.constant == -63.0 {
+						shouldLayout = false
+					} else {
+						self?.delegatedHeaderTopConstraint.constant = -63.0
+						shouldLayout = true
+					}
+					self?.delegatedBalanceLabel.text = "0.0"
+				} else {
+					if self?.delegatedHeaderTopConstraint.constant == 0.0 {
+						shouldLayout = false
+					} else {
+						self?.delegatedHeaderTopConstraint.constant = 0.0
+						shouldLayout = true
+					}
+					self?.delegatedBalanceLabel.text = val
+				}
+
+				let additionalTop = (self?.shouldShowTestnetToolbar ?? false) ? CGFloat(56) : CGFloat(0)
+				if val == nil {
+					let top = 60 + additionalTop
+					if self?.tableView.contentInset.top != top {
+						self?.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0)
+						shouldLayout = true
+					}
+				} else {
+					let top = 100 + additionalTop
+					if self?.tableView.contentInset.top != top {
+						self?.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0)
+						shouldLayout = true
+					}
+				}
+
+				UIView.animate(withDuration: 0.5, animations: {
+					if shouldLayout {
+						self?.view.layoutIfNeeded()
+					}
+				})
+
+//				DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+//					self?.tableView.contentInset = UIEdgeInsetsMake(100 + 56, 0, 0, 0)
+//					self?.tableView.contentOffset = self?.tableView.contentOffset ?? CGPoint(x: 0, y: 0)
+//
+//					UIView.animate(withDuration: 0.5, animations: {
+//
+////						self?.view.layoutIfNeeded()
+//					})
+//				})
+
+		}).disposed(by: disposeBag)
+	}
 
 	// MARK: -
 
-	lazy var refreshControl: UIRefreshControl = {
-		let refreshControl = UIRefreshControl()
-		refreshControl.addTarget(self, action:
-			#selector(CoinsViewController.handleRefresh(_:)),
-														 for: UIControlEvents.valueChanged)
-
-		return refreshControl
-	}()
-
+	var refreshControl: UIRefreshControl! {
+		didSet {
+			refreshControl.translatesAutoresizingMaskIntoConstraints = false
+			refreshControl.addTarget(self, action:
+				#selector(CoinsViewController.handleRefresh(_:)),
+															 for: UIControlEvents.valueChanged)
+		}
+	}
 	@objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-
 		SoundHelper.playSoundIfAllowed(type: .refresh)
-
-		//TODO: move to VM
-		Session.shared.loadBalances()
-		Session.shared.loadTransactions()
-
 		refreshControl.endRefreshing()
 	}
 	@IBOutlet weak var balanceBottomConstraint: NSLayoutConstraint!
@@ -50,20 +108,26 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	@IBOutlet weak var headerViewTitleLabel: UILabel!
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
-			tableView.contentInset = UIEdgeInsetsMake(95, 0, 0, 0)
+			tableView.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
 		}
 	}
 	@IBOutlet weak var dotCircle1ImageView: UIImageView!
 	@IBOutlet weak var dotCircle2ImageView: UIImageView!
 	@IBOutlet weak var robotImageView: UIImageView!
 	@IBOutlet weak var errorLabel: UILabel!
+	@IBOutlet weak var delegatedHeaderTopConstraint: NSLayoutConstraint!
+	@IBOutlet weak var delegatedBalanceLabel: UILabel!
+	@IBOutlet var tableHeaderTopConstraint: NSLayoutConstraint?
+
+	// MARK: -
 
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 
-	@IBOutlet var tableHeaderTopConstraint: NSLayoutConstraint?
-
 	var tableHeaderTopPadding: Double {
-		return -95
+		if shouldShowTestnetToolbar {
+			return -105
+		}
+		return -72
 	}
 
 	// MARK: -
@@ -77,9 +141,27 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		refreshControl = UIRefreshControl()
+
+		configure(with: viewModel)
+
 		registerCells()
 
 		self.tableView.addSubview(self.refreshControl)
+
+		self.tableView.addConstraints(NSLayoutConstraint
+			.constraints(withVisualFormat: "V:|-(-10)-[refreshControl(30)]",
+									 options: [],
+									 metrics: nil,
+									 views: ["refreshControl": refreshControl]))
+
+		self.tableView.addConstraint(NSLayoutConstraint(item: refreshControl,
+																										attribute: .centerX,
+																										relatedBy: .equal,
+																										toItem: tableView,
+																										attribute: .centerX,
+																										multiplier: 1.0,
+																										constant: 0.0))
 
 		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
 			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
@@ -95,27 +177,21 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 				if let buttonCell = cell as? ButtonTableViewCell {
 					buttonCell.delegate = self
 				}
-
 				if let transactionCell = cell as? TransactionTableViewCell {
 					transactionCell.delegate = self
 				}
-
 				if let convertCell = cell as? ConvertTransactionTableViewCell {
 					convertCell.delegate = self
 				}
-
 				if let delegateCell = cell as? DelegateTransactionTableViewCell {
 					delegateCell.delegate = self
 				}
-
 				if let multisendCell = cell as? MultisendTransactionTableViewCell {
 					multisendCell.delegate = self
 				}
-
 				if let redeemCheckCell = cell as? RedeemCheckTableViewCell {
 					redeemCheckCell.delegate = self
 				}
-
 				return cell
 		})
 
@@ -136,7 +212,8 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 
 		self.navigationItem.rightBarButtonItems = [username]
 
-		let usernameViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapUsernameView))
+		let usernameViewTapGesture = UITapGestureRecognizer(target: self,
+																												action: #selector(didTapUsernameView))
 		usernameView?.addGestureRecognizer(usernameViewTapGesture)
 
 		//Move to viewModel
@@ -153,7 +230,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		}).disposed(by: disposeBag)
 
 		viewModel.errorObservable.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
-			UIView.animate(withDuration: 0.25, animations: {
+			UIView.animate(withDuration: 0.25,animations: {
 				if val {
 					self?.showPlaceholderView()
 				} else {
@@ -163,11 +240,12 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		}).disposed(by: disposeBag)
 
 		if self.shouldShowTestnetToolbar {
-			self.headerView?.addSubview(self.testnetToolbarView)
-			self.balanceTopConstraint.constant = 60
-			self.balanceBottomConstraint.constant = 10
-		}
+			headerViewHeightConstraint.constant = 73.0 + 56.0
+			tableHeaderTopConstraint?.constant = 73.0 + 56.0
 
+			self.view?.addSubview(self.testnetToolbarView)
+			self.balanceTopConstraint.constant = 80
+		}
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -177,13 +255,14 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen,
+																					 params: nil)
 	}
 
 	// MARK: -
 
 	func registerCells() {
-		tableView.register(UINib(nibName: "CoinsTableViewHeaderView",bundle: nil),
+		tableView.register(UINib(nibName: "CoinsTableViewHeaderView", bundle: nil),
 											 forHeaderFooterViewReuseIdentifier: "CoinsTableViewHeaderView")
 		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "TransactionTableViewCell")
@@ -238,7 +317,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	// MARK: -
 
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
 		guard let section = viewModel.section(index: section) else {
 			return UIView()
 		}
@@ -252,7 +330,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 	}
 
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 62
+		return 52
 	}
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -261,13 +339,24 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol {
 		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
 			return
 		}
-
 		performSegue(for: item.identifier)
+	}
+
+	func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+			if item.reuseIdentifier == "BlankTableViewCell" {
+				return false
+			}
+		}
+		return true
 	}
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
 		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+			if item.reuseIdentifier == "BlankTableViewCell" {
+				return 8
+			}
 			if item.reuseIdentifier == "ButtonTableViewCell" {
 				return 70.0
 			} else if item.reuseIdentifier == "SeparatorTableViewCell" {
@@ -327,7 +416,7 @@ extension CoinsViewController : ButtonTableViewCellDelegate {
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		guard let indexPath = tableView.indexPath(for: cell),
 			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else { return }
-		
+
 		self.performSegue(for: item.identifier)
 	}
 }
@@ -452,69 +541,41 @@ RedeemCheckTableViewCellDelegate {
 		}
 	}
 
-	func didTapFromButton(cell: ConvertTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-		
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? ConvertTransactionTableViewCellItem,
-			let from = cellItem.from {
-
-			UIPasteboard.general.string = from
-
-			BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapToButton(cell: ConvertTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? ConvertTransactionTableViewCellItem,
-			let to = cellItem.to {
-
-			UIPasteboard.general.string = to
-
-			BannerHelper.performCopiedNotification()
-		}
-	}
-	
 	// MARK: - RedeemCheckTableViewCellDelegate
-	
+
 	func didTapToButton(cell: RedeemCheckTableViewCell) {
 		SoundHelper.playSoundIfAllowed(type: .click)
-		
+
 		if let indexPath = tableView.indexPath(for: cell),
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
 			let to = cellItem.to {
-			
+
 			UIPasteboard.general.string = to
-			
+
 			BannerHelper.performCopiedNotification()
 		}
 	}
-	
+
 	func didTapFromButton(cell: RedeemCheckTableViewCell) {
 		SoundHelper.playSoundIfAllowed(type: .click)
-		
+
 		if let indexPath = tableView.indexPath(for: cell),
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
 			let from = cellItem.from {
-			
+
 			UIPasteboard.general.string = from
-			
+
 			BannerHelper.performCopiedNotification()
 		}
 	}
-	
+
 	func didTapExpandedButton(cell: RedeemCheckTableViewCell) {
 		performLightImpact()
-		
+
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-		
+
 		if let indexPath = tableView.indexPath(for: cell),
 			let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
 			presentExplorerController(with: url)

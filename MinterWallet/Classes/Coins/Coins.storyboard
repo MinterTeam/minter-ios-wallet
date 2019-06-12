@@ -36,35 +36,80 @@
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LC2-Fz-Z7a">
+                                <rect key="frame" x="0.0" y="10" width="320" height="63"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eAa-Tz-z26">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+                                        <connections>
+                                            <segue destination="zmW-K7-mw2" kind="show" id="Vcd-tf-koW"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hIi-V4-VMg">
+                                        <rect key="frame" x="20" y="10" width="71.5" height="17"/>
+                                        <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="15"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0000 BIP" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f02-dP-XMU">
+                                        <rect key="frame" x="20" y="30" width="280" height="23"/>
+                                        <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="20"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosureArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="sMu-JC-54B">
+                                        <rect key="frame" x="286" y="19.5" width="24" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="4YV-Ad-Tx0"/>
+                                            <constraint firstAttribute="width" constant="24" id="yQa-bA-EhR"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.25882352941176467" green="0.14509803921568626" blue="0.64313725490196072" alpha="1" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstItem="f02-dP-XMU" firstAttribute="leading" secondItem="LC2-Fz-Z7a" secondAttribute="leading" constant="20" id="07n-Yj-aq6"/>
+                                    <constraint firstAttribute="trailing" secondItem="f02-dP-XMU" secondAttribute="trailing" constant="20" id="4M0-Rt-NE3"/>
+                                    <constraint firstItem="f02-dP-XMU" firstAttribute="top" secondItem="hIi-V4-VMg" secondAttribute="bottom" constant="3" id="64h-1C-qxB"/>
+                                    <constraint firstItem="sMu-JC-54B" firstAttribute="centerY" secondItem="LC2-Fz-Z7a" secondAttribute="centerY" id="ENs-mE-y5S"/>
+                                    <constraint firstAttribute="trailing" secondItem="sMu-JC-54B" secondAttribute="trailing" constant="10" id="IOt-GT-xF1"/>
+                                    <constraint firstAttribute="trailing" secondItem="eAa-Tz-z26" secondAttribute="trailing" id="RYD-ha-z49"/>
+                                    <constraint firstItem="eAa-Tz-z26" firstAttribute="leading" secondItem="LC2-Fz-Z7a" secondAttribute="leading" id="S1p-5F-tmS"/>
+                                    <constraint firstAttribute="height" constant="63" id="TGP-xr-Ue2"/>
+                                    <constraint firstItem="eAa-Tz-z26" firstAttribute="top" secondItem="LC2-Fz-Z7a" secondAttribute="top" id="aQ3-J4-Lx2"/>
+                                    <constraint firstItem="hIi-V4-VMg" firstAttribute="leading" secondItem="LC2-Fz-Z7a" secondAttribute="leading" constant="20" id="baI-tN-7rO"/>
+                                    <constraint firstItem="hIi-V4-VMg" firstAttribute="top" secondItem="LC2-Fz-Z7a" secondAttribute="top" constant="10" id="cBX-Xl-St8"/>
+                                    <constraint firstAttribute="bottom" secondItem="eAa-Tz-z26" secondAttribute="bottom" id="iV6-46-bhb"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1OM-Ql-2PQ" customClass="ScreenHeader" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="96"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="73"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7g-aO-BzU">
-                                        <rect key="frame" x="20" y="20" width="284" height="17"/>
-                                        <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="15"/>
+                                        <rect key="frame" x="20" y="10" width="284" height="17"/>
+                                        <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIV-Gf-6Jf">
-                                        <rect key="frame" x="20" y="40" width="290" height="36"/>
+                                        <rect key="frame" x="20" y="27" width="290" height="36"/>
                                         <attributedString key="attributedText">
-                                            <fragment content="120 912">
+                                            <fragment content="0">
                                                 <attributes>
-                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     <font key="NSFont" size="28" name="Ubuntu-Bold"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
                                             </fragment>
                                             <fragment content=".">
                                                 <attributes>
-                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     <font key="NSFont" size="18" name="Ubuntu-Bold"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
                                             </fragment>
-                                            <fragment content="98230221 bips">
+                                            <fragment content="0000 bips">
                                                 <attributes>
-                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     <font key="NSFont" size="20" name="Ubuntu-Bold"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
@@ -73,16 +118,16 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.25882352941176467" green="0.14509803921568626" blue="0.64313725490196072" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" red="0.31372549019607843" green="0.1803921568627451" blue="0.76078431372549016" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="96" id="1Tf-ya-4PI"/>
+                                    <constraint firstAttribute="height" constant="73" id="1Tf-ya-4PI"/>
                                     <constraint firstAttribute="trailing" secondItem="RIV-Gf-6Jf" secondAttribute="trailing" constant="10" id="DXV-zQ-jdf"/>
-                                    <constraint firstItem="RIV-Gf-6Jf" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="40" id="PMt-ql-XFh"/>
-                                    <constraint firstAttribute="bottom" secondItem="RIV-Gf-6Jf" secondAttribute="bottom" constant="20" id="Ul2-Jj-AnY"/>
+                                    <constraint firstItem="RIV-Gf-6Jf" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="27" id="PMt-ql-XFh"/>
+                                    <constraint firstAttribute="bottom" secondItem="RIV-Gf-6Jf" secondAttribute="bottom" constant="10" id="Ul2-Jj-AnY"/>
                                     <constraint firstAttribute="trailing" secondItem="b7g-aO-BzU" secondAttribute="trailing" constant="16" id="dgu-16-Ocz"/>
                                     <constraint firstItem="RIV-Gf-6Jf" firstAttribute="leading" secondItem="1OM-Ql-2PQ" secondAttribute="leading" constant="20" id="pJq-CB-152"/>
                                     <constraint firstItem="b7g-aO-BzU" firstAttribute="leading" secondItem="1OM-Ql-2PQ" secondAttribute="leading" constant="20" id="qaZ-1H-VRK"/>
-                                    <constraint firstItem="b7g-aO-BzU" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="20" id="v3A-Rl-OwY"/>
+                                    <constraint firstItem="b7g-aO-BzU" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="top" constant="10" id="v3A-Rl-OwY"/>
                                 </constraints>
                             </view>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dotCircle" translatesAutoresizingMaskIntoConstraints="NO" id="RwL-jd-GYj">
@@ -125,6 +170,7 @@
                             <constraint firstItem="NgQ-hK-ptl" firstAttribute="top" secondItem="WIo-BM-mO4" secondAttribute="bottom" id="KGJ-LL-zRS"/>
                             <constraint firstItem="1OM-Ql-2PQ" firstAttribute="top" secondItem="gec-Hg-cGs" secondAttribute="top" id="N7n-hV-Obi"/>
                             <constraint firstItem="RwL-jd-GYj" firstAttribute="top" secondItem="J8i-0I-4Si" secondAttribute="top" constant="-49" id="P18-5b-TB8"/>
+                            <constraint firstItem="LC2-Fz-Z7a" firstAttribute="leading" secondItem="1OM-Ql-2PQ" secondAttribute="leading" id="T7g-Km-e9e"/>
                             <constraint firstItem="NgQ-hK-ptl" firstAttribute="top" secondItem="J8i-0I-4Si" secondAttribute="bottom" constant="2" id="WVK-YX-I0I"/>
                             <constraint firstItem="WIo-BM-mO4" firstAttribute="top" secondItem="gec-Hg-cGs" secondAttribute="top" id="dI4-Mk-wlD"/>
                             <constraint firstItem="jjT-df-Zka" firstAttribute="centerX" secondItem="WIo-BM-mO4" secondAttribute="centerX" constant="14" id="f4P-ez-weY"/>
@@ -133,6 +179,8 @@
                             <constraint firstItem="RwL-jd-GYj" firstAttribute="leading" secondItem="J8i-0I-4Si" secondAttribute="leading" constant="-49" id="mjM-2t-BRq"/>
                             <constraint firstAttribute="trailing" secondItem="1OM-Ql-2PQ" secondAttribute="trailing" id="tNm-nR-f1z"/>
                             <constraint firstItem="1OM-Ql-2PQ" firstAttribute="leading" secondItem="gec-Hg-cGs" secondAttribute="leading" id="tR8-27-SPF"/>
+                            <constraint firstItem="LC2-Fz-Z7a" firstAttribute="trailing" secondItem="1OM-Ql-2PQ" secondAttribute="trailing" id="veT-7u-gux"/>
+                            <constraint firstItem="LC2-Fz-Z7a" firstAttribute="top" secondItem="1OM-Ql-2PQ" secondAttribute="bottom" constant="-63" id="xh7-5x-j9O"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
@@ -151,6 +199,8 @@
                     <connections>
                         <outlet property="balanceBottomConstraint" destination="Ul2-Jj-AnY" id="leg-rh-fG8"/>
                         <outlet property="balanceTopConstraint" destination="PMt-ql-XFh" id="XtY-Mf-anu"/>
+                        <outlet property="delegatedBalanceLabel" destination="f02-dP-XMU" id="bxQ-o3-jdR"/>
+                        <outlet property="delegatedHeaderTopConstraint" destination="xh7-5x-j9O" id="ilr-dE-u0N"/>
                         <outlet property="dotCircle1ImageView" destination="RwL-jd-GYj" id="fpO-Nk-4N7"/>
                         <outlet property="dotCircle2ImageView" destination="Ai8-OP-VnN" id="fkk-EO-aAf"/>
                         <outlet property="errorLabel" destination="jjT-df-Zka" id="lE9-IZ-MVT"/>
@@ -212,7 +262,7 @@
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1008.6956521739131" y="184.23913043478262"/>
+            <point key="canvasLocation" x="1006.875" y="183.80281690140845"/>
         </scene>
         <!--Transactions-->
         <scene sceneID="MET-BI-cpk">
@@ -229,6 +279,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Nc-hj-1vh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1828" y="245"/>
+        </scene>
+        <!--Delegated-->
+        <scene sceneID="ek4-m5-Nhg">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Delegated" id="zmW-K7-mw2" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rC1-7J-QPs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1839" y="344"/>
         </scene>
         <!--Coins-->
         <scene sceneID="6HV-PS-vXh">
@@ -256,6 +314,7 @@
     <resources>
         <image name="BipLogoSmall" width="37" height="26"/>
         <image name="circle" width="16" height="16"/>
+        <image name="disclosureArrowIcon" width="8" height="12"/>
         <image name="dotCircle" width="190" height="190"/>
         <image name="robot" width="124" height="118"/>
     </resources>

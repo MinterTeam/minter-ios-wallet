@@ -869,6 +869,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
 					Session.shared.loadTransactions()
 					Session.shared.loadBalances()
+					Session.shared.loadDelegatedBalance()
 				})
 			}
 		}

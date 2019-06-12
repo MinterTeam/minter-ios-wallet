@@ -411,6 +411,8 @@
 		FA8AE85B20AC196800F26E11 /* SessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85A20AC196800F26E11 /* SessionHelper.swift */; };
 		FA8AE85D20AC638900F26E11 /* String+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85C20AC638900F26E11 /* String+Random.swift */; };
 		FA9A6E51209B1D5D0012AC96 /* SHA3+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */; };
+		FA9BBCC822A9512B0030E92E /* AddressManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */; };
+		FA9BBCC922A9512B0030E92E /* AddressManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */; };
 		FA9BE30B213FE7E0002160F3 /* AnalyticsEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BE30A213FE7E0002160F3 /* AnalyticsEvents.swift */; };
 		FA9BE30D214006A5002160F3 /* AnalyticsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */; };
 		FAA234DE20848EC900F999DE /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */; };
@@ -503,6 +505,14 @@
 		FAF5FDB2214949CB00911619 /* LUAutocompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5FDAE214949CB00911619 /* LUAutocompleteViewDataSource.swift */; };
 		FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */; };
 		FAF70FF920E791390067B5E0 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */; };
+		FAF9C50722AA697A000BF80A /* Delegated.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAF9C50622AA697A000BF80A /* Delegated.storyboard */; };
+		FAF9C50822AA697A000BF80A /* Delegated.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAF9C50622AA697A000BF80A /* Delegated.storyboard */; };
+		FAF9C50A22AA69C1000BF80A /* DelegatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF9C50922AA69C1000BF80A /* DelegatedViewController.swift */; };
+		FAF9C50B22AA69C1000BF80A /* DelegatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF9C50922AA69C1000BF80A /* DelegatedViewController.swift */; };
+		FAF9C50D22AA69E4000BF80A /* DelegatedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF9C50C22AA69E4000BF80A /* DelegatedViewModel.swift */; };
+		FAF9C50E22AA69E4000BF80A /* DelegatedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF9C50C22AA69E4000BF80A /* DelegatedViewModel.swift */; };
+		FAF9C51022AA7772000BF80A /* DelegatedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF9C50F22AA7772000BF80A /* DelegatedTableViewCell.swift */; };
+		FAF9C51122AA7772000BF80A /* DelegatedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF9C50F22AA7772000BF80A /* DelegatedTableViewCell.swift */; };
 		FAFBF2162298231B00D053C7 /* RedeemCheckTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFBF2142298231B00D053C7 /* RedeemCheckTableViewCell.swift */; };
 		FAFBF2172298231B00D053C7 /* RedeemCheckTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFBF2142298231B00D053C7 /* RedeemCheckTableViewCell.swift */; };
 		FAFBF2182298231B00D053C7 /* RedeemCheckTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAFBF2152298231B00D053C7 /* RedeemCheckTableViewCell.xib */; };
@@ -717,6 +727,7 @@
 		FA8AE85A20AC196800F26E11 /* SessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHelper.swift; sourceTree = "<group>"; };
 		FA8AE85C20AC638900F26E11 /* String+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Random.swift"; sourceTree = "<group>"; };
 		FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SHA3+String.swift"; sourceTree = "<group>"; };
+		FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressManager+Rx.swift"; sourceTree = "<group>"; };
 		FA9BE30A213FE7E0002160F3 /* AnalyticsEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEvents.swift; sourceTree = "<group>"; };
 		FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsHelper.swift; sourceTree = "<group>"; };
 		FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
@@ -806,6 +817,10 @@
 		FAF5FDAE214949CB00911619 /* LUAutocompleteViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LUAutocompleteViewDataSource.swift; sourceTree = "<group>"; };
 		FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
+		FAF9C50622AA697A000BF80A /* Delegated.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Delegated.storyboard; sourceTree = "<group>"; };
+		FAF9C50922AA69C1000BF80A /* DelegatedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedViewController.swift; sourceTree = "<group>"; };
+		FAF9C50C22AA69E4000BF80A /* DelegatedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedViewModel.swift; sourceTree = "<group>"; };
+		FAF9C50F22AA7772000BF80A /* DelegatedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedTableViewCell.swift; sourceTree = "<group>"; };
 		FAFBF2142298231B00D053C7 /* RedeemCheckTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemCheckTableViewCell.swift; sourceTree = "<group>"; };
 		FAFBF2152298231B00D053C7 /* RedeemCheckTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RedeemCheckTableViewCell.xib; sourceTree = "<group>"; };
 		FE933B2B31E592FF04BA244B /* CoinsViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoinsViewModel.swift; sourceTree = "<group>"; };
@@ -1507,6 +1522,7 @@
 				FA17817C21F73E4200FECDED /* InfoManager+Rx.swift */,
 				FA83186721F9CDE0007F268D /* GateManager+Rx.swift */,
 				FA83186921FF003F007F268D /* CoinManager+Rx.swift */,
+				FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */,
 			);
 			path = Rx;
 			sourceTree = "<group>";
@@ -1640,6 +1656,7 @@
 				B13ED4E39699830E535550EC /* Popup */,
 				F7385C5EE7CFAD97F88CD529 /* Receive */,
 				B05CA668FCAFDF33550C9139 /* Settings */,
+				FAF9C50222AA6931000BF80A /* Delegated */,
 				94002D0AFFF4C5E044485CB9 /* Address */,
 				BF089A7BF5F3415FFF11CF4C /* AdvancedMode */,
 				1EA2C3288A484F349AFE2E04 /* Convert */,
@@ -1964,6 +1981,41 @@
 			path = LUAutocomplete;
 			sourceTree = "<group>";
 		};
+		FAF9C50222AA6931000BF80A /* Delegated */ = {
+			isa = PBXGroup;
+			children = (
+				FAF9C50522AA695E000BF80A /* View */,
+				FAF9C50422AA6953000BF80A /* ViewController */,
+				FAF9C50322AA694A000BF80A /* ViewModel */,
+				FAF9C50622AA697A000BF80A /* Delegated.storyboard */,
+			);
+			path = Delegated;
+			sourceTree = "<group>";
+		};
+		FAF9C50322AA694A000BF80A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FAF9C50C22AA69E4000BF80A /* DelegatedViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		FAF9C50422AA6953000BF80A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				FAF9C50922AA69C1000BF80A /* DelegatedViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		FAF9C50522AA695E000BF80A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FAF9C50F22AA7772000BF80A /* DelegatedTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2114,6 +2166,7 @@
 				FA33305B224A4B3C003B4763 /* Ubuntu-RI.ttf in Resources */,
 				FA33305C224A4B3C003B4763 /* DefaultHeader.xib in Resources */,
 				FA33305D224A4B3C003B4763 /* Ubuntu-MI.ttf in Resources */,
+				FAF9C50722AA697A000BF80A /* Delegated.storyboard in Resources */,
 				FA33305E224A4B3C003B4763 /* TextFieldTableViewCell.xib in Resources */,
 				FA33305F224A4B3C003B4763 /* SeparatorTableViewCell.xib in Resources */,
 				FA333060224A4B3C003B4763 /* BlankTableViewCell.xib in Resources */,
@@ -2182,6 +2235,7 @@
 				FA669BCC2072483100AD110A /* Ubuntu-RI.ttf in Resources */,
 				FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */,
 				FA669BC42072483100AD110A /* Ubuntu-MI.ttf in Resources */,
+				FAF9C50822AA697A000BF80A /* Delegated.storyboard in Resources */,
 				FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */,
 				FAA234E72084A26900F999DE /* SeparatorTableViewCell.xib in Resources */,
 				FAA2607620932641009FF3DE /* BlankTableViewCell.xib in Resources */,
@@ -2556,6 +2610,7 @@
 				FA332FA7224A4B3C003B4763 /* ReceiveRouter.swift in Sources */,
 				FA332FA8224A4B3C003B4763 /* String+RawTransactionAddress.swift in Sources */,
 				FA332FA9224A4B3C003B4763 /* ActionBarButtonItem.swift in Sources */,
+				FAF9C50A22AA69C1000BF80A /* DelegatedViewController.swift in Sources */,
 				FA52DD11225C889600A5B554 /* MultisendTransactionTableViewCell.swift in Sources */,
 				FA332FAA224A4B3C003B4763 /* QRTableViewCell.swift in Sources */,
 				FA332FAB224A4B3C003B4763 /* AddressManager+Default.swift in Sources */,
@@ -2602,6 +2657,7 @@
 				FA332FD5224A4B3C003B4763 /* ShadowView.swift in Sources */,
 				FA332FD6224A4B3C003B4763 /* LoginRouter.swift in Sources */,
 				FA332FD7224A4B3C003B4763 /* BlankTableViewCell.swift in Sources */,
+				FAF9C51022AA7772000BF80A /* DelegatedTableViewCell.swift in Sources */,
 				FA332FD8224A4B3C003B4763 /* SessionHelper.swift in Sources */,
 				FA332FD9224A4B3C003B4763 /* CCMPlayNDropView.m in Sources */,
 				FA332FDA224A4B3C003B4763 /* SHA3+String.swift in Sources */,
@@ -2627,6 +2683,7 @@
 				FA332FEE224A4B3C003B4763 /* ReaderOverlayView.swift in Sources */,
 				FA332FEF224A4B3C003B4763 /* String+Email.swift in Sources */,
 				FA332FF0224A4B3C003B4763 /* QRCode.swift in Sources */,
+				FAF9C50D22AA69E4000BF80A /* DelegatedViewModel.swift in Sources */,
 				FA332FF1224A4B3C003B4763 /* PasswordEditViewModel.swift in Sources */,
 				FA333096224A4F1D003B4763 /* Configuration.swift in Sources */,
 				FA332FF2224A4B3C003B4763 /* TransactionManager.swift in Sources */,
@@ -2707,6 +2764,7 @@
 				FA333038224A4B3C003B4763 /* ReceiveViewController.swift in Sources */,
 				FA333039224A4B3C003B4763 /* ReceiveViewModel.swift in Sources */,
 				FA33303A224A4B3C003B4763 /* ConvertCoinsViewModel.swift in Sources */,
+				FA9BBCC822A9512B0030E92E /* AddressManager+Rx.swift in Sources */,
 				FA33303B224A4B3C003B4763 /* TextViewTableViewCell.swift in Sources */,
 				FA33303C224A4B3C003B4763 /* ToggleTorchButton.swift in Sources */,
 				FA33303D224A4B3C003B4763 /* SettingsViewController.swift in Sources */,
@@ -2749,6 +2807,7 @@
 				FAE5548E2118472800D4872C /* ReceiveRouter.swift in Sources */,
 				FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */,
 				FAE7945A208DDC3F0006CB0B /* ActionBarButtonItem.swift in Sources */,
+				FAF9C50B22AA69C1000BF80A /* DelegatedViewController.swift in Sources */,
 				FA52DD12225C889900A5B554 /* MultisendTransactionTableViewCell.swift in Sources */,
 				FA505ADD20E24D7C00DA90C0 /* QRTableViewCell.swift in Sources */,
 				FA7935FF20D3B3D70012642E /* AddressManager+Default.swift in Sources */,
@@ -2795,6 +2854,7 @@
 				FAA2606E20931A89009FF3DE /* EmailEditViewModel.swift in Sources */,
 				FA89A79B20888D470019226D /* ShadowView.swift in Sources */,
 				FA669BDD207269E700AD110A /* LoginRouter.swift in Sources */,
+				FAF9C51122AA7772000BF80A /* DelegatedTableViewCell.swift in Sources */,
 				FAA2607520932641009FF3DE /* BlankTableViewCell.swift in Sources */,
 				FA8AE85B20AC196800F26E11 /* SessionHelper.swift in Sources */,
 				FAA2605C2092099B009FF3DE /* CCMPlayNDropView.m in Sources */,
@@ -2820,6 +2880,7 @@
 				FA55B01D216D011600A3A78C /* WalletCoinManager.swift in Sources */,
 				FA0F296121B1740800E10F5E /* ReaderOverlayView.swift in Sources */,
 				FA79F60720D06D3D007876ED /* String+Email.swift in Sources */,
+				FAF9C50E22AA69E4000BF80A /* DelegatedViewModel.swift in Sources */,
 				FA0AF8E821B534EF000B571B /* QRCode.swift in Sources */,
 				FAA2607220931D41009FF3DE /* PasswordEditViewModel.swift in Sources */,
 				FAB85B4E20DD33E300782AFB /* TransactionManager.swift in Sources */,
@@ -2900,6 +2961,7 @@
 				07B23B1F8A8E95A0459601A1 /* ReceiveViewController.swift in Sources */,
 				27FF799EFD5EE33465322922 /* ReceiveViewModel.swift in Sources */,
 				FA04028F20FDD6B900F1689F /* ConvertCoinsViewModel.swift in Sources */,
+				FA9BBCC922A9512B0030E92E /* AddressManager+Rx.swift in Sources */,
 				FAB865FF20C7D0B3002568A4 /* TextViewTableViewCell.swift in Sources */,
 				FA0F296221B1740800E10F5E /* ToggleTorchButton.swift in Sources */,
 				AF44D30C07B56ACF70021D25 /* SettingsViewController.swift in Sources */,

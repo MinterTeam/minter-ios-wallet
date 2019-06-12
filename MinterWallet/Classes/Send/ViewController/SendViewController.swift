@@ -12,6 +12,7 @@ import RxSwift
 import SafariServices
 import SwiftValidator
 import AVFoundation
+//import IHKeyboardAvoiding
 
 class SendViewController: BaseViewController,
 ControllerType,
@@ -28,7 +29,6 @@ AddressTextViewTableViewCellDelegate {
 
 	func configure(with viewModel: SendViewModel) {
 //		viewModel.input
-		
 	}
 
 	// MARK: - IBOutlet
@@ -54,7 +54,6 @@ AddressTextViewTableViewCellDelegate {
 			$0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
 			$0.showSwitchCameraButton = false
 		}
-
 		return QRCodeReaderViewController(builder: builder)
 	}()
 
@@ -62,7 +61,7 @@ AddressTextViewTableViewCellDelegate {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+
 		configure(with: viewModel)
 
 		if self.shouldShowTestnetToolbar {
@@ -127,7 +126,6 @@ AddressTextViewTableViewCellDelegate {
 				balanceCell.selectField.text = selectedPickerItem.title
 			}
 		}).disposed(by: disposeBag)
-
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -415,6 +413,21 @@ extension SendViewController {
 	// MARK: -
 
 	func heightDidChange(cell: TextViewTableViewCell) {
+
+		if nil != cell as? PayloadTableViewCell {
+			let rect = cell.textView.caretRect(for: cell.textView.selectedTextRange!.start)
+			let caretRect = cell.textView.convert(rect, to: tableView)
+			let additionalInset = 102 - (view.bounds.width > 320 ? 0 : caretRect.height*2)
+			let newRect = CGRect(x: 0,
+													 y: caretRect.maxY - additionalInset,
+													 width: caretRect.width,
+													 height: caretRect.height + caretRect.size.height/2)
+//			print(caretRect)
+			DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+				self.tableView.scrollRectToVisible(newRect, animated: false)
+			}
+		}
+		
 		// Disabling animations gives us our desired behaviour
 		UIView.setAnimationsEnabled(false)
 		/* These will causes table cell heights to be recaluclated,
@@ -423,12 +436,15 @@ extension SendViewController {
 		tableView.endUpdates()
 		// Re-enable animations
 		UIView.setAnimationsEnabled(true)
+
 	}
+	
+	func heightWillChange(cell: TextViewTableViewCell) {}
 
 	func didTapScanButton(cell: AddressTextViewTableViewCell1?) {
-		
+
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsQRButton, params: nil)
-		
+
 		// Retrieve the QRCode content
 		// By using the delegate pattern
 		readerVC.delegate = self
@@ -436,34 +452,28 @@ extension SendViewController {
 		cell?.textViewScroll.textView.becomeFirstResponder()
 		readerVC.completionBlock = { (result: QRCodeReaderResult?) in
 			if let indexPath = self.tableView.indexPath(for: cell!), let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-			
+
 				cell?.textViewScroll.textView.text = result?.value
 				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
 			}
 		}
-		
+
 		// Presents the readerVC as modal form sheet
 		readerVC.modalPresentationStyle = .formSheet
 		present(readerVC, animated: true, completion: nil)
 	}
-
 }
 
-extension SendViewController : SwitchTableViewCellDelegate {
-
-	func didSwitch(isOn: Bool, cell: SwitchTableViewCell) {
-		
-	}
-
+extension SendViewController: SwitchTableViewCellDelegate {
+	func didSwitch(isOn: Bool, cell: SwitchTableViewCell) {}
 }
 
-extension SendViewController : ValidatableCellDelegate {
-	
+extension SendViewController: ValidatableCellDelegate {
+
 	func didValidateField(field: ValidatableCellProtocol?) {
 		if let indexPath = tableView.indexPath(for: field as! UITableViewCell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 			viewModel.submitField(item: item, value: field?.validationText ?? "")
 		}
-		
 	}
 	
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
@@ -475,23 +485,23 @@ extension SendViewController : ValidatableCellDelegate {
 	}
 }
 
-extension SendViewController : QRCodeReaderViewControllerDelegate {
-	
+extension SendViewController: QRCodeReaderViewControllerDelegate {
+
 	// MARK: - QRCodeReaderViewController Delegate Methods
-	
+
 	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
 		reader.stopScanning()
 		
 		dismiss(animated: true, completion: nil)
 	}
-	
+
 	//This is an optional delegate method, that allows you to be notified when the user switches the cameraName
 	//By pressing on the switch camera button
 	func reader(_ reader: QRCodeReaderViewController, didSwitchCamera newCaptureDevice: AVCaptureDeviceInput) {
 		let cameraName = newCaptureDevice.device.localizedName
 		print("Switching capturing to: \(cameraName)")
 	}
-	
+
 	func readerDidCancel(_ reader: QRCodeReaderViewController) {
 		
 		SoundHelper.playSoundIfAllowed(type: .cancel)
@@ -502,25 +512,21 @@ extension SendViewController : QRCodeReaderViewControllerDelegate {
 	}
 }
 
-extension SendViewController : AmountTextFieldTableViewCellDelegate {
-	
+extension SendViewController: AmountTextFieldTableViewCellDelegate {
+
 	func didTapUseMax() {
-		
 		self.view.endEditing(true)
-		
+
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsUseMaxButton, params: nil)
-		
+
 		let indexPath = IndexPath(row: 2, section: 0)
 		guard let amountCell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell else {
 				return
 		}
-		
+
 		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-		
 			amountCell.textField.text = viewModel.selectedBalanceText
-			
 			_ = viewModel.validateField(item: item, value: amountCell.textField.text ?? "")
 		}
 	}
-
 }

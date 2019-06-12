@@ -227,10 +227,12 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 							DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 2, execute: {
 								Session.shared.loadBalances()
 								Session.shared.loadTransactions()
+								Session.shared.loadDelegatedBalance()
 							})
 							
 							Session.shared.loadBalances()
 							Session.shared.loadTransactions()
+							Session.shared.loadDelegatedBalance()
 						}
 						
 						guard nil == err else {

@@ -18,11 +18,11 @@ fileprivate let SessionRefreshTokenKey = "RefreshToken"
 fileprivate let SessionUserKey = "User"
 
 class Session {
-	
+
 	static let shared = Session()
-	
+
 	var isLoggedIn = Variable(false)
-	
+
 	private let accountManager = AccountManager()
 	private let gateManager = GateManager.shared
 	private let minterAccountManager = MinterCore.AccountManager.default
@@ -31,45 +31,39 @@ class Session {
 	private var profileManager: MinterMy.ProfileManager?
 	private let transactionManger = WalletTransactionManager()
 	private let syncer = SessionAddressSyncer()
-	
+
 	private var disposeBag = DisposeBag()
-	
+
 	private let secureStorage = SecureStorage()
 	private let localStorage = LocalStorage()
 	private let dataBaseStorage = RealmDatabaseStorage.shared
-	
+
 	// MARK: -
-	
+
 	var isLoading = Variable(true)
-	
 	var accounts = Variable([Account]())
-	
 	var transactions = Variable([TransactionItem]())
-	
-	var baseCoinBalances = Variable([String : Decimal]())
-	
-	var allBalances = Variable([String : [String : Decimal]]())
-	
-	var balances = Variable([String : Decimal]())
-	
+	var baseCoinBalances = Variable([String: Decimal]())
+	var allBalances = Variable([String: [String: Decimal]]())
+	var balances = Variable([String: Decimal]())
 	var mainCoinBalance = Variable(Decimal(0.0))
-	
+	var delegatedBalance = BehaviorSubject<Decimal>(value: 0.0)
+	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
 	var accessToken = Variable<String?>(nil)
-	
+
 	private var refreshToken = Variable<String?>(nil)
-	
+
 	var user = Variable<User?>(nil)
-	
+
 	var currentGasPrice = Variable<Int>(1)
 
 	// MARK: -
-	
+
 	private init() {
-		
+
 		_ = self.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
-			
 			var newBalance = [String : Decimal]()
-			
+
 			val.values.forEach { (adr) in
 				adr.keys.forEach({ (key) in
 					if nil == newBalance[key] {
@@ -78,11 +72,10 @@ class Session {
 					newBalance[key]! += (adr[key] ?? 0.0)
 				})
 			}
-			
+
 			self?.balances.value = newBalance
-			
 		}).disposed(by: disposeBag)
-		
+
 		Observable.combineLatest(self.accessToken.asObservable(), self.refreshToken.asObservable()).distinctUntilChanged({ (a, b) -> Bool in
 			return (a.0 ?? "" == b.0 ?? "") && (a.1 ?? "" == b.1 ?? "")
 		}).subscribe(onNext: { [weak self] (at, rt) in
@@ -94,32 +87,33 @@ class Session {
 		}).subscribe(onNext: { [weak self] (accounts) in
 			self?.loadTransactions()
 			self?.loadBalances()
+			self?.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
-		
+
 		UIApplication.shared.rx.applicationDidBecomeActive.subscribe(onNext: { [weak self] (state) in
 			self?.loadTransactions()
 			self?.loadBalances()
+			self?.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
-		
+
 		restore()
-		
 	}
-	
+
 	func setAccessToken(_ token: String) {
 		secureStorage.set(token as NSString, forKey: SessionAccessTokenKey)
 		self.accessToken.value = token
 	}
-	
+
 	func setRefreshToken(_ token: String) {
 		secureStorage.set(token as NSString, forKey: SessionRefreshTokenKey)
 		self.refreshToken.value = token
 	}
-	
+
 	func setUser(_ user: User) {
 		self.user.value = user
 		saveUser(user: user)
 	}
-	
+
 	func saveUser(user: User) {
 		guard let res = dataBaseStorage.objects(class: UserDataBaseModel.self)?.first as? UserDataBaseModel else {
 			let dbObject = UserDataBaseModel()
@@ -128,42 +122,41 @@ class Session {
 			dataBaseStorage.add(object: dbObject)
 			return
 		}
-	
+
 		_ = dataBaseStorage.objects(class: UserDataBaseModel.self) as? [UserDataBaseModel]
-	
+
 		dataBaseStorage.update {
 			res.substitute(with: user)
 		}
 	}
-	
+
 	func restore() {
 		if let accessToken = secureStorage.object(forKey: SessionAccessTokenKey) as? String {
 			self.accessToken.value = accessToken
 		}
-		
+
 		if let refreshToken = secureStorage.object(forKey: SessionRefreshTokenKey) as? String {
 			self.refreshToken.value = refreshToken
 		}
-		
+
 		if let user = dataBaseStorage.objects(class: UserDataBaseModel.self)?.first as? UserDataBaseModel {
 			self.user.value = User(dbModel: user)
-		}
-		else {
+		} else {
 			//retrive user if doesn't exist?
 		}
-		
+
 		AppSettingsManager.shared.restore()
 	}
-	
+
 	func logout() {
-		
+
 		accessToken.value = nil
 		refreshToken.value = nil
-		
+
 		secureStorage.removeAll()
 		localStorage.removeAll()
 		dataBaseStorage.removeAll()
-		
+
 		baseCoinBalances.value = [:]
 		accounts.value = []
 		transactions.value = []
@@ -172,32 +165,30 @@ class Session {
 		mainCoinBalance.value = 0.0
 		user.value = nil
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func loadAccounts() {
-		
 		self.isLoading.value = true
 		syncer.isSyncing.asObservable().skip(1).filter({ (val) -> Bool in
 			return val == false
 		}).subscribe(onNext: { [weak self] (val) in
-			
+
 			self?.isLoading.value = false
-			
+
 			var accs = [Account]()
 			accs = self?.accountManager.loadLocalAccounts() ?? []
-			
+
 			self?.accounts.value = accs.sorted(by: { (acc1, acc2) -> Bool in
 				return (acc1.isMain && !acc2.isMain)
 			})
 		}).disposed(by: disposeBag)
-		
+
 		syncer.startSync()
-		
 	}
-	
+
 	var isLoadingTransaction = false
-	
+
 	func loadTransactions() {
 
 		if isLoadingTransaction {
@@ -250,7 +241,27 @@ class Session {
 			}) ?? []
 
 		}
+	}
 
+	func loadDelegatedBalance() {
+		let addresses = accounts.value.map({ (account) -> String in
+			return "Mx" + account.address.stripMinterHexPrefix()
+		})
+
+		guard addresses.count > 0 else {
+			return
+		}
+
+		ExplorerAddressManager.default
+			.delegations(address: addresses.first!).subscribe(onNext: { [weak self] (delegation, total) in
+				self?.allDelegatedBalance.onNext(delegation ?? [])
+				if total != nil {
+					self?.delegatedBalance.onNext(total ?? 0.0)
+				} else {
+					let delegated = delegation?.reduce(0) { $0 + ($1.bipValue ?? 0.0) }
+					self?.delegatedBalance.onNext(delegated ?? 0.0)
+				}
+			}).disposed(by: disposeBag)
 	}
 
 	func loadBalances() {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKg-BB-NNA">
-                    <rect key="frame" x="20" y="19.5" width="462" height="22.5"/>
+                    <rect key="frame" x="20" y="19" width="462" height="23"/>
                     <fontDescription key="fontDescription" name="Ubuntu-Bold" family="Ubuntu" pointSize="20"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -30,6 +30,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="SKg-BB-NNA" firstAttribute="top" secondItem="bIv-Sn-3gP" secondAttribute="top" priority="999" constant="19" id="inn-Ko-H0l"/>
                 <constraint firstItem="bIv-Sn-3gP" firstAttribute="bottom" secondItem="SKg-BB-NNA" secondAttribute="bottom" constant="10" id="ol3-rf-CeK"/>
                 <constraint firstItem="bIv-Sn-3gP" firstAttribute="trailing" secondItem="SKg-BB-NNA" secondAttribute="trailing" priority="999" constant="20" id="tSg-eV-eTJ"/>
                 <constraint firstItem="SKg-BB-NNA" firstAttribute="leading" secondItem="bIv-Sn-3gP" secondAttribute="leading" constant="20" id="tlV-py-nkV"/>

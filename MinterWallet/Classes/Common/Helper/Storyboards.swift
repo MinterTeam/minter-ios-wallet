@@ -304,6 +304,27 @@ struct Storyboards {
         }
     }
 
+    struct Delegated: Storyboard {
+
+        static let identifier = "Delegated"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> DelegatedViewController {
+            return self.storyboard.instantiateInitialViewController() as! DelegatedViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct LaunchScreen: Storyboard {
 
         static let identifier = "LaunchScreen"
@@ -855,6 +876,37 @@ extension GetCoinsViewController: GetCoinsViewControllerIdentifiableProtocol { }
 extension IdentifiableProtocol where Self: GetCoinsViewController {
     var storyboardIdentifier: String? { return "GetCoinsViewController" }
     static var storyboardIdentifier: String? { return "GetCoinsViewController" }
+}
+
+// MARK: - DelegatedViewController
+extension DelegatedViewController {
+
+    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
+        case DelegatedTableViewCell_ = "DelegatedTableViewCell"
+        case TwoTitleTableViewCell_ = "TwoTitleTableViewCell"
+
+        var kind: ReusableKind? {
+            switch self {
+            case .DelegatedTableViewCell_:
+                return ReusableKind(rawValue: "tableViewCell")
+            case .TwoTitleTableViewCell_:
+                return ReusableKind(rawValue: "tableViewCell")
+            }
+        }
+
+        var viewType: UIView.Type? {
+            switch self {
+            case .DelegatedTableViewCell_:
+                return DelegatedTableViewCell.self
+            case .TwoTitleTableViewCell_:
+                return TwoTitleTableViewCell.self
+            }
+        }
+
+        var storyboardIdentifier: String? { return self.description }
+        var description: String { return self.rawValue }
+    }
+
 }
 
 // MARK: - TabBarController

@@ -13,6 +13,7 @@ import RxSwift
 
 protocol TextViewTableViewCellDelegate: class {
 	func heightDidChange(cell: TextViewTableViewCell)
+	func heightWillChange(cell: TextViewTableViewCell)
 }
 
 

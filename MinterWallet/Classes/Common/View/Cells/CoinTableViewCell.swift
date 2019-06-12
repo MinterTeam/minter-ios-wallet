@@ -8,6 +8,7 @@
 
 import UIKit
 import AlamofireImage
+import RxSwift
 
 class CoinTableViewCellItem : BaseCellItem {
 	var title: String?
@@ -16,6 +17,8 @@ class CoinTableViewCellItem : BaseCellItem {
 	var date: Date?
 	var coin: String?
 	var amount: Decimal?
+	
+	var amountObservable: Observable<Decimal?>?
 }
 
 class CoinTableViewCell: BaseCell {
@@ -89,27 +92,31 @@ class CoinTableViewCell: BaseCell {
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func configure(item: BaseCellItem) {
 		if let transaction = item as? CoinTableViewCellItem {
 			title.text = transaction.title
 			coinImage.image = transaction.image
 			if let url = transaction.imageURL {
 				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 17.0))
-			}
-			else {
+			} else {
 				coinImage.image = transaction.image
 			}
-			
+
 			amount.text = CurrencyNumberFormatter.formattedDecimal(with: transaction.amount ?? 0, formatter: formatter)
 			coin.text = transaction.coin
+
+			transaction.amountObservable?.subscribe(onNext: { [weak self] (val) in
+				self?.amount.text = CurrencyNumberFormatter.formattedDecimal(with: val ?? 0, formatter: self!.formatter)
+			}).disposed(by: disposeBag)
+
 		}
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func layoutSubviews() {
 		super.layoutSubviews()
 	}

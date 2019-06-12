@@ -14,136 +14,128 @@ import AFDateHelper
 
 class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 
-	//MARK: -
-	
+	// MARK: -
+
 	var title: String {
 		get {
 			return "All Transactions".localized()
 		}
 	}
-	
+
 	var addresses: [String] = []
-	
+
 	init(addresses: [String]? = nil) {
 		super.init()
-		
+
 		sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM"
-		
+
 		sectionTitleDateFullFormatter.dateFormat = "EEEE, dd MMM YYYY"
-		
+
 		if nil == addresses {
 			self.addresses = Session.shared.accounts.value.map { (acc) -> String in
 				return "Mx" + acc.address
 			}
-		}
-		else {
+		} else {
 			self.addresses = addresses ?? []
 		}
-		
+
 		let loadingItem = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell", identifier: "LoadingTableViewCell")
 		loadingItem.isLoadingObservable = isLoading.asObservable()
 		var section = BaseTableSectionItem(header: "", items: [loadingItem])
 		section.identifier = "LoadingTableViewSection"
 		self.sections.value.append(section)
-		
+
 		loadData()
-		
+
 		createSections(with: [])
 	}
-	
+
 	private var sectionTitleDateFormatter = DateFormatter()
-	
+
 	private var sectionTitleDateFullFormatter = DateFormatter()
 
-	
-	//MARK: -
-	
+	// MARK: -
+
 	private var sections = Variable([BaseTableSectionItem]())
-	
+
 	var sectionsObservable: Observable<[BaseTableSectionItem]> {
 		return self.sections.asObservable()
 	}
-	
+
 	private var page = 1
-	
+
 	private var transactions = [TransactionItem]()
-	
+
 	private var isLoading = Variable(false)
-	
+
 	private var canLoadMore = true
-	
+
 	var noTransactionsObservable: Observable<Bool> {
 		return Observable.combineLatest(self.isLoading.asObservable(), sections.asObservable()).map({ (val) -> Bool in
 			return !self.isLoading.value && self.canLoadMore == false && self.transactions.count == 0
 		})
 	}
-	
+
 	func createSections(with transactions: [TransactionItem]?) {
-		
 		var newSections = [BaseTableSectionItem]()
 		var items = [String : [BaseCellItem]]()
-		
+
 		transactions?.forEach({ (item) in
-			
 			guard let transaction = item.transaction else {
 				return
 			}
-			
+
 			let existingSections = self.sections.value.filter({ (section) -> Bool in
 				return section.header == self.sectionTitle(for: transaction.date)
 			})
-			
+
 			let sectionName = existingSections.count > 0 ? "" : sectionTitle(for: transaction.date)
 			let sectionIdentifier: String!
 			let sectionCandidate = newSections.index(where: { (item) -> Bool in
 				return item.header == sectionName
 			})
-			
+
 			let txn = item.transaction?.txn
-			
-			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell", identifier: "SeparatorTableViewCell_" + (nil == txn ? String.random(length: 20) : String(txn!)))
-			
+			let cellId = (nil == txn ? String.random(length: 20) : String(txn!))
+			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
+																								 identifier: "SeparatorTableViewCell_" + cellId)
+
 			var section: BaseTableSectionItem?
 			if let idx = sectionCandidate, let sctn = newSections[safe: idx] {
 				section = sctn
 				sectionIdentifier = sctn.identifier
-			}
-			else {
+			} else {
 				sectionIdentifier = String.random(length: 20)
 				section = BaseTableSectionItem(header: sectionName)
 				section?.identifier = sectionIdentifier
 				newSections.append(section!)
 			}
-			
+
 			if nil == items[sectionIdentifier] {
 				items[sectionIdentifier] = []
 			}
-			
+
 			if transaction.type == .send {
 				if let transactionCellItem = self.sendTransactionItem(with: item) {
 					items[sectionIdentifier]?.append(transactionCellItem)
 					items[sectionIdentifier]?.append(separator)
 				}
-			}
-			else if transaction.type == .multisend {
+			} else if transaction.type == .multisend {
 				if let transactionCellItem = self.multisendTransactionItem(with: item) {
 					items[sectionIdentifier]?.append(transactionCellItem)
 					items[sectionIdentifier]?.append(separator)
 				}
-			}
-			else if transaction.type == .buy || transaction.type == .sell {
+			} else if transaction.type == .buy || transaction.type == .sell {
 				if let transactionCellItem = self.convertTransactionItem(with: item) {
 					items[sectionIdentifier]?.append(transactionCellItem)
 					items[sectionIdentifier]?.append(separator)
 				}
-			}
-			else if transaction.type == .sellAll {
+			} else if transaction.type == .sellAll {
 				if let transactionCellItem = self.convertTransactionItem(with: item) {
 					items[sectionIdentifier]?.append(transactionCellItem)
 					items[sectionIdentifier]?.append(separator)
 				}
-			}
-			else if transaction.type == .delegate || transaction.type == .unbond {
+			} else if transaction.type == .delegate || transaction.type == .unbond {
 				if let transactionCellItem = self.delegateTransactionItem(with: item) {
 					items[sectionIdentifier]?.append(transactionCellItem)
 					items[sectionIdentifier]?.append(separator)
@@ -155,11 +147,11 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 				}
 			}
 		})
-		
+
 		let sctns = newSections.map({ (item) -> BaseTableSectionItem in
 			return BaseTableSectionItem(header: item.header, items: (items[item.identifier] ?? []))
 		})
-		
+
 		//Should be loading section
 		if let loadingIndex = self.sections.value.firstIndex(where: { (item) -> Bool in
 			return item.identifier == "LoadingTableViewSection"
@@ -172,40 +164,34 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 			}
 		}
 	}
-	
+
 	private func sectionTitle(for date: Date?) -> String {
-		
 		guard nil != date else {
 			return " "
 		}
-		
+
 		if date!.compare(.isToday) {
 			return "TODAY".localized()
-		}
-		else if date!.compare(.isYesterday) {
+		} else if date!.compare(.isYesterday) {
 			return "YESTERDAY".localized()
-		}
-		else if date!.compare(.isThisYear) {
+		} else if date!.compare(.isThisYear) {
 			return sectionTitleDateFormatter.string(from: date!).uppercased()
-		}
-		else {
+		} else {
 			return sectionTitleDateFullFormatter.string(from: date!).uppercased()
 		}
 	}
-	
+
 	let manager = WalletTransactionManager()
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func loadData() {
 
 		if isLoading.value || !canLoadMore { return }
 		isLoading.value = true
-		
+
 		manager.transactions(addresses: addresses, page: self.page) { [weak self] (transactions, users, error) in
-
 			self?.page += 1
-
 			guard nil == error && nil != transactions && (transactions?.count ?? 0) > 0 else {
 				//stop paging
 				self?.canLoadMore = false
@@ -232,25 +218,22 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 			}) ?? []
 
 			self?.transactions.append(contentsOf: items)
-
 			self?.isLoading.value = false
-
 			self?.createSections(with: items)
-
 		}
 	}
-	
+
 	func shouldLoadMore(_ indexPath: IndexPath) -> Bool {
 		guard canLoadMore && isLoading.value == false else {
 			return false
 		}
-		
+
 		let cellItemsLoadedTotal = totalNumberOfItems()
 		let fromBottomConstant = 10
 		if cellItemsLoadedTotal <= fromBottomConstant {
 			return false
 		}
-		
+
 		var itemsCountFromPrevSections = 0
 		let endSection = indexPath.section - 1
 		if endSection >= 0 {
@@ -264,29 +247,29 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 		}
 		return false
 	}
-	
+
 	fileprivate func totalNumberOfItems() -> Int {
 		return sections.value.reduce(0) { $0 +  $1.items.count }
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func section(index: Int) -> BaseTableSectionItem? {
 		return sections.value[safe: index]
 	}
-	
+
 	func sectionsCount() -> Int {
 		return sections.value.count
 	}
-	
+
 	func rowsCount(for section: Int) -> Int {
 		return sections.value[safe: section]?.items.count ?? 0
 	}
-	
+
 	func cellItem(section: Int, row: Int) -> BaseCellItem? {
 		return sections.value[safe: section]?.items[safe: row]
 	}
-	
-	//MARK: -
+
+	// MARK: -
 
 }

@@ -372,6 +372,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 		}, onCompleted: {
 			Session.shared.loadBalances()
 			Session.shared.loadTransactions()
+			Session.shared.loadDelegatedBalance()
 		}).disposed(by: self.disposeBag)
 	}
 	

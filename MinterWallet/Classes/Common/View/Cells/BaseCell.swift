@@ -15,7 +15,7 @@ protocol Configurable where Self : UITableViewCell {
 
 typealias ConfigurableCell = UITableViewCell & Configurable
 
-class BaseCell : ConfigurableCell {
+class BaseCell: ConfigurableCell {
 
 	var disposeBag = DisposeBag()
 
@@ -28,7 +28,7 @@ class BaseCell : ConfigurableCell {
 
 }
 
-class ExpandableCell : AccordionTableViewCell, Configurable {
+class ExpandableCell: AccordionTableViewCell, Configurable {
 
 	var disposeBag = DisposeBag()
 

@@ -14,7 +14,6 @@ enum InfoManagerErrorRx : Error {
 	case noAddress
 }
 
-
 extension InfoManager {
 
 	func address(term: String) -> Observable<String> {
@@ -33,8 +32,7 @@ extension InfoManager {
 				self.address(email: term, completion: { (address, user, error) in
 					completion(address: address, user: user, error: error)
 				})
-			}
-			else {
+			} else {
 				self.address(username: term, completion: { (address, user, error) in
 					completion(address: address, user: user, error: error)
 				})

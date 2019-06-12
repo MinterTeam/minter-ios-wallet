@@ -11,7 +11,23 @@ import MinterExplorer
 import MinterCore
 import MinterMy
 
-class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
+class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProtocol {
+
+	// MARK: - ViewModelProtocol
+
+	var input: CoinsViewModel.Input!
+
+	var output: CoinsViewModel.Output!
+
+	struct Input {
+		var didRefresh: AnyObserver<Void>
+	}
+
+	struct Output {
+		var totalDelegatedBalance: Observable<String?>
+	}
+
+	// MARK: -
 
 	enum cellIdentifierPrefix : String {
 	 case transactions = "ButtonTableViewCell_Transactions"
@@ -40,6 +56,9 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 		return Session.shared.mainCoinBalance.asObservable()
 	}
 
+	var totalDelegatedBalanceSubject = ReplaySubject<String?>.create(bufferSize: 1)
+	var didRefreshSubject = PublishSubject<Void>()
+
 	var usernameViewObservable: Observable<User?> {
 		return Session.shared.user.asObservable()
 	}
@@ -62,33 +81,69 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 		if let avatarURLString = Session.shared.user.value?.avatar, let avatarURL = URL(string: avatarURLString) {
 			url = avatarURL
 		}
-
 		return url
 	}
 
 	let formatter = CurrencyNumberFormatter.decimalFormatter
+	let coinFormatter = CurrencyNumberFormatter.coinFormatter
+
+	private var coinObservables = [String: PublishSubject<Decimal?>]()
 
 	// MARK: -
 
 	override init() {
 		super.init()
 
+		self.input = Input(didRefresh: didRefreshSubject.asObserver())
+
+		self.output = Output(totalDelegatedBalance: totalDelegatedBalanceSubject.asObservable())
+
 		Observable.combineLatest(Session.shared.transactions.asObservable(),
 														 Session.shared.balances.asObservable(),
 														 Session.shared.allBalances.asObservable(),
 														 Session.shared.isLoggedIn.asObservable().distinctUntilChanged())
-//		.debounce(0.1, scheduler: MainScheduler.instance)
 		.subscribe(onNext: { [weak self] (transactions) in
 			self?.createSection()
+
+			let bal = Session.shared.balances.value
+			bal.keys.sorted(by: { (key1, key2) -> Bool in
+				return key1 < key2
+			}).forEach { (key) in
+				if self?.coinObservables[key] == nil {
+					self?.coinObservables[key] = PublishSubject<Decimal?>()
+				}
+				self?.coinObservables[key]?.onNext(bal[key] ?? 0.0)
+			}
+
+		}).disposed(by: disposeBag)
+
+		Session.shared.delegatedBalance.subscribe(onNext: { [weak self] (val) in
+			if val > 0 {
+				let str = self?.coinFormatter.string(from: val as NSNumber) ?? ""
+				self?.totalDelegatedBalanceSubject.onNext(str + " " + (Coin.baseCoin().symbol ?? ""))
+			} else {
+				self?.totalDelegatedBalanceSubject.onNext(nil)
+			}
+		}).disposed(by: disposeBag)
+
+		didRefreshSubject.subscribe(onNext: { (_) in
+			Session.shared.loadBalances()
+			Session.shared.loadTransactions()
+			Session.shared.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
 	}
 
 	func createSection() {
-
 		var sctns = [BaseTableSectionItem]()
+
+		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+																			 identifier: "BlankTableViewCell_1")
+		let blank1 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+																			 identifier: "BlankTableViewCell_2")
 
 		var section = BaseTableSectionItem(header: "Latest Transactions".localized())
 		section.identifier = "BaseTableSectionItem_1"
+		section.items.append(blank)
 
 		let trans = Array(Session.shared.transactions.value[safe: 0..<5] ?? [])
 		if trans.count == 0 {
@@ -139,7 +194,8 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 			}
 		}
 
-		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Transactions")
+		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
+																				 identifier: "ButtonTableViewCell_Transactions")
 		button.buttonPattern = "blank"
 		button.title = "ALL TRANSACTIONS".localized()
 
@@ -154,18 +210,19 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 
 			let bal = Session.shared.balances.value
 			let balanceKey = CurrencyNumberFormatter.decimalShortFormatter.string(from: (bal[key] ?? 0) as NSNumber)
-			let cellAdditionalId = "\(key)_\(balanceKey ?? "")"
+//			let cellAdditionalId = "\(key)_\(balanceKey ?? "")"
 
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-																								 identifier: "SeparatorTableViewCell_\(cellAdditionalId)")
+																								 identifier: "SeparatorTableViewCell_\(key)")
 
 			let coin = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell",
-																			 identifier: "CoinTableViewCell_\(cellAdditionalId)")
+																			 identifier: "CoinTableViewCell_\(key)")
 			coin.title = key
 			coin.image = UIImage(named: "AvatarPlaceholderImage")
 			coin.imageURL = MinterMyAPIURL.avatarByCoin(coin: key).url()
 			coin.coin = key
 			coin.amount = bal[key]
+			coin.amountObservable = coinObservables[key]?.asObservable()
 
 			section1.items.append(coin)
 			section1.items.append(separator)
@@ -183,6 +240,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 		}
 
 		if section1.items.count > 1 {
+			section1.items.insert(blank1, at: 0)
 			sctns.append(section1)
 		}
 
@@ -193,7 +251,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 			let sctn = BaseTableSectionItem(header: "", items: [loadingItem])
 			sctns.append(sctn)
 		}
-
 		self.sections.value = sctns
 	}
 
@@ -217,20 +274,8 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 
 	// MARK: -
 
-	func updateData() {
-		Session.shared.loadTransactions()
-	}
-
-	@objc func updateBalance() {
-		Session.shared.loadAccounts()
-		Session.shared.loadTransactions()
-	}
-
-	// MARK: -
-
 	func headerViewTitleText(with balance: Decimal) -> NSAttributedString {
-
-		let formatter = CurrencyNumberFormatter.coinFormatter
+		let formatter = coinFormatter
 		let balanceString = Array((formatter.string(from: balance as NSNumber) ?? "").split(separator: "."))
 
 		let string = NSMutableAttributedString()
@@ -247,7 +292,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel {
 		string.append(NSAttributedString(string: " " + self.basicCoinSymbol,
 																		 attributes: [.foregroundColor: UIColor.white,
 																									.font: UIFont.boldFont(of: 18.0)]))
-
 		return string
 	}
 
