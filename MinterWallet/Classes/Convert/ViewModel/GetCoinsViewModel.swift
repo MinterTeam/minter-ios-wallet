@@ -100,8 +100,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			else {
 				self.amountError.value = ""
 			}
-		}
-		else {
+		} else {
 			self.amountError.value = ""
 		}
 	}
@@ -119,7 +118,7 @@ class GetCoinsViewModel : ConvertCoinsViewModel {
 			self.amountError.value = ""
 		}
 	}
-	
+
 	func calculateApproximately() {
 		
 		approximatelyReady.value = false

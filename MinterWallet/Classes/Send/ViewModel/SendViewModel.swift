@@ -178,9 +178,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	private func payloadComission() -> Decimal {
-		return Decimal((try? clearPayloadSubject.value() ?? "")?.count ?? 0) * 0.002
+		return Decimal((try? clearPayloadSubject.value() ?? "")?.count ?? 0) * RawTransaction.payloadByteComissionPrice
 	}
-	
+
 	private func payload() -> String {
 		return (try? clearPayloadSubject.value() ?? "") ?? ""
 	}
@@ -244,7 +244,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		payloadSubject.asObservable().subscribe(onNext: { (payld) in
 			self.forceUpdateFee.onNext(())
 			let data = (payld ?? "").data(using: .utf8) ?? Data()
-			if data.count > 1024 {
+			if data.count > RawTransaction.maxPayloadSize {
 				self.payloadStateObservable.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
 			} else {
 				self.payloadStateObservable.onNext(.default)
@@ -253,7 +253,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 		payloadSubject.asObservable().map({ (val) -> String? in
 			var newVal = val
-			while newVal?.data(using: .utf8)?.count ?? 0 > 1024 {
+			while newVal?.data(using: .utf8)?.count ?? 0 > RawTransaction.maxPayloadSize {
 				newVal?.removeLast()
 			}
 			return newVal
@@ -270,11 +270,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			}
 			self?.sections.value = self?.createSections() ?? []
 		}).disposed(by: disposeBag)
-		
+
 		sections.asObservable().subscribe(onNext: { [weak self] (items) in
 			self?._sections.value = items
 		}).disposed(by: disposeBag)
-		
+
 		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
 			self?.clear()
 		}).disposed(by: disposeBag)
@@ -939,7 +939,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	private func comissionText(for gas: Int, payloadData: Data? = nil) -> String {
-		let payloadCom = Decimal((payloadData ?? Data()).count) * 0.002 * TransactionCoinFactorDecimal
+		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice * TransactionCoinFactorDecimal
 		var commission = (RawTransactionType.sendCoin.commission() + payloadCom) / TransactionCoinFactorDecimal * Decimal(gas)
 		if (toField ?? "").isValidPublicKey() {
 			commission = (RawTransactionType.delegate.commission() + payloadCom) / TransactionCoinFactorDecimal * Decimal(gas)
