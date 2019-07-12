@@ -31,8 +31,30 @@ class SettingsViewModel: BaseViewModel {
 	private var selectedImage: UIImage?
 
 	var errorNotification = Variable<NotifiableError?>(nil)
-
 	var successMessage = Variable<NotifiableSuccess?>(nil)
+
+	var isConfirmingPassword = false {
+		didSet {
+			if !isConfirmingPassword {
+				pinString = nil
+				pinConfirmationString = nil
+			}
+		}
+	}
+
+	var storage = SecureStorage()
+
+	var pinString: String?
+	var pinConfirmationString: String?
+	
+	var shouldInstallPIN: Bool {
+		return !PINManager.shared.isPINset
+	}
+
+	// MARK: -
+
+	private var fingerprintSubject: PublishSubject<Bool> = PublishSubject()
+	private var pincodeSubject: PublishSubject<Bool> = PublishSubject()
 
 	// MARK: -
 
@@ -43,7 +65,7 @@ class SettingsViewModel: BaseViewModel {
 			self?.createSections()
 			self?.shouldReloadTable.value = true
 		}).disposed(by: disposeBag)
-		
+
 		createSections()
 	}
 
@@ -71,7 +93,6 @@ class SettingsViewModel: BaseViewModel {
 
 			if let avatarURLString = user?.avatar,
 				let avatarURL = URL(string: avatarURLString) {
-
 				avatar.avatarURL = avatarURL
 			} else {
 				if let id = user?.id {
@@ -128,13 +149,41 @@ class SettingsViewModel: BaseViewModel {
 		blank.color = .clear
 
 		let switchItem = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell",
-																						 identifier: "SwitchTableViewCell")
+																						 identifier: "SwitchTableViewCell_Sound")
 		switchItem.title = "Enable sounds".localized()
 		switchItem.isOn.value = AppSettingsManager.shared.isSoundsEnabled
 
-		var section1 = BaseTableSectionItem(header: " ")
-		section1.items = [/*addresses, separator, */switchItem, blank, /*getMNTButton,*/ button]
+		let enablePin = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell",
+																						identifier: "SwitchTableViewCell_Pin")
+		enablePin.title = "Unlock with PIN-code".localized()
+		enablePin.isOn.value = PINManager.shared.isPINset
+		enablePin.isOnObservable = pincodeSubject.asObservable()
+
+		let enableBiometrics = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell",
+																									 identifier: "SwitchTableViewCell_Biometrics")
+		enableBiometrics.title = "Unlock with fingerprint".localized()
+		enableBiometrics.isOn.value = AppSettingsManager.shared.isBiometricsEnabled && PINManager.shared.isPINset
+		enableBiometrics.isOnObservable = fingerprintSubject.asObservable()
+
+		let changePin = DisclosureTableViewCellItem(reuseIdentifier: "DisclosureTableViewCell",
+																								identifier: "DisclosureTableViewCell_ChangePIN")
+		changePin.title = "Change PIN-code".localized()
+		changePin.value = nil
+		changePin.placeholder = ""
+
+		var section1 = BaseTableSectionItem(header: "SECURITY".localized())
+		section1.items = [enablePin, separator]
+
+		if PINManager.shared.canUseBiometric() {
+			section1.items.append(contentsOf: [enableBiometrics, separator])
+		}
+		section1.items.append(contentsOf: [changePin, separator])
+
 		sctns.append(section1)
+
+		var section2 = BaseTableSectionItem(header: "NOTIFICATIONS".localized())
+		section2.items = [switchItem, blank, button]
+		sctns.append(section2)
 
 		sections = sctns
 	}
@@ -168,6 +217,7 @@ class SettingsViewModel: BaseViewModel {
 	func viewWillAppear() {
 		createSections()
 		shouldReloadTable.value = true
+		isConfirmingPassword = false
 	}
 
 	// MARK: -
@@ -177,6 +227,11 @@ class SettingsViewModel: BaseViewModel {
 		if isOn {
 			SoundHelper.playSoundIfAllowed(type: .click)
 		}
+	}
+
+	func didSwitchBiometrics(isOn: Bool) {
+		AppSettingsManager.shared.setFingerprint(enabled: isOn)
+		SoundHelper.playSoundIfAllowed(type: .click)
 	}
 
 	func updateAvatar(_ image: UIImage) {
@@ -217,4 +272,33 @@ class SettingsViewModel: BaseViewModel {
 			})
 		}
 	}
+}
+
+extension SettingsViewModel {
+
+	func setPIN(code: String) {
+		self.pinString = code
+	}
+
+	func confirmPIN(code: String) -> Bool {
+
+		guard nil != self.pinString else {
+			return false
+		}
+
+		if self.pinString == code {
+			//save PIN
+			PINManager.shared.setPIN(code: code)
+			pincodeSubject.onNext(true)
+			return true
+		}
+		return false
+	}
+
+	func removePIN() {
+		PINManager.shared.removePIN()
+		AppSettingsManager.shared.setFingerprint(enabled: false)
+		fingerprintSubject.onNext(false)
+	}
+
 }

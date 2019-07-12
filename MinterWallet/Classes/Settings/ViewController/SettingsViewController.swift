@@ -173,7 +173,11 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 
 			return 0.1
 		}
-		return 20
+		return 52
+	}
+	
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 0.1
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -192,6 +196,8 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showEmail.rawValue, sender: self)
 		} else if item.identifier == "DisclosureTableViewCell_Password" {
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showPassword.rawValue, sender: self)
+		} else if item.identifier == "DisclosureTableViewCell_ChangePIN" {
+			self.performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: self)
 		}
 	}
 
@@ -286,7 +292,72 @@ extension SettingsViewController: ButtonTableViewCellDelegate {
 }
 
 extension SettingsViewController: SwitchTableViewCellDelegate {
+
 	func didSwitch(isOn: Bool, cell: SwitchTableViewCell) {
-		viewModel.didSwitchSound(isOn: isOn)
+		if let indexPath = tableView.indexPath(for: cell),
+			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+			if item.identifier == "SwitchTableViewCell_Biometrics" {
+				viewModel.didSwitchBiometrics(isOn: isOn)
+				if viewModel.shouldInstallPIN {
+					performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: nil)
+				}
+			} else if item.identifier == "SwitchTableViewCell_Pin" {
+				if isOn {
+					performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: nil)
+				} else {
+					viewModel.removePIN()
+				}
+			} else {
+				viewModel.didSwitchSound(isOn: isOn)
+			}
+		}
 	}
+
+}
+
+extension SettingsViewController {
+
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		super.prepare(for: segue, sender: sender)
+
+		if let pinVC = segue.destination as? PINViewController {
+			pinVC.delegate = self
+		}
+
+		if segue.identifier == SettingsViewController.Segue.showPIN.identifier,
+			let pinVC = segue.destination as? PINViewController {
+			let viewModel = PINViewModel()
+			viewModel.title = "Set PIN-code".localized()
+			viewModel.desc = "Please enter a 4-digit PIN".localized()
+			pinVC.viewModel = viewModel
+			pinVC.delegate = self
+		}
+	}
+
+}
+
+extension SettingsViewController: PINViewControllerDelegate {
+
+	func PINViewControllerDidSucceed(controller: PINViewController, withPIN: String) {
+		if viewModel.isConfirmingPassword {
+			if viewModel.confirmPIN(code: withPIN) {
+				self.navigationController?.popToRootViewController(animated: true)
+			} else {
+				controller.shakeError()
+			}
+		} else {
+			viewModel.isConfirmingPassword = true
+			viewModel.setPIN(code: withPIN)
+			let pinViewModel = PINViewModel()
+			pinViewModel.title = "Confirm PIN-code".localized()
+			pinViewModel.desc = "Please confirm your 4-digit PIN".localized()
+			if let vc = PINRouter.PINViewController(with: pinViewModel) {
+				vc.delegate = self
+				self.navigationController?.setViewControllers([self, vc], animated: true)
+			}
+		}
+	}
+
+	func PINViewControllerDidSucceedWithBiometrics(controller: PINViewController) {}
+
 }

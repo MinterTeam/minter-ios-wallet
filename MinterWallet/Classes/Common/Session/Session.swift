@@ -16,6 +16,7 @@ import RxAppState
 fileprivate let SessionAccessTokenKey = "AccessToken"
 fileprivate let SessionRefreshTokenKey = "RefreshToken"
 fileprivate let SessionUserKey = "User"
+fileprivate let SessionPINAttemptNumberKey = "SessionPINAttemptNumberKey"
 
 class Session {
 
@@ -50,6 +51,7 @@ class Session {
 	var delegatedBalance = BehaviorSubject<Decimal>(value: 0.0)
 	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
 	var accessToken = Variable<String?>(nil)
+	var isPINRequired = BehaviorSubject<Bool>(value: PINManager.shared.isPINset)
 
 	private var refreshToken = Variable<String?>(nil)
 
@@ -76,7 +78,9 @@ class Session {
 			self?.balances.value = newBalance
 		}).disposed(by: disposeBag)
 
-		Observable.combineLatest(self.accessToken.asObservable(), self.refreshToken.asObservable()).distinctUntilChanged({ (a, b) -> Bool in
+		Observable.combineLatest(self.accessToken.asObservable(),
+														 self.refreshToken.asObservable())
+		.distinctUntilChanged({ (a, b) -> Bool in
 			return (a.0 ?? "" == b.0 ?? "") && (a.1 ?? "" == b.1 ?? "")
 		}).subscribe(onNext: { [weak self] (at, rt) in
 			self?.isLoggedIn.value = at != nil && rt != nil
@@ -90,7 +94,9 @@ class Session {
 			self?.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
 
-		UIApplication.shared.rx.applicationDidBecomeActive.subscribe(onNext: { [weak self] (state) in
+		UIApplication.shared.rx.applicationDidBecomeActive
+			.subscribe(onNext: { [weak self] (state) in
+
 			self?.loadTransactions()
 			self?.loadBalances()
 			self?.loadDelegatedBalance()
@@ -109,6 +115,18 @@ class Session {
 		self.refreshToken.value = token
 	}
 
+	func setPINAttempts(attempts: Int) {
+
+		secureStorage.set(String(attempts).data(using: .utf8) ?? Data(),
+											forKey: SessionPINAttemptNumberKey)
+	}
+
+	func getPINAttempts() -> Int {
+		let attempts = secureStorage.object(forKey: SessionPINAttemptNumberKey) as? Data
+		let str = String(data: attempts ?? Data(), encoding: .utf8) ?? ""
+		return Int(str) ?? 0
+	}
+
 	func setUser(_ user: User) {
 		self.user.value = user
 		saveUser(user: user)
@@ -118,7 +136,7 @@ class Session {
 		guard let res = dataBaseStorage.objects(class: UserDataBaseModel.self)?.first as? UserDataBaseModel else {
 			let dbObject = UserDataBaseModel()
 			dbObject.substitute(with: user)
-			
+
 			dataBaseStorage.add(object: dbObject)
 			return
 		}

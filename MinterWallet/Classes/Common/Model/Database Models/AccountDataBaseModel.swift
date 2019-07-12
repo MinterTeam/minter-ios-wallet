@@ -12,17 +12,17 @@ import BigInt
 import MinterCore
 import MinterMy
 
-
 class AccountDataBaseModel : Object, DatabaseStorageModel {
-	
+
 	@objc dynamic var id: Int = -1
 	@objc dynamic var address: String = ""
 	@objc dynamic var encryptedBy: String = ""
+	//TODO: remove if not needed
 	@objc dynamic var isMain: Bool = false
 	@objc dynamic var lastPrice: Double = 0
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func substitute(with account: Account) {
 		self.id = account.id
 		self.encryptedBy = account.encryptedBy.rawValue
@@ -55,12 +55,12 @@ extension User {
 	
 	convenience init(dbModel: UserDataBaseModel) {
 		self.init()
-		
+
 		self.id = dbModel.id
 		self.username = dbModel.username
 		self.email = dbModel.email
 		self.language = dbModel.language
 		self.avatar = dbModel.avatar
 	}
-	
+
 }

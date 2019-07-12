@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class AddressTextViewTableViewCellItem : TextViewTableViewCellItem {}
 
 protocol AddressTextViewTableViewCellDelegate : class {

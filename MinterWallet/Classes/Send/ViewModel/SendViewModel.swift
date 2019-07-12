@@ -134,31 +134,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		return selectedCoin.value == Coin.baseCoin().symbol!
 	}
 
-//	func coinToPayComission(amount: Decimal) -> String? {
-//		let payloadCom = payloadComission() * TransactionCoinFactorDecimal
-//		guard let selectedCoin = self.selectedCoin.value else {
-//			return nil
-//		}
-//
-//		if isBaseCoin == true {
-//			let balance = self.baseCoinBalance * TransactionCoinFactorDecimal
-//			if balance >= amount + payloadCom + RawTransactionType.sendCoin.commission() {
-//				return Coin.baseCoin().symbol!
-//			}
-//		} else {
-//			//If it's not base coin we try pay commission from base coin
-//			if canPayCommissionWithBaseCoin() {
-//				return Coin.baseCoin().symbol!
-//			}
-//			//If it's impossible we try to pay comission from the selected coin
-//			let selectedBalance = (self.selectedAddressBalance ?? 0.0) * TransactionCoinFactorDecimal
-//			if selectedBalance >= amount + payloadCom + (RawTransactionType.sendCoin.commission()) {
-//				return selectedCoin
-//			}
-//		}
-//		return nil
-//	}
-
 	private func canPayCommissionWithBaseCoin() -> Bool {
 		let balance = self.baseCoinBalance
 		if balance >= currentCommission {
@@ -525,9 +500,13 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 		let balances = Session.shared.allBalances.value
 		balances.keys.forEach { (address) in
-			balances[address]?.keys.sorted(by: { (val1, val2) -> Bool in
+			var blns = balances[address]?.keys.filter({ (coin) -> Bool in
+				return coin != (Coin.baseCoin().symbol ?? "")
+			}).sorted(by: { (val1, val2) -> Bool in
 				return val1 < val2
-			}).forEach({ (coin) in
+			})
+			blns?.insert((Coin.baseCoin().symbol ?? ""), at: 0)
+			blns?.forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
 
 //				guard balance > 0 else { return }

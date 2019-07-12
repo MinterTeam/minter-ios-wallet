@@ -76,7 +76,9 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 		var sections = [BaseTableSectionItem]()
 		datasource = [:]
 
-		balances.forEach { (del) in
+		balances.sorted(by: { (del1, del2) -> Bool in
+			return (del1.publicKey ?? "") > (del2.publicKey ?? "")
+		}).forEach { (del) in
 			let newVal = [del.coin ?? "": del.value ?? 0]
 			let publicKey = del.publicKey ?? ""
 

@@ -12,7 +12,30 @@ import MinterCore
 import MinterExplorer
 import RxAppState
 
-class RootViewModel: BaseViewModel {
+class RootViewModel: BaseViewModel, ViewModelProtocol {
+
+	// MARK: -
+
+	struct Input {
+		var pin: AnyObserver<String>
+		var biometricsSucceed: AnyObserver<Bool>
+	}
+
+	struct Output {
+		var shouldPresentPIN: Observable<Bool>
+		var shouldGoNextStep: Observable<Bool>
+	}
+
+	var input: RootViewModel.Input!
+	var output: RootViewModel.Output!
+
+	// MARK: -
+
+	private var pinCodeSubject: PublishSubject<String> = PublishSubject()
+	private var goNextStepSubject: PublishSubject<Bool> = PublishSubject()
+	private var biometricsSucceedSubject: PublishSubject<Bool> = PublishSubject()
+
+	// MARK: -
 
 	private let session = Session.shared
 
@@ -39,6 +62,11 @@ class RootViewModel: BaseViewModel {
 	override init() {
 		super.init()
 
+		input = Input(pin: pinCodeSubject.asObserver(),
+									biometricsSucceed: biometricsSucceedSubject.asObserver())
+		output = Output(shouldPresentPIN: Session.shared.isPINRequired.asObservable(),
+										shouldGoNextStep: goNextStepSubject.asObservable())
+
 		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in
 			return isLoggedIn
 		}).subscribe(onNext: { (isLoggedIn) in
@@ -49,7 +77,21 @@ class RootViewModel: BaseViewModel {
 
 		Session.shared.updateGas()
 
-		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive, Session.shared.accounts.asObservable(), Session.shared.isLoggedIn.asObservable()).distinctUntilChanged({ (val1, val2) -> Bool in
+		pinCodeSubject.asObservable().subscribe(onNext: { [weak self] (val) in
+			if PINManager.shared.checkPIN(code: val) {
+				Session.shared.isPINRequired.onNext(false)
+				self?.goNextStepSubject.onNext(true)
+			}
+		}).disposed(by: disposeBag)
+
+		Session.shared.isPINRequired.subscribe(onNext: { [weak self] (val) in
+			self?.goNextStepSubject.onNext(true)
+		}).disposed(by: disposeBag)
+
+		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive,
+														 Session.shared.accounts.asObservable(),
+														 Session.shared.isLoggedIn.asObservable())
+			.distinctUntilChanged({ (val1, val2) -> Bool in
 			return val1.1 == val2.1 && val1.2 == val2.2
 		}).filter({ (val) -> Bool in
 			let accounts = val.1
@@ -85,7 +127,9 @@ class RootViewModel: BaseViewModel {
 	func connect(completion: (() -> ())?) {
 		if nil == client {
 			var config = CentrifugeClientConfig()
-			client = CentrifugeClient(url: MinterExplorerWebSocketURL!.absoluteURL.absoluteString + "?format=protobuf", config: config, delegate: self)
+			client = CentrifugeClient(url: MinterExplorerWebSocketURL!.absoluteURL.absoluteString + "?format=protobuf",
+																config: config,
+																delegate: self)
 		}
 
 		self.client?.connect()
@@ -120,9 +164,26 @@ class RootViewModel: BaseViewModel {
 		Session.shared.loadTransactions()
 	}
 
+	func checkPin(_ pin: String, completion: ((Bool) -> ())?) {
+
+		let pinAttempts = Session.shared.getPINAttempts()
+		if pinAttempts >= 10 {
+			Session.shared.logout()
+		} else {
+			Session.shared.setPINAttempts(attempts: pinAttempts+1)
+		}
+
+		let check = PINManager.shared.checkPIN(code: pin)
+		if check {
+			Session.shared.setPINAttempts(attempts: 0)
+		}
+
+		completion?(check)
+	}
+
 }
 
-extension RootViewModel : CentrifugeClientDelegate, CentrifugeSubscriptionDelegate {
+extension RootViewModel: CentrifugeClientDelegate, CentrifugeSubscriptionDelegate {
 
 	// MARK: -
 

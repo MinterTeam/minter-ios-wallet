@@ -24,6 +24,27 @@ protocol Storyboard {
 
 struct Storyboards {
 
+    struct PIN: Storyboard {
+
+        static let identifier = "PIN"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> PINViewController {
+            return self.storyboard.instantiateInitialViewController() as! PINViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct Settings: Storyboard {
 
         static let identifier = "Settings"
@@ -524,6 +545,8 @@ extension UITableView {
     }
 }
 
+// MARK: - PINViewController
+
 // MARK: - SettingsViewController
 extension UIStoryboardSegue {
     func selection() -> SettingsViewController.Segue? {
@@ -541,6 +564,7 @@ extension SettingsViewController {
         case showMobile = "showMobile"
         case showEmail = "showEmail"
         case showPassword = "showPassword"
+        case showPIN = "showPIN"
 
         var kind: SegueKind? {
             switch self {
@@ -553,6 +577,8 @@ extension SettingsViewController {
             case .showEmail:
                 return SegueKind(rawValue: "show")
             case .showPassword:
+                return SegueKind(rawValue: "show")
+            case .showPIN:
                 return SegueKind(rawValue: "show")
             }
         }

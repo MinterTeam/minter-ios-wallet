@@ -9,37 +9,38 @@
 import UIKit
 import RxSwift
 
-class SwitchTableViewCellItem : BaseCellItem {
-	
+class SwitchTableViewCellItem: BaseCellItem {
+
 	var title: String = ""
-	
+
 	var isOn = Variable(false)
-	
+
+	var isOnObservable: Observable<Bool>?
+
 }
 
 protocol SwitchTableViewCellDelegate : class {
 	func didSwitch(isOn: Bool, cell: SwitchTableViewCell)
 }
 
-
 class SwitchTableViewCell: BaseCell {
-	
-	//MARK: - IBOutelet
+
+	// MARK: - IBOutelet
 
 	@IBOutlet weak var label: UILabel!
-	
+
 	@IBOutlet weak var `switch`: UISwitch!
-	
+
 	@IBAction func didSwitch(_ sender: UISwitch) {
 		delegate?.didSwitch(isOn: sender.isOn, cell: self)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	weak var delegate: SwitchTableViewCellDelegate?
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
 	}
@@ -47,15 +48,18 @@ class SwitchTableViewCell: BaseCell {
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func configure(item: BaseCellItem) {
 		super.configure(item: item)
-		
+
 		if let item = item as? SwitchTableViewCellItem {
 			self.label.text = item.title
 			self.switch.isOn = item.isOn.value
+
+			item.isOnObservable?.asDriver(onErrorJustReturn: false)
+				.drive(self.switch.rx.isOn).disposed(by: disposeBag)
 		}
 	}
 	

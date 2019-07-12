@@ -24,20 +24,20 @@ class AccountManager {
 		case privateKeyCanNotBeSaved
 	}
 	
-	//MARK: - Sources
+	// MARK: - Sources
 	
 	private let database = RealmDatabaseStorage.shared
 	private let secureStorage: Storage
 	
 	
-	//MARK: -
+	// MARK: -
 	
 	//TODO: rename
 	private let passwordKey = "AccountPassword"
 	
 	private let iv = Data(bytes: "Minter seed".bytes).setLengthRight(16)
 	
-	//MARK: -
+	// MARK: -
 	
 	//Account with seed
 	
@@ -143,8 +143,7 @@ class AccountManager {
 				throw AccountManagerError.privateKeyEncryptionFaulted
 			}
 			return Data(bytes: ciphertext)
-		}
-		catch {
+		} catch {
 			throw AccountManagerError.privateKeyUnableToEncrypt
 		}
 		return nil
@@ -169,7 +168,7 @@ class AccountManager {
 		return address
 	}
 	
-	//MARK: -
+	// MARK: -
 	
 	func privateKey(for address: String) -> PrivateKey? {
 		guard let mnemonic = self.mnemonic(for: address), let seed = self.seed(mnemonic: mnemonic) else {
@@ -204,7 +203,7 @@ class AccountManager {
 		return String(data: mnemonic, encoding: .utf8)
 	}
 	
-	//MARK: -
+	// MARK: -
 	
 	func setMain(isMain: Bool, account: inout Account) {
 		account.isMain = isMain
@@ -215,14 +214,17 @@ class AccountManager {
 	}
 	
 	
-	//MARK: -
+	// MARK: -
 	
 	func loadLocalAccounts() -> [Account]? {
 		
 		let accounts = database.objects(class: AccountDataBaseModel.self, query: nil) as? [AccountDataBaseModel]
 		
 		let res = accounts?.map { (dbModel) -> Account in
-			return Account(id: dbModel.id, encryptedBy: Account.EncryptedBy(rawValue: dbModel.encryptedBy) ?? .me, address: dbModel.address, isMain: dbModel.isMain)
+			return Account(id: dbModel.id,
+										 encryptedBy: Account.EncryptedBy(rawValue: dbModel.encryptedBy) ?? .me,
+										 address: dbModel.address,
+										 isMain: dbModel.isMain)
 		}
 		
 		return res
@@ -250,11 +252,12 @@ class AccountManager {
 		}
 	}
 	
-	//MARK: -
+	// MARK: -
 
 	func saveLocalAccount(account: Account) {
 		
-		guard let res = database.objects(class: AccountDataBaseModel.self, query: "address == \"\(account.address)\"")?.first as? AccountDataBaseModel else {
+		guard let res = database.objects(class: AccountDataBaseModel.self,
+																		 query: "address == \"\(account.address)\"")?.first as? AccountDataBaseModel else {
 			let dbModel = AccountDataBaseModel()
 			dbModel.id = account.id
 			dbModel.address = account.address.stripMinterHexPrefix().lowercased()
@@ -275,5 +278,5 @@ class AccountManager {
 			res.substitute(with: account)
 		}
 	}
-	
+
 }
