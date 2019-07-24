@@ -164,23 +164,6 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 		Session.shared.loadTransactions()
 	}
 
-	func checkPin(_ pin: String, completion: ((Bool) -> ())?) {
-
-		let pinAttempts = Session.shared.getPINAttempts()
-		if pinAttempts >= 10 {
-			Session.shared.logout()
-		} else {
-			Session.shared.setPINAttempts(attempts: pinAttempts+1)
-		}
-
-		let check = PINManager.shared.checkPIN(code: pin)
-		if check {
-			Session.shared.setPINAttempts(attempts: 0)
-		}
-
-		completion?(check)
-	}
-
 }
 
 extension RootViewModel: CentrifugeClientDelegate, CentrifugeSubscriptionDelegate {

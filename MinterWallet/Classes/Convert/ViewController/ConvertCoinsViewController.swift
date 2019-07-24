@@ -16,7 +16,8 @@ class ConvertCoinsViewController: BaseViewController {
 
 	var viewModel: ConvertCoinsViewModel? {
 		didSet {
-			viewModel?.feeObservable.asDriver(onErrorJustReturn: "").drive(feeLabel.rx.text).disposed(by: self.disposableBag)
+			viewModel?.feeObservable.asDriver(onErrorJustReturn: "")
+				.drive(feeLabel.rx.text).disposed(by: self.disposableBag)
 		}
 	}
 
@@ -106,12 +107,13 @@ extension ConvertCoinsViewController: LUAutocompleteViewDataSource {
 // MARK: - LUAutocompleteViewDelegate
 
 extension ConvertCoinsViewController: LUAutocompleteViewDelegate {
-	
+
 	func autocompleteView(_ autocompleteView: LUAutocompleteView, didSelect text: String) {
 		//HACK: Remove after GetCoinsViewModel refactoring
 		if let vm = viewModel as? GetCoinsViewModel {
 			vm.getCoin.onNext(text)
 		}
 		autocompleteView.textField?.sendActions(for: .valueChanged)
+		view.endEditing(true)
 	}
 }

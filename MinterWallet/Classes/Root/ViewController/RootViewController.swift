@@ -246,7 +246,7 @@ extension RootViewController: PINViewControllerDelegate {
 	func PINViewControllerDidSucceed(controller: PINViewController, withPIN: String) {
 		viewModel.input.pin.onNext(withPIN)
 
-		viewModel.checkPin(withPIN) { (res) in
+		Session.shared.checkPin(withPIN) { (res) in
 			if !res {
 				controller.shakeError()
 			}

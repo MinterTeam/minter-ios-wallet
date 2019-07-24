@@ -61,8 +61,5 @@ class PINViewModel: BaseViewModel, ViewModelProtocol {
 			}
 		}).disposed(by: disposeBag)
 	}
-	
-	
-	
 
 }

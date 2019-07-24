@@ -89,7 +89,9 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 			}
 		}
 
-		datasource.keys.forEach { (publicKey) in
+		datasource.keys.sorted(by: { (del1, del2) -> Bool in
+			return del1 > del2
+		}).forEach { (publicKey) in
 			var cells = [BaseCellItem]()
 			let nodeCell = DelegatedTableViewCellItem(reuseIdentifier: "DelegatedTableViewCell",
 																								identifier: "DelegatedTableViewCell_" + publicKey)

@@ -22,8 +22,8 @@ class PINRouter : BaseRouter {
 	// MARK: -
 
 	static func PINViewController(with viewModel: PINViewModel) -> PINViewController? {
-		let viewController = Storyboards.PIN.instantiateInitialViewController() as? PINViewController
-		viewController?.viewModel = viewModel
+		let viewController = Storyboards.PIN.instantiateInitialViewController()
+		viewController.viewModel = viewModel
 		return viewController
 	}
 
@@ -31,8 +31,8 @@ class PINRouter : BaseRouter {
 		let viewModel = PINViewModel()
 		viewModel.isBiometricEnabled = AppSettingsManager.shared.isBiometricsEnabled
 		viewModel.desc = "Please enter a 4-digit PIN".localized()
-		let viewController = Storyboards.PIN.instantiateInitialViewController() as? PINViewController
-		viewController?.viewModel = viewModel
+		let viewController = Storyboards.PIN.instantiateInitialViewController()
+		viewController.viewModel = viewModel
 		return viewController
 	}
 

@@ -677,7 +677,7 @@
 		FA669B6F207239F200AD110A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA669B71207239F200AD110A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA669B74207239F200AD110A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		FA669B76207239F200AD110A /* Info1.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info1.plist; sourceTree = "<group>"; };
+		FA669B76207239F200AD110A /* MinterWallet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MinterWallet-Info.plist"; sourceTree = "<group>"; };
 		FA669B7B207239F200AD110A /* MinterWalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinterWalletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA669B7F207239F200AD110A /* MinterWalletTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinterWalletTests.swift; sourceTree = "<group>"; };
 		FA669B81207239F200AD110A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1689,7 +1689,7 @@
 				FA669B6E207239F200AD110A /* Main.storyboard */,
 				FA669B71207239F200AD110A /* Assets.xcassets */,
 				FA669B73207239F200AD110A /* LaunchScreen.storyboard */,
-				FA669B76207239F200AD110A /* Info1.plist */,
+				FA669B76207239F200AD110A /* MinterWallet-Info.plist */,
 				FA333094224A4B3C003B4763 /* MinterWalletTestnet-Info.plist */,
 				FAA2605920920997009FF3DE /* MinterWallet-Bridging-Header.h */,
 			);
@@ -3139,7 +3139,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/Info1.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/MinterWallet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
@@ -3171,7 +3171,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/Info1.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/MinterWallet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;

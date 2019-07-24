@@ -66,7 +66,12 @@ class PINViewController: BaseViewController, ControllerType {
 		if true == pinView.textField.delegate?.textField?(pinView.textField,
 																											shouldChangeCharactersIn: range,
 																											replacementString: string) {
-			pinView.textField.insertText(string)
+			if #available(iOS 11.0, *) {
+				pinView.textField.insertText(string)
+			} else {
+				pinView.textField.text = (pinView.textField.text ?? "") + string
+				pinView.textField.sendActions(for: .editingChanged)
+			}
 		}
 	}
 
@@ -76,7 +81,13 @@ class PINViewController: BaseViewController, ControllerType {
 		if true == pinView.textField.delegate?.textField?(pinView.textField,
 																											shouldChangeCharactersIn: range,
 																											replacementString: string) {
-			pinView.textField.deleteBackward()
+			if #available(iOS 11.0, *) {
+				pinView.textField.deleteBackward()
+			} else {
+				var txt = (pinView.textField.text ?? "")
+				pinView.textField.text = String(txt.dropLast())
+				pinView.textField.sendActions(for: .editingChanged)
+			}
 		}
 	}
 

@@ -10,7 +10,23 @@ import RxSwift
 import MinterCore
 import MinterMy
 
-class SettingsViewModel: BaseViewModel {
+class SettingsViewModel: BaseViewModel, ViewModelProtocol {
+
+	// MARK: -
+
+	struct Input {
+		var pin: AnyObserver<String>
+	}
+
+	struct Output {
+		var showPINController: Observable<(String, String)>
+		var hidePINController: Observable<Void>
+		var showConfirmPINController: Observable<(String, String)>
+		var shakePINError: Observable<Void>
+	}
+
+	var input: SettingsViewModel.Input!
+	var output: SettingsViewModel.Output!
 
 	// MARK: -
 
@@ -33,12 +49,18 @@ class SettingsViewModel: BaseViewModel {
 	var errorNotification = Variable<NotifiableError?>(nil)
 	var successMessage = Variable<NotifiableSuccess?>(nil)
 
-	var isConfirmingPassword = false {
+	var isConfirmingPIN = false {
 		didSet {
-			if !isConfirmingPassword {
+			if !isConfirmingPIN {
 				pinString = nil
 				pinConfirmationString = nil
 			}
+		}
+	}
+	
+	var isCheckingPIN = PINManager.shared.isPINset {
+		didSet {
+			
 		}
 	}
 
@@ -46,7 +68,7 @@ class SettingsViewModel: BaseViewModel {
 
 	var pinString: String?
 	var pinConfirmationString: String?
-	
+
 	var shouldInstallPIN: Bool {
 		return !PINManager.shared.isPINset
 	}
@@ -58,8 +80,55 @@ class SettingsViewModel: BaseViewModel {
 
 	// MARK: -
 
+	private var showPINControllerSubject = PublishSubject<(String, String)>()
+	private var hidePINControllerSubject = PublishSubject<Void>()
+	private var pinSubject = PublishSubject<String>()
+	private var showConfirmPINControllerSubject = PublishSubject<(String, String)>()
+	private var shakePINErrorSubject = PublishSubject<Void>()
+
+	// MARK: -
+
+	var settingPIN = false
+
 	override init() {
 		super.init()
+
+		input = Input(pin: pinSubject.asObserver())
+		output = Output(showPINController: showPINControllerSubject.asObservable(),
+										hidePINController: hidePINControllerSubject.asObservable(),
+										showConfirmPINController: showConfirmPINControllerSubject.asObservable(),
+										shakePINError: shakePINErrorSubject.asObservable())
+
+		pinSubject.subscribe(onNext: { [weak self] (pin) in
+			if self?.isCheckingPIN ?? false {
+				Session.shared.checkPin(pin, completion: { (succeed) in
+					if succeed {
+						self?.isCheckingPIN = false
+						if self?.settingPIN ?? false {
+							self?.settingPIN = false
+							self?.showConfirmPINControllerSubject.onNext(("Set PIN-code".localized(),
+																														"Please enter a 4-digit PIN".localized()))
+						} else {
+							self?.removePIN()
+							self?.hidePINControllerSubject.onNext(())
+						}
+					} else {
+						self?.shakePINErrorSubject.onNext(())
+					}
+				})
+			} else if self?.isConfirmingPIN ?? false {
+				if self?.confirmPIN(code: pin) ?? false {
+					self?.hidePINControllerSubject.onNext(())
+				} else {
+					self?.shakePINErrorSubject.onNext(())
+				}
+			} else {
+				self?.isConfirmingPIN = true
+				self?.setPIN(code: pin)
+				self?.showConfirmPINControllerSubject.onNext(("Confirm PIN-code".localized(),
+																											"Please confirm your 4-digit PIN".localized()))
+			}
+		}).disposed(by: disposeBag)
 
 		Observable.combineLatest(Session.shared.isLoggedIn.asObservable(), Session.shared.user.asObservable()).subscribe(onNext: { [weak self] (_, _) in
 			self?.createSections()
@@ -140,10 +209,6 @@ class SettingsViewModel: BaseViewModel {
 		button.buttonPattern = "blank"
 		button.title = "LOG OUT".localized()
 
-//		let getMNTButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell", identifier: "ButtonTableViewCell_Get100")
-//		getMNTButton.buttonPattern = "purple"
-//		getMNTButton.title = "GET 100 \(Coin.baseCoin().symbol!)".localized()
-
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
 																			 identifier: "BlankTableViewCell")
 		blank.color = .clear
@@ -217,7 +282,8 @@ class SettingsViewModel: BaseViewModel {
 	func viewWillAppear() {
 		createSections()
 		shouldReloadTable.value = true
-		isConfirmingPassword = false
+		isConfirmingPIN = false
+		isCheckingPIN = PINManager.shared.isPINset
 	}
 
 	// MARK: -
@@ -299,6 +365,10 @@ extension SettingsViewModel {
 		PINManager.shared.removePIN()
 		AppSettingsManager.shared.setFingerprint(enabled: false)
 		fingerprintSubject.onNext(false)
+	}
+
+	func checkPin(_ code: String) -> Bool {
+		return PINManager.shared.checkPIN(code: code)
 	}
 
 }

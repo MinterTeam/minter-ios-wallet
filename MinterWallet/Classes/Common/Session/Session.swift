@@ -182,6 +182,9 @@ class Session {
 		balances.value = [:]
 		mainCoinBalance.value = 0.0
 		user.value = nil
+		
+		isPINRequired.onNext(false)
+		
 	}
 
 	// MARK: -
@@ -371,6 +374,27 @@ class Session {
 				self?.saveUser(user: user)
 			}
 		})
+	}
+
+}
+
+extension Session {
+
+	func checkPin(_ pin: String, completion: ((Bool) -> ())?) {
+		
+		let pinAttempts = Session.shared.getPINAttempts()
+		if pinAttempts >= 5 {
+			Session.shared.logout()
+		} else {
+			Session.shared.setPINAttempts(attempts: pinAttempts+1)
+		}
+		
+		let check = PINManager.shared.checkPIN(code: pin)
+		if check {
+			Session.shared.setPINAttempts(attempts: 0)
+		}
+		
+		completion?(check)
 	}
 
 }

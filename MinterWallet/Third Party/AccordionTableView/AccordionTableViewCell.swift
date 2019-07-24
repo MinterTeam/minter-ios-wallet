@@ -8,18 +8,18 @@
 import UIKit
 
 open class AccordionTableViewCell: UITableViewCell {
-	
+
 	// MARK: Properties
-	
+
 	var identifier: String = String.random(length: 32)
-	
+
 	/// Flag which tells if the cell is expanded.
 	open private(set) var expanded = false
-	
+
 	open var toggling = false
-	
+
 	// MARK: Actions
-	
+
 	/**
 	Public setter of the `expanded` property (this should be overriden by a subclass for custom UI update)
 	
@@ -31,9 +31,9 @@ open class AccordionTableViewCell: UITableViewCell {
 	}
 
 	open func willToggleCell(animated: Bool) {}
-	
+
 	open func didToggleCell(animated: Bool) {}
-	
+
 	func toggle(_ expanded: Bool, animated: Bool) {}
-	
+
 }

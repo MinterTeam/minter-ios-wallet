@@ -154,9 +154,14 @@ class ConvertCoinsViewModel : BaseViewModel {
 
 		let balances = Session.shared.allBalances.value
 		balances.keys.forEach { (address) in
-			balances[address]?.keys.sorted(by: { (val1, val2) -> Bool in
+			var coins = balances[address]?.keys.filter({ (coin) -> Bool in
+				return coin != Coin.baseCoin().symbol!
+			}).sorted(by: { (val1, val2) -> Bool in
 				return val1 < val2
-			}).forEach({ (coin) in
+			})
+			coins?.insert(Coin.baseCoin().symbol!, at: 0)
+
+			coins?.forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
 
 				let item = ConvertPickerItem(coin: coin, address: address, balance: balance)
@@ -172,11 +177,18 @@ class ConvertCoinsViewModel : BaseViewModel {
 		let balances = spendCoinPickerSource
 		var ret = [SpendCoinPickerItem]()
 		balances.keys.forEach { (address) in
-			balances[address]?.keys.sorted(by: { (val1, val2) -> Bool in
+			var coins = balances[address]?.keys.filter({ (coin) -> Bool in
+				return coin != Coin.baseCoin().symbol!
+			}).sorted(by: { (val1, val2) -> Bool in
 				return val1 < val2
-			}).forEach({ (coin) in
+			})
+			coins?.insert(Coin.baseCoin().symbol!, at: 0)
+			coins?.forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
-				let item = SpendCoinPickerItem(coin: coin, balance: balance, address: address, formatter: self.formatter)
+				let item = SpendCoinPickerItem(coin: coin,
+																			 balance: balance,
+																			 address: address,
+																			 formatter: self.formatter)
 				ret.append(item)
 			})
 		}
@@ -193,7 +205,6 @@ class ConvertCoinsViewModel : BaseViewModel {
 
 			let resCoins = Array(res[safe: 0..<3] ?? [])
 			completion?(resCoins)
-
 		}
 	}
 

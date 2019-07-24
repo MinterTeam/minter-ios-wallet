@@ -75,8 +75,8 @@ class ExpandableCell: AccordionTableViewCell, Configurable {
 
 			UIView.transition(with: detailView!, duration: 0.3, options: options, animations: { [weak self] in
 				self?.toggleCell(expanded)
-				}, completion: { (completed) in
-					self.toggling = false
+			}, completion: { (completed) in
+				self.toggling = false
 			})
 		} else {
 			toggleCell(expanded)
@@ -94,6 +94,8 @@ class ExpandableCell: AccordionTableViewCell, Configurable {
 
 	override func prepareForReuse() {
 		super.prepareForReuse()
+
+		toggling = false
 
 		disposeBag = DisposeBag()
 	}

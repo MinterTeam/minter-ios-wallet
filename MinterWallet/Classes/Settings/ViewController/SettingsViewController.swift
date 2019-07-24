@@ -11,7 +11,7 @@ import RxSwift
 import RxAppState
 import NotificationBannerSwift
 
-class SettingsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ControllerType {
 
 	// MARK: - IBOutput
 
@@ -28,11 +28,49 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 	@IBOutlet var bottomView: UIView!
 	@IBOutlet weak var infoLabel: UILabel!
 
-	// MARK: -
+	// MARK: - ControllerType
 
 	var viewModel = SettingsViewModel()
 
 	private var disposeBag = DisposeBag()
+
+	private var shouldPresentSetPIN = false
+
+	// MARK: -
+
+	typealias ViewModelType = SettingsViewModel
+
+	func configure(with viewModel: SettingsViewController.ViewModelType) {
+
+		viewModel.output.showPINController.asDriver(onErrorJustReturn: ("", ""))
+			.drive(onNext: { [weak self] (val) in
+			guard let vc = self?.PINViewController(title: val.0, desc: val.1) else {
+				return
+			}
+			self?.navigationController?.pushViewController(vc, animated: true)
+		}).disposed(by: disposeBag)
+
+		viewModel.output.showConfirmPINController.asDriver(onErrorJustReturn: ("", ""))
+			.drive(onNext: { [weak self] (val) in
+				guard let vc = self?.PINViewController(title: val.0, desc: val.1) else {
+					return
+				}
+				self?.navigationController?.setViewControllers([self!, vc], animated: true)
+			}).disposed(by: disposeBag)
+
+		viewModel.output.hidePINController.asDriver(onErrorJustReturn: ())
+			.drive(onNext: { [weak self] (_) in
+			self?.navigationController?.popToRootViewController(animated: true)
+		}).disposed(by: disposeBag)
+
+		viewModel.output.shakePINError.asDriver(onErrorJustReturn: ())
+			.drive(onNext: { [weak self] (_) in
+				(self?.navigationController?.viewControllers.first(where: { (vc) -> Bool in
+					return nil != vc as? PINViewController
+				}) as? PINViewController)?.shakeError()
+		}).disposed(by: disposeBag)
+
+	}
 
 	// MARK: Life cycle
 
@@ -42,6 +80,8 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		self.title = viewModel.title
 
 		registerCells()
+
+		configure(with: viewModel)
 
 		//move to VM
 		Session.shared.isLoggedIn.asObservable().subscribe(onNext: { [weak self] (isLoggedIn) in
@@ -197,6 +237,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		} else if item.identifier == "DisclosureTableViewCell_Password" {
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showPassword.rawValue, sender: self)
 		} else if item.identifier == "DisclosureTableViewCell_ChangePIN" {
+			viewModel.settingPIN = true
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: self)
 		}
 	}
@@ -302,17 +343,14 @@ extension SettingsViewController: SwitchTableViewCellDelegate {
 					performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: nil)
 				}
 			} else if item.identifier == "SwitchTableViewCell_Pin" {
-				if isOn {
-					performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: nil)
-				} else {
-					viewModel.removePIN()
-				}
+				shouldPresentSetPIN = isOn
+				performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: nil)
+//					viewModel.removePIN()
 			} else {
 				viewModel.didSwitchSound(isOn: isOn)
 			}
 		}
 	}
-
 }
 
 extension SettingsViewController {
@@ -326,38 +364,65 @@ extension SettingsViewController {
 
 		if segue.identifier == SettingsViewController.Segue.showPIN.identifier,
 			let pinVC = segue.destination as? PINViewController {
-			let viewModel = PINViewModel()
-			viewModel.title = "Set PIN-code".localized()
-			viewModel.desc = "Please enter a 4-digit PIN".localized()
-			pinVC.viewModel = viewModel
+			let vm = PINViewModel()
+			vm.title = viewModel.isCheckingPIN ? "Current PIN-code".localized() : "Set PIN-code".localized()
+			vm.desc = "Please enter a 4-digit PIN".localized()
+			pinVC.viewModel = vm
 			pinVC.delegate = self
 		}
 	}
-
 }
 
 extension SettingsViewController: PINViewControllerDelegate {
 
 	func PINViewControllerDidSucceed(controller: PINViewController, withPIN: String) {
-		if viewModel.isConfirmingPassword {
-			if viewModel.confirmPIN(code: withPIN) {
-				self.navigationController?.popToRootViewController(animated: true)
-			} else {
-				controller.shakeError()
-			}
-		} else {
-			viewModel.isConfirmingPassword = true
-			viewModel.setPIN(code: withPIN)
-			let pinViewModel = PINViewModel()
-			pinViewModel.title = "Confirm PIN-code".localized()
-			pinViewModel.desc = "Please confirm your 4-digit PIN".localized()
-			if let vc = PINRouter.PINViewController(with: pinViewModel) {
-				vc.delegate = self
-				self.navigationController?.setViewControllers([self, vc], animated: true)
-			}
-		}
+
+		viewModel.input.pin.onNext(withPIN)
+
+//		if viewModel.isCheckingPIN {
+//
+//			guard viewModel.checkPin(withPIN) else {
+//				return
+//			}
+//
+//			viewModel.isCheckingPIN = false
+//			viewModel.removePIN()
+//
+//			if shouldPresentSetPIN {
+//				performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: self)
+//			} else {
+//				self.navigationController?.popToRootViewController(animated: true)
+//			}
+//		} else if viewModel.isConfirmingPIN {
+//			if viewModel.confirmPIN(code: withPIN) {
+//				self.navigationController?.popToRootViewController(animated: true)
+//			} else {
+//				controller.shakeError()
+//			}
+//		} else {
+//			viewModel.isConfirmingPIN = true
+//			viewModel.setPIN(code: withPIN)
+//			let pinViewModel = PINViewModel()
+//			pinViewModel.title = "Confirm PIN-code".localized()
+//			pinViewModel.desc = "Please confirm your 4-digit PIN".localized()
+//			if let vc = PINRouter.PINViewController(with: pinViewModel) {
+//				vc.delegate = self
+//				self.navigationController?.setViewControllers([self, vc], animated: true)
+//			}
+//		}
 	}
 
 	func PINViewControllerDidSucceedWithBiometrics(controller: PINViewController) {}
+
+	// MARK: -
+
+	func PINViewController(title: String, desc: String) -> PINViewController? {
+		let vm = PINViewModel()
+		vm.title = title//viewModel.isCheckingPIN ? "Current PIN-code".localized() : "Set PIN-code".localized()
+		vm.desc = desc//
+		let pinVC = PINRouter.PINViewController(with: vm)
+		pinVC?.delegate = self
+		return pinVC
+	}
 
 }
