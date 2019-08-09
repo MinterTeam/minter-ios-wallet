@@ -17,6 +17,13 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 	// MARK: -
 
 	private var datasource = [String: [[String: Decimal]]]()
+	private var source: [String] {
+		let src = datasource.keys.sorted(by: { (del1, del2) -> Bool in
+			return del1 > del2
+		})
+		return src
+	}
+	
 	private var balances = (try? Session.shared.allDelegatedBalance.value()) ?? []
 
 	private let coinFormatter = CurrencyNumberFormatter.coinFormatter
@@ -89,9 +96,7 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 			}
 		}
 
-		datasource.keys.sorted(by: { (del1, del2) -> Bool in
-			return del1 > del2
-		}).forEach { (publicKey) in
+		source.forEach { (publicKey) in
 			var cells = [BaseCellItem]()
 			let nodeCell = DelegatedTableViewCellItem(reuseIdentifier: "DelegatedTableViewCell",
 																								identifier: "DelegatedTableViewCell_" + publicKey)
@@ -160,7 +165,9 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 
 	public func publicKey(for section: Int) -> String? {
 		var ii = 0
-		for i in datasource.keys {
+		for i in source.sorted(by: { (del1, del2) -> Bool in
+			return del1 > del2
+		}) {
 			if section == ii {
 				return i
 			}

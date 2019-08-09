@@ -39,6 +39,9 @@ class PINViewController: BaseViewController, ControllerType {
 				self?.descTitle.text = desc
 		}).disposed(by: disposeBag)
 
+		self.rx.viewDidAppear.asDriver(onErrorJustReturn: false)
+			.drive(viewModel.input.viewDidAppear).disposed(by: disposeBag)
+
 	}
 
 	// MARK: -
@@ -106,6 +109,10 @@ class PINViewController: BaseViewController, ControllerType {
 		pinView.textField.inputView = button0
 
 		setNavigationBarAppearance()
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
 	}
 
 	func shakeError() {

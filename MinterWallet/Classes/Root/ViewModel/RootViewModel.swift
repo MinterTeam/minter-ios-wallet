@@ -59,12 +59,16 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 
 	var addressManager = ExplorerAddressManager.default
 
+	var shouldPresent: Observable<Bool> {
+		return Session.shared.isPINRequired.asObservable()
+	}
+
 	override init() {
 		super.init()
 
 		input = Input(pin: pinCodeSubject.asObserver(),
 									biometricsSucceed: biometricsSucceedSubject.asObserver())
-		output = Output(shouldPresentPIN: Session.shared.isPINRequired.asObservable(),
+		output = Output(shouldPresentPIN: shouldPresent,
 										shouldGoNextStep: goNextStepSubject.asObservable())
 
 		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in

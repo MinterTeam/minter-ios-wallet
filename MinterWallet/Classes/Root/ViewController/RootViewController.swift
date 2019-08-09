@@ -80,10 +80,10 @@ class RootViewController: UIViewController, ControllerType {
 
 		viewModel.didLoad()
 
-		NotificationCenter.default.addObserver(self, selector: #selector(RootViewController.reachabilityChanged(_:)),
+		NotificationCenter.default.addObserver(self,
+																					 selector: #selector(RootViewController.reachabilityChanged(_:)),
 																					 name: Notification.Name.reachabilityChanged,
 																					 object: nil)
-
 		do {
 			try reachability.startNotifier()
 		} catch {
@@ -103,13 +103,14 @@ class RootViewController: UIViewController, ControllerType {
 			print("Reachable via Cellular")
 		case .none:
 	//		print("Network not reachable")
-			let banner = NotificationBanner(title: "Network is not reachable".localized(), subtitle: nil, style: .danger)
+			let banner = NotificationBanner(title: "Network is not reachable".localized(),
+																			subtitle: nil,
+																			style: .danger)
 			banner.show()
 		}
 	}
 
 	private let tabbarVC = Storyboards.Main.instantiateInitialViewController()
-	private var pinVC: PINViewController?
 
 	func nextStep(accounts: [Account] = [], isLoggedIn: Bool) {
 
@@ -141,7 +142,7 @@ class RootViewController: UIViewController, ControllerType {
 				})
 			}
 		}
-
+ 
 	}
 
 	func showViewControllerWith(_ newViewController: UIViewController,
@@ -198,7 +199,8 @@ class RootViewController: UIViewController, ControllerType {
 		}
 
 		animationStart = true
-		UIView.animate(withDuration: duration, animations: { [weak currentViewController] () -> Void in
+		UIView.animate(withDuration: duration,
+									 animations: { [weak currentViewController] () -> Void in
 			newViewController.view.frame = initCurrentViewFrame
 			if currentViewController != nil {
 				currentViewController?.view.frame = nextFrame!

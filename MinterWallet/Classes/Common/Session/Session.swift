@@ -38,6 +38,8 @@ class Session {
 	private let secureStorage = SecureStorage()
 	private let localStorage = LocalStorage()
 	private let dataBaseStorage = RealmDatabaseStorage.shared
+	
+	private var lastBackgroundDate: Date?
 
 	// MARK: -
 
@@ -51,6 +53,7 @@ class Session {
 	var delegatedBalance = BehaviorSubject<Decimal>(value: 0.0)
 	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
 	var accessToken = Variable<String?>(nil)
+	
 	var isPINRequired = BehaviorSubject<Bool>(value: PINManager.shared.isPINset)
 
 	private var refreshToken = Variable<String?>(nil)
@@ -96,11 +99,21 @@ class Session {
 
 		UIApplication.shared.rx.applicationDidBecomeActive
 			.subscribe(onNext: { [weak self] (state) in
-
+			if let backgroundDate = self?.lastBackgroundDate, PINManager.shared.isPINset {
+				if backgroundDate.timeIntervalSinceNow < -PINRequiredMinimumSeconds {
+					self?.isPINRequired.onNext(true)
+				}
+			}
+			self?.lastBackgroundDate = nil
 			self?.loadTransactions()
 			self?.loadBalances()
 			self?.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
+		
+		UIApplication.shared.rx.applicationDidEnterBackground
+			.subscribe(onNext: { [weak self] (state) in
+				self?.lastBackgroundDate = Date()
+			}).disposed(by: disposeBag)
 
 		restore()
 	}
@@ -380,20 +393,21 @@ class Session {
 
 extension Session {
 
-	func checkPin(_ pin: String, completion: ((Bool) -> ())?) {
-		
-		let pinAttempts = Session.shared.getPINAttempts()
-		if pinAttempts >= 5 {
-			Session.shared.logout()
+	func checkPin(_ pin: String, forChange: Bool = false, completion: ((Bool) -> ())?) {
+		let pinAttempts = self.getPINAttempts()
+		if pinAttempts >= PINMaxAttempts {
+			self.logout()
 		} else {
-			Session.shared.setPINAttempts(attempts: pinAttempts+1)
+			self.setPINAttempts(attempts: pinAttempts+1)
 		}
-		
+
 		let check = PINManager.shared.checkPIN(code: pin)
 		if check {
-			Session.shared.setPINAttempts(attempts: 0)
+			self.setPINAttempts(attempts: 0)
+			if !forChange {
+				self.isPINRequired.onNext(false)
+			}
 		}
-		
 		completion?(check)
 	}
 

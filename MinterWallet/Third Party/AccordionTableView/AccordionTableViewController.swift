@@ -21,7 +21,7 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 	
 	/// Array of `IndexPath` objects for all of the expanded cells.
 //	open var expandedIndexPaths = [IndexPath]()
-	open var expandedIdentifiers = [String]()
+	open var expandedIdentifiers = Set<String>()
 	
 	/// Flag that indicates if cell toggle should be animated. Defaults to `true`.
 	open var shouldAnimateCellToggle = true
@@ -79,7 +79,8 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 
 			if !animated {
 				cell.setExpanded(true, animated: false)
-				expandedIdentifiers.append(cell.identifier)
+//				expandedIdentifiers.append(cell.identifier)
+				expandedIdentifiers.insert(cell.identifier)
 
 				tableView.reloadData()
 				scrollIfNeededAfterExpandingCell(at: indexPath)
@@ -96,7 +97,8 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 				// 1. expand cell height
 				tableView.beginUpdates()
 
-				expandedIdentifiers.append(cell.identifier)
+//				expandedIdentifiers.append(cell.identifier)
+				expandedIdentifiers.insert(cell.identifier)
 
 				tableView.endUpdates()
 
@@ -124,12 +126,17 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 					DispatchQueue.main.async {
 						// 2. collapse cell height
 						self.tableView.beginUpdates()
-						if let idx = (self.expandedIdentifiers.index { (id) -> Bool in
-							return id == cell.identifier
-						}) {
-							self.expandedIdentifiers.remove(at: idx)
-							self.tableView.endUpdates()
-						}
+						
+//						if let idx = (self.expandedIdentifiers.index { (id) -> Bool in
+//							return id == cell.identifier
+//						}) {
+////							self.expandedIdentifiers.remove(at: idx)
+//						}
+						
+						self.expandedIdentifiers.remove(cell.identifier)
+						
+						self.tableView.endUpdates()
+						
 					}
 				})
 				// 1. animate views before collapsing

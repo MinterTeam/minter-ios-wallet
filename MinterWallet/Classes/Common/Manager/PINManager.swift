@@ -15,6 +15,7 @@ class PINManager {
 
 	enum StorageKeys: String {
 		case pin
+		case lastDate
 	}
 
 	// MARK: -
@@ -63,11 +64,18 @@ class PINManager {
 																				 error: nil)
 	}
 
+	@available(iOS 11.0, *)
+	func biometricType() -> LABiometryType {
+		return authContext.biometryType
+	}
+
 	func checkBiometricsIfPossible(with completion: ((Bool) -> ())?) {
 		if self.canUseBiometric() {
 			self.authContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
 																			localizedReason: "To enter to the wallet",
-																			reply: { (res, err) in
+																			reply: { [weak self] (res, err) in
+																				self?.authContext.invalidate()
+																				self?.authContext = LAContext()
 																				completion?(res)
 			})
 		}

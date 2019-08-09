@@ -41,16 +41,22 @@ class AppSettingsManager {
 		}
 	}
 
-	//MARK: -
+	// MARK: -
 
 	func setSounds(enabled: Bool) {
-		database.set([SettingsKey.sounds.rawValue : enabled], forKey: AppSettingsManager.appSettingsKey)
-		database.synchronize()
-		restore()
+		self.isSoundsEnabled = enabled
+		save()
 	}
 
 	func setFingerprint(enabled: Bool) {
-		database.set([SettingsKey.fingerprint.rawValue : enabled], forKey: AppSettingsManager.appSettingsKey)
+		self.isBiometricsEnabled = enabled
+		save()
+	}
+
+	func save() {
+		database.set([SettingsKey.sounds.rawValue : isSoundsEnabled,
+									SettingsKey.fingerprint.rawValue : isBiometricsEnabled],
+								 forKey: AppSettingsManager.appSettingsKey)
 		database.synchronize()
 		restore()
 	}

@@ -12,7 +12,6 @@ import RxSwift
 import SafariServices
 import SwiftValidator
 import AVFoundation
-//import IHKeyboardAvoiding
 
 class SendViewController: BaseViewController,
 ControllerType,
@@ -28,14 +27,17 @@ AddressTextViewTableViewCellDelegate {
 	typealias ViewModelType = SendViewModel
 
 	func configure(with viewModel: SendViewModel) {
-//		viewModel.input
+
 	}
 
 	// MARK: - IBOutlet
 
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
-			tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+			tableView.contentInset = UIEdgeInsets(top: 10,
+																						left: 0,
+																						bottom: 0,
+																						right: 0)
 			tableView.rowHeight = UITableViewAutomaticDimension
 			tableView.estimatedRowHeight = 70
 		}
@@ -51,7 +53,8 @@ AddressTextViewTableViewCellDelegate {
 
 	lazy var readerVC: QRCodeReaderViewController = {
 		let builder = QRCodeReaderViewControllerBuilder {
-			$0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
+			$0.reader = QRCodeReader(metadataObjectTypes: [.qr],
+															 captureDevicePosition: .back)
 			$0.showSwitchCameraButton = false
 		}
 		return QRCodeReaderViewController(builder: builder)
@@ -65,7 +68,10 @@ AddressTextViewTableViewCellDelegate {
 		configure(with: viewModel)
 
 		if self.shouldShowTestnetToolbar {
-			self.tableView.contentInset = UIEdgeInsets(top: 70, left: 0, bottom: 0, right: 0)
+			self.tableView.contentInset = UIEdgeInsets(top: 70,
+																								 left: 0,
+																								 bottom: 0,
+																								 right: 0)
 			self.view.addSubview(self.testnetToolbarView)
 		}
 
@@ -76,7 +82,9 @@ AddressTextViewTableViewCellDelegate {
 		viewModel.notifiableError.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
 		}).subscribe(onNext: { (notification) in
-			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
+			let banner = NotificationBanner(title: notification?.title ?? "",
+																			subtitle: notification?.text,
+																			style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
 
@@ -84,10 +92,12 @@ AddressTextViewTableViewCellDelegate {
 			guard nil != notification else {
 				return
 			}
-			
+
 			self?.popupViewController?.dismiss(animated: true, completion: nil)
-			
-			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
+
+			let banner = NotificationBanner(title: notification?.title ?? "",
+																			subtitle: notification?.text,
+																			style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
 
@@ -96,34 +106,36 @@ AddressTextViewTableViewCellDelegate {
 				self?.popupViewController?.dismiss(animated: true, completion: nil)
 				return
 			}
-			
+
 			if let sent = popup as? SentPopupViewController {
 				sent.delegate = self
 			}
-			
+
 			if let send = popup as? SendPopupViewController {
 				self?.popupViewController = nil
 				send.delegate = self
 			}
-			
+
 			if self?.popupViewController == nil {
 				self?.showPopup(viewController: popup!)
 				self?.popupViewController = popup
 			} else {
-				self?.showPopup(viewController: popup!, inPopupViewController: self!.popupViewController)
+				self?.showPopup(viewController: popup!,
+												inPopupViewController: self!.popupViewController)
 			}
 		}).disposed(by: disposeBag)
 
 		viewModel.sections.asObservable().subscribe(onNext: { [weak self] (_) in
-			
+
 			self?.tableView.reloadData()
-			
+
 			guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
 				return
 			}
 			//Move to cell
-			if let balanceCell = self?.tableView.cellForRow(at: IndexPath(item: 0, section: 0)) as? PickerTableViewCell {
-				balanceCell.selectField.text = selectedPickerItem.title
+			if let balanceCell = self?.tableView
+				.cellForRow(at: IndexPath(item: 0, section: 0)) as? PickerTableViewCell {
+					balanceCell.selectField.text = selectedPickerItem.title
 			}
 		}).disposed(by: disposeBag)
 	}
@@ -145,8 +157,8 @@ AddressTextViewTableViewCellDelegate {
 											 forCellReuseIdentifier: "PayloadTableViewCell")
 		tableView.register(UINib(nibName: "AmountTextFieldTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "AmountTextFieldTableViewCell")
-		tableView.register(UINib(nibName: "AddressTextViewTableViewCell1", bundle: nil),
-											 forCellReuseIdentifier: "AddressTextViewTableViewCell1")
+		tableView.register(UINib(nibName: "AddressTextViewTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "AddressTextViewTableViewCell")
 		tableView.register(UINib(nibName: "PickerTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "PickerTableViewCell")
 		tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil),
@@ -167,44 +179,50 @@ AddressTextViewTableViewCellDelegate {
 		return 1
 	}
 
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView,
+								 numberOfRowsInSection section: Int) -> Int {
 		return viewModel.rowsCount(for: section)
 	}
 
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	func tableView(_ tableView: UITableView,
+								 cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
+		guard let item = self.viewModel.cellItem(section: indexPath.section,
+																						 row: indexPath.row),
+			let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier,
+																							 for: indexPath) as? BaseCell else {
 			return UITableViewCell()
 		}
-		
+
 		cell.configure(item: item)
-		
+
 		if let pickerCell = cell as? PickerTableViewCell {
 			pickerCell.dataSource = self
 			pickerCell.delegate = self
-			
 			pickerCell.updateRightViewMode()
 		}
-		
+
 		if let buttonCell = cell as? ButtonTableViewCell {
 			buttonCell.delegate = self
 		}
-		
+
 		if let textViewCell = cell as? TextViewTableViewCell {
 			textViewCell.delegate = self
+
 			if nil != textViewCell as? PayloadTableViewCell {
-				textViewCell.textView.rx.text.subscribe(viewModel.input.payload).disposed(by: self.disposeBag)
+				textViewCell.textView?.rx.text
+					.subscribe(viewModel.input.payload).disposed(by: self.disposeBag)
 			}
 		}
-		
+
 		if let textField = cell as? AmountTextFieldTableViewCell {
 			textField.amountDelegate = self
 		}
-		
-		if let addressCell = cell as? AddressTextViewTableViewCell1 {
+
+		if let addressCell = cell as? AddressTextViewTableViewCell {
 			addressCell.addressDelegate = self
 		}
-		
+
 		if let switchCell = cell as? SwitchTableViewCell {
 			switchCell.delegate = self
 		}
@@ -228,7 +246,7 @@ extension SendViewController: PickerTableViewCellDelegate {
 	func willShowPicker() {
 		tableView.endEditing(true)
 		
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsChooseCoinButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsChooseCoinButton)
 	}
 }
 
@@ -239,19 +257,19 @@ extension SendViewController: PickerTableViewCellDataSource {
 	}
 }
 
-extension SendViewController : ButtonTableViewCellDelegate {
+extension SendViewController: ButtonTableViewCellDelegate {
 
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-		
+
 		SoundHelper.playSoundIfAllowed(type: .bip)
-		
+
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		
+
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsSendButton, params: nil)
-		
+
 		tableView.endEditing(true)
-		
+
 		viewModel.sendButtonTaped()
 	}
 
@@ -270,7 +288,7 @@ extension SendViewController : ButtonTableViewCellDelegate {
 					})
 					return
 				}
-				
+
 				fieldCell.setDefault()
 			}
 		} else if let viewCell = cell as? TextViewTableViewCell {
@@ -282,7 +300,7 @@ extension SendViewController : ButtonTableViewCellDelegate {
 					})
 					return
 				}
-				
+
 				viewCell.setDefault()
 			}
 		}
@@ -292,35 +310,37 @@ extension SendViewController : ButtonTableViewCellDelegate {
 
 extension SendViewController {
 	
-	func showPopup(viewController: PopupViewController, inPopupViewController: PopupViewController? = nil) {
+	func showPopup(viewController: PopupViewController,
+								 inPopupViewController: PopupViewController? = nil) {
 		
 		if nil != inPopupViewController {
-			
-			guard let currentViewController = (inPopupViewController?.childViewControllers.last as? PopupViewController) ?? inPopupViewController else {
+
+			guard let currentViewController = (inPopupViewController?
+				.childViewControllers.last as? PopupViewController) ?? inPopupViewController else {
 				return
 			}
 
 			currentViewController.addChildViewController(viewController)
-			
+
 			viewController.willMove(toParentViewController: currentViewController)
-			
+
 			currentViewController.didMove(toParentViewController: viewController)
-			
+
 			currentViewController.view.addSubview(viewController.view)
 			viewController.view.alpha = 0.0
 			viewController.blurView.effect = nil
-			
+
 			guard let popupView = viewController.popupView else {
 				return
 			}
-			
+
 			popupView.frame = CGRect(x: currentViewController.view.frame.width,
 															 y: popupView.frame.origin.y,
 															 width: popupView.frame.width,
 															 height: popupView.frame.height)
 			popupView.center = CGPoint(x: popupView.center.x,
 																 y: currentViewController.view.center.y)
-			
+
 			UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseInOut, animations: {
 				currentViewController.popupView.frame = CGRect(x: -currentViewController.popupView.frame.width,
 																											 y: currentViewController.popupView.frame.origin.y,
@@ -332,38 +352,38 @@ extension SendViewController {
 			})
 			return
 		}
-		
+
 		viewController.modalPresentationStyle = .overFullScreen
 		viewController.modalTransitionStyle = .crossDissolve
-		
+
 		self.tabBarController?.present(viewController, animated: true, completion: nil)
 	}
-	
+
 	// MARK: - SendPopupViewControllerDelegate
-	
+
 	func didFinish(viewController: SendPopupViewController) {
-		
+
 		SoundHelper.playSoundIfAllowed(type: .bip)
-		
+
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
-		
+
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupSendButton, params: nil)
-		
+
 		viewModel.submitSendButtonTaped()
 	}
-	
+
 	func didCancel(viewController: SendPopupViewController) {
-		
+
 		SoundHelper.playSoundIfAllowed(type: .cancel)
-		
+
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupCancelButton, params: nil)
-		
+
 		viewController.dismiss(animated: true, completion: nil)
-		
+
 		viewModel.sendCancelButtonTapped()
 	}
-	
+
 	// MARK: - SentPopupViewControllerDelegate
 
 	func didTapActionButton(viewController: SentPopupViewController) {
@@ -415,14 +435,15 @@ extension SendViewController {
 	func heightDidChange(cell: TextViewTableViewCell) {
 
 		if nil != cell as? PayloadTableViewCell {
-			let rect = cell.textView.caretRect(for: cell.textView.selectedTextRange!.start)
+			guard let rect = cell.textView?
+				.caretRect(for: cell.textView.selectedTextRange!.start) else { return }
+
 			let caretRect = cell.textView.convert(rect, to: tableView)
 			let additionalInset = 102 - (view.bounds.width > 320 ? 0 : caretRect.height*2)
 			let newRect = CGRect(x: 0,
 													 y: caretRect.maxY - additionalInset,
 													 width: caretRect.width,
 													 height: caretRect.height + caretRect.size.height/2)
-//			print(caretRect)
 			DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
 				self.tableView.scrollRectToVisible(newRect, animated: false)
 			}
@@ -441,7 +462,7 @@ extension SendViewController {
 	
 	func heightWillChange(cell: TextViewTableViewCell) {}
 
-	func didTapScanButton(cell: AddressTextViewTableViewCell1?) {
+	func didTapScanButton(cell: AddressTextViewTableViewCell?) {
 
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsQRButton, params: nil)
 
@@ -471,16 +492,16 @@ extension SendViewController: SwitchTableViewCellDelegate {
 extension SendViewController: ValidatableCellDelegate {
 
 	func didValidateField(field: ValidatableCellProtocol?) {
-		if let indexPath = tableView.indexPath(for: field as! UITableViewCell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+		if let indexPath = tableView.indexPath(for: field as! UITableViewCell),
+			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 			viewModel.submitField(item: item, value: field?.validationText ?? "")
 		}
 	}
 	
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
-		if let indexPath = tableView.indexPath(for: field as! UITableViewCell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-			if viewModel.validateField(item: item, value: field?.validationText ?? "") {
-				
-			}
+		if let indexPath = tableView.indexPath(for: field as! UITableViewCell),
+			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+			if viewModel.validateField(item: item, value: field?.validationText ?? "") {}
 		}
 	}
 }
@@ -491,7 +512,7 @@ extension SendViewController: QRCodeReaderViewControllerDelegate {
 
 	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
 		reader.stopScanning()
-		
+
 		dismiss(animated: true, completion: nil)
 	}
 
@@ -503,11 +524,11 @@ extension SendViewController: QRCodeReaderViewControllerDelegate {
 	}
 
 	func readerDidCancel(_ reader: QRCodeReaderViewController) {
-		
+
 		SoundHelper.playSoundIfAllowed(type: .cancel)
-		
+
 		reader.stopScanning()
-		
+
 		dismiss(animated: true, completion: nil)
 	}
 }

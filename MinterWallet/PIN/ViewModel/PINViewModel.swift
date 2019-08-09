@@ -22,11 +22,13 @@ class PINViewModel: BaseViewModel, ViewModelProtocol {
 	private var titleSubject: PublishSubject<String> = PublishSubject()
 	private var descSubject: PublishSubject<String> = PublishSubject()
 	private var viewDidLoadSubject: PublishSubject<Void> = PublishSubject()
+	private var viewDidAppearSubject: PublishSubject<Bool> = PublishSubject()
 
 	// MARK: -
 
 	struct Input {
 		var viewDidLoad: AnyObserver<Void>
+		var viewDidAppear: AnyObserver<Bool>
 	}
 
 	struct Output {
@@ -42,16 +44,18 @@ class PINViewModel: BaseViewModel, ViewModelProtocol {
 	override init() {
 		super.init()
 
-		input = Input(viewDidLoad: viewDidLoadSubject.asObserver())
+		input = Input(viewDidLoad: viewDidLoadSubject.asObserver(),
+									viewDidAppear: viewDidAppearSubject.asObserver())
 		output = Output(title: titleSubject.asObservable(),
 										desc: descSubject.asObservable()
 		)
 
 		viewDidLoadSubject.subscribe(onNext: { [weak self] (_) in
-
 			self?.titleSubject.onNext(self?.title ?? "")
 			self?.descSubject.onNext(self?.desc ?? "")
+		}).disposed(by: disposeBag)
 
+		viewDidAppearSubject.subscribe(onNext: { [weak self] (_) in
 			if self?.isBiometricEnabled ?? false {
 				PINManager.shared.checkBiometricsIfPossible(with: { (res) in
 					if res {

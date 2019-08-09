@@ -67,16 +67,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 					}
 				})
 
-//				DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-//					self?.tableView.contentInset = UIEdgeInsetsMake(100 + 56, 0, 0, 0)
-//					self?.tableView.contentOffset = self?.tableView.contentOffset ?? CGPoint(x: 0, y: 0)
-//
-//					UIView.animate(withDuration: 0.5, animations: {
-//
-////						self?.view.layoutIfNeeded()
-//					})
-//				})
-
 		}).disposed(by: disposeBag)
 	}
 
@@ -191,6 +181,11 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 				}
 				if let redeemCheckCell = cell as? RedeemCheckTableViewCell {
 					redeemCheckCell.delegate = self
+				}
+				if let accordionCell = cell as? AccordionTableViewCell {
+					let isExpanded = self?.expandedIdentifiers
+						.contains(accordionCell.identifier) ?? false
+					(cell as? ExpandableCell)?.toggle(isExpanded, animated: false)
 				}
 				return cell
 		})
@@ -310,7 +305,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 
 	@objc func didTapUsernameView() {
 		self.tabBarController?.selectedIndex = 3
-
 		AnalyticsHelper.defaultAnalytics.track(event: .CoinsUsernameButton, params: nil)
 	}
 
@@ -377,9 +371,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 
 	// MARK: - ScreenHeaderProtocol
 
-	func additionalUpdateHeaderViewFromScrollEvent(_ scrollView: UIScrollView) {
-
-	}
+	func additionalUpdateHeaderViewFromScrollEvent(_ scrollView: UIScrollView) {}
 
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		headerView?.updateHeaderViewFromScrollEvent(scrollView)
@@ -411,11 +403,12 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 
 }
 
-extension CoinsViewController : ButtonTableViewCellDelegate {
+extension CoinsViewController: ButtonTableViewCellDelegate {
 
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		guard let indexPath = tableView.indexPath(for: cell),
-			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else { return }
+			let item = viewModel.cellItem(section: indexPath.section,
+																		row: indexPath.row) else { return }
 
 		self.performSegue(for: item.identifier)
 	}
@@ -481,7 +474,6 @@ RedeemCheckTableViewCellDelegate {
 																				row: indexPath.row) as? TransactionTableViewCellItem,
 			let from = cellItem.from {
 				UIPasteboard.general.string = from
-
 				BannerHelper.performCopiedNotification()
 		}
 	}
@@ -493,9 +485,8 @@ RedeemCheckTableViewCellDelegate {
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? TransactionTableViewCellItem,
 			let to = cellItem.to {
-			UIPasteboard.general.string = to
-
-			BannerHelper.performCopiedNotification()
+				UIPasteboard.general.string = to
+				BannerHelper.performCopiedNotification()
 		}
 	}
 
@@ -506,10 +497,8 @@ RedeemCheckTableViewCellDelegate {
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? DelegateTransactionTableViewCellItem,
 			let from = cellItem.from {
-
-			UIPasteboard.general.string = from
-
-			BannerHelper.performCopiedNotification()
+				UIPasteboard.general.string = from
+				BannerHelper.performCopiedNotification()
 		}
 	}
 
@@ -520,10 +509,8 @@ RedeemCheckTableViewCellDelegate {
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? DelegateTransactionTableViewCellItem,
 			let to = cellItem.to {
-
-			UIPasteboard.general.string = to
-
-			BannerHelper.performCopiedNotification()
+				UIPasteboard.general.string = to
+				BannerHelper.performCopiedNotification()
 		}
 	}
 
@@ -534,10 +521,8 @@ RedeemCheckTableViewCellDelegate {
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? MultisendTransactionTableViewCellItem,
 			let from = cellItem.from {
-
-			UIPasteboard.general.string = from
-
-			BannerHelper.performCopiedNotification()
+				UIPasteboard.general.string = from
+				BannerHelper.performCopiedNotification()
 		}
 	}
 
@@ -550,10 +535,8 @@ RedeemCheckTableViewCellDelegate {
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
 			let to = cellItem.to {
-
-			UIPasteboard.general.string = to
-
-			BannerHelper.performCopiedNotification()
+				UIPasteboard.general.string = to
+				BannerHelper.performCopiedNotification()
 		}
 	}
 
@@ -564,10 +547,8 @@ RedeemCheckTableViewCellDelegate {
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
 			let from = cellItem.from {
-
-			UIPasteboard.general.string = from
-
-			BannerHelper.performCopiedNotification()
+				UIPasteboard.general.string = from
+				BannerHelper.performCopiedNotification()
 		}
 	}
 
@@ -577,7 +558,8 @@ RedeemCheckTableViewCellDelegate {
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
 
 		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			let url = viewModel.explorerURL(section: indexPath.section,
+																			row: indexPath.row) {
 			presentExplorerController(with: url)
 		}
 	}

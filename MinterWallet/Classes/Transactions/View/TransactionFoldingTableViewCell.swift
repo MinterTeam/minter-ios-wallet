@@ -127,17 +127,17 @@ class TransactionFoldingTableViewCell: FoldingCell {
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
-		
+
 		detailView?.setNeedsLayout()
 		detailView?.layoutIfNeeded()
-		
+
 		self.setNeedsLayout()
 		self.layoutIfNeeded()
-		
+
 		if expanded {
 			setExpanded(false, animated: false)
 		}
-		
+
 	}
-	
+
 }

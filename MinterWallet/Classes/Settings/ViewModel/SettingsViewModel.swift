@@ -100,8 +100,9 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 										shakePINError: shakePINErrorSubject.asObservable())
 
 		pinSubject.subscribe(onNext: { [weak self] (pin) in
-			if self?.isCheckingPIN ?? false {
-				Session.shared.checkPin(pin, completion: { (succeed) in
+			let isChecking = self?.isCheckingPIN ?? false
+			if isChecking {
+				Session.shared.checkPin(pin, forChange: isChecking, completion: { (succeed) in
 					if succeed {
 						self?.isCheckingPIN = false
 						if self?.settingPIN ?? false {
@@ -226,7 +227,13 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 
 		let enableBiometrics = SwitchTableViewCellItem(reuseIdentifier: "SwitchTableViewCell",
 																									 identifier: "SwitchTableViewCell_Biometrics")
+
 		enableBiometrics.title = "Unlock with fingerprint".localized()
+		if #available(iOS 11.0, *) {
+			if PINManager.shared.biometricType() == .faceID {
+				enableBiometrics.title = "Unlock with FaceID".localized()
+			}
+		}
 		enableBiometrics.isOn.value = AppSettingsManager.shared.isBiometricsEnabled && PINManager.shared.isPINset
 		enableBiometrics.isOnObservable = fingerprintSubject.asObservable()
 

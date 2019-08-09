@@ -42,14 +42,18 @@ ValidatableCellDelegate {
 		viewModel.errorNotification.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
 		}).subscribe(onNext: { (notification) in
-			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
+			let banner = NotificationBanner(title: notification?.title ?? "",
+																			subtitle: notification?.text,
+																			style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
 
 		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
 		}).subscribe(onNext: { (notification) in
-			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .success)
+			let banner = NotificationBanner(title: notification?.title ?? "",
+																			subtitle: notification?.text,
+																			style: .success)
 			banner.show()
 		}).disposed(by: disposeBag)
 
@@ -64,7 +68,7 @@ ValidatableCellDelegate {
 
 		showKeyboard()
 
-		AnalyticsHelper.defaultAnalytics.track(event: .UsernameEditScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .UsernameEditScreen)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -111,7 +115,8 @@ ValidatableCellDelegate {
 	// MARK: -
 
 	func showKeyboard() {
-		if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+		let indexPath = IndexPath(row: 0, section: 0)
+		if let cell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell {
 			cell.startEditing()
 		}
 	}
@@ -123,19 +128,17 @@ ValidatableCellDelegate {
 
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
 		viewModel.username.value = field?.validationText
-		
+
 		checkErrors()
 	}
 
 	// MARK: -
 
 	func checkErrors() {
-		if let errors = viewModel.validate(), let err = errors.first {
-			if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+		if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+			if let errors = viewModel.validate(), let err = errors.first {
 				cell.setInvalid(message: err)
-			}
-		} else {
-			if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
+			} else {
 				cell.setDefault()
 			}
 		}
@@ -151,7 +154,8 @@ extension UsernameEditViewController: ButtonTableViewCellDelegate {
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
 
-		if let usernameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell,
+		let indexPath = IndexPath(row: 0, section: 0)
+		if let usernameCell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell,
 			let username = usernameCell.textField.text {
 
 			self.viewModel.username.value = username

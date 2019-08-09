@@ -8,6 +8,9 @@
 
 import Foundation
 
+let PINRequiredMinimumSeconds = 5.0
+let PINMaxAttempts = 5
+
 struct Configuration {
 
 	init() {}

@@ -82,7 +82,7 @@ class Analytics {
 	
 	//MARK: -
 	
-	func track(event: Analytics.Event, params: [String : Any]?) {
+	func track(event: Analytics.Event, params: [String : Any]? = nil) {
 		self.providers.forEach { (provider) in
 			provider.track(event: event, params: params)
 		}

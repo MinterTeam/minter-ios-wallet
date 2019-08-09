@@ -87,12 +87,11 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 			if nil != term && term != "" {
 				self?.hasCoin.value = false
 				self?.getCoinError.value = "COIN NOT FOUND".localized()
-			}
-			else {
+			} else {
 				self?.getCoinError.value = ""
 			}
 		}).map({ (term) -> String in
-			return term?.trimmingCharacters(in: .whitespacesAndNewlines).uppercased() ?? ""
+			return term?.transformToCoinName() ?? ""
 		}).filter({ (term) -> Bool in
 			return CoinValidator.isValid(coin: term)
 		}).subscribe(onNext: { [weak self] (term) in
@@ -167,8 +166,8 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 			self?.approximately.onNext("")
 			self?.validateErrors()
 
-			if let from = self?.selectedCoin?.uppercased(),
-				let to = val.2?.uppercased(),
+			if let from = self?.selectedCoin?.transformToCoinName(),
+				let to = val.2?.transformToCoinName(),
 				let amountString = val.1?.replacingOccurrences(of: " ", with: ""),
 				let amnt = Decimal(string: amountString), amnt > 0 {
 				self?.calculateApproximately(fromCoin: from, amount: amnt, getCoin: to)
@@ -195,7 +194,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 																																		formatter: _self.decimalFormatter)
 			self?.spendAmount.onNext(selectedAmount)
 		}).disposed(by: disposeBag)
-		
+
 		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
 			self?.shouldClearForm.value = true
 		}).disposed(by: disposeBag)
@@ -242,9 +241,9 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 														 self.isLoading.asObservable(),
 														 self.approximatelyReady.asObservable()
 			).map({ (val) -> Bool in
-				let getCoin = val.0
+				let getCoin = val.0?.transformToCoinName()
 				let spendAmount = val.1
-				let spendCoin = val.2
+				let spendCoin = val.2?.transformToCoinName()
 				let isLoading = val.3
 				let approximatelyReady = val.4
 
@@ -287,7 +286,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 		}
 
 		GateManager.shared.estimateCoinSell(coinFrom: fromCoin,
-																				coinTo: getCoin.trimmingCharacters(in: .whitespacesAndNewlines),
+																				coinTo: getCoin.transformToCoinName(),
 																				value: value,
 																				isAll: isMax).do(onNext: { (res) in
 
@@ -316,7 +315,7 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 			self?.minimumValueToBuy.value = approximatelyRoundedVal
 
 			let gtCoin = try? self?.getCoin.value() ?? ""
-			if getCoin == gtCoin {
+			if getCoin.transformToCoinName() == gtCoin?.transformToCoinName() {
 				self?.approximatelyReady.value = true
 			}
 		}).disposed(by: disposeBag)
@@ -342,11 +341,11 @@ class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
 			}
 		}
 	}
-	
+
 	func exchange() {
 
-		guard let coinFrom = self.selectedCoin?.uppercased(),
-			let coinTo = try? self.getCoin.value()?.uppercased() ?? "",
+		guard let coinFrom = self.selectedCoin?.transformToCoinName(),
+			let coinTo = try? self.getCoin.value()?.transformToCoinName() ?? "",
 			let amount = try? self.spendAmount.value() ?? "",
 			let selectedAddress = self.selectedAddress,
 			let minimumBuyValue = self.minimumValueToBuy.value

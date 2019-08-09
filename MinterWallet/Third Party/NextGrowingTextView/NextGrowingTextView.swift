@@ -24,9 +24,9 @@ import Foundation
 import UIKit
 
 open class NextGrowingTextView: UIScrollView {
-  
+
   // MARK: - Nested types
-  
+
   open class Delegates {
     open var willChangeHeight: (CGFloat) -> Void = { _ in }
     open var didChangeHeight: (CGFloat) -> Void = { _ in }
@@ -72,12 +72,12 @@ open class NextGrowingTextView: UIScrollView {
   }
 
   open var isAutomaticScrollToBottomEnabled = true
-  
+
   open var placeholderAttributedText: NSAttributedString? {
     get { return _textView.placeholderAttributedText }
     set { _textView.placeholderAttributedText = newValue }
   }
-  
+
   open override var inputView: UIView? {
     get {
       return _textView.inputView
@@ -86,23 +86,23 @@ open class NextGrowingTextView: UIScrollView {
       _textView.inputView = newValue
     }
   }
-  
+
   open override var isFirstResponder: Bool {
     return _textView.isFirstResponder
   }
-  
+
   open override func becomeFirstResponder() -> Bool {
     return _textView.becomeFirstResponder()
   }
-  
+
   open override func resignFirstResponder() -> Bool {
     return _textView.resignFirstResponder()
   }
-  
+
   open override var intrinsicContentSize: CGSize {
     return measureFrame(measureTextViewSize()).size
   }
-  
+
   private let _textView: NextGrowingInternalTextView
 
   private var _maxNumberOfLines: Int = 3 {
@@ -124,7 +124,6 @@ open class NextGrowingTextView: UIScrollView {
   // MARK: - Initializers
 
   public override init(frame: CGRect) {
-    
     _textView = NextGrowingInternalTextView(frame: CGRect(origin: CGPoint.zero, size: frame.size))
     _previousFrame = frame
 
@@ -134,7 +133,6 @@ open class NextGrowingTextView: UIScrollView {
   }
 
   public required init?(coder aDecoder: NSCoder) {
-
     _textView = NextGrowingInternalTextView(frame: CGRect.zero)
 
     super.init(coder: aDecoder)
@@ -143,7 +141,7 @@ open class NextGrowingTextView: UIScrollView {
     _previousFrame = frame
     setup()
   }
-  
+
   // MARK: - Functions
 
   open override func layoutSubviews() {
@@ -154,27 +152,28 @@ open class NextGrowingTextView: UIScrollView {
   }
 
   // MARK: UIResponder
- 
+
   open override func reloadInputViews() {
     super.reloadInputViews()
     _textView.reloadInputViews()
   }
 
   private func setup() {
-
     _textView.textContainerInset = .init(top: 4, left: 0, bottom: 4, right: 0)
     _textView.isScrollEnabled = false
-    _textView.font = UIFont.systemFont(ofSize: 16)
+    _textView.font = UIFont.systemFont(ofSize: 16.0)
     _textView.backgroundColor = UIColor.clear
     addSubview(_textView)
 
     updateMinimumAndMaximumHeight()
 
     _textView.didChange = { [weak self] in
-      self?.fitToScrollView()
+//			DispatchQueue.main.async {
+				self?.fitToScrollView()
+//			}
     }
     _textView.didUpdateHeightDependencies = { [weak self] in
-      self?.updateMinimumAndMaximumHeight()
+			self?.updateMinimumAndMaximumHeight()
     }
   }
 

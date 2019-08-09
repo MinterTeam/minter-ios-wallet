@@ -210,24 +210,33 @@ extension TransactionViewableViewModel {
 
 		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
 
-		let signMultiplier = 1.0
+		var signMultiplier = 1.0
 		let toAddress = "Mx" + (Session.shared.accounts.value.first?.address ?? "").stripMinterHexPrefix()
 		let title = user?.username != nil ? "@" + user!.username! : toAddress
 
-		let transactionCellItem = RedeemCheckTableViewCellItem(reuseIdentifier: "RedeemCheckTableViewCell", identifier: "RedeemCheckTableViewCell\(sectionId)")
+		let transactionCellItem = RedeemCheckTableViewCellItem(reuseIdentifier: "RedeemCheckTableViewCell",
+																													 identifier: "RedeemCheckTableViewCell\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.title = title
-		transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: ((signMultiplier > 0 ? transaction.from : transaction.data?.to) ?? "")).url()
+		transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: transaction.from ?? "").url()
+
 		transactionCellItem.date = transaction.date
 		transactionCellItem.to = toAddress
 		if let data = transaction.data as? MinterExplorer.RedeemCheckRawTransactionData {
+			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
+				account.address.stripMinterHexPrefix().lowercased() == (transaction.from ?? "").stripMinterHexPrefix().lowercased()
+			})
+			if !hasAddress {
+				signMultiplier = -1.0
+			}
+			let avatarAddress = ((signMultiplier > 0 ? data.sender : transaction.from) ?? "")
+			transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: avatarAddress).url()
+			transactionCellItem.title = TransactionTitleHelper.title(from: avatarAddress)
+
 			transactionCellItem.coin = data.coin
 			transactionCellItem.amount = (data.value ?? 0) * Decimal(signMultiplier)
 			transactionCellItem.from = data.sender
-			if let sender = data.sender {
-				transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: sender).url()
-				transactionCellItem.title = TransactionTitleHelper.title(from: sender)
-			}
+			transactionCellItem.to = transaction.from
 		}
 		return transactionCellItem
 	}

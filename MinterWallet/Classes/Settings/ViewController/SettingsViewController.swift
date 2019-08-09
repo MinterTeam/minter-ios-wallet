@@ -321,7 +321,6 @@ extension SettingsViewController: ButtonTableViewCellDelegate {
 			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row),
 			item.identifier == "ButtonTableViewCell_Get100" {
 			SoundHelper.playSoundIfAllowed(type: .bip)
-//			viewModel.requestMNT()
 			return
 		}
 
@@ -345,8 +344,7 @@ extension SettingsViewController: SwitchTableViewCellDelegate {
 			} else if item.identifier == "SwitchTableViewCell_Pin" {
 				shouldPresentSetPIN = isOn
 				performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: nil)
-//					viewModel.removePIN()
-			} else {
+			} else/* if item.identifier == "SwitchTableViewCell_Sound"*/ {
 				viewModel.didSwitchSound(isOn: isOn)
 			}
 		}
@@ -376,40 +374,7 @@ extension SettingsViewController {
 extension SettingsViewController: PINViewControllerDelegate {
 
 	func PINViewControllerDidSucceed(controller: PINViewController, withPIN: String) {
-
 		viewModel.input.pin.onNext(withPIN)
-
-//		if viewModel.isCheckingPIN {
-//
-//			guard viewModel.checkPin(withPIN) else {
-//				return
-//			}
-//
-//			viewModel.isCheckingPIN = false
-//			viewModel.removePIN()
-//
-//			if shouldPresentSetPIN {
-//				performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: self)
-//			} else {
-//				self.navigationController?.popToRootViewController(animated: true)
-//			}
-//		} else if viewModel.isConfirmingPIN {
-//			if viewModel.confirmPIN(code: withPIN) {
-//				self.navigationController?.popToRootViewController(animated: true)
-//			} else {
-//				controller.shakeError()
-//			}
-//		} else {
-//			viewModel.isConfirmingPIN = true
-//			viewModel.setPIN(code: withPIN)
-//			let pinViewModel = PINViewModel()
-//			pinViewModel.title = "Confirm PIN-code".localized()
-//			pinViewModel.desc = "Please confirm your 4-digit PIN".localized()
-//			if let vc = PINRouter.PINViewController(with: pinViewModel) {
-//				vc.delegate = self
-//				self.navigationController?.setViewControllers([self, vc], animated: true)
-//			}
-//		}
 	}
 
 	func PINViewControllerDidSucceedWithBiometrics(controller: PINViewController) {}
