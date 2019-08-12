@@ -19,7 +19,7 @@ enum SpendCoindsViewModelError : Error {
 	case canNotCreateTx
 }
 
-class SpendCoinsViewModel : ConvertCoinsViewModel, ViewModelProtocol {
+class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 
 	// MARK: - ViewModelProtocol
 
