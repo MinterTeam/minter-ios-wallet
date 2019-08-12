@@ -1976,7 +1976,8 @@
 				FAC5393D22C37C220077E181 /* PIN.storyboard */,
 				FAB0D35122CB6978002945E2 /* PINRouter.swift */,
 			);
-			path = PIN;
+			name = PIN;
+			path = Classes/PIN;
 			sourceTree = "<group>";
 		};
 		FAC5393B22C37BF90077E181 /* ViewController */ = {
@@ -2053,7 +2054,8 @@
 				FAF9C50322AA694A000BF80A /* ViewModel */,
 				FAF9C50622AA697A000BF80A /* Delegated.storyboard */,
 			);
-			path = Delegated;
+			name = Delegated;
+			path = Classes/Delegated;
 			sourceTree = "<group>";
 		};
 		FAF9C50322AA694A000BF80A /* ViewModel */ = {
