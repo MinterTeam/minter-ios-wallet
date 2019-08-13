@@ -122,6 +122,27 @@ class RootViewController: UIViewController, ControllerType {
 		if isLoggedIn || (!isLoggedIn && accounts.count > 0) {
 			if shouldPresentPIN,
 				let pinVC = PINRouter.defaultPINViewController() {
+
+				func removePopupViewController(in viewController: UIViewController) {
+					if let vc = viewController.presentedViewController {
+						vc.dismiss(animated: false, completion: nil)
+					}
+
+					viewController.childViewControllers.forEach { (vc) in
+						if vc != viewController {
+							removePopupViewController(in: vc)
+						}
+					}
+				}
+
+				removePopupViewController(in: self)
+
+				self.childViewControllers.first?.childViewControllers.forEach({ (vc) in
+					vc.navigationController?.viewControllers.removeAll(where: { (val) -> Bool in
+						return val as? PopupViewController != nil
+					})
+				})
+
 				pinVC.delegate = self
 				self.showViewControllerWith(pinVC, usingAnimation: .up) { [weak self] in
 					self?.presenting = false

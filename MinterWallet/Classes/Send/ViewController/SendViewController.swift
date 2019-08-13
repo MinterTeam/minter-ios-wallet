@@ -309,10 +309,10 @@ extension SendViewController: ButtonTableViewCellDelegate {
 }
 
 extension SendViewController {
-	
+
 	func showPopup(viewController: PopupViewController,
 								 inPopupViewController: PopupViewController? = nil) {
-		
+
 		if nil != inPopupViewController {
 
 			guard let currentViewController = (inPopupViewController?
@@ -362,7 +362,6 @@ extension SendViewController {
 	// MARK: - SendPopupViewControllerDelegate
 
 	func didFinish(viewController: SendPopupViewController) {
-
 		SoundHelper.playSoundIfAllowed(type: .bip)
 
 		lightImpactFeedbackGenerator.prepare()
@@ -448,7 +447,7 @@ extension SendViewController {
 				self.tableView.scrollRectToVisible(newRect, animated: false)
 			}
 		}
-		
+
 		// Disabling animations gives us our desired behaviour
 		UIView.setAnimationsEnabled(false)
 		/* These will causes table cell heights to be recaluclated,
@@ -457,9 +456,8 @@ extension SendViewController {
 		tableView.endUpdates()
 		// Re-enable animations
 		UIView.setAnimationsEnabled(true)
-
 	}
-	
+
 	func heightWillChange(cell: TextViewTableViewCell) {}
 
 	func didTapScanButton(cell: AddressTextViewTableViewCell?) {
@@ -472,7 +470,8 @@ extension SendViewController {
 		// Or by using the closure pattern
 		cell?.textViewScroll.textView.becomeFirstResponder()
 		readerVC.completionBlock = { (result: QRCodeReaderResult?) in
-			if let indexPath = self.tableView.indexPath(for: cell!), let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+			if let indexPath = self.tableView.indexPath(for: cell!),
+				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 
 				cell?.textViewScroll.textView.text = result?.value
 				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
@@ -497,7 +496,7 @@ extension SendViewController: ValidatableCellDelegate {
 			viewModel.submitField(item: item, value: field?.validationText ?? "")
 		}
 	}
-	
+
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
 		if let indexPath = tableView.indexPath(for: field as! UITableViewCell),
 			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {

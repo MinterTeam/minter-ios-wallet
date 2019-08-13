@@ -23,9 +23,7 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 		})
 		return src
 	}
-
 	private var balances = (try? Session.shared.allDelegatedBalance.value()) ?? []
-
 	private let coinFormatter = CurrencyNumberFormatter.coinFormatter
 
 	// MARK: - ViewModelProtocol
@@ -40,7 +38,6 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	var input: DelegatedViewModel.Input!
-
 	var output: DelegatedViewModel.Output!
 
 	// MARK: -
@@ -110,7 +107,6 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 
 					let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
 																										 identifier: "SeparatorTableViewCell_" + publicKey + key + String.random())
-
 					cells.append(separator)
 
 					let bal = del[key]
