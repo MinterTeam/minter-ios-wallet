@@ -7,8 +7,6 @@
 //
 
 import UIKit
-//import McPicker
-
 
 class PickerTableViewCellItem : BaseCellItem {
 	var title: String?
@@ -26,23 +24,20 @@ protocol PickerTableViewCellDataSource: class {
 
 protocol PickerTableViewCellDelegate: class where Self: UIViewController {
 	func didFinish(with item: PickerTableViewCellPickerItem?)
-	
 	func willShowPicker()
 }
 
-
 class PickerTableViewCell: BaseCell, UITextFieldDelegate {
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	weak var dataSource: PickerTableViewCellDataSource?
-	
+
 	weak var delegate: PickerTableViewCellDelegate?
-	
-	//MARK: -
+
+	// MARK: -
 
 	@IBOutlet weak var label: UILabel!
-	
 	@IBOutlet weak var selectField: ValidatableTextField! {
 		didSet {
 			let imageView = UIImageView(image: UIImage(named: "textFieldSelectIcon"))
@@ -58,9 +53,9 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 			selectField.rightViewMode = .always
 		}
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
 	}
@@ -68,21 +63,20 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-	
+
 	func updateRightViewMode() {
 		if shouldShowPicker() {
 			selectField.rightViewMode = .always
-		}
-		else {
+		} else {
 			selectField.rightViewMode = .never
 		}
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func configure(item: BaseCellItem) {
 		super.configure(item: item)
-		
+
 		if let pickerItem = item as? PickerTableViewCellItem {
 			self.label.text = pickerItem.title
 			if let selected = pickerItem.selected {
@@ -91,25 +85,25 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 		}
 
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func showPicker() {
-		
+
 		guard nil != delegate as? UIViewController else {
 			return
 		}
-		
+
 		delegate?.willShowPicker()
-		
+
 		guard let items = dataSource?.pickerItems(for: self) else {
 			return
 		}
-		
+
 		let data: [[String]] = [items.map({ (item) -> String in
 			return item.title ?? ""
 		})]
-		
+
 		let picker = McPicker(data: data)
 		picker.toolbarButtonsColor = .white
 		picker.toolbarDoneButtonColor = .white
@@ -120,7 +114,7 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 				return
 			}
 			self?.selectField.text = coin
-			
+
 			if let item = items.filter({ (item) -> Bool in
 				return item.title == coin
 			}).first {
@@ -128,22 +122,22 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 			}
 		}
 	}
-	
-	//MARK: - UITextFieldDelegate
-	
+
+	// MARK: - UITextFieldDelegate
+
 	func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-		
+
 		guard self.shouldShowPicker() else {
 			return false
 		}
-		
+
 		showPicker()
-		
+
 		return false
 	}
-	
+
 	private func shouldShowPicker() -> Bool {
 		return (dataSource?.pickerItems(for: self).count ?? 0) > 1
 	}
-	
+
 }

@@ -14,8 +14,6 @@ class MultisendTransactionTableViewCellItem: TransactionCellItem {
 	var imageURL: URL?
 	var image: UIImage?
 	var date: Date?
-	var from: String?
-	var to: String?
 	var coin: String?
 	var amount: Decimal?
 	var expandable: Bool?
@@ -46,7 +44,9 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 	}
 	@IBOutlet weak var coinImage: UIImageView! {
 		didSet {
-			coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .clear, borderWidth: 2.0)
+			coinImage.makeBorderWithCornerRadius(radius: 17.0,
+																					 borderColor: .clear,
+																					 borderWidth: 2.0)
 		}
 	}
 	@IBOutlet weak var amountTitleLabel: UILabel!
@@ -93,8 +93,9 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 				expandedAmountLabel.text = ""
 				amountTitleLabel.alpha = 0.0
 			} else {
-				expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0),
-																																						formatter: CurrencyNumberFormatter.coinFormatter)
+				expandedAmountLabel.text = CurrencyNumberFormatter
+					.formattedDecimal(with: (transaction.amount ?? 0),
+														formatter: CurrencyNumberFormatter.coinFormatter)
 			}
 			dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 			timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())

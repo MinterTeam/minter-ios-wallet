@@ -10,8 +10,6 @@ import UIKit
 import SwiftValidator
 import RxSwift
 
-
-
 class TextFieldTableViewCellItem : BaseCellItem {
 	var title: String = ""
 	var isSecure: Bool = false
@@ -20,26 +18,21 @@ class TextFieldTableViewCellItem : BaseCellItem {
 	var state: TextFieldTableViewCell.State?
 	var error: String?
 	var value: String?
-	
 	var keyboardType: UIKeyboardType?
-	
 	var stateObservable: Observable<TextFieldTableViewCell.State>?
-	
 	var isLoadingObservable: Observable<Bool>?
-	
 }
 
-
 class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	enum State {
 		case valid
 		case invalid(error: String?)
 		case `default`
 	}
-	
+
 	var state: State = .default {
 		didSet {
 			switch state {
@@ -76,35 +69,32 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 		}
 	}
 
-	//MARK: -
-	
+	// MARK: -
+
 	@IBOutlet weak var title: UILabel!
-	
 	@IBOutlet weak var errorTitle: UILabel!
-	
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-	
 	@IBOutlet weak var textField: ValidatableTextField!
-	
-	//MARK: - Validators
-	
+
+	// MARK: - Validators
+
 	var validationText: String {
 		return textField.text ?? ""
 	}
-	
+
 	var validator = Validator()
-	
+
 	var validatorRules: [Rule] = [] {
 		didSet {
 			validator.registerField(self.textField, errorLabel: self.errorTitle, rules: validatorRules)
 		}
 	}
-	
-	//MARK: - BaseCell
-	
+
+	// MARK: - BaseCell
+
 	override func configure(item: BaseCellItem) {
 		super.configure(item: item)
-		
+
 		if let item = item as? TextFieldTableViewCellItem {
 			title.text = item.title
 			textField.isSecureTextEntry = item.isSecure
@@ -112,16 +102,17 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 			if let val = item.value {
 				textField.text = val
 			}
-			
+
 			if let keyboard = item.keyboardType {
 				textField.keyboardType = keyboard
 			}
-			
+
 			state = item.state ?? .default
 			validatorRules = item.rules
 			errorTitle.text = item.error
-			
-			item.stateObservable?.share().asObservable().subscribe(onNext: { (state) in
+
+			item.stateObservable?.share().asObservable()
+				.subscribe(onNext: { (state) in
 				switch state {
 				case .default:
 					self.setDefault()
@@ -134,74 +125,75 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 					break
 				}
 			}).disposed(by: disposeBag)
-			
+
 			activityIndicator?.isHidden = true
-			item.isLoadingObservable?.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (isLoading) in
-				if isLoading {
-					self?.activityIndicator.startAnimating()
-					self?.activityIndicator.isHidden = false
-				}
-				else {
-					self?.activityIndicator.stopAnimating()
-					self?.activityIndicator.isHidden = true
-				}
+			item.isLoadingObservable?.asObservable().distinctUntilChanged()
+				.subscribe(onNext: { [weak self] (isLoading) in
+					if isLoading {
+						self?.activityIndicator.startAnimating()
+						self?.activityIndicator.isHidden = false
+					}
+					else {
+						self?.activityIndicator.stopAnimating()
+						self?.activityIndicator.isHidden = true
+					}
 			}).disposed(by: disposeBag)
-			
-			textField?.rx.text.orEmpty.asObservable().distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
-				self?.validateDelegate?.validate(field: self, completion: {
-					//			print("Validation has been completed")
+
+			textField?.rx.text.orEmpty.asObservable().distinctUntilChanged()
+				.subscribe(onNext: { [weak self] (val) in
+					self?.validateDelegate?.validate(field: self, completion: {
 				})
 			}).disposed(by: disposeBag)
-			
+
 		}
 	}
-	
-	//MARK: -
+
+	// MARK: -
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
+
 		state = .default
 	}
-	
+
 	override func prepareForReuse() {
 		super.prepareForReuse()
-		
+
 		state = .default
-		
+
 		layoutIfNeeded()
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-	
+
 	override func layoutSubviews() {
 		super.layoutSubviews()
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	func startEditing() {
 		self.textField.becomeFirstResponder()
 	}
-	
-	//MARK: - ValidatableCellProtocol
-	
+
+	// MARK: - ValidatableCellProtocol
+
 	weak var validateDelegate: ValidatableCellDelegate?
-	
+
 	func setValid() {
 		self.state = .valid
 		self.errorTitle.text = ""
 	}
-	
+
 	func setInvalid(message: String?) {
 		self.state = .invalid(error: message)
 		if nil != message {
 			self.errorTitle.text = message
 		}
 	}
-	
+
 	func setDefault() {
 		self.state = .default
 		self.errorTitle.text = ""
@@ -209,20 +201,14 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 
 }
 
-extension TextFieldTableViewCell : UITextFieldDelegate {
-	
+extension TextFieldTableViewCell: UITextFieldDelegate {
+
 	func textFieldDidEndEditing(_ textField: UITextField) {
-		
+
 		validateDelegate?.didValidateField(field: self)
-		
-//		validateDelegate?.validate(field: self, completion: {
-////			print("Validation has been completed")
-//		})
-		
+
 		self.layoutIfNeeded()
-		
+
 	}
-	
-	
-	
+
 }

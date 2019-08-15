@@ -10,11 +10,10 @@ import UIKit
 
 class SeparatorTableViewCellItem : BaseCellItem {}
 
-
 class SeparatorTableViewCell: BaseCell {
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
 	}
@@ -22,7 +21,7 @@ class SeparatorTableViewCell: BaseCell {
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-	
-	//MARK: -
-    
+
+	// MARK: -
+
 }

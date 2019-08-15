@@ -422,7 +422,7 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 
 		if let indexPath = tableView.indexPath(for: cell),
 			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? TransactionTableViewCellItem,
+																				row: indexPath.row) as? TransactionCellItem,
 			let from = cellItem.from {
 				UIPasteboard.general.string = from
 				BannerHelper.performCopiedNotification()
@@ -434,7 +434,7 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 
 		if let indexPath = tableView.indexPath(for: cell),
 			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? TransactionTableViewCellItem,
+																				row: indexPath.row) as? TransactionCellItem,
 			let to = cellItem.to {
 				UIPasteboard.general.string = to
 				BannerHelper.performCopiedNotification()

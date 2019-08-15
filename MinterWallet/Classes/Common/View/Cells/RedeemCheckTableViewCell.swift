@@ -14,8 +14,6 @@ class RedeemCheckTableViewCellItem: TransactionCellItem {
 	var imageURL: URL?
 	var image: UIImage?
 	var date: Date?
-	var from: String?
-	var to: String?
 	var coin: String?
 	var amount: Decimal?
 	var expandable: Bool?
@@ -25,8 +23,6 @@ class RedeemCheckTableViewCell: ExpandableCell {
 
 	// MARK: -
 
-	let formatter = CurrencyNumberFormatter.transactionFormatter
-	let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
 
@@ -46,10 +42,11 @@ class RedeemCheckTableViewCell: ExpandableCell {
 	}
 	@IBOutlet weak var coinImage: UIImageView! {
 		didSet {
-			coinImage.makeBorderWithCornerRadius(radius: 17.0, borderColor: .clear, borderWidth: 2.0)
+			coinImage.makeBorderWithCornerRadius(radius: 17.0,
+																					 borderColor: .clear,
+																					 borderWidth: 2.0)
 		}
 	}
-//	@IBOutlet weak var amountTitleLabel: UILabel!
 	@IBOutlet weak var amount: UILabel!
 	@IBOutlet weak var coin: UILabel!
 	@IBOutlet weak var fromAddressButton: UIButton!
@@ -77,7 +74,6 @@ class RedeemCheckTableViewCell: ExpandableCell {
 
 	override func configure(item: BaseCellItem) {
 
-//		amountTitleLabel.alpha = 1.0
 		if let transaction = item as? RedeemCheckTableViewCellItem {
 			identifier = item.identifier
 			title.text = TransactionTitleHelper.title(from: transaction.title ?? "")
@@ -96,9 +92,9 @@ class RedeemCheckTableViewCell: ExpandableCell {
 
 			if transaction.amount == nil {
 				expandedAmountLabel.text = ""
-//				amountTitleLabel.alpha = 0.0
 			} else {
-				expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0), formatter: CurrencyNumberFormatter.coinFormatter)
+				expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0),
+																																						formatter: CurrencyNumberFormatter.coinFormatter)
 			}
 			dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 			timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())

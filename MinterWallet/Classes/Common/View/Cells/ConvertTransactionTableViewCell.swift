@@ -13,8 +13,6 @@ class ConvertTransactionTableViewCellItem: TransactionCellItem {
 	var title: String?
 	var image: UIImage?
 	var date: Date?
-	var from: String?
-	var to: String?
 	var fromCoin: String?
 	var toCoin: String?
 	var fromAmount: Decimal?
@@ -26,8 +24,6 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 
 	// MARK: -
 
-	let formatter = CurrencyNumberFormatter.transactionFormatter
-	let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
 
@@ -53,7 +49,6 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 																					 borderWidth: 2.0)
 		}
 	}
-
 	@IBOutlet weak var amount: UILabel!
 	@IBOutlet weak var coin: UILabel!
 	@IBOutlet weak var expandedAmountLabel: UILabel!
@@ -98,7 +93,7 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 																																					formatter: CurrencyNumberFormatter.coinFormatter)
 			expandedReceivedAmountLabel.text = CurrencyNumberFormatter
 				.formattedDecimal(with: (transaction.toAmount ?? 0),
-																																									formatter: CurrencyNumberFormatter.coinFormatter)
+													formatter: CurrencyNumberFormatter.coinFormatter)
 
 			coinLabel.text = transaction.fromCoin
 			expandedToCoinLabel.text = transaction.toCoin

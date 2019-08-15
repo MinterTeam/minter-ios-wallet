@@ -14,8 +14,6 @@ class TransactionTableViewCellItem: TransactionCellItem {
 	var image: UIImage?
 	var imageURL: URL?
 	var date: Date?
-	var from: String?
-	var to: String?
 	var coin: String?
 	var amount: Decimal?
 	var expandable: Bool?

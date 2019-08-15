@@ -14,8 +14,6 @@ class DelegateTransactionTableViewCellItem: TransactionCellItem {
 	var title: String?
 	var image: UIImage?
 	var date: Date?
-	var from: String?
-	var to: String?
 	var coin: String?
 	var amount: Decimal?
 	var expandable: Bool?
@@ -25,8 +23,6 @@ class DelegateTransactionTableViewCell: ExpandableCell {
 
 	// MARK: -
 
-	let formatter = CurrencyNumberFormatter.transactionFormatter
-	let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
 

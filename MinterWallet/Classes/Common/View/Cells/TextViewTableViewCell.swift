@@ -16,21 +16,13 @@ protocol TextViewTableViewCellDelegate: class {
 }
 
 class TextViewTableViewCellItem: BaseCellItem {
-
 	var title: String?
-
 	var rules: [Rule] = []
-
 	var stateObservable: Observable<TextViewTableViewCell.State>?
-
 	var isLoadingObservable: Observable<Bool>?
-
 	var value: String?
-
 	var keybordType: UIKeyboardType?
-
 	var titleObservable: Observable<String?>?
-
 }
 
 class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
@@ -44,17 +36,13 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 	// MARK: -
 
 	weak var delegate: TextViewTableViewCellDelegate?
-
 	weak var validateDelegate: ValidatableCellDelegate?
 
 	// MARK: - IBOutlets
 
 	@IBOutlet weak var title: UILabel!
-
 	@IBOutlet weak var errorTitle: UILabel!
-
 	@IBOutlet weak var textView: UITextView!
-
 	var activityIndicator: UIActivityIndicatorView?
 
 	// MARK: -
@@ -89,30 +77,29 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 			item.isLoadingObservable?.subscribe(onNext: { [weak self] (val) in
 				if val {
 					self?.activityIndicator?.startAnimating()
-				}
-				else {
+				} else {
 					self?.activityIndicator?.stopAnimating()
 				}
 			}).disposed(by: disposeBag)
 
-			item.stateObservable?.subscribe(onNext: { (stt) in
+			item.stateObservable?.subscribe(onNext: { [weak self] (stt) in
 				switch stt {
 				case .default:
-					self.setDefault()
+					self?.setDefault()
 					break
 
 				case .invalid(let err):
-					self.setInvalid(message: err)
+					self?.setInvalid(message: err)
 					break
 
 				case .valid:
-					self.setValid()
+					self?.setValid()
 					break
 				}
 			}).disposed(by: disposeBag)
 
-			textView?.rx.text.orEmpty.asObservable().subscribe(onNext: { (val) in
-				self.validateDelegate?.validate(field: self, completion: {})
+			textView?.rx.text.orEmpty.asObservable().subscribe(onNext: { [weak self] (val) in
+				self?.validateDelegate?.validate(field: self!, completion: {})
 			}).disposed(by: disposeBag)
 
 			if let textView = textView {
@@ -140,9 +127,7 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 
 extension TextViewTableViewCell: UITextViewDelegate {
 
-	func textViewDidEndEditing(_ textView: UITextView) {
-		
-	}
+	func textViewDidEndEditing(_ textView: UITextView) {}
 
 }
 

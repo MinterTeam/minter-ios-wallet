@@ -30,11 +30,11 @@ class BaseCell: ConfigurableCell {
 
 class ExpandableCell: AccordionTableViewCell, Configurable {
 
+	@IBOutlet weak var detailView: UIView?
+
 	var disposeBag = DisposeBag()
 
 	func configure(item: BaseCellItem) {}
-
-	@IBOutlet weak var detailView: UIView?
 
 	var expandable = true
 
@@ -89,7 +89,6 @@ class ExpandableCell: AccordionTableViewCell, Configurable {
 	// MARK: Helpers
 
 	private func toggleCell(_ val: Bool) {
-//		detailView?.isHidden = !val
 		detailView?.isHidden = false
 		detailView?.alpha = val ? 1.0 : 0.0
 	}

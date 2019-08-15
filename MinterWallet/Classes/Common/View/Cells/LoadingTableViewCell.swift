@@ -9,22 +9,18 @@
 import UIKit
 import RxSwift
 
-
-class LoadingTableViewCellItem : BaseCellItem {
-	
+class LoadingTableViewCellItem: BaseCellItem {
 	var isLoadingObservable: Observable<Bool>?
-	
 }
 
-
 class LoadingTableViewCell: BaseCell {
-	
-	//MARK: - IBOutelet
+
+	// MARK: - IBOutelet
 
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
 	}
@@ -32,26 +28,26 @@ class LoadingTableViewCell: BaseCell {
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-	
-	//MARK: - Configurable
-	
+
+	// MARK: - Configurable
+
 	override func configure(item: BaseCellItem) {
 		super.configure(item: item)
-		
+
 		if let item = item as? LoadingTableViewCellItem {
-			
-			item.isLoadingObservable?.distinctUntilChanged().asDriver(onErrorJustReturn: false).drive(onNext: { [weak self] (val) in
+
+			item.isLoadingObservable?.distinctUntilChanged()
+				.asDriver(onErrorJustReturn: false).drive(onNext: { [weak self] (val) in
 				if val {
 					self?.activityIndicator?.startAnimating()
 					self?.activityIndicator?.isHidden = false
-				}
-				else {
+				} else {
 					self?.activityIndicator?.stopAnimating()
 					self?.activityIndicator?.isHidden = true
 				}
 			}).disposed(by: disposeBag)
-			
+
 		}
 	}
-    
+
 }

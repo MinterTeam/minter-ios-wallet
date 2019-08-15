@@ -9,28 +9,21 @@
 import UIKit
 import RxSwift
 
-
 class TwoTitleTableViewCellItem : BaseCellItem {
-	
 	var title: String?
-	
 	var subtitle: String?
-	
 	var subtitleObservable: Observable<String>?
-	
 }
-
 
 class TwoTitleTableViewCell: BaseCell {
 
-	//MARK: -
-	
+	// MARK: -
+
 	@IBOutlet weak var label: UILabel!
-	
 	@IBOutlet weak var sublabel: UILabel!
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
 	}
@@ -38,9 +31,9 @@ class TwoTitleTableViewCell: BaseCell {
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func configure(item: BaseCellItem) {
 		super.configure(item: item)
 
@@ -48,7 +41,8 @@ class TwoTitleTableViewCell: BaseCell {
 			label.text = item.title
 			sublabel.text = item.subtitle
 
-			item.subtitleObservable?.asDriver(onErrorJustReturn: "").drive(sublabel.rx.text).disposed(by: disposeBag)
+			item.subtitleObservable?.asDriver(onErrorJustReturn: "")
+				.drive(sublabel.rx.text).disposed(by: disposeBag)
 
 		}
 	}

@@ -40,4 +40,6 @@ public class BaseCellItem: IdentifiableType, Equatable {
 
 class TransactionCellItem: BaseCellItem {
 	var txHash: String?
+	var from: String?
+	var to: String?
 }

@@ -312,7 +312,6 @@
 		FA33307F224A4B3C003B4763 /* beep_digi_octave.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2221930E7A00463F66 /* beep_digi_octave.wav */; };
 		FA333080224A4B3C003B4763 /* Root.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F0861B418A65F5CA32B8596 /* Root.storyboard */; };
 		FA333081224A4B3C003B4763 /* Transactions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95B1FA5B097979AF8769F441 /* Transactions.storyboard */; };
-		FA333082224A4B3C003B4763 /* TransactionExpandedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */; };
 		FA333083224A4B3C003B4763 /* PickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA234E92084A42A00F999DE /* PickerTableViewCell.xib */; };
 		FA333084224A4B3C003B4763 /* Send.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A08D1CE45C9B6F749099A430 /* Send.storyboard */; };
 		FA333085224A4B3C003B4763 /* Popup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C09A4EE7A2D51CB839CAABFF /* Popup.storyboard */; };
@@ -395,7 +394,6 @@
 		FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */; };
 		FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */; };
 		FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */; };
-		FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */; };
 		FA83186621F8C268007F268D /* GateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186521F8C268007F268D /* GateManager.swift */; };
 		FA83186821F9CDE0007F268D /* GateManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186721F9CDE0007F268D /* GateManager+Rx.swift */; };
 		FA83186A21FF003F007F268D /* CoinManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186921FF003F007F268D /* CoinManager+Rx.swift */; };
@@ -722,8 +720,6 @@
 		FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentPopupViewModel.swift; sourceTree = "<group>"; };
 		FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonTableViewCell.xib; sourceTree = "<group>"; };
-		FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionExpandedTableViewCell.swift; sourceTree = "<group>"; };
-		FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionExpandedTableViewCell.xib; sourceTree = "<group>"; };
 		FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewController.swift; sourceTree = "<group>"; };
 		FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewCell.swift; sourceTree = "<group>"; };
 		FA83186521F8C268007F268D /* GateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GateManager.swift; sourceTree = "<group>"; };
@@ -1573,8 +1569,6 @@
 				FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */,
 				FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */,
 				FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */,
-				FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */,
-				FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */,
 				FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */,
 				FAA234DD20848EC900F999DE /* SwitchTableViewCell.xib */,
 				FAA234E0208495B900F999DE /* TwoTitleTableViewCell.swift */,
@@ -2255,7 +2249,6 @@
 				FAFBF2182298231B00D053C7 /* RedeemCheckTableViewCell.xib in Resources */,
 				FA333080224A4B3C003B4763 /* Root.storyboard in Resources */,
 				FA333081224A4B3C003B4763 /* Transactions.storyboard in Resources */,
-				FA333082224A4B3C003B4763 /* TransactionExpandedTableViewCell.xib in Resources */,
 				FA333083224A4B3C003B4763 /* PickerTableViewCell.xib in Resources */,
 				FA52DD0F225C879F00A5B554 /* MultisendTransactionTableViewCell.xib in Resources */,
 				FA333084224A4B3C003B4763 /* Send.storyboard in Resources */,
@@ -2324,7 +2317,6 @@
 				FAFBF2192298231B00D053C7 /* RedeemCheckTableViewCell.xib in Resources */,
 				6C405281D86D42CB85997A3F /* Root.storyboard in Resources */,
 				02A6A0A6DB602A40AB4A4C29 /* Transactions.storyboard in Resources */,
-				FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */,
 				FAA234EB2084A42A00F999DE /* PickerTableViewCell.xib in Resources */,
 				FA52DD13225C889C00A5B554 /* MultisendTransactionTableViewCell.xib in Resources */,
 				2E776157C3BE73E6DF25F7C2 /* Send.storyboard in Resources */,

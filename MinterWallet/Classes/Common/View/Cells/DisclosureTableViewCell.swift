@@ -8,31 +8,23 @@
 
 import UIKit
 
-
 class DisclosureTableViewCellItem : BaseCellItem {
-	
 	var title: String?
-	
 	var placeholder: String?
-	
 	var value: String?
-	
 	var showIndicator: Bool? = true
-	
 }
 
-
 class DisclosureTableViewCell: BaseCell {
-	
-	//MARK: - IBOutlet
-	
+
+	// MARK: - IBOutlet
+
 	@IBOutlet weak var title: UILabel!
-	
 	@IBOutlet weak var value: UILabel!
-	
 	@IBOutlet weak var indicatorImageView: UIImageView!
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
 	}
@@ -40,30 +32,29 @@ class DisclosureTableViewCell: BaseCell {
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func configure(item: BaseCellItem) {
 		super.configure(item: item)
-		
+
 		if let disclosureItem = item as? DisclosureTableViewCellItem {
-			
+
 			if let val = disclosureItem.value {
 				value.text = val
 				value.textColor = .black
-			}
-			else {
+			} else {
 				value.text = disclosureItem.placeholder ?? ""
 				value.textColor = UIColor(hex: 0x929292)
 			}
-			
+
 			title.text = disclosureItem.title ?? ""
-			
+
 			indicatorImageView.isHidden = true
 			if disclosureItem.showIndicator == true {
 				indicatorImageView.isHidden = false
 			}
-			
+
 		}
 	}
 

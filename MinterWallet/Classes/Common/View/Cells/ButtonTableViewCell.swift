@@ -9,47 +9,37 @@
 import UIKit
 import RxSwift
 
-
 protocol ButtonTableViewCellDelegate: class {
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell)
 }
 
-
 class ButtonTableViewCellItem : BaseCellItem {
-
 	var title: String?
-	
 	var buttonPattern: String?
-	
 	var isButtonEnabled = true
-	
 	var isButtonEnabledObservable: Observable<Bool>?
-	
 	var isLoadingObserver: Observable<Bool>?
-
 }
 
-
 class ButtonTableViewCell: BaseCell {
-	
-	//MARK: -
+
+	// MARK: -
 
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-	
 	@IBOutlet weak var button: DefaultButton!
-	
-	//MARK: - IBActions
-	
+
+	// MARK: - IBActions
+
 	@IBAction func buttonDidTap(_ sender: Any) {
 		delegate?.ButtonTableViewCellDidTap(self)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	weak var delegate: ButtonTableViewCellDelegate?
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
 	}
@@ -57,37 +47,35 @@ class ButtonTableViewCell: BaseCell {
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func configure(item: BaseCellItem) {
 		super.configure(item: item)
-		
+
 		if let buttonItem = item as? ButtonTableViewCellItem {
 			button?.setTitle(buttonItem.title, for: .normal)
 			button?.pattern = buttonItem.buttonPattern
 			button?.isEnabled = buttonItem.isButtonEnabled
 			activityIndicator?.isHidden = true
-			
+
 			buttonItem.isButtonEnabledObservable?.bind(to: button.rx.isEnabled).disposed(by: disposeBag)
-			
+
 			buttonItem.isLoadingObserver?.bind(onNext: { [weak self] (val) in
-				
+
 				var defaultState = buttonItem.isButtonEnabled
-				
+
 				self?.button?.isEnabled = defaultState//!val
 				self?.activityIndicator?.isHidden = !val
 				if val {
 					self?.activityIndicator?.startAnimating()
 					self?.button?.isEnabled = false
-				}
-				else {
+				} else {
 					self?.activityIndicator?.stopAnimating()
-//					self?.button?.isEnabled = defaultState
 				}
 			}).disposed(by: disposeBag)
-			
+
 		}
 	}
-    
+
 }
