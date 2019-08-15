@@ -131,7 +131,8 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 			}
 		}).disposed(by: disposeBag)
 
-		Observable.combineLatest(Session.shared.isLoggedIn.asObservable(), Session.shared.user.asObservable()).subscribe(onNext: { [weak self] (_, _) in
+		Observable.combineLatest(Session.shared.isLoggedIn.asObservable(),
+														 Session.shared.user.asObservable()).subscribe(onNext: { [weak self] (_, _) in
 			self?.createSections()
 			self?.shouldReloadTable.value = true
 		}).disposed(by: disposeBag)
@@ -310,8 +311,7 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 	func updateAvatar(_ image: UIImage) {
 
 		guard let client = APIClient.withAuthentication(),
-			let user = Session.shared.user.value else {
-//			self.errorNotification.value = NotifiableError(title: "Something went wrong".localized(), text: nil)
+			nil != Session.shared.user.value else {
 			return
 		}
 

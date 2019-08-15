@@ -26,10 +26,6 @@ AddressTextViewTableViewCellDelegate {
 
 	typealias ViewModelType = SendViewModel
 
-	func configure(with viewModel: SendViewModel) {
-
-	}
-
 	// MARK: - IBOutlet
 
 	@IBOutlet weak var tableView: UITableView! {
@@ -65,79 +61,12 @@ AddressTextViewTableViewCellDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		registerCells()
 		configure(with: viewModel)
 
-		if self.shouldShowTestnetToolbar {
-			self.tableView.contentInset = UIEdgeInsets(top: 70,
-																								 left: 0,
-																								 bottom: 0,
-																								 right: 0)
-			self.view.addSubview(self.testnetToolbarView)
-		}
+		setUpTestnetToolbar()
 
 		automaticallyAdjustsScrollViewInsets = false
-
-		registerCells()
-
-		viewModel.notifiableError.asObservable().filter({ (notification) -> Bool in
-			return nil != notification
-		}).subscribe(onNext: { (notification) in
-			let banner = NotificationBanner(title: notification?.title ?? "",
-																			subtitle: notification?.text,
-																			style: .danger)
-			banner.show()
-		}).disposed(by: disposeBag)
-
-		viewModel.txError.asObservable().subscribe(onNext: { [weak self] (notification) in
-			guard nil != notification else {
-				return
-			}
-
-			self?.popupViewController?.dismiss(animated: true, completion: nil)
-
-			let banner = NotificationBanner(title: notification?.title ?? "",
-																			subtitle: notification?.text,
-																			style: .danger)
-			banner.show()
-		}).disposed(by: disposeBag)
-
-		viewModel.showPopup.asObservable().subscribe(onNext: { [weak self] (popup) in
-			if popup == nil {
-				self?.popupViewController?.dismiss(animated: true, completion: nil)
-				return
-			}
-
-			if let sent = popup as? SentPopupViewController {
-				sent.delegate = self
-			}
-
-			if let send = popup as? SendPopupViewController {
-				self?.popupViewController = nil
-				send.delegate = self
-			}
-
-			if self?.popupViewController == nil {
-				self?.showPopup(viewController: popup!)
-				self?.popupViewController = popup
-			} else {
-				self?.showPopup(viewController: popup!,
-												inPopupViewController: self!.popupViewController)
-			}
-		}).disposed(by: disposeBag)
-
-		viewModel.sections.asObservable().subscribe(onNext: { [weak self] (_) in
-
-			self?.tableView.reloadData()
-
-			guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
-				return
-			}
-			//Move to cell
-			if let balanceCell = self?.tableView
-				.cellForRow(at: IndexPath(item: 0, section: 0)) as? PickerTableViewCell {
-					balanceCell.selectField.text = selectedPickerItem.title
-			}
-		}).disposed(by: disposeBag)
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -235,6 +164,72 @@ AddressTextViewTableViewCellDelegate {
 
 }
 
+extension SendViewController {
+
+	func configure(with viewModel: SendViewModel) {
+		viewModel.notifiableError.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "",
+																			subtitle: notification?.text,
+																			style: .danger)
+			banner.show()
+		}).disposed(by: disposeBag)
+
+		viewModel.txError.asObservable().subscribe(onNext: { [weak self] (notification) in
+			guard nil != notification else {
+				return
+			}
+
+			self?.popupViewController?.dismiss(animated: true, completion: nil)
+
+			let banner = NotificationBanner(title: notification?.title ?? "",
+																			subtitle: notification?.text,
+																			style: .danger)
+			banner.show()
+		}).disposed(by: disposeBag)
+
+		viewModel.showPopup.asObservable().subscribe(onNext: { [weak self] (popup) in
+			if popup == nil {
+				self?.popupViewController?.dismiss(animated: true, completion: nil)
+				return
+			}
+
+			if let sent = popup as? SentPopupViewController {
+				sent.delegate = self
+			}
+
+			if let send = popup as? SendPopupViewController {
+				self?.popupViewController = nil
+				send.delegate = self
+			}
+
+			if self?.popupViewController == nil {
+				self?.showPopup(viewController: popup!)
+				self?.popupViewController = popup
+			} else {
+				self?.showPopup(viewController: popup!,
+												inPopupViewController: self!.popupViewController)
+			}
+		}).disposed(by: disposeBag)
+
+		viewModel.sections.asObservable().subscribe(onNext: { [weak self] (_) in
+
+			self?.tableView.reloadData()
+
+			guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
+				return
+			}
+			//Move to cell
+			if let balanceCell = self?.tableView
+				.cellForRow(at: IndexPath(item: 0, section: 0)) as? PickerTableViewCell {
+				balanceCell.selectField.text = selectedPickerItem.title
+			}
+		}).disposed(by: disposeBag)
+	}
+
+}
+
 extension SendViewController: PickerTableViewCellDelegate {
 
 	func didFinish(with item: PickerTableViewCellPickerItem?) {
@@ -245,7 +240,6 @@ extension SendViewController: PickerTableViewCellDelegate {
 
 	func willShowPicker() {
 		tableView.endEditing(true)
-		
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsChooseCoinButton)
 	}
 }
@@ -260,16 +254,11 @@ extension SendViewController: PickerTableViewCellDataSource {
 extension SendViewController: ButtonTableViewCellDelegate {
 
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-
 		SoundHelper.playSoundIfAllowed(type: .bip)
-
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsSendButton, params: nil)
-
 		tableView.endEditing(true)
-
 		viewModel.sendButtonTaped()
 	}
 
@@ -277,7 +266,7 @@ extension SendViewController: ButtonTableViewCellDelegate {
 
 	func validate(cell: ValidatableCellProtocol) {
 		//HACK: Some trouble with protocol?
-		
+
 		var validator: Validator?
 		if let fieldCell = cell as? TextFieldTableViewCell {
 			validator = fieldCell.validator
@@ -443,6 +432,7 @@ extension SendViewController {
 													 y: caretRect.maxY - additionalInset,
 													 width: caretRect.width,
 													 height: caretRect.height + caretRect.size.height/2)
+
 			DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
 				self.tableView.scrollRectToVisible(newRect, animated: false)
 			}
@@ -491,14 +481,14 @@ extension SendViewController: SwitchTableViewCellDelegate {
 extension SendViewController: ValidatableCellDelegate {
 
 	func didValidateField(field: ValidatableCellProtocol?) {
-		if let indexPath = tableView.indexPath(for: field as! UITableViewCell),
+		if let indexPath = tableView.indexPath(for: field as UITableViewCell!),
 			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 			viewModel.submitField(item: item, value: field?.validationText ?? "")
 		}
 	}
 
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
-		if let indexPath = tableView.indexPath(for: field as! UITableViewCell),
+		if let indexPath = tableView.indexPath(for: field as UITableViewCell!),
 			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 			if viewModel.validateField(item: item, value: field?.validationText ?? "") {}
 		}
@@ -537,7 +527,7 @@ extension SendViewController: AmountTextFieldTableViewCellDelegate {
 	func didTapUseMax() {
 		self.view.endEditing(true)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsUseMaxButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsUseMaxButton)
 
 		let indexPath = IndexPath(row: 2, section: 0)
 		guard let amountCell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell else {
@@ -549,4 +539,18 @@ extension SendViewController: AmountTextFieldTableViewCellDelegate {
 			_ = viewModel.validateField(item: item, value: amountCell.textField.text ?? "")
 		}
 	}
+}
+
+extension SendViewController {
+
+	func setUpTestnetToolbar() {
+		if self.shouldShowTestnetToolbar {
+			self.tableView.contentInset = UIEdgeInsets(top: 70,
+																								 left: 0,
+																								 bottom: 0,
+																								 right: 0)
+			self.view.addSubview(self.testnetToolbarView)
+		}
+	}
+
 }

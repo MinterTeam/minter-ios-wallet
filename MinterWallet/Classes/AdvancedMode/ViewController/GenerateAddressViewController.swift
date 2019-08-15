@@ -94,12 +94,13 @@ SwitchTableViewCellDelegate {
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
+		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row),
+			let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
 			return UITableViewCell()
 		}
 
 		cell.configure(item: item)
-		
+
 		if let buttonCell = cell as? ButtonTableViewCell {
 			buttonCell.delegate = self
 		}
@@ -120,11 +121,8 @@ SwitchTableViewCellDelegate {
 	// MARK: - ButtonTableViewCellDelegate
 
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-
 		SoundHelper.playSoundIfAllowed(type: .click)
-
 		viewModel.activate()
-
 		delegate?.GenerateAddressViewControllerDelegateDidAddAccount()
 	}
 

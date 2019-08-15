@@ -10,13 +10,13 @@ import RxSwift
 import GoldenKeystore
 
 class AdvancedModeViewModel: AccountantBaseViewModel {
-	
+
 	enum ValidationError : String {
 		case wrongMnemonic
 	}
 
-	//MARK: -
-	
+	// MARK: -
+
 	var title: String {
 		get {
 			return "Advanced Mode".localized()
@@ -26,15 +26,13 @@ class AdvancedModeViewModel: AccountantBaseViewModel {
 	override init() {
 		super.init()
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	private let databaseStorage = RealmDatabaseStorage.shared
-	
-	//MARK: -
-	
-//	private let accountManager = AccountManager()
-	
+
+	// MARK: -
+
 	func saveAccount(mnemonic: String) {
 
 		guard
@@ -50,7 +48,7 @@ class AdvancedModeViewModel: AccountantBaseViewModel {
 
 		databaseStorage.add(object: dbModel)
 	}
-	
+
 	func isCorrect(mnemonic: String) -> ValidationError? {
 		let array = mnemonic.split(separator: " ")
 		guard array.count == 12 else {
@@ -61,14 +59,11 @@ class AdvancedModeViewModel: AccountantBaseViewModel {
 		}
 		return .wrongMnemonic
 	}
-	
+
 	func validationText(for error: ValidationError) -> String {
 		switch error {
 		case .wrongMnemonic:
 			return "INCORRECT SEED PHRASE".localized()
-			
-		default:
-			return ""
 		}
 	}
 

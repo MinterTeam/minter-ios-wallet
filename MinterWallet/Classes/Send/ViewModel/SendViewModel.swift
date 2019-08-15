@@ -1008,12 +1008,15 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	private func handle(error: Error) {
 		if let error = error as? HTTPClientError {
 			if let errorMessage = error.userData?["log"] as? String {
-				self.txError.value =  NotifiableError(title: "An Error Occurred".localized(), text: errorMessage)
+				self.txError.value =  NotifiableError(title: "An Error Occurred".localized(),
+																							text: errorMessage)
 			} else {
-				self.txError.value = NotifiableError(title: "An Error Occurred".localized(), text: "Unable to send transaction".localized())
+				self.txError.value = NotifiableError(title: "An Error Occurred".localized(),
+																						 text: "Unable to send transaction".localized())
 			}
 		} else {
-			self.txError.value = NotifiableError(title: "An Error Occurred".localized(), text: "Unable to send transaction".localized())
+			self.txError.value = NotifiableError(title: "An Error Occurred".localized(),
+																					 text: "Unable to send transaction".localized())
 		}
 	}
 }
