@@ -58,30 +58,16 @@ class TransactionsViewController: BaseTableViewController {
 
 				cell.configure(item: item)
 
-				if let transactionCell = cell as? TransactionTableViewCell {
+				if let transactionCell = cell as? ExpandableCell {
 					transactionCell.delegate = self
-				}
-
-				if let convertCell = cell as? ConvertTransactionTableViewCell {
-					convertCell.delegate = self
-				}
-
-				if let delegateCell = cell as? DelegateTransactionTableViewCell {
-					delegateCell.delegate = self
-				}
-
-				if let multisendCell = cell as? MultisendTransactionTableViewCell {
-					multisendCell.delegate = self
-				}
-				
-				if let redeemCheckCell = cell as? RedeemCheckTableViewCell {
-					redeemCheckCell.delegate = self
 				}
 
 				return cell
 		})
 
-		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top, reloadAnimation: .automatic, deleteAnimation: .top)
+		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
+																																	reloadAnimation: .automatic,
+																																	deleteAnimation: .top)
 
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
@@ -101,7 +87,6 @@ class TransactionsViewController: BaseTableViewController {
 																								 left: 0,
 																								 bottom: 0,
 																								 right: 0)
-//			self.tableView.contentOffset = CGPoint(x: 0, y: -57)
 		}
 
 	}
@@ -109,7 +94,7 @@ class TransactionsViewController: BaseTableViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionsScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionsScreen)
 	}
 
 	func registerViews() {
@@ -135,7 +120,8 @@ class TransactionsViewController: BaseTableViewController {
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-		if (viewModel.cellItem(section: indexPath.section, row: indexPath.row) as? SeparatorTableViewCellItem) != nil {
+		if (viewModel.cellItem(section: indexPath.section,
+													 row: indexPath.row) as? SeparatorTableViewCellItem) != nil {
 			return 1
 		}
 
@@ -148,7 +134,8 @@ class TransactionsViewController: BaseTableViewController {
 			return expandedIdentifiers.contains(cell.identifier) ? 444 : 55
 		}
 
-		if (viewModel.cellItem(section: indexPath.section, row: indexPath.row) as? LoadingTableViewCellItem) != nil {
+		if (viewModel.cellItem(section: indexPath.section,
+													 row: indexPath.row) as? LoadingTableViewCellItem) != nil {
 			return 52
 		}
 
@@ -158,12 +145,15 @@ class TransactionsViewController: BaseTableViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		super.tableView(tableView, didSelectRowAt: indexPath)
 
-		guard viewModel.cellItem(section: indexPath.section, row: indexPath.row) != nil else {
+		guard viewModel.cellItem(section: indexPath.section,
+														 row: indexPath.row) != nil else {
 			return
 		}
 	}
 
-	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView,
+													willDisplay cell: UITableViewCell,
+													forRowAt indexPath: IndexPath) {
 		super.tableView(tableView, willDisplay: cell, forRowAt: indexPath)
 
 		if viewModel.shouldLoadMore(indexPath) {
@@ -207,16 +197,12 @@ class TransactionsViewController: BaseTableViewController {
 
 }
 
-extension TransactionsViewController: TransactionTableViewCellDelegate,
-ConvertTransactionTableViewCellDelegate,
-DelegateTransactionTableViewCellDelegate,
-MultisendTransactionTableViewCellDelegate,
-RedeemCheckTableViewCellDelegate {
+extension TransactionsViewController: ExpandedTransactionTableViewCellDelegate {
 
-	func didTapExpandedButton(cell: TransactionTableViewCell) {
+	func didTapExplorerButton(cell: ExpandableCell) {
 		performLightImpact()
 
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton)
 		if let indexPath = tableView.indexPath(for: cell),
 			let url = viewModel.explorerURL(section: indexPath.section,
 																			row: indexPath.row) {
@@ -226,53 +212,7 @@ RedeemCheckTableViewCellDelegate {
 		}
 	}
 
-	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
-		performLightImpact()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton,
-																					 params: nil)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section,
-																			row: indexPath.row) {
-
-			let vc = BaseSafariViewController(url: url)
-			self.present(vc, animated: true) {}
-		}
-	}
-
-	func didTapExpandedButton(cell: DelegateTransactionTableViewCell) {
-		performLightImpact()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton,
-																					 params: nil)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section,
-																			row: indexPath.row) {
-
-			let vc = BaseSafariViewController(url: url)
-			self.present(vc, animated: true) {}
-		}
-	}
-
-	func didTapExpandedButton(cell: MultisendTransactionTableViewCell) {
-		performLightImpact()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section,
-																			row: indexPath.row) {
-
-			let vc = BaseSafariViewController(url: url)
-			self.present(vc, animated: true) {}
-		}
-	}
-
-	// Address/PK tap
-
-	func didTapFromButton(cell: TransactionTableViewCell) {
+	func didTapFromButton(cell: ExpandableCell) {
 		SoundHelper.playSoundIfAllowed(type: .click)
 
 		if let indexPath = tableView.indexPath(for: cell),
@@ -286,7 +226,7 @@ RedeemCheckTableViewCellDelegate {
 		}
 	}
 
-	func didTapToButton(cell: TransactionTableViewCell) {
+	func didTapToButton(cell: ExpandableCell) {
 		SoundHelper.playSoundIfAllowed(type: .click)
 
 		if let indexPath = tableView.indexPath(for: cell),
@@ -296,120 +236,6 @@ RedeemCheckTableViewCellDelegate {
 			UIPasteboard.general.string = to
 
 			BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapFromButton(cell: DelegateTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? DelegateTransactionTableViewCellItem,
-			let from = cellItem.from {
-
-			UIPasteboard.general.string = from
-
-			BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapToButton(cell: DelegateTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? DelegateTransactionTableViewCellItem,
-			let to = cellItem.to {
-
-			UIPasteboard.general.string = to
-
-			BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapFromButton(cell: MultisendTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? MultisendTransactionTableViewCellItem,
-			let from = cellItem.from {
-
-			UIPasteboard.general.string = from
-
-			BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapFromButton(cell: ConvertTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? ConvertTransactionTableViewCellItem,
-			let from = cellItem.from {
-
-			UIPasteboard.general.string = from
-
-			BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapToButton(cell: ConvertTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? ConvertTransactionTableViewCellItem,
-			let to = cellItem.to {
-
-			UIPasteboard.general.string = to
-
-			BannerHelper.performCopiedNotification()
-		}
-	}
-	
-	// MARK: - RedeemCheckTableViewCellDelegate
-	
-	func didTapToButton(cell: RedeemCheckTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-		
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
-			let to = cellItem.to {
-			
-			UIPasteboard.general.string = to
-			
-			BannerHelper.performCopiedNotification()
-		}
-	}
-	
-	func didTapFromButton(cell: RedeemCheckTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-		
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
-			let from = cellItem.from {
-			
-			UIPasteboard.general.string = from
-			
-			BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapExpandedButton(cell: RedeemCheckTableViewCell) {
-		performLightImpact()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section,
-																			row: indexPath.row) {
-
-			let vc = BaseSafariViewController(url: url)
-			self.present(vc, animated: true) {}
 		}
 	}
 

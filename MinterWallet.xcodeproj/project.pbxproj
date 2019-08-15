@@ -213,7 +213,6 @@
 		FA333017224A4B3C003B4763 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CBBA0275DD9F23803817F0 /* RootViewModel.swift */; };
 		FA333018224A4B3C003B4763 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF48209B037700A6FB62 /* AccountManager.swift */; };
 		FA333019224A4B3C003B4763 /* ProfileManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817021EF7D1F00FECDED /* ProfileManager+Rx.swift */; };
-		FA33301A224A4B3C003B4763 /* TransactionExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */; };
 		FA33301B224A4B3C003B4763 /* CoinManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186921FF003F007F268D /* CoinManager+Rx.swift */; };
 		FA33301C224A4B3C003B4763 /* GenerateAddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2607B209355BD009FF3DE /* GenerateAddressViewModel.swift */; };
 		FA33301D224A4B3C003B4763 /* SentPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */; };
@@ -293,7 +292,6 @@
 		FA33306A224A4B3C003B4763 /* CoinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE7945C208E17BE0006CB0B /* CoinTableViewCell.xib */; };
 		FA33306B224A4B3C003B4763 /* Ubuntu-C.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BB42072483100AD110A /* Ubuntu-C.ttf */; };
 		FA33306C224A4B3C003B4763 /* Ubuntu-L.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BAB2072483100AD110A /* Ubuntu-L.ttf */; };
-		FA33306D224A4B3C003B4763 /* TransactionFoldingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA45427C2108754D00DB6634 /* TransactionFoldingTableViewCell.xib */; };
 		FA33306E224A4B3C003B4763 /* AmountTextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4DF4AF2108FA1500E64F1B /* AmountTextFieldTableViewCell.xib */; };
 		FA33306F224A4B3C003B4763 /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */; };
 		FA333070224A4B3C003B4763 /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */; };
@@ -330,7 +328,6 @@
 		FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */; };
 		FA4542782106103500DB6634 /* CoinsTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */; };
 		FA45427A2106106200DB6634 /* CoinsTableViewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4542792106106200DB6634 /* CoinsTableViewHeaderView.xib */; };
-		FA45427E2108754D00DB6634 /* TransactionFoldingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA45427C2108754D00DB6634 /* TransactionFoldingTableViewCell.xib */; };
 		FA481BA120DE4104004E1D26 /* UsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA481BA020DE4104004E1D26 /* UsernameView.swift */; };
 		FA4DF4B02108FA1500E64F1B /* AmountTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4DF4AE2108FA1500E64F1B /* AmountTextFieldTableViewCell.swift */; };
 		FA4DF4B12108FA1500E64F1B /* AmountTextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4DF4AF2108FA1500E64F1B /* AmountTextFieldTableViewCell.xib */; };
@@ -398,7 +395,6 @@
 		FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */; };
 		FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */; };
 		FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */; };
-		FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98F3207CF23D00193B8A /* TransactionExpandedTableViewCell.swift */; };
 		FA7D98F6207CF23E00193B8A /* TransactionExpandedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F4207CF23D00193B8A /* TransactionExpandedTableViewCell.xib */; };
 		FA83186621F8C268007F268D /* GateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186521F8C268007F268D /* GateManager.swift */; };
 		FA83186821F9CDE0007F268D /* GateManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186721F9CDE0007F268D /* GateManager+Rx.swift */; };
@@ -655,8 +651,6 @@
 		FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RawTransactionAddress.swift"; sourceTree = "<group>"; };
 		FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsTableViewHeaderView.swift; sourceTree = "<group>"; };
 		FA4542792106106200DB6634 /* CoinsTableViewHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoinsTableViewHeaderView.xib; sourceTree = "<group>"; };
-		FA45427B2108754D00DB6634 /* TransactionFoldingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFoldingTableViewCell.swift; sourceTree = "<group>"; };
-		FA45427C2108754D00DB6634 /* TransactionFoldingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionFoldingTableViewCell.xib; sourceTree = "<group>"; };
 		FA481BA020DE4104004E1D26 /* UsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameView.swift; sourceTree = "<group>"; };
 		FA4DF4AE2108FA1500E64F1B /* AmountTextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountTextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		FA4DF4AF2108FA1500E64F1B /* AmountTextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmountTextFieldTableViewCell.xib; sourceTree = "<group>"; };
@@ -1105,7 +1099,6 @@
 			isa = PBXGroup;
 			children = (
 				4A6A26FC444FD574816BCA8B /* Router */,
-				812C96F2B106A66032ABF84E /* View */,
 				902654B525E124A4433AB0E2 /* ViewController */,
 				1FE84BAB2E3E711777A5E33B /* ViewModel */,
 				95B1FA5B097979AF8769F441 /* Transactions.storyboard */,
@@ -1197,15 +1190,6 @@
 				FA669BDC207269E700AD110A /* LoginRouter.swift */,
 			);
 			path = Router;
-			sourceTree = "<group>";
-		};
-		812C96F2B106A66032ABF84E /* View */ = {
-			isa = PBXGroup;
-			children = (
-				FA45427B2108754D00DB6634 /* TransactionFoldingTableViewCell.swift */,
-				FA45427C2108754D00DB6634 /* TransactionFoldingTableViewCell.xib */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		86BD82A415E14AAF85BFE7AF /* ViewController */ = {
@@ -2247,7 +2231,6 @@
 				FA33306A224A4B3C003B4763 /* CoinTableViewCell.xib in Resources */,
 				FA33306B224A4B3C003B4763 /* Ubuntu-C.ttf in Resources */,
 				FA33306C224A4B3C003B4763 /* Ubuntu-L.ttf in Resources */,
-				FA33306D224A4B3C003B4763 /* TransactionFoldingTableViewCell.xib in Resources */,
 				FA33306E224A4B3C003B4763 /* AmountTextFieldTableViewCell.xib in Resources */,
 				FA52DD0D225B5E7700A5B554 /* Assets.xcassets in Resources */,
 				FA33306F224A4B3C003B4763 /* TransactionTableViewCell.xib in Resources */,
@@ -2317,7 +2300,6 @@
 				FAA26052208E30AC009FF3DE /* CoinTableViewCell.xib in Resources */,
 				FA669BC82072483100AD110A /* Ubuntu-C.ttf in Resources */,
 				FA669BBF2072483100AD110A /* Ubuntu-L.ttf in Resources */,
-				FA45427E2108754D00DB6634 /* TransactionFoldingTableViewCell.xib in Resources */,
 				FA4DF4B12108FA1500E64F1B /* AmountTextFieldTableViewCell.xib in Resources */,
 				FA52DD0C225B5E6400A5B554 /* Assets.xcassets in Resources */,
 				FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */,
@@ -2800,7 +2782,6 @@
 				FA333017224A4B3C003B4763 /* RootViewModel.swift in Sources */,
 				FA333018224A4B3C003B4763 /* AccountManager.swift in Sources */,
 				FA333019224A4B3C003B4763 /* ProfileManager+Rx.swift in Sources */,
-				FA33301A224A4B3C003B4763 /* TransactionExpandedTableViewCell.swift in Sources */,
 				FA33301B224A4B3C003B4763 /* CoinManager+Rx.swift in Sources */,
 				FA33301C224A4B3C003B4763 /* GenerateAddressViewModel.swift in Sources */,
 				FAA2AAEA2296E42300581D47 /* TransactionAddressButton.swift in Sources */,
@@ -3004,7 +2985,6 @@
 				94B58309D085DACB65260018 /* RootViewModel.swift in Sources */,
 				FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */,
 				FA17817121EF7D1F00FECDED /* ProfileManager+Rx.swift in Sources */,
-				FA7D98F5207CF23E00193B8A /* TransactionExpandedTableViewCell.swift in Sources */,
 				FA83186A21FF003F007F268D /* CoinManager+Rx.swift in Sources */,
 				FAA2607C209355BD009FF3DE /* GenerateAddressViewModel.swift in Sources */,
 				FAA2AAEB2296E42300581D47 /* TransactionAddressButton.swift in Sources */,

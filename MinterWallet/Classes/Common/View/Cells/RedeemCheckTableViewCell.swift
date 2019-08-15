@@ -9,8 +9,7 @@
 import UIKit
 import AlamofireImage
 
-class RedeemCheckTableViewCellItem: BaseCellItem {
-	var txHash: String?
+class RedeemCheckTableViewCellItem: TransactionCellItem {
 	var title: String?
 	var imageURL: URL?
 	var image: UIImage?
@@ -22,17 +21,7 @@ class RedeemCheckTableViewCellItem: BaseCellItem {
 	var expandable: Bool?
 }
 
-protocol RedeemCheckTableViewCellDelegate: class {
-	func didTapExpandedButton(cell: RedeemCheckTableViewCell)
-	func didTapFromButton(cell: RedeemCheckTableViewCell)
-	func didTapToButton(cell: RedeemCheckTableViewCell)
-}
-
 class RedeemCheckTableViewCell: ExpandableCell {
-
-	// MARK: -
-
-	weak var delegate: RedeemCheckTableViewCellDelegate?
 
 	// MARK: -
 
@@ -136,7 +125,7 @@ class RedeemCheckTableViewCell: ExpandableCell {
 	// MARK: -
 
 	@IBAction func didTapExpandedButton(_ sender: Any) {
-		delegate?.didTapExpandedButton(cell: self)
+		delegate?.didTapExplorerButton(cell: self)
 	}
 
 	@IBAction func didTapFromButton(_ sender: Any) {

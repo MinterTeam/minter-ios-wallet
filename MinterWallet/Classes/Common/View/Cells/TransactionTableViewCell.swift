@@ -9,8 +9,7 @@
 import UIKit
 import AlamofireImage
 
-class TransactionTableViewCellItem: BaseCellItem {
-	var txHash: String?
+class TransactionTableViewCellItem: TransactionCellItem {
 	var title: String?
 	var image: UIImage?
 	var imageURL: URL?
@@ -22,10 +21,10 @@ class TransactionTableViewCellItem: BaseCellItem {
 	var expandable: Bool?
 }
 
-protocol TransactionTableViewCellDelegate: class {
-	func didTapExpandedButton(cell: TransactionTableViewCell)
-	func didTapFromButton(cell: TransactionTableViewCell)
-	func didTapToButton(cell: TransactionTableViewCell)
+protocol ExpandedTransactionTableViewCellDelegate: class {
+	func didTapExplorerButton(cell: ExpandableCell)
+	func didTapFromButton(cell: ExpandableCell)
+	func didTapToButton(cell: ExpandableCell)
 }
 
 class TransactionTableViewCell: ExpandableCell {
@@ -36,8 +35,6 @@ class TransactionTableViewCell: ExpandableCell {
 	let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
-
-	weak var delegate: TransactionTableViewCellDelegate?
 
 	// MARK: - IBOutlet
 
@@ -87,35 +84,39 @@ class TransactionTableViewCell: ExpandableCell {
 	// MARK: -
 
 	override func configure(item: BaseCellItem) {
-		if let transaction = item as? TransactionTableViewCellItem {
-			identifier = item.identifier
-			title.text = TransactionTitleHelper.title(from: transaction.title ?? "")
-			coinImage.image = UIImage(named: "AvatarPlaceholderImage")
-			if let url = transaction.imageURL {
-				coinImage.af_setImage(withURL: url,
-															filter: RoundedCornersFilter(radius: 17.0))
-			} else if let image = transaction.image {
-				coinImage.image = image
-			}
-			amount.text = amountText(amount: transaction.amount)
-			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
-
-			fromAddressButton.setTitle(transaction.from, for: .normal)
-			toAddressButton.setTitle(transaction.to, for: .normal)
-			expandedAmountLabel.text = CurrencyNumberFormatter
-				.formattedDecimal(with: (transaction.amount ?? 0),
-													formatter: CurrencyNumberFormatter.coinFormatter)
-			coinLabel.text = transaction.coin
-			dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
-			timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
-			
-			coin.text = transaction.coin
-			expandable = transaction.expandable ?? false
+		defer {
+			self.setNeedsUpdateConstraints()
+			self.setNeedsLayout()
+			self.layoutIfNeeded()
 		}
 
-		self.setNeedsUpdateConstraints()
-		self.setNeedsLayout()
-		self.layoutIfNeeded()
+		guard let transaction = item as? TransactionTableViewCellItem else {
+			return
+		}
+
+		identifier = item.identifier
+		title.text = TransactionTitleHelper.title(from: transaction.title ?? "")
+		coinImage.image = UIImage(named: "AvatarPlaceholderImage")
+		if let url = transaction.imageURL {
+			coinImage.af_setImage(withURL: url,
+														filter: RoundedCornersFilter(radius: 17.0))
+		} else if let image = transaction.image {
+			coinImage.image = image
+		}
+		amount.text = amountText(amount: transaction.amount)
+		amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
+
+		fromAddressButton.setTitle(transaction.from, for: .normal)
+		toAddressButton.setTitle(transaction.to, for: .normal)
+		expandedAmountLabel.text = CurrencyNumberFormatter
+			.formattedDecimal(with: (transaction.amount ?? 0),
+												formatter: CurrencyNumberFormatter.coinFormatter)
+		coinLabel.text = transaction.coin
+		dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
+		timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
+
+		coin.text = transaction.coin
+		expandable = transaction.expandable ?? false
 	}
 
 	private func amountText(amount: Decimal?) -> String {
@@ -129,7 +130,7 @@ class TransactionTableViewCell: ExpandableCell {
 	// MARK: -
 
 	@IBAction func didTapExpandedButton(_ sender: Any) {
-		delegate?.didTapExpandedButton(cell: self)
+		delegate?.didTapExplorerButton(cell: self)
 	}
 
 	@IBAction func didTapFromButton(_ sender: Any) {

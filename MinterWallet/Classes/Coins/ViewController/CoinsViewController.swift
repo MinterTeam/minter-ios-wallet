@@ -167,21 +167,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 				if let buttonCell = cell as? ButtonTableViewCell {
 					buttonCell.delegate = self
 				}
-				if let transactionCell = cell as? TransactionTableViewCell {
+				if let transactionCell = cell as? ExpandableCell {
 					transactionCell.delegate = self
 				}
-				if let convertCell = cell as? ConvertTransactionTableViewCell {
-					convertCell.delegate = self
-				}
-				if let delegateCell = cell as? DelegateTransactionTableViewCell {
-					delegateCell.delegate = self
-				}
-				if let multisendCell = cell as? MultisendTransactionTableViewCell {
-					multisendCell.delegate = self
-				}
-				if let redeemCheckCell = cell as? RedeemCheckTableViewCell {
-					redeemCheckCell.delegate = self
-				}
+
 				if let accordionCell = cell as? AccordionTableViewCell {
 					let isExpanded = self?.expandedIdentifiers
 						.contains(accordionCell.identifier) ?? false
@@ -415,13 +404,9 @@ extension CoinsViewController: ButtonTableViewCellDelegate {
 }
 
 //TODO: refactor it to a one protocol
-extension CoinsViewController: TransactionTableViewCellDelegate,
-ConvertTransactionTableViewCellDelegate,
-DelegateTransactionTableViewCellDelegate,
-MultisendTransactionTableViewCellDelegate,
-RedeemCheckTableViewCellDelegate {
+extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 
-	func didTapExpandedButton(cell: TransactionTableViewCell) {
+	func didTapExplorerButton(cell: ExpandableCell) {
 		performLightImpact()
 
 		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
@@ -432,41 +417,7 @@ RedeemCheckTableViewCellDelegate {
 		}
 	}
 
-	func didTapExpandedButton(cell: ConvertTransactionTableViewCell) {
-		performLightImpact()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
-			presentExplorerController(with: url)
-		}
-	}
-
-	func didTapExpandedButton(cell: DelegateTransactionTableViewCell) {
-		performLightImpact()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
-			presentExplorerController(with: url)
-		}
-	}
-
-	func didTapExpandedButton(cell: MultisendTransactionTableViewCell) {
-		performLightImpact()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section,
-																			row: indexPath.row) {
-			presentExplorerController(with: url)
-		}
-	}
-
-	func didTapFromButton(cell: TransactionTableViewCell) {
+	func didTapFromButton(cell: ExpandableCell) {
 		SoundHelper.playSoundIfAllowed(type: .click)
 
 		if let indexPath = tableView.indexPath(for: cell),
@@ -478,7 +429,7 @@ RedeemCheckTableViewCellDelegate {
 		}
 	}
 
-	func didTapToButton(cell: TransactionTableViewCell) {
+	func didTapToButton(cell: ExpandableCell) {
 		SoundHelper.playSoundIfAllowed(type: .click)
 
 		if let indexPath = tableView.indexPath(for: cell),
@@ -487,80 +438,6 @@ RedeemCheckTableViewCellDelegate {
 			let to = cellItem.to {
 				UIPasteboard.general.string = to
 				BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapFromButton(cell: DelegateTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? DelegateTransactionTableViewCellItem,
-			let from = cellItem.from {
-				UIPasteboard.general.string = from
-				BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapToButton(cell: DelegateTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? DelegateTransactionTableViewCellItem,
-			let to = cellItem.to {
-				UIPasteboard.general.string = to
-				BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapFromButton(cell: MultisendTransactionTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? MultisendTransactionTableViewCellItem,
-			let from = cellItem.from {
-				UIPasteboard.general.string = from
-				BannerHelper.performCopiedNotification()
-		}
-	}
-
-	// MARK: - RedeemCheckTableViewCellDelegate
-
-	func didTapToButton(cell: RedeemCheckTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
-			let to = cellItem.to {
-				UIPasteboard.general.string = to
-				BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapFromButton(cell: RedeemCheckTableViewCell) {
-		SoundHelper.playSoundIfAllowed(type: .click)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let cellItem = viewModel.cellItem(section: indexPath.section,
-																				row: indexPath.row) as? RedeemCheckTableViewCellItem,
-			let from = cellItem.from {
-				UIPasteboard.general.string = from
-				BannerHelper.performCopiedNotification()
-		}
-	}
-
-	func didTapExpandedButton(cell: RedeemCheckTableViewCell) {
-		performLightImpact()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section,
-																			row: indexPath.row) {
-			presentExplorerController(with: url)
 		}
 	}
 

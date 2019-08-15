@@ -11,7 +11,7 @@ import RxDataSources
 
 
 
-public class BaseCellItem : IdentifiableType, Equatable {
+public class BaseCellItem: IdentifiableType, Equatable {
 
 	let reuseIdentifier: String
 	
@@ -36,4 +36,8 @@ public class BaseCellItem : IdentifiableType, Equatable {
 		return lhs.identifier == rhs.identifier
 	}
 
+}
+
+class TransactionCellItem: BaseCellItem {
+	var txHash: String?
 }

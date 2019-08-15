@@ -9,8 +9,7 @@
 import UIKit
 import AlamofireImage
 
-class ConvertTransactionTableViewCellItem: BaseCellItem {
-	var txHash: String?
+class ConvertTransactionTableViewCellItem: TransactionCellItem {
 	var title: String?
 	var image: UIImage?
 	var date: Date?
@@ -23,10 +22,6 @@ class ConvertTransactionTableViewCellItem: BaseCellItem {
 	var expandable: Bool?
 }
 
-protocol ConvertTransactionTableViewCellDelegate: class {
-	func didTapExpandedButton(cell: ConvertTransactionTableViewCell)
-}
-
 class ConvertTransactionTableViewCell: ExpandableCell {
 
 	// MARK: -
@@ -36,14 +31,17 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
 
-	weak var delegate: ConvertTransactionTableViewCellDelegate?
-
 	// MARK: - IBOutlet
 
 	@IBOutlet weak var title: UILabel!
 	@IBOutlet weak var coinImageWrapper: UIView! {
 		didSet {
-			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
+			coinImageWrapper.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!,
+																							 alpha: 1,
+																							 x: 0,
+																							 y: 2,
+																							 blur: 18,
+																							 spread: 0)
 		}
 	}
 
@@ -120,6 +118,6 @@ class ConvertTransactionTableViewCell: ExpandableCell {
 	// MARK: -
 
 	@IBAction func didTapExpandedButton(_ sender: Any) {
-		delegate?.didTapExpandedButton(cell: self)
+		delegate?.didTapExplorerButton(cell: self)
 	}
 }

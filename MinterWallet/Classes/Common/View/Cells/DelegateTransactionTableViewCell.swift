@@ -9,9 +9,8 @@
 import UIKit
 import AlamofireImage
 
-class DelegateTransactionTableViewCellItem: BaseCellItem {
+class DelegateTransactionTableViewCellItem: TransactionCellItem {
 	var type: String?
-	var txHash: String?
 	var title: String?
 	var image: UIImage?
 	var date: Date?
@@ -22,12 +21,6 @@ class DelegateTransactionTableViewCellItem: BaseCellItem {
 	var expandable: Bool?
 }
 
-protocol DelegateTransactionTableViewCellDelegate: class {
-	func didTapExpandedButton(cell: DelegateTransactionTableViewCell)
-	func didTapFromButton(cell: DelegateTransactionTableViewCell)
-	func didTapToButton(cell: DelegateTransactionTableViewCell)
-}
-
 class DelegateTransactionTableViewCell: ExpandableCell {
 
 	// MARK: -
@@ -36,8 +29,6 @@ class DelegateTransactionTableViewCell: ExpandableCell {
 	let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
-
-	weak var delegate: DelegateTransactionTableViewCellDelegate?
 
 	// MARK: - IBOutlet
 
@@ -139,7 +130,7 @@ class DelegateTransactionTableViewCell: ExpandableCell {
 	// MARK: -
 
 	@IBAction func didTapExpandedButton(_ sender: Any) {
-		delegate?.didTapExpandedButton(cell: self)
+		delegate?.didTapExplorerButton(cell: self)
 	}
 
 	@IBAction func didTapFromButton(_ sender: Any) {

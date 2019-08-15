@@ -9,8 +9,7 @@
 import UIKit
 import AlamofireImage
 
-class MultisendTransactionTableViewCellItem: BaseCellItem {
-	var txHash: String?
+class MultisendTransactionTableViewCellItem: TransactionCellItem {
 	var title: String?
 	var imageURL: URL?
 	var image: UIImage?
@@ -22,16 +21,7 @@ class MultisendTransactionTableViewCellItem: BaseCellItem {
 	var expandable: Bool?
 }
 
-protocol MultisendTransactionTableViewCellDelegate: class {
-	func didTapExpandedButton(cell: MultisendTransactionTableViewCell)
-	func didTapFromButton(cell: MultisendTransactionTableViewCell)
-}
-
 class MultisendTransactionTableViewCell: ExpandableCell {
-
-	// MARK: -
-
-	weak var delegate: MultisendTransactionTableViewCellDelegate?
 
 	// MARK: -
 
@@ -103,7 +93,8 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 				expandedAmountLabel.text = ""
 				amountTitleLabel.alpha = 0.0
 			} else {
-				expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0), formatter: CurrencyNumberFormatter.coinFormatter)
+				expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.amount ?? 0),
+																																						formatter: CurrencyNumberFormatter.coinFormatter)
 			}
 			dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 			timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
@@ -118,18 +109,17 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 	}
 
 	private func amountText(amount: Decimal?) -> String {
-
 		guard amount != nil else {
 			return ""
 		}
-
-		return CurrencyNumberFormatter.formattedDecimal(with: amount ?? 0, formatter: CurrencyNumberFormatter.transactionFormatter)
+		return CurrencyNumberFormatter.formattedDecimal(with: amount ?? 0,
+																										formatter: CurrencyNumberFormatter.transactionFormatter)
 	}
 
 	// MARK: -
 
 	@IBAction func didTapExpandedButton(_ sender: Any) {
-		delegate?.didTapExpandedButton(cell: self)
+		delegate?.didTapExplorerButton(cell: self)
 	}
 
 	@IBAction func didTapFromButton(_ sender: Any) {

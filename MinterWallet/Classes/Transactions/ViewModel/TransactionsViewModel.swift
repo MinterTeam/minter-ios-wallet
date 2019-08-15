@@ -28,7 +28,6 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 		super.init()
 
 		sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM"
-
 		sectionTitleDateFullFormatter.dateFormat = "EEEE, dd MMM YYYY"
 
 		if nil == addresses {
@@ -39,7 +38,8 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 			self.addresses = addresses ?? []
 		}
 
-		let loadingItem = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell", identifier: "LoadingTableViewCell")
+		let loadingItem = LoadingTableViewCellItem(reuseIdentifier: "LoadingTableViewCell",
+																							 identifier: "LoadingTableViewCell")
 		loadingItem.isLoadingObservable = isLoading.asObservable()
 		var section = BaseTableSectionItem(header: "", items: [loadingItem])
 		section.identifier = "LoadingTableViewSection"
@@ -51,8 +51,8 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 	}
 
 	private var sectionTitleDateFormatter = DateFormatter()
-
 	private var sectionTitleDateFullFormatter = DateFormatter()
+	private let manager = WalletTransactionManager()
 
 	// MARK: -
 
@@ -61,18 +61,17 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 	var sectionsObservable: Observable<[BaseTableSectionItem]> {
 		return self.sections.asObservable()
 	}
-
 	private var page = 1
-
 	private var transactions = [TransactionItem]()
-
 	private var isLoading = Variable(false)
-
 	private var canLoadMore = true
 
 	var noTransactionsObservable: Observable<Bool> {
-		return Observable.combineLatest(self.isLoading.asObservable(), sections.asObservable()).map({ (val) -> Bool in
-			return !self.isLoading.value && self.canLoadMore == false && self.transactions.count == 0
+		return Observable.combineLatest(self.isLoading.asObservable(),
+																		sections.asObservable()).map({ (val) -> Bool in
+			return !self.isLoading.value
+				&& self.canLoadMore == false
+				&& self.transactions.count == 0
 		})
 	}
 
@@ -180,8 +179,6 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 			return sectionTitleDateFullFormatter.string(from: date!).uppercased()
 		}
 	}
-
-	let manager = WalletTransactionManager()
 
 	// MARK: -
 

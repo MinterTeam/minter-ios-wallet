@@ -38,6 +38,8 @@ class ExpandableCell: AccordionTableViewCell, Configurable {
 
 	var expandable = true
 
+	weak var delegate: ExpandedTransactionTableViewCellDelegate?
+
 	// MARK: -
 
 	override func setExpanded(_ expanded: Bool, animated: Bool) {
