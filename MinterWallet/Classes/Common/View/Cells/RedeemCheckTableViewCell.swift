@@ -127,7 +127,7 @@ class RedeemCheckTableViewCell: ExpandableCell {
 	@IBAction func didTapFromButton(_ sender: Any) {
 		delegate?.didTapFromButton(cell: self)
 	}
-	
+
 	@IBAction func didTapToButton(_ sender: Any) {
 		delegate?.didTapToButton(cell: self)
 	}
@@ -140,10 +140,10 @@ class RedeemCheckTableViewCell: ExpandableCell {
 
 	override func prepareForReuse() {
 		super.prepareForReuse()
-		
+
 		detailView?.setNeedsLayout()
 		detailView?.layoutIfNeeded()
-		
+
 		self.setNeedsLayout()
 		self.layoutIfNeeded()
 	}

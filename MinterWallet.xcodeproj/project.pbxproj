@@ -168,7 +168,6 @@
 		FA332FEA224A4B3C003B4763 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */; };
 		FA332FEB224A4B3C003B4763 /* LUAutocompleteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5FDAC214949CA00911619 /* LUAutocompleteTableViewCell.swift */; };
 		FA332FEC224A4B3C003B4763 /* AutoGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */; };
-		FA332FED224A4B3C003B4763 /* WalletCoinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA55B01C216D011600A3A78C /* WalletCoinManager.swift */; };
 		FA332FEE224A4B3C003B4763 /* ReaderOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295721B1740600E10F5E /* ReaderOverlayView.swift */; };
 		FA332FEF224A4B3C003B4763 /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79F60520CBE9A7007876ED /* String+Email.swift */; };
 		FA332FF0224A4B3C003B4763 /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8E321B534EF000B571B /* QRCode.swift */; };
@@ -341,7 +340,6 @@
 		FA531E2E219B1F1900A7AD9F /* AppSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */; };
 		FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA557E55207BA7490095459B /* DefaultHeader.swift */; };
 		FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA557E57207BA7560095459B /* DefaultHeader.xib */; };
-		FA55B01D216D011600A3A78C /* WalletCoinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA55B01C216D011600A3A78C /* WalletCoinManager.swift */; };
 		FA5B9CC92073B67F00DC06F0 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */; };
 		FA5B9CCA2073B67F00DC06F0 /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */; };
 		FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */; };
@@ -659,7 +657,6 @@
 		FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsManager.swift; sourceTree = "<group>"; };
 		FA557E55207BA7490095459B /* DefaultHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeader.swift; sourceTree = "<group>"; };
 		FA557E57207BA7560095459B /* DefaultHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultHeader.xib; sourceTree = "<group>"; };
-		FA55B01C216D011600A3A78C /* WalletCoinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCoinManager.swift; sourceTree = "<group>"; };
 		FA5B9CC72073B67F00DC06F0 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldTableViewCell.xib; sourceTree = "<group>"; };
 		FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoGrowingTextView.swift; sourceTree = "<group>"; };
@@ -1604,7 +1601,6 @@
 			children = (
 				FA61EF48209B037700A6FB62 /* AccountManager.swift */,
 				FAB85B4D20DD33E300782AFB /* TransactionManager.swift */,
-				FA55B01C216D011600A3A78C /* WalletCoinManager.swift */,
 				FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */,
 				FA83186521F8C268007F268D /* GateManager.swift */,
 				FAB0D35422CCA5A9002945E2 /* PINManager.swift */,
@@ -2725,7 +2721,6 @@
 				FA332FEA224A4B3C003B4763 /* ButtonTableViewCell.swift in Sources */,
 				FA332FEB224A4B3C003B4763 /* LUAutocompleteTableViewCell.swift in Sources */,
 				FA332FEC224A4B3C003B4763 /* AutoGrowingTextView.swift in Sources */,
-				FA332FED224A4B3C003B4763 /* WalletCoinManager.swift in Sources */,
 				FA332FEE224A4B3C003B4763 /* ReaderOverlayView.swift in Sources */,
 				FA332FEF224A4B3C003B4763 /* String+Email.swift in Sources */,
 				FA332FF0224A4B3C003B4763 /* QRCode.swift in Sources */,
@@ -2929,7 +2924,6 @@
 				FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */,
 				FAF5FDB0214949CB00911619 /* LUAutocompleteTableViewCell.swift in Sources */,
 				FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */,
-				FA55B01D216D011600A3A78C /* WalletCoinManager.swift in Sources */,
 				FA0F296121B1740800E10F5E /* ReaderOverlayView.swift in Sources */,
 				FA79F60720D06D3D007876ED /* String+Email.swift in Sources */,
 				FAF9C50E22AA69E4000BF80A /* DelegatedViewModel.swift in Sources */,
