@@ -13,12 +13,15 @@ class AppSettingsManager {
 	// MARK: -
 
 	private static let appSettingsKey = "AppSettings"
+
 	enum SettingsKey: String {
 		case sounds
 		case fingerprint
 	}
 
 	static let shared = AppSettingsManager()
+
+	private init() {}
 
 	// MARK: -
 
@@ -27,8 +30,6 @@ class AppSettingsManager {
 	var isBiometricsEnabled = false
 
 	// MARK: -
-
-	private init() {}
 
 	func restore() {
 		if let settings = database.object(forKey: AppSettingsManager.appSettingsKey) as? [String : Any] {

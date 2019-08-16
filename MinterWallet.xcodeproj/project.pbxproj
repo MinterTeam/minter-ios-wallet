@@ -121,7 +121,6 @@
 		FA332FBA224A4B3C003B4763 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB3E3B20A9C30000EB6CD7 /* Storage.swift */; };
 		FA332FBB224A4B3C003B4763 /* AnalyticsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */; };
 		FA332FBC224A4B3C003B4763 /* CIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8E221B534EF000B571B /* CIColorExtension.swift */; };
-		FA332FBD224A4B3C003B4763 /* AppSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA531E2B219B1E9400A7AD9F /* AppSettingsModel.swift */; };
 		FA332FBE224A4B3C003B4763 /* DatabaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6760A920A9E90900F970E7 /* DatabaseStorage.swift */; };
 		FA332FBF224A4B3C003B4763 /* SpendCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */; };
 		FA332FC0224A4B3C003B4763 /* TransactionManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817A21F733D800FECDED /* TransactionManager+Rx.swift */; };
@@ -336,7 +335,6 @@
 		FA52DD11225C889600A5B554 /* MultisendTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA52DD10225C889600A5B554 /* MultisendTransactionTableViewCell.swift */; };
 		FA52DD12225C889900A5B554 /* MultisendTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA52DD10225C889600A5B554 /* MultisendTransactionTableViewCell.swift */; };
 		FA52DD13225C889C00A5B554 /* MultisendTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA52DD0E225C879F00A5B554 /* MultisendTransactionTableViewCell.xib */; };
-		FA531E2C219B1E9400A7AD9F /* AppSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA531E2B219B1E9400A7AD9F /* AppSettingsModel.swift */; };
 		FA531E2E219B1F1900A7AD9F /* AppSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */; };
 		FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA557E55207BA7490095459B /* DefaultHeader.swift */; };
 		FA557E58207BA7560095459B /* DefaultHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA557E57207BA7560095459B /* DefaultHeader.xib */; };
@@ -653,7 +651,6 @@
 		FA505ADC20E24D7C00DA90C0 /* QRTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRTableViewCell.swift; sourceTree = "<group>"; };
 		FA52DD0E225C879F00A5B554 /* MultisendTransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultisendTransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FA52DD10225C889600A5B554 /* MultisendTransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultisendTransactionTableViewCell.swift; sourceTree = "<group>"; };
-		FA531E2B219B1E9400A7AD9F /* AppSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsModel.swift; sourceTree = "<group>"; };
 		FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsManager.swift; sourceTree = "<group>"; };
 		FA557E55207BA7490095459B /* DefaultHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHeader.swift; sourceTree = "<group>"; };
 		FA557E57207BA7560095459B /* DefaultHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DefaultHeader.xib; sourceTree = "<group>"; };
@@ -1540,7 +1537,6 @@
 			isa = PBXGroup;
 			children = (
 				FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */,
-				FA531E2B219B1E9400A7AD9F /* AppSettingsModel.swift */,
 			);
 			path = "Database Models";
 			sourceTree = "<group>";
@@ -2673,7 +2669,6 @@
 				FA332FBA224A4B3C003B4763 /* Storage.swift in Sources */,
 				FA332FBB224A4B3C003B4763 /* AnalyticsHelper.swift in Sources */,
 				FA332FBC224A4B3C003B4763 /* CIColorExtension.swift in Sources */,
-				FA332FBD224A4B3C003B4763 /* AppSettingsModel.swift in Sources */,
 				FA332FBE224A4B3C003B4763 /* DatabaseStorage.swift in Sources */,
 				FA332FBF224A4B3C003B4763 /* SpendCoinsViewModel.swift in Sources */,
 				FA332FC0224A4B3C003B4763 /* TransactionManager+Rx.swift in Sources */,
@@ -2875,7 +2870,6 @@
 				FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */,
 				FA9BE30D214006A5002160F3 /* AnalyticsHelper.swift in Sources */,
 				FA0AF8E721B534EF000B571B /* CIColorExtension.swift in Sources */,
-				FA531E2C219B1E9400A7AD9F /* AppSettingsModel.swift in Sources */,
 				FA6760AA20A9E90900F970E7 /* DatabaseStorage.swift in Sources */,
 				FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */,
 				FA17817B21F733D800FECDED /* TransactionManager+Rx.swift in Sources */,

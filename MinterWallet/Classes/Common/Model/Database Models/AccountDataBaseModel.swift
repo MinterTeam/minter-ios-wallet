@@ -12,7 +12,7 @@ import BigInt
 import MinterCore
 import MinterMy
 
-class AccountDataBaseModel : Object, DatabaseStorageModel {
+class AccountDataBaseModel: Object, DatabaseStorageModel {
 
 	@objc dynamic var id: Int = -1
 	@objc dynamic var address: String = ""
@@ -32,7 +32,7 @@ class AccountDataBaseModel : Object, DatabaseStorageModel {
 
 }
 
-class UserDataBaseModel : Object, DatabaseStorageModel {
+class UserDataBaseModel: Object, DatabaseStorageModel {
 	@objc dynamic var id: Int = -1
 	@objc dynamic var name: String = ""
 	@objc dynamic var username: String = ""
@@ -47,12 +47,11 @@ class UserDataBaseModel : Object, DatabaseStorageModel {
 		self.id = user.id ?? -1
 		self.username = user.username ?? ""
 		self.email = user.email ?? ""
-//		self.phone = user.phone ?? ""
 	}
 }
 
 extension User {
-	
+
 	convenience init(dbModel: UserDataBaseModel) {
 		self.init()
 
