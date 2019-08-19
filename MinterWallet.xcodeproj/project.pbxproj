@@ -381,6 +381,8 @@
 		FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */; };
 		FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */; };
 		FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */; };
+		FA704EB22306B45E00A1A459 /* AdvancedGateManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA704EB12306B45E00A1A459 /* AdvancedGateManager+Rx.swift */; };
+		FA704EB32306B45E00A1A459 /* AdvancedGateManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA704EB12306B45E00A1A459 /* AdvancedGateManager+Rx.swift */; };
 		FA77578121B92B20006CE586 /* Decimal+Flaoting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77578021B92B20006CE586 /* Decimal+Flaoting.swift */; };
 		FA7935FB20D30B710012642E /* SessionAddressSyncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7935FA20D30B710012642E /* SessionAddressSyncer.swift */; };
 		FA7935FF20D3B3D70012642E /* AddressManager+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7935FE20D3B3D70012642E /* AddressManager+Default.swift */; };
@@ -705,6 +707,7 @@
 		FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
 		FA6B5745207513BE002124D0 /* UIViewController+TopMost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopMost.swift"; sourceTree = "<group>"; };
+		FA704EB12306B45E00A1A459 /* AdvancedGateManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdvancedGateManager+Rx.swift"; sourceTree = "<group>"; };
 		FA77578021B92B20006CE586 /* Decimal+Flaoting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Flaoting.swift"; sourceTree = "<group>"; };
 		FA7935FA20D30B710012642E /* SessionAddressSyncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAddressSyncer.swift; sourceTree = "<group>"; };
 		FA7935FE20D3B3D70012642E /* AddressManager+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressManager+Default.swift"; sourceTree = "<group>"; };
@@ -1521,6 +1524,7 @@
 				FA83186721F9CDE0007F268D /* GateManager+Rx.swift */,
 				FA83186921FF003F007F268D /* CoinManager+Rx.swift */,
 				FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */,
+				FA704EB12306B45E00A1A459 /* AdvancedGateManager+Rx.swift */,
 			);
 			path = Rx;
 			sourceTree = "<group>";
@@ -2779,6 +2783,7 @@
 				FA333024224A4B3C003B4763 /* TransactionsViewModel.swift in Sources */,
 				FA333025224A4B3C003B4763 /* GrowingDefaultTextView.swift in Sources */,
 				FA333026224A4B3C003B4763 /* SessionAddressSyncer.swift in Sources */,
+				FA704EB22306B45E00A1A459 /* AdvancedGateManager+Rx.swift in Sources */,
 				FA333027224A4B3C003B4763 /* SettingsSwitchTableViewCell.swift in Sources */,
 				FA333028224A4B3C003B4763 /* SendViewController.swift in Sources */,
 				FAA2AAE12296C5BE00581D47 /* TransactionTitleHelper.swift in Sources */,
@@ -2980,6 +2985,7 @@
 				1091290DC26B4D7128B4DA92 /* TransactionsViewModel.swift in Sources */,
 				FAA2607820933984009FF3DE /* GrowingDefaultTextView.swift in Sources */,
 				FA7935FB20D30B710012642E /* SessionAddressSyncer.swift in Sources */,
+				FA704EB32306B45E00A1A459 /* AdvancedGateManager+Rx.swift in Sources */,
 				FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */,
 				D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */,
 				FAA2AAE22296C5BE00581D47 /* TransactionTitleHelper.swift in Sources */,

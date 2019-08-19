@@ -9,29 +9,27 @@
 import Foundation
 import RxDataSources
 
-
-
 public class BaseCellItem: IdentifiableType, Equatable {
 
 	let reuseIdentifier: String
-	
+
 	let identifier: String
 
 	init(reuseIdentifier: String, identifier: String) {
 		self.reuseIdentifier = reuseIdentifier
 		self.identifier = identifier
 	}
-	
-	//MARK: - IdentifiableType
-	
+
+	// MARK: - IdentifiableType
+
 	public typealias Identity = String
-	
+
 	public var identity : Identity {
 		return identifier
 	}
-	
-	//MARK: - Equatable
-	
+
+	// MARK: - Equatable
+
 	public static func == (lhs: BaseCellItem, rhs: BaseCellItem) -> Bool {
 		return lhs.identifier == rhs.identifier
 	}

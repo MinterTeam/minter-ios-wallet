@@ -108,7 +108,7 @@ class GateManager : BaseManager {
 			}
 		}
 	}
-	
+
 	/// Method retreives estimate coin buy
 	///
 	/// - Parameters:
@@ -116,7 +116,10 @@ class GateManager : BaseManager {
 	///   - coinTo: coin to buy (e.g. BELTCOIN)
 	///		- value: value to calculate estimates for
 	///   - completion: method which will be called after request finished
-	public func estimateCoinBuy(coinFrom: String, coinTo: String, value: Decimal, completion: ((Decimal?, Decimal?, Error?) -> ())?) {
+	public func estimateCoinBuy(coinFrom: String,
+															coinTo: String,
+															value: Decimal,
+															completion: ((Decimal?, Decimal?, Error?) -> ())?) {
 
 		let url = MinterGateAPIURL.estimateCoinBuy.url()
 
@@ -163,7 +166,9 @@ class GateManager : BaseManager {
 
 		let url = MinterGateAPIURL.estimateCoinSell.url()
 
-		self.httpClient.getRequest(url, parameters: ["coinToBuy" : coinTo, "coinToSell" : coinFrom, "valueToSell" : value]) { (response, error) in
+		self.httpClient.getRequest(url, parameters: ["coinToBuy" : coinTo,
+																								 "coinToSell" : coinFrom,
+																								 "valueToSell" : value]) { (response, error) in
 
 			var willGet: Decimal?
 			var com: Decimal?

@@ -8,14 +8,9 @@
 
 import Foundation
 import MinterExplorer
-
 import MinterMy
 
-
 class TransactionItem {
-	
 	var transaction: MinterExplorer.Transaction?
-	
 	var user: User?
-	
 }

@@ -30,7 +30,7 @@ enum Environment: String {
 
 	case staging = "staging"
 	case production = "production"
-	
+
 	var nodeBaseURL: String {
 		switch self {
 		case .staging: return "https://minter-node-2.testnet.minter.network:8841"
@@ -58,21 +58,21 @@ enum Environment: String {
 		case .production: return "wss://explorer-rtm.testnet.minter.network/connection/websocket"
 		}
 	}
-	
+
 	var testExplorerAPIBaseURL: String {
 		switch self {
 		case .staging: return "https://tst.api.explorer.minter.network"
 		case .production: return "https://tst.api.explorer.minter.network"
 		}
 	}
-	
+
 	var testExplorerWebURL: String {
 		switch self {
 		case .staging: return "https://tst.api.explorer.minter.network"
 		case .production: return "https://tst.api.explorer.minter.network"
 		}
 	}
-	
+
 	var testExplorerWebsocketURL: String {
 		switch self {
 		case .staging: return "wss://tst.rtm.minter.network/connection/websocket"
