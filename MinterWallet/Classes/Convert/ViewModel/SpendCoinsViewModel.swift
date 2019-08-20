@@ -319,7 +319,6 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 				self?.approximatelyReady.value = true
 			}
 		}).disposed(by: disposeBag)
-
 	}
 
 	override func validateErrors() {

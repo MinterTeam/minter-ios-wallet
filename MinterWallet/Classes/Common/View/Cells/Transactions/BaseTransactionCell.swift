@@ -14,7 +14,7 @@ class BaseTransactionCell: ExpandableCell {
 
 	@IBOutlet weak var payloadText: UILabel!
 	@IBOutlet weak var payloadTitle: UILabel!
-	@IBOutlet weak var payloadBottomConstraint: NSLayoutConstraint!
+	@IBOutlet var payloadBottomConstraint: NSLayoutConstraint!
 
 	// MARK: -
 
@@ -24,31 +24,10 @@ class BaseTransactionCell: ExpandableCell {
 			return
 		}
 
-		if self.reuseIdentifier?.lowercased().contains("convert") ?? false {
-			
-		}
-
-		print(transaction.payload)
-//		if transaction.payload != nil && transaction.payload != "" {
-			payloadText.text = transaction.payload
-			payloadTitle.isHidden = !(transaction.payload != nil && transaction.payload != "")
-			payloadBottomConstraint?.isActive = (transaction.payload != nil && transaction.payload != "")
-//		} else {
-//			payloadText.text = ""
-//			payloadTitle.isHidden = true
-//			payloadBottomConstraint?.isActive = false
-//		}
+		payloadText.text = transaction.payload
+		payloadTitle.isHidden = !(transaction.payload != nil && transaction.payload != "")
+		payloadBottomConstraint?.isActive = (transaction.payload != nil && transaction.payload != "")
 		setNeedsUpdateConstraints()
-		layoutIfNeeded()
-	}
-
-	override func prepareForReuse() {
-		super.prepareForReuse()
-
-		if self.reuseIdentifier?.lowercased().contains("convert") ?? false {
-			
-		}
-
 	}
 
 }
