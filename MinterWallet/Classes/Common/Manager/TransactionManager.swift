@@ -45,9 +45,7 @@ class WalletTransactionManager {
 				let from = transaction.from
 				let to = transaction.data?.to
 
-				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
-				})
+				let hasAddress = Session.shared.hasAddress(address: transaction.from ?? "")
 
 				return hasAddress ? to : from
 			}).filter({ (user) -> Bool in

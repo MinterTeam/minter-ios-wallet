@@ -394,6 +394,10 @@
 		FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */; };
 		FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */; };
 		FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */; };
+		FA7DB947230C8B2500C75A7A /* Session+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB946230C8B2500C75A7A /* Session+.swift */; };
+		FA7DB948230C8B2500C75A7A /* Session+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB946230C8B2500C75A7A /* Session+.swift */; };
+		FA7DB94A230C8EBF00C75A7A /* BipDevManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB949230C8EBF00C75A7A /* BipDevManager.swift */; };
+		FA7DB94B230C8EBF00C75A7A /* BipDevManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB949230C8EBF00C75A7A /* BipDevManager.swift */; };
 		FA83186621F8C268007F268D /* GateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186521F8C268007F268D /* GateManager.swift */; };
 		FA83186821F9CDE0007F268D /* GateManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186721F9CDE0007F268D /* GateManager+Rx.swift */; };
 		FA83186A21FF003F007F268D /* CoinManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186921FF003F007F268D /* CoinManager+Rx.swift */; };
@@ -722,6 +726,8 @@
 		FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonTableViewCell.xib; sourceTree = "<group>"; };
 		FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewController.swift; sourceTree = "<group>"; };
 		FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewCell.swift; sourceTree = "<group>"; };
+		FA7DB946230C8B2500C75A7A /* Session+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+.swift"; sourceTree = "<group>"; };
+		FA7DB949230C8EBF00C75A7A /* BipDevManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BipDevManager.swift; sourceTree = "<group>"; };
 		FA83186521F8C268007F268D /* GateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GateManager.swift; sourceTree = "<group>"; };
 		FA83186721F9CDE0007F268D /* GateManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GateManager+Rx.swift"; sourceTree = "<group>"; };
 		FA83186921FF003F007F268D /* CoinManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoinManager+Rx.swift"; sourceTree = "<group>"; };
@@ -1616,6 +1622,7 @@
 				FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */,
 				FA83186521F8C268007F268D /* GateManager.swift */,
 				FAB0D35422CCA5A9002945E2 /* PINManager.swift */,
+				FA7DB949230C8EBF00C75A7A /* BipDevManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -1777,6 +1784,7 @@
 				FAA2AAE32296C7F100581D47 /* String+Subscript.swift */,
 				FAA2AAE62296CE4100581D47 /* BannerHelper.swift */,
 				FADF81F822FB19D3002890EF /* String+Coin.swift */,
+				FA7DB946230C8B2500C75A7A /* Session+.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2658,6 +2666,7 @@
 				FA332FA5224A4B3C003B4763 /* BaseTableSectionItem.swift in Sources */,
 				FAB0D34D22C9E354002945E2 /* CBPinEntryViewDefaults.swift in Sources */,
 				FA332FA6224A4B3C003B4763 /* AddressTextViewTableViewCell.swift in Sources */,
+				FA7DB947230C8B2500C75A7A /* Session+.swift in Sources */,
 				FA332FA7224A4B3C003B4763 /* ReceiveRouter.swift in Sources */,
 				FA332FA8224A4B3C003B4763 /* String+RawTransactionAddress.swift in Sources */,
 				FA332FA9224A4B3C003B4763 /* ActionBarButtonItem.swift in Sources */,
@@ -2732,6 +2741,7 @@
 				FA332FEA224A4B3C003B4763 /* ButtonTableViewCell.swift in Sources */,
 				FA332FEB224A4B3C003B4763 /* LUAutocompleteTableViewCell.swift in Sources */,
 				FA332FEC224A4B3C003B4763 /* AutoGrowingTextView.swift in Sources */,
+				FA7DB94A230C8EBF00C75A7A /* BipDevManager.swift in Sources */,
 				FA332FEE224A4B3C003B4763 /* ReaderOverlayView.swift in Sources */,
 				FA332FEF224A4B3C003B4763 /* String+Email.swift in Sources */,
 				FA332FF0224A4B3C003B4763 /* QRCode.swift in Sources */,
@@ -2861,6 +2871,7 @@
 				FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */,
 				FAB0D34E22C9E354002945E2 /* CBPinEntryViewDefaults.swift in Sources */,
 				FA670A3E20E63431000A5169 /* AddressTextViewTableViewCell.swift in Sources */,
+				FA7DB948230C8B2500C75A7A /* Session+.swift in Sources */,
 				FAE5548E2118472800D4872C /* ReceiveRouter.swift in Sources */,
 				FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */,
 				FAE7945A208DDC3F0006CB0B /* ActionBarButtonItem.swift in Sources */,
@@ -2935,6 +2946,7 @@
 				FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */,
 				FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */,
 				FAF5FDB0214949CB00911619 /* LUAutocompleteTableViewCell.swift in Sources */,
+				FA7DB94B230C8EBF00C75A7A /* BipDevManager.swift in Sources */,
 				FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */,
 				FA0F296121B1740800E10F5E /* ReaderOverlayView.swift in Sources */,
 				FA79F60720D06D3D007876ED /* String+Email.swift in Sources */,

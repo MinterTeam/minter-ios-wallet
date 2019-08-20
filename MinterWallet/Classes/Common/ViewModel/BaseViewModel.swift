@@ -39,12 +39,10 @@ extension TransactionViewableViewModel {
 			return nil
 		}
 
-		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
+		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash ?? String.random(length: 20))
 
 		var signMultiplier = 1.0
-		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-			account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
-		})
+		let hasAddress = Session.shared.hasAddress(address: transaction.from ?? "")
 
 		var title = ""
 		if hasAddress {
@@ -80,9 +78,7 @@ extension TransactionViewableViewModel {
 		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash  ?? String.random(length: 20))
 		
 		var signMultiplier = 1.0
-		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-			account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
-		})
+		let hasAddress = Session.shared.hasAddress(address: transaction.from ?? "")
 
 		var title = ""
 		if hasAddress {
@@ -105,10 +101,7 @@ extension TransactionViewableViewModel {
 
 		if let data = transactionItem.transaction?.data as? MultisendCoinTransactionData {
 			if let val = data.values?.filter({ (val) -> Bool in
-				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == val.to.stripMinterHexPrefix().lowercased()
-				})
-				return hasAddress
+				return Session.shared.hasAddress(address: val.to)
 			}), val.count == 1 {
 				if let payload = val.first {
 					transactionCellItem.to = payload.to
@@ -142,9 +135,7 @@ extension TransactionViewableViewModel {
 		}
 
 		let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash ?? String.random(length: 20))
-		let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-			account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
-		})
+		let hasAddress = Session.shared.hasAddress(address: transaction.from ?? "")
 
 		var title = ""
 		if hasAddress {
@@ -233,9 +224,7 @@ extension TransactionViewableViewModel {
 		transactionCellItem.payload = transaction.payload?.base64Decoded()
 
 		if let data = transaction.data as? MinterExplorer.RedeemCheckRawTransactionData {
-			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-				account.address.stripMinterHexPrefix().lowercased() == (transaction.from ?? "").stripMinterHexPrefix().lowercased()
-			})
+			let hasAddress = Session.shared.hasAddress(address: transaction.from ?? "")
 			if !hasAddress {
 				signMultiplier = -1.0
 			}

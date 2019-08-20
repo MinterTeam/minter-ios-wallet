@@ -259,9 +259,7 @@ class Session {
 				let item = TransactionItem()
 				item.transaction = transaction
 
-				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
-				})
+				let hasAddress = Session.shared.hasAddress(address: transaction.from ?? "")
 
 				var key = transaction.from?.lowercased()
 
