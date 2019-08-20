@@ -113,13 +113,9 @@ class ConvertCoinsViewModel : BaseViewModel {
 	}
 
 	var hasMultipleCoins: Bool {
-		var coinCount = 0
-		Session.shared.allBalances.value.keys.forEach { (key) in
-			Session.shared.allBalances.value[key]?.forEach({ (val) in
-				coinCount += 1
-			})
-		}
-		return coinCount > 1
+		return Session.shared.allBalances.value.keys.map {
+			return Session.shared.allBalances.value[$0]?.count ?? 0
+		}.reduce(0, +) > 1
 	}
 
 	func canPayComissionWithBaseCoin() -> Bool {
