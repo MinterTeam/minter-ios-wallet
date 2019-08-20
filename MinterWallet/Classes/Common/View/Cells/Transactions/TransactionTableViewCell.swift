@@ -25,7 +25,7 @@ protocol ExpandedTransactionTableViewCellDelegate: class {
 	func didTapToButton(cell: ExpandableCell)
 }
 
-class TransactionTableViewCell: ExpandableCell {
+class TransactionTableViewCell: BaseTransactionCell {
 
 	// MARK: -
 
@@ -70,7 +70,7 @@ class TransactionTableViewCell: ExpandableCell {
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 	}
-	
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
 	}
@@ -82,6 +82,9 @@ class TransactionTableViewCell: ExpandableCell {
 	// MARK: -
 
 	override func configure(item: BaseCellItem) {
+
+		super.configure(item: item)
+
 		defer {
 			self.setNeedsUpdateConstraints()
 			self.setNeedsLayout()

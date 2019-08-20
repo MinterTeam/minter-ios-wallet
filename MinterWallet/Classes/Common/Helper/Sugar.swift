@@ -8,7 +8,7 @@
 
 import Foundation
 
-//MARK: Array
+// MARK: Array
 
 extension Array {
 	public subscript (safe index: Int) -> Element? {
@@ -22,5 +22,20 @@ extension Array {
 		guard range.upperBound <= self.endIndex else { return Array(self) }
 		
 		return Array(self[range])
+	}
+}
+
+extension String {
+	func base64Encoded() -> String? {
+		return data(using: .utf8)?.base64EncodedString()
+	}
+
+	func base64Decoded() -> String? {
+		var st = self;
+		if (self.count % 4 <= 2){
+			st += String(repeating: "=", count: (self.count % 4))
+		}
+		guard let data = Data(base64Encoded: st) else { return nil }
+		return String(data: data, encoding: .utf8)
 	}
 }

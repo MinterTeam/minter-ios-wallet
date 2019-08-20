@@ -19,7 +19,7 @@ class RedeemCheckTableViewCellItem: TransactionCellItem {
 	var expandable: Bool?
 }
 
-class RedeemCheckTableViewCell: ExpandableCell {
+class RedeemCheckTableViewCell: BaseTransactionCell {
 
 	// MARK: -
 
@@ -73,6 +73,7 @@ class RedeemCheckTableViewCell: ExpandableCell {
 	// MARK: -
 
 	override func configure(item: BaseCellItem) {
+		super.configure(item: item)
 
 		if let transaction = item as? RedeemCheckTableViewCellItem {
 			identifier = item.identifier
@@ -109,7 +110,6 @@ class RedeemCheckTableViewCell: ExpandableCell {
 	}
 
 	private func amountText(amount: Decimal?) -> String {
-
 		guard amount != nil else {
 			return ""
 		}

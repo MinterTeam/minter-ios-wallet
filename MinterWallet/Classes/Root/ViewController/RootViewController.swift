@@ -60,7 +60,7 @@ class RootViewController: UIViewController, ControllerType {
 	}
 
 	// MARK: -
-	
+
 	var shouldPresentPIN = false
 
 	var viewModel = RootViewModel()

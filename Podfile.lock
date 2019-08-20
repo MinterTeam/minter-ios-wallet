@@ -68,7 +68,7 @@ DEPENDENCIES:
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - KeychainSwift (= 12.0.0)
   - MinterCore
-  - MinterExplorer
+  - MinterExplorer (from `../minter-ios-explorer/`)
   - MinterMy
   - NotificationBannerSwift (= 1.8.0)
   - ObjectMapper (~> 3.3)
@@ -96,7 +96,6 @@ SPEC REPOS:
     - KeychainSwift
     - MarqueeLabel
     - MinterCore
-    - MinterExplorer
     - MinterMy
     - NotificationBannerSwift
     - ObjectMapper
@@ -121,6 +120,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   GoldenKeystore:
     :git: https://github.com/sidorov-panda/GoldenKeystore
+  MinterExplorer:
+    :path: "../minter-ios-explorer/"
   SwiftValidator:
     :branch: master
     :git: https://github.com/jpotts18/SwiftValidator.git
@@ -146,7 +147,7 @@ SPEC CHECKSUMS:
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   MinterCore: 936b9d42547c26a61689dbb81e75dec522a93b19
-  MinterExplorer: 615b3b4fd6cd8b105a9a950c98b2517a01d499dc
+  MinterExplorer: 70eaab08988fd2c7cc37f8cedffa1f9d639ba4f9
   MinterMy: 9a3ae2ae14fe7a834b4f714c5fc1ac2e4cd750dd
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
   ObjectMapper: 0d4402610f4e468903ae64629eec4784531e5c51
@@ -169,6 +170,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 58bdce351da7515566b4706073bd8d49cb931fa4
+PODFILE CHECKSUM: 570911e19e38707dfa48da66dfed02d5240ac3d1
 
 COCOAPODS: 1.7.5

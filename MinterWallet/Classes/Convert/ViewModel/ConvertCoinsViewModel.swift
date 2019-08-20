@@ -89,7 +89,8 @@ class ConvertCoinsViewModel : BaseViewModel {
 		Session.shared.updateGas()
 
 		Session.shared.currentGasPrice.asObservable().map { (gas) -> String in
-			return CurrencyNumberFormatter.formattedDecimal(with: self.baseCoinCommission, formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
+			return CurrencyNumberFormatter.formattedDecimal(with: self.baseCoinCommission,
+																											formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
 			}.subscribe(onNext: { [weak self] (val) in
 				self?.feeObservable.onNext(val)
 			}).disposed(by: disposeBag)

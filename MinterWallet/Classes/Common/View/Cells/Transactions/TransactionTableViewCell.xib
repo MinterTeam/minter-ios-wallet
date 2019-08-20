@@ -26,11 +26,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="455" id="KGk-i7-Jjw" customClass="TransactionTableViewCell" customModule="MinterWallet" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="552" id="KGk-i7-Jjw" customClass="TransactionTableViewCell" customModule="MinterWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="552"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="454.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="551.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WMg-bJ-lLm">
@@ -85,15 +85,15 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pW1-3w-baO">
-                        <rect key="frame" x="0.0" y="52" width="320" height="402.5"/>
+                        <rect key="frame" x="0.0" y="52" width="320" height="499.5"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SvH-5w-0eX">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SvH-5w-0eX">
                                 <rect key="frame" x="20" y="92" width="13.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="0Lm-yT-IzK" customClass="TransactionAddressButton" customModule="MinterWallet" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="0Lm-yT-IzK" customClass="TransactionAddressButton" customModule="MinterWallet" customModuleProvider="target">
                                 <rect key="frame" x="20" y="110" width="300" height="54"/>
                                 <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="9" maxX="20" maxY="27"/>
@@ -111,55 +111,55 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eun-Fx-e9f">
-                                <rect key="frame" x="20" y="216" width="25" height="14"/>
+                                <rect key="frame" x="20" y="266.5" width="25" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.55" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LGm-mH-vX2">
-                                <rect key="frame" x="20" y="286" width="32" height="18"/>
+                                <rect key="frame" x="20" y="336.5" width="32" height="18"/>
                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16 March 2018" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waT-d7-hOy">
-                                <rect key="frame" x="20" y="182" width="108" height="18"/>
+                                <rect key="frame" x="20" y="232.5" width="108" height="18"/>
                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18:34:53" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ihi-fg-pO4">
-                                <rect key="frame" x="190" y="182" width="63.5" height="18"/>
+                                <rect key="frame" x="190" y="232.5" width="63.5" height="18"/>
                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xb0-6a-Pfp">
-                                <rect key="frame" x="20" y="268" width="44" height="14"/>
+                                <rect key="frame" x="20" y="318.5" width="44" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GnC-WK-naU">
-                                <rect key="frame" x="190" y="164" width="27" height="14"/>
+                                <rect key="frame" x="190" y="214.5" width="27" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MCD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8s8-pC-0Qz">
-                                <rect key="frame" x="20" y="234" width="36" height="18"/>
+                                <rect key="frame" x="20" y="284.5" width="36" height="18"/>
                                 <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ET-1I-DW9">
-                                <rect key="frame" x="20" y="164" width="26.5" height="14"/>
+                                <rect key="frame" x="20" y="214.5" width="26.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufu-IR-SAD" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="10" y="320" width="300" height="50"/>
+                                <rect key="frame" x="10" y="429.5" width="300" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Z3P-yv-Iwb"/>
                                 </constraints>
@@ -171,7 +171,7 @@
                                     <action selector="didTapExpandedButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="s6s-wi-Zjq"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="7vp-L0-p2z" customClass="TransactionAddressButton" customModule="MinterWallet" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="7vp-L0-p2z" customClass="TransactionAddressButton" customModule="MinterWallet" customModuleProvider="target">
                                 <rect key="frame" x="20" y="38" width="300" height="54"/>
                                 <fontDescription key="fontDescription" name="UbuntuMono-Bold" family="Ubuntu Mono" pointSize="18"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="9" maxX="20" maxY="27"/>
@@ -182,10 +182,24 @@
                                     <action selector="didTapFromButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="m7D-dB-4tJ"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Payload text here" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onN-VS-4Oi">
+                                <rect key="frame" x="20" y="388.5" width="280" height="18"/>
+                                <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Payload" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nwv-VQ-9CG">
+                                <rect key="frame" x="20" y="370.5" width="43" height="14"/>
+                                <fontDescription key="fontDescription" name="Ubuntu" family="Ubuntu" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="7vp-L0-p2z" secondAttribute="trailing" id="0kd-cv-wI9"/>
+                            <constraint firstAttribute="trailing" secondItem="onN-VS-4Oi" secondAttribute="trailing" constant="20" id="1hS-i7-H8I"/>
+                            <constraint firstItem="Nwv-VQ-9CG" firstAttribute="leading" secondItem="Xb0-6a-Pfp" secondAttribute="leading" id="69G-wy-vl7"/>
                             <constraint firstAttribute="trailing" secondItem="ufu-IR-SAD" secondAttribute="trailing" constant="10" id="7q8-QA-NwD"/>
                             <constraint firstItem="7vp-L0-p2z" firstAttribute="leading" secondItem="pW1-3w-baO" secondAttribute="leading" constant="20" id="9y2-GT-8u9"/>
                             <constraint firstItem="1ET-1I-DW9" firstAttribute="leading" secondItem="D6F-fZ-xAm" secondAttribute="leading" id="B82-dx-bB6"/>
@@ -197,13 +211,17 @@
                             <constraint firstAttribute="height" id="NUu-HM-SLH"/>
                             <constraint firstItem="1ET-1I-DW9" firstAttribute="top" secondItem="0Lm-yT-IzK" secondAttribute="bottom" id="OlW-nx-kQT"/>
                             <constraint firstItem="eun-Fx-e9f" firstAttribute="leading" secondItem="1ET-1I-DW9" secondAttribute="leading" id="PpT-02-c8Z"/>
+                            <constraint firstItem="Nwv-VQ-9CG" firstAttribute="top" secondItem="LGm-mH-vX2" secondAttribute="bottom" constant="16" id="RVi-DL-gYJ"/>
                             <constraint firstItem="eun-Fx-e9f" firstAttribute="top" secondItem="waT-d7-hOy" secondAttribute="bottom" constant="16" id="Riv-g6-QoY"/>
-                            <constraint firstItem="ufu-IR-SAD" firstAttribute="top" secondItem="LGm-mH-vX2" secondAttribute="bottom" constant="16" id="TVy-ke-M5c"/>
                             <constraint firstItem="Ihi-fg-pO4" firstAttribute="leading" secondItem="GnC-WK-naU" secondAttribute="leading" id="UHE-pS-r3F"/>
                             <constraint firstItem="SvH-5w-0eX" firstAttribute="top" secondItem="7vp-L0-p2z" secondAttribute="bottom" id="XRU-uW-9ki"/>
                             <constraint firstItem="waT-d7-hOy" firstAttribute="leading" secondItem="1ET-1I-DW9" secondAttribute="leading" id="ZmT-W1-rek"/>
+                            <constraint firstItem="ufu-IR-SAD" firstAttribute="top" secondItem="onN-VS-4Oi" secondAttribute="bottom" constant="23" id="aDI-Bq-Vwa"/>
+                            <constraint firstItem="onN-VS-4Oi" firstAttribute="top" secondItem="Nwv-VQ-9CG" secondAttribute="bottom" constant="4" id="aMd-Yh-RAF"/>
+                            <constraint firstAttribute="bottom" secondItem="ufu-IR-SAD" secondAttribute="bottom" priority="999" constant="20" id="cVL-6Y-XIn"/>
                             <constraint firstItem="0Lm-yT-IzK" firstAttribute="top" secondItem="SvH-5w-0eX" secondAttribute="bottom" constant="4" id="duc-Od-kNa"/>
                             <constraint firstItem="D6F-fZ-xAm" firstAttribute="leading" secondItem="pW1-3w-baO" secondAttribute="leading" constant="20" id="dx4-M5-ks2"/>
+                            <constraint firstItem="ufu-IR-SAD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="LGm-mH-vX2" secondAttribute="bottom" constant="23" id="fQK-4Q-wP5"/>
                             <constraint firstItem="LGm-mH-vX2" firstAttribute="top" secondItem="Xb0-6a-Pfp" secondAttribute="bottom" constant="4" id="frz-Rc-5cN"/>
                             <constraint firstAttribute="trailing" secondItem="0Lm-yT-IzK" secondAttribute="trailing" id="hI5-6U-22K"/>
                             <constraint firstItem="7vp-L0-p2z" firstAttribute="top" secondItem="D6F-fZ-xAm" secondAttribute="bottom" constant="4" id="hXZ-ef-Vtf"/>
@@ -213,6 +231,7 @@
                             <constraint firstItem="Xb0-6a-Pfp" firstAttribute="leading" secondItem="eun-Fx-e9f" secondAttribute="leading" id="syG-84-pwO"/>
                             <constraint firstItem="ufu-IR-SAD" firstAttribute="leading" secondItem="pW1-3w-baO" secondAttribute="leading" constant="10" id="tJa-6H-PMu"/>
                             <constraint firstItem="D6F-fZ-xAm" firstAttribute="top" secondItem="pW1-3w-baO" secondAttribute="top" constant="20" id="tNB-9Y-2ek"/>
+                            <constraint firstItem="onN-VS-4Oi" firstAttribute="leading" secondItem="Nwv-VQ-9CG" secondAttribute="leading" id="tR9-Qn-xTu"/>
                             <constraint firstItem="GnC-WK-naU" firstAttribute="centerY" secondItem="1ET-1I-DW9" secondAttribute="centerY" id="u48-C4-cTN"/>
                             <constraint firstItem="waT-d7-hOy" firstAttribute="top" secondItem="1ET-1I-DW9" secondAttribute="bottom" constant="4" id="xHl-JS-O8d"/>
                         </constraints>
@@ -255,11 +274,14 @@
                 <outlet property="expandedAmountLabel" destination="LGm-mH-vX2" id="MS4-Oi-us5"/>
                 <outlet property="fromAddressButton" destination="7vp-L0-p2z" id="YBP-MH-Wdo"/>
                 <outlet property="heightCoinstraint" destination="NUu-HM-SLH" id="gQH-pH-Xih"/>
+                <outlet property="payloadBottomConstraint" destination="aDI-Bq-Vwa" id="wDW-nO-jca"/>
+                <outlet property="payloadText" destination="onN-VS-4Oi" id="Rrl-4x-4Pc"/>
+                <outlet property="payloadTitle" destination="Nwv-VQ-9CG" id="NAp-Eh-gu6"/>
                 <outlet property="timeLabel" destination="Ihi-fg-pO4" id="Cao-E3-Sxw"/>
                 <outlet property="title" destination="QCK-HX-lCr" id="1YS-TV-HvE"/>
                 <outlet property="toAddressButton" destination="0Lm-yT-IzK" id="Ea2-6t-mID"/>
             </connections>
-            <point key="canvasLocation" x="32" y="365.66716641679164"/>
+            <point key="canvasLocation" x="32" y="409.29535232383813"/>
         </tableViewCell>
     </objects>
 </document>

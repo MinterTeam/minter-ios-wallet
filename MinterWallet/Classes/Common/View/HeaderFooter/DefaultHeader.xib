@@ -36,7 +36,7 @@
                 <constraint firstItem="VBJ-OA-h4b" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="LFC-hp-93t"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="VBJ-OA-h4b" secondAttribute="trailing" priority="999" constant="10" id="QQN-KZ-BWI"/>
                 <constraint firstItem="VBJ-OA-h4b" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="27" id="dOG-oN-0Fr"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="VBJ-OA-h4b" secondAttribute="bottom" constant="11" id="dsM-2D-G1P"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="VBJ-OA-h4b" secondAttribute="bottom" priority="999" constant="11" id="dsM-2D-G1P"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>

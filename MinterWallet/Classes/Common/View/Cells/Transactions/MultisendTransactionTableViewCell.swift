@@ -19,12 +19,10 @@ class MultisendTransactionTableViewCellItem: TransactionCellItem {
 	var expandable: Bool?
 }
 
-class MultisendTransactionTableViewCell: ExpandableCell {
+class MultisendTransactionTableViewCell: BaseTransactionCell {
 
 	// MARK: -
 
-	let formatter = CurrencyNumberFormatter.transactionFormatter
-	let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
 
@@ -74,6 +72,8 @@ class MultisendTransactionTableViewCell: ExpandableCell {
 	// MARK: -
 
 	override func configure(item: BaseCellItem) {
+		super.configure(item: item)
+
 		amountTitleLabel.alpha = 1.0
 		if let transaction = item as? MultisendTransactionTableViewCellItem {
 			identifier = item.identifier

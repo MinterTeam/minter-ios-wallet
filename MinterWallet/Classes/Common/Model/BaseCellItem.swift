@@ -40,4 +40,5 @@ class TransactionCellItem: BaseCellItem {
 	var txHash: String?
 	var from: String?
 	var to: String?
+	var payload: String?
 }

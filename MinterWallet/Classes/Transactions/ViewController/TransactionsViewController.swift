@@ -121,26 +121,47 @@ class TransactionsViewController: BaseTableViewController {
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
 		if (viewModel.cellItem(section: indexPath.section,
-													 row: indexPath.row) as? SeparatorTableViewCellItem) != nil {
-			return 1
-		}
-
-		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
-			if nil != cell as? MultisendTransactionTableViewCell {
-				return expandedIdentifiers.contains(cell.identifier) ? 315 : 55
-			} else if nil != cell as? ConvertTransactionTableViewCell {
-				return expandedIdentifiers.contains(cell.identifier) ? 295 : 55
-			}
-			return expandedIdentifiers.contains(cell.identifier) ? 444 : 55
-		}
-
-		if (viewModel.cellItem(section: indexPath.section,
 													 row: indexPath.row) as? LoadingTableViewCellItem) != nil {
 			return 52
 		}
 
-		return 0.1
+		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+			return 0.1
+		}
+
+		if item.reuseIdentifier == "BlankTableViewCell" {
+			return 8.0
+		} else if item.reuseIdentifier == "SeparatorTableViewCell" {
+			return 1.0
+		} else if !expandedIdentifiers.contains(item.identifier) {
+			return 55.0
+		} else if item.reuseIdentifier == "ButtonTableViewCell" {
+			return 70.0
+		}
+		return UITableViewAutomaticDimension
 	}
+
+//		if (viewModel.cellItem(section: indexPath.section,
+//													 row: indexPath.row) as? SeparatorTableViewCellItem) != nil {
+//			return 1
+//		}
+//
+//		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
+//			if nil != cell as? MultisendTransactionTableViewCell {
+//				return expandedIdentifiers.contains(cell.identifier) ? 315 : 55
+//			} else if nil != cell as? ConvertTransactionTableViewCell {
+//				return expandedIdentifiers.contains(cell.identifier) ? 295 : 55
+//			}
+//			return expandedIdentifiers.contains(cell.identifier) ? 444 : 55
+//		}
+//
+//		if (viewModel.cellItem(section: indexPath.section,
+//													 row: indexPath.row) as? LoadingTableViewCellItem) != nil {
+//			return 52
+//		}
+//
+//		return 0.1
+//	}
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		super.tableView(tableView, didSelectRowAt: indexPath)

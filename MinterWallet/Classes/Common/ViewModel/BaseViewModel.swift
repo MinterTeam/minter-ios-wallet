@@ -67,6 +67,7 @@ extension TransactionViewableViewModel {
 			transactionCellItem.coin = data.coin
 			transactionCellItem.amount = (data.amount ?? 0) * Decimal(signMultiplier)
 		}
+		transactionCellItem.payload = transaction.payload?.base64Decoded()
 		return transactionCellItem
 	}
 
@@ -100,6 +101,7 @@ extension TransactionViewableViewModel {
 		transactionCellItem.date = transaction.date
 		transactionCellItem.from = transaction.from
 		transactionCellItem.to = transaction.data?.to
+		transactionCellItem.payload = transaction.payload?.base64Decoded()
 
 		if let data = transactionItem.transaction?.data as? MultisendCoinTransactionData {
 			if let val = data.values?.filter({ (val) -> Bool in
@@ -158,6 +160,7 @@ extension TransactionViewableViewModel {
 		transactionCellItem.date = transaction.date
 		transactionCellItem.from = transaction.from
 		transactionCellItem.to = transaction.from
+		transactionCellItem.payload = transaction.payload?.base64Decoded()
 
 		var arrowSign = " > "
 		if #available(iOS 11.0, *) {
@@ -193,6 +196,7 @@ extension TransactionViewableViewModel {
 																																	 identifier: "DelegateTransactionTableViewCell_\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.date = transaction.date
+		transactionCellItem.payload = transaction.payload?.base64Decoded()
 
 		let signMultiplier = transaction.type == .unbond ? 1.0 : -1.0
 		if let data = transaction.data as? DelegatableUnbondableTransactionData {
@@ -224,9 +228,10 @@ extension TransactionViewableViewModel {
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.title = title
 		transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: transaction.from ?? "").url()
-
 		transactionCellItem.date = transaction.date
 		transactionCellItem.to = toAddress
+		transactionCellItem.payload = transaction.payload?.base64Decoded()
+
 		if let data = transaction.data as? MinterExplorer.RedeemCheckRawTransactionData {
 			let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
 				account.address.stripMinterHexPrefix().lowercased() == (transaction.from ?? "").stripMinterHexPrefix().lowercased()

@@ -19,7 +19,7 @@ class DelegateTransactionTableViewCellItem: TransactionCellItem {
 	var expandable: Bool?
 }
 
-class DelegateTransactionTableViewCell: ExpandableCell {
+class DelegateTransactionTableViewCell: BaseTransactionCell {
 
 	// MARK: -
 
@@ -76,6 +76,8 @@ class DelegateTransactionTableViewCell: ExpandableCell {
 	// MARK: -
 
 	override func configure(item: BaseCellItem) {
+		super.configure(item: item)
+
 		if let transaction = item as? DelegateTransactionTableViewCellItem {
 			identifier = item.identifier
 			title.text = transaction.title
@@ -141,7 +143,7 @@ class DelegateTransactionTableViewCell: ExpandableCell {
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		
+
 		//HACK:
 		if self.bounds.width <= 320 {
 			toAddressTopConstraint.constant = 10
