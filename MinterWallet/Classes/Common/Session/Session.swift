@@ -51,6 +51,7 @@ class Session {
 	var balances = Variable([String: Decimal]())
 	var mainCoinBalance = Variable(Decimal(0.0))
 	var delegatedBalance = BehaviorSubject<Decimal>(value: 0.0)
+	var USDRate = BehaviorSubject<Decimal>(value: 0.1)
 	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
 	var accessToken = Variable<String?>(nil)
 	
@@ -297,45 +298,46 @@ class Session {
 	}
 
 	func loadBalances() {
-		
+
 		let addresses = accounts.value.map({ (account) -> String in
 			return "Mx" + account.address.stripMinterHexPrefix()
 		})
-		
+
 		guard addresses.count > 0 else {
 			return
 		}
-		
+
 		addressManager.addresses(addresses: addresses) { [weak self] (response, err) in
-			
+
 			guard (self?.isLoggedIn.value ?? false) || (self?.accounts.value ?? []).count > 0 else {
 				return
 			}
-			
+
 			guard nil == err else {
 				return
 			}
-			
+
 			var newMainCoinBalance = Decimal(0.0)
-			
+
 			response?.forEach({ (address) in
-				
-				guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(), let coins = address["balances"] as? [[String : Any]] else {
+
+				guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(),
+					let coins = address["balances"] as? [[String : Any]] else {
 					return
 				}
-				
+
 				let baseCoinBalance = coins.filter({ (dict) -> Bool in
 					return ((dict["coin"] as? String) ?? "").uppercased() == Coin.baseCoin().symbol!.uppercased()
 				}).map({ (dict) -> Decimal in
 					return Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
 				}).reduce(0, +)
-				
+
 				self?.baseCoinBalances.value[ads] = baseCoinBalance
-				
+
 				newMainCoinBalance += baseCoinBalance
-				
+
 				var newAllBalances = self?.allBalances.value
-				
+
 				var blncs = [String : Decimal]()
 				if let defaultCoin = Coin.baseCoin().symbol {
 					blncs[defaultCoin] = 0.0
@@ -346,16 +348,15 @@ class Session {
 						blncs[key.uppercased()] = amnt
 					}
 				})
-				
+
 				newAllBalances?[ads] = blncs
-				
 				self?.allBalances.value = newAllBalances ?? [:]
 			})
-			
+
 			self?.mainCoinBalance.value = newMainCoinBalance
 		}
 	}
-	
+
 	func updateGas() {
 		gateManager.minGasPrice { (gas, err) in
 			if let gas = gas {
@@ -363,23 +364,23 @@ class Session {
 			}
 		}
 	}
-	
+
 	func loadUser() {
-		
+
 		guard let client = APIClient.withAuthentication() else {
 			return
 		}
-		
+
 		if nil == profileManager {
 			profileManager = ProfileManager(httpClient: client)
 		}
+
 		profileManager?.httpClient = client
-		
 		profileManager?.profile(completion: { [weak self] (user, err) in
 			guard nil == err else {
 				return
 			}
-			
+
 			if let user = user {
 				self?.user.value = user
 				self?.saveUser(user: user)

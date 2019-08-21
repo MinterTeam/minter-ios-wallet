@@ -16,31 +16,36 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 	// MARK: - ViewModelProtocol
 
 	var input: CoinsViewModel.Input!
-
 	var output: CoinsViewModel.Output!
 
 	struct Input {
 		var didRefresh: AnyObserver<Void>
+		var didTapBalance: AnyObserver<Void>
 	}
 
 	struct Output {
 		var totalDelegatedBalance: Observable<String?>
+		var balanceInUSD: Observable<String?>
+		var balanceText: Observable<NSAttributedString?>
 	}
+
+	// MARK: - I/O Subjects
+
+	private var totalDelegatedBalanceSubject = ReplaySubject<String?>.create(bufferSize: 1)
+	private var balanceInUSDSubject = ReplaySubject<String?>.create(bufferSize: 1)
+	private var balanceTextSubject = ReplaySubject<NSAttributedString?>.create(bufferSize: 1)
+
+	private var didRefreshSubject = PublishSubject<Void>()
+	private var didTapBalanceSubject = PublishSubject<Void>()
 
 	// MARK: -
 
-	enum cellIdentifierPrefix : String {
+	enum cellIdentifierPrefix: String {
 	 case transactions = "ButtonTableViewCell_Transactions"
 	 case convert = "ButtonTableViewCell_Convert"
 	}
 
 	// MARK: -
-
-	var title: String {
-		get {
-			return "Coins".localized()
-		}
-	}
 
 	var basicCoinSymbol: String {
 		return Coin.baseCoin().symbol ?? "bip"
@@ -55,9 +60,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 	var totalBalanceObservable: Observable<Decimal> {
 		return Session.shared.mainCoinBalance.asObservable()
 	}
-
-	var totalDelegatedBalanceSubject = ReplaySubject<String?>.create(bufferSize: 1)
-	var didRefreshSubject = PublishSubject<Void>()
 
 	var usernameViewObservable: Observable<User?> {
 		return Session.shared.user.asObservable()
@@ -78,8 +80,9 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		if let id = Session.shared.user.value?.id {
 			url = MinterMyAPIURL.avatarUserId(id: id).url()
 		}
-		if let avatarURLString = Session.shared.user.value?.avatar, let avatarURL = URL(string: avatarURLString) {
-			url = avatarURL
+		if let avatarURLString = Session.shared.user.value?.avatar,
+			let avatarURL = URL(string: avatarURLString) {
+				url = avatarURL
 		}
 		return url
 	}
@@ -94,9 +97,12 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 	override init() {
 		super.init()
 
-		self.input = Input(didRefresh: didRefreshSubject.asObserver())
+		self.input = Input(didRefresh: didRefreshSubject.asObserver(),
+											 didTapBalance: didTapBalanceSubject.asObserver())
 
-		self.output = Output(totalDelegatedBalance: totalDelegatedBalanceSubject.asObservable())
+		self.output = Output(totalDelegatedBalance: totalDelegatedBalanceSubject.asObservable(),
+												 balanceInUSD: balanceInUSDSubject.asObservable(),
+												 balanceText: balanceTextSubject.asObservable())
 
 		Observable.combineLatest(Session.shared.transactions.asObservable(),
 														 Session.shared.balances.asObservable(),
@@ -114,7 +120,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 				}
 				self?.coinObservables[key]?.onNext(bal[key] ?? 0.0)
 			}
-
 		}).disposed(by: disposeBag)
 
 		Session.shared.delegatedBalance.subscribe(onNext: { [weak self] (val) in
@@ -130,6 +135,14 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 			Session.shared.loadBalances()
 			Session.shared.loadTransactions()
 			Session.shared.loadDelegatedBalance()
+		}).disposed(by: disposeBag)
+
+		didTapBalanceSubject.withLatestFrom(Observable.combineLatest(totalBalanceObservable,
+																																 Session.shared.USDRate.asObservable()))
+			.subscribe(onNext: { [weak self] (val) in
+				self?.balanceTextSubject.onNext(self?.headerViewTitleText(with: val.0 * val.1, isUSD: true))
+				
+//				self?.balanceTextSubject.onNext(self?.headerViewTitleText(with: val.0))
 		}).disposed(by: disposeBag)
 	}
 
@@ -274,11 +287,16 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 
 	// MARK: -
 
-	func headerViewTitleText(with balance: Decimal) -> NSAttributedString {
-		let formatter = coinFormatter
+	func headerViewTitleText(with balance: Decimal, isUSD: Bool = false) -> NSAttributedString {
+		let formatter = isUSD ? CurrencyNumberFormatter.USDFormatter : coinFormatter
 		let balanceString = Array((formatter.string(from: balance as NSNumber) ?? "").split(separator: "."))
 
 		let string = NSMutableAttributedString()
+		if isUSD {
+			string.append(NSAttributedString(string: "$",
+																			 attributes: [.foregroundColor: UIColor.white,
+																										.font: UIFont.boldFont(of: 32.0)]))
+		}
 		string.append(NSAttributedString(string: String(balanceString[0]),
 																		 attributes: [.foregroundColor: UIColor.white,
 																									.font: UIFont.boldFont(of: 32.0)]))
@@ -289,9 +307,11 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		string.append(NSAttributedString(string: String(balanceString[1]),
 																		 attributes: [.foregroundColor: UIColor.white,
 																									.font: UIFont.boldFont(of: 20.0)]))
-		string.append(NSAttributedString(string: " " + self.basicCoinSymbol,
-																		 attributes: [.foregroundColor: UIColor.white,
-																									.font: UIFont.boldFont(of: 18.0)]))
+		if !isUSD {
+			string.append(NSAttributedString(string: " " + self.basicCoinSymbol,
+																			 attributes: [.foregroundColor: UIColor.white,
+																										.font: UIFont.boldFont(of: 18.0)]))
+		}
 		return string
 	}
 

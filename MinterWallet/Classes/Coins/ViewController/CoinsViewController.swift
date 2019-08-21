@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxGesture
 import RxDataSources
 import SafariServices
 import AlamofireImage
@@ -21,8 +22,12 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 
 	func configure(with viewModel: CoinsViewModel) {
 
+		// Input
+
 		refreshControl.rx.controlEvent([.valueChanged])
 			.subscribe(viewModel.input.didRefresh).disposed(by: disposeBag)
+
+		// Output
 
 		viewModel.output
 			.totalDelegatedBalance
@@ -66,8 +71,16 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 						self?.view.layoutIfNeeded()
 					}
 				})
-
 		}).disposed(by: disposeBag)
+
+		viewModel.output.balanceText.subscribe(onNext: { [weak self] (balance) in
+			self?.headerViewTitleLabel.pushTransition(0.25)
+			self?.headerViewTitleLabel.attributedText = balance
+		}).disposed(by: disposeBag)
+
+		self.headerViewTitleLabel.rx.tapGesture().map({ (_) -> () in
+			return ()
+		}).subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
 	}
 
 	// MARK: -
@@ -187,8 +200,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 
 		viewModel.sectionsObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
 
-		shouldAnimateCellToggle = true
-
 		hidesBottomBarWhenPushed = false
 
 		let username = UIBarButtonItem(customView: usernameView)
@@ -239,8 +250,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen,
-																					 params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen)
 	}
 
 	// MARK: -
@@ -294,7 +304,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 
 	@objc func didTapUsernameView() {
 		self.tabBarController?.selectedIndex = 3
-		AnalyticsHelper.defaultAnalytics.track(event: .CoinsUsernameButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .CoinsUsernameButton)
 	}
 
 	// MARK: -
@@ -308,7 +318,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 		if let defaultHeader = header as? CoinsTableViewHeaderView {
 			defaultHeader.titleLabel.text = section.header
 		}
-
 		return header
 	}
 
@@ -350,18 +359,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 		}
 		return UITableViewAutomaticDimension
 	}
-
-//
-//		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
-//			if nil != cell as? MultisendTransactionTableViewCell {
-//				return expandedIdentifiers.contains(cell.identifier) ? 315 : 55
-//			} else if nil != cell as? ConvertTransactionTableViewCell {
-//				return expandedIdentifiers.contains(cell.identifier) ? 295 : 55
-//			}
-//			return expandedIdentifiers.contains(cell.identifier) ? 444 : 55
-//		}
-//		return 55
-//	}
 
 	// MARK: - ScreenHeaderProtocol
 
