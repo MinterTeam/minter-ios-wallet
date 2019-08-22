@@ -54,7 +54,7 @@ class Session {
 	var USDRate = BehaviorSubject<Decimal>(value: 0.1)
 	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
 	var accessToken = Variable<String?>(nil)
-	
+
 	var isPINRequired = BehaviorSubject<Bool>(value: PINManager.shared.isPINset)
 
 	private var refreshToken = Variable<String?>(nil)
@@ -196,9 +196,8 @@ class Session {
 		balances.value = [:]
 		mainCoinBalance.value = 0.0
 		user.value = nil
-		
+
 		isPINRequired.onNext(false)
-		
 	}
 
 	// MARK: -

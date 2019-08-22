@@ -20,10 +20,10 @@ protocol BaseRouter: class {
 
 class Router {
 
-	enum ParamType : String {
-		case int = "int"
-		case float = "float"
-		case string = "string"
+	enum ParamType: String {
+		case int
+		case float
+		case string
 	}
 
 	// MARK: -

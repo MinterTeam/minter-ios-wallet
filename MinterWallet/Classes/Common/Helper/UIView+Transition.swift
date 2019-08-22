@@ -6,13 +6,12 @@
 //  Copyright © 2019 Minter. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension UIView {
 	func pushTransition(_ duration:CFTimeInterval) {
-		let animation:CATransition = CATransition()
-		animation.timingFunction = CAMediaTimingFunction(name:
-			kCAMediaTimingFunctionEaseInEaseOut)
+		let animation: CATransition = CATransition()
+		animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 		animation.type = kCATransitionPush
 		animation.subtype = kCATransitionFromTop
 		animation.duration = duration

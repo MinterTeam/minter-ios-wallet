@@ -96,21 +96,21 @@
                                             <fragment content="0">
                                                 <attributes>
                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                    <font key="NSFont" size="28" name="Ubuntu-Bold"/>
+                                                    <font key="NSFont" metaFont="system" size="28"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
                                             </fragment>
                                             <fragment content=".">
                                                 <attributes>
                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                    <font key="NSFont" size="18" name="Ubuntu-Bold"/>
+                                                    <font key="NSFont" metaFont="system" size="18"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
                                             </fragment>
                                             <fragment content="0000 bips">
                                                 <attributes>
                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                    <font key="NSFont" size="20" name="Ubuntu-Bold"/>
+                                                    <font key="NSFont" metaFont="system" size="20"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
                                             </fragment>
@@ -205,8 +205,9 @@
                         <outlet property="dotCircle2ImageView" destination="Ai8-OP-VnN" id="fkk-EO-aAf"/>
                         <outlet property="errorLabel" destination="jjT-df-Zka" id="lE9-IZ-MVT"/>
                         <outlet property="headerView" destination="1OM-Ql-2PQ" id="nj2-Q6-cqJ"/>
+                        <outlet property="headerViewBalanceLabel" destination="RIV-Gf-6Jf" id="z0E-pr-2vw"/>
                         <outlet property="headerViewHeightConstraint" destination="1Tf-ya-4PI" id="Slr-43-8k2"/>
-                        <outlet property="headerViewTitleLabel" destination="RIV-Gf-6Jf" id="aT8-bq-ew0"/>
+                        <outlet property="headerViewTitleLabel" destination="b7g-aO-BzU" id="6A2-zn-YA7"/>
                         <outlet property="robotImageView" destination="J8i-0I-4Si" id="gPE-G3-gM0"/>
                         <outlet property="tableHeaderTopConstraint" destination="N7n-hV-Obi" id="d8n-Dj-aiQ"/>
                         <outlet property="tableView" destination="WIo-BM-mO4" id="QrX-Ng-w8P"/>

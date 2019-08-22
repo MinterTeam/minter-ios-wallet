@@ -16,6 +16,8 @@ import NotificationBannerSwift
 
 class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, ControllerType {
 
+	private var disposeBag = DisposeBag()
+
 	// MARK: - ControllerType
 
 	typealias ViewModelType = CoinsViewModel
@@ -32,12 +34,14 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 		viewModel.output
 			.totalDelegatedBalance
 			.asDriver(onErrorJustReturn: "").drive(onNext: { [weak self] (val) in
+				let defaultTopConstraint = CGFloat(63.0)
+
 				var shouldLayout = false
 				if val == nil {
-					if self?.delegatedHeaderTopConstraint.constant == -63.0 {
+					if self?.delegatedHeaderTopConstraint.constant == -defaultTopConstraint {
 						shouldLayout = false
 					} else {
-						self?.delegatedHeaderTopConstraint.constant = -63.0
+						self?.delegatedHeaderTopConstraint.constant = -defaultTopConstraint
 						shouldLayout = true
 					}
 					self?.delegatedBalanceLabel.text = "0.0"
@@ -73,12 +77,15 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 				})
 		}).disposed(by: disposeBag)
 
-		viewModel.output.balanceText.subscribe(onNext: { [weak self] (balance) in
-			self?.headerViewTitleLabel.pushTransition(0.25)
-			self?.headerViewTitleLabel.attributedText = balance
+		viewModel.output.balanceText.subscribe(onNext: { [weak self] (balanceItem) in
+			if balanceItem.animated {
+				self?.headerViewTitleLabel.pushTransition(0.55)
+			}
+			self?.headerViewTitleLabel.text = balanceItem.title
+			self?.headerViewBalanceLabel.attributedText = balanceItem.text
 		}).disposed(by: disposeBag)
 
-		self.headerViewTitleLabel.rx.tapGesture().map({ (_) -> () in
+		self.headerViewBalanceLabel.rx.tapGesture().map({ (_) -> () in
 			return ()
 		}).subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
 	}
@@ -100,14 +107,14 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 	@IBOutlet weak var balanceBottomConstraint: NSLayoutConstraint!
 	@IBOutlet weak var balanceTopConstraint: NSLayoutConstraint!
 	@IBOutlet weak var headerViewHeightConstraint: NSLayoutConstraint!
-	@IBOutlet weak var usernameBarItem: UIBarButtonItem!
-	@IBOutlet weak var usernameButton: UIButton!
+	@IBOutlet var usernameView: UsernameView!
 	@IBOutlet var headerView: ScreenHeader? {
 		didSet {
 			headerView?.delegate = self
 		}
 	}
-	@IBOutlet var usernameView: UsernameView!
+	//BalanceHeader
+	@IBOutlet weak var headerViewBalanceLabel: UILabel!
 	@IBOutlet weak var headerViewTitleLabel: UILabel!
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
@@ -136,8 +143,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 	// MARK: -
 
 	var viewModel = CoinsViewModel()
-
-	private var disposeBag = DisposeBag()
 
 	// MARK: Life cycle
 
@@ -198,7 +203,8 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
-		viewModel.sectionsObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
+		viewModel.sectionsObservable
+			.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
 
 		hidesBottomBarWhenPushed = false
 
@@ -216,22 +222,20 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 			return !val
 		}).bind(to: usernameView.rx.isHidden).disposed(by: disposeBag)
 
-		viewModel.usernameViewObservable.asObservable().subscribe(onNext: { [weak self] (user) in
-			self?.updateUsernameView()
+		viewModel.usernameViewObservable.asObservable()
+			.subscribe(onNext: { [weak self] (user) in
+				self?.updateUsernameView()
 		}).disposed(by: disposeBag)
 
-		viewModel.totalBalanceObservable.subscribe(onNext: { [weak self] (balance) in
-			self?.headerViewTitleLabel.attributedText = self?.viewModel.headerViewTitleText(with: balance)
-		}).disposed(by: disposeBag)
-
-		viewModel.errorObservable.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
-			UIView.animate(withDuration: 0.25,animations: {
-				if val {
-					self?.showPlaceholderView()
-				} else {
-					self?.hidePlaceholderView()
-				}
-			})
+		viewModel.errorObservable.distinctUntilChanged()
+			.subscribe(onNext: { [weak self] (val) in
+				UIView.animate(withDuration: 0.25,animations: {
+					if val {
+						self?.showPlaceholderView()
+					} else {
+						self?.hidePlaceholderView()
+					}
+				})
 		}).disposed(by: disposeBag)
 
 		if self.shouldShowTestnetToolbar {
@@ -255,33 +259,11 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 
 	// MARK: -
 
-	func registerCells() {
-		tableView.register(UINib(nibName: "CoinsTableViewHeaderView", bundle: nil),
-											 forHeaderFooterViewReuseIdentifier: "CoinsTableViewHeaderView")
-		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "TransactionTableViewCell")
-		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "ConvertTransactionTableViewCell")
-		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "ButtonTableViewCell")
-		tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "CoinTableViewCell")
-		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "SeparatorTableViewCell")
-		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "LoadingTableViewCell")
-		tableView.register(UINib(nibName: "DelegateTransactionTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "DelegateTransactionTableViewCell")
-		tableView.register(UINib(nibName: "MultisendTransactionTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "MultisendTransactionTableViewCell")
-		tableView.register(UINib(nibName: "RedeemCheckTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "RedeemCheckTableViewCell")
-	}
-
 	// MARK: -
 
 	func updateUsernameView() {
-		usernameView.set(username: viewModel.rightButtonTitle, imageURL: viewModel.rightButtonImage)
+		usernameView.set(username: viewModel.rightButtonTitle,
+										 imageURL: viewModel.rightButtonImage)
 	}
 
 	func hidePlaceholderView() {
@@ -405,7 +387,6 @@ extension CoinsViewController: ButtonTableViewCellDelegate {
 	}
 }
 
-//TODO: refactor it to a one protocol
 extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 
 	func didTapExplorerButton(cell: ExpandableCell) {
@@ -441,6 +422,33 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 				UIPasteboard.general.string = to
 				BannerHelper.performCopiedNotification()
 		}
+	}
+
+}
+
+extension CoinsViewController {
+
+	func registerCells() {
+		tableView.register(UINib(nibName: "CoinsTableViewHeaderView", bundle: nil),
+											 forHeaderFooterViewReuseIdentifier: "CoinsTableViewHeaderView")
+		tableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "TransactionTableViewCell")
+		tableView.register(UINib(nibName: "ConvertTransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "ConvertTransactionTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "ButtonTableViewCell")
+		tableView.register(UINib(nibName: "CoinTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "CoinTableViewCell")
+		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SeparatorTableViewCell")
+		tableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "LoadingTableViewCell")
+		tableView.register(UINib(nibName: "DelegateTransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "DelegateTransactionTableViewCell")
+		tableView.register(UINib(nibName: "MultisendTransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "MultisendTransactionTableViewCell")
+		tableView.register(UINib(nibName: "RedeemCheckTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "RedeemCheckTableViewCell")
 	}
 
 }
