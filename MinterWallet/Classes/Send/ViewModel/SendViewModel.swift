@@ -141,12 +141,12 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	private var currentCommission: Decimal {
-		let payloadCom = payloadComission() * TransactionCoinFactorDecimal
+		let payloadCom = payloadComission().decimalFromPIP()
 		if (toField ?? "").isValidPublicKey() {
-			let val = (payloadCom + RawTransactionType.delegate.commission()) / TransactionCoinFactorDecimal
+			let val = (payloadCom + RawTransactionType.delegate.commission()).PIPToDecimal()
 			return Decimal(Session.shared.currentGasPrice.value) * val
 		}
-		let val = (payloadCom + RawTransactionType.sendCoin.commission()) / TransactionCoinFactorDecimal
+		let val = (payloadCom + RawTransactionType.sendCoin.commission()).PIPToDecimal()
 		return Decimal(Session.shared.currentGasPrice.value) * val
 	}
 
@@ -641,16 +641,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			return
 		}
 
-		guard let strVal = decimalsNoMantissaFormatter.string(from: amount * TransactionCoinFactorDecimal as NSNumber) else {
-			return
-		}
-
-		let value = (BigUInt(strVal) ?? BigUInt(0))
-		let selectedBalance = self.selectedAddressBalance ?? 0.0
-		let maxComparableSelectedBalance = (Decimal(string: formatter.string(from: (selectedBalance) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
-
-		let maxComparableBalance = decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
-		let isMax = (value > 0 && value == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
+		let isMax = (Decimal.PIPComparableBalance(from: amount)
+			== Decimal.PIPComparableBalance(from: (self.selectedAddressBalance ?? 0.0)))
 
 		let isBaseCoin = selectedCoin == Coin.baseCoin().symbol!
 		let payload = self.payload()
@@ -676,7 +668,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 			let toFld = self?.toField
 
-			var newAmount = amount * TransactionCoinFactorDecimal
+			var newAmount = amount.decimalFromPIP()
 			if isMax {
 				//if we want to send all coins at first we check if can pay comission with the base coin
 				//if so we subtract commission amount from the requested amount
@@ -692,7 +684,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 						return
 					}
 
-					newAmount = amountWithCommission * TransactionCoinFactorDecimal
+					newAmount = amountWithCommission.decimalFromPIP()
 					self?.proceedSend(seed: seed,
 														nonce: nonce,
 														to: to,
@@ -737,7 +729,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 						guard error == nil, nil != commission else {
 							return
 						}
-						let normalizedCommission = commission! / TransactionCoinFactorDecimal
+						let normalizedCommission = commission!.PIPToDecimal()
 						let normalizedAmount = amount - normalizedCommission
 						//if new amount less than 0 - show error
 						if normalizedAmount < 0 {
@@ -754,12 +746,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 															to: to,
 															toFld: toFld,
 															commissionCoin: selectedCoin,
-															amount: normalizedAmount * TransactionCoinFactorDecimal,
+															amount: normalizedAmount.decimalFromPIP(),
 															payload: payload)
 					})
 				} else {
-					//otherwise just multiply decimal amount to factor
-					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal
+					newAmount = (self?.selectedAddressBalance ?? 0).decimalFromPIP()
 					self?.proceedSend(seed: seed,
 														nonce: nonce,
 														to: to,
@@ -880,10 +871,10 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	private func comissionText(for gas: Int, payloadData: Data? = nil) -> String {
-		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice * TransactionCoinFactorDecimal
-		var commission = (RawTransactionType.sendCoin.commission() + payloadCom) / TransactionCoinFactorDecimal * Decimal(gas)
+		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
+		var commission = (RawTransactionType.sendCoin.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
 		if (toField ?? "").isValidPublicKey() {
-			commission = (RawTransactionType.delegate.commission() + payloadCom) / TransactionCoinFactorDecimal * Decimal(gas)
+			commission = (RawTransactionType.delegate.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
 		}
 
 		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: commission,
