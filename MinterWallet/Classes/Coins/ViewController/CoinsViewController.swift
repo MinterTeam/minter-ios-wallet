@@ -247,17 +247,11 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 		}
 	}
 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-	}
-
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
 		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen)
 	}
-
-	// MARK: -
 
 	// MARK: -
 
@@ -326,7 +320,8 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+		guard let item = viewModel.cellItem(section: indexPath.section,
+																				row: indexPath.row) else {
 			return 0.1
 		}
 

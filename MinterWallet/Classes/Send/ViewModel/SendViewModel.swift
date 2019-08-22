@@ -26,7 +26,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	// MARK: - ViewModelProtocol
 
 	var input: SendViewModel.Input!
-
 	var output: SendViewModel.Output!
 
 	struct Input {
@@ -121,7 +120,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			let cn = Coin.baseCoin().symbol,
 			let smt = balances[ads],
 			let blnc = smt[cn] {
-
 				return blnc
 		}
 		return 0
@@ -440,12 +438,14 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 					self?.addressStateObservable.value = .invalid(error: "EMAIL CAN NOT BE FOUND".localized())
 					return
 				}
-				if address.isValidAddress(), let toFld = self?.toField?.lowercased(), let usr = user?.email?.lowercased(), toFld == usr {
-					self?.toAddress.value = address
-					self?.addressStateObservable.value = .default
+				if address.isValidAddress(),
+					let toFld = self?.toField?.lowercased(),
+					let usr = user?.email?.lowercased(),
+					toFld == usr {
+						self?.toAddress.value = address
+						self?.addressStateObservable.value = .default
 				} else {
 					self?.addressStateObservable.value = .invalid(error: "EMAIL CAN NOT BE FOUND".localized())
-					//Show address error
 				}
 			}
 		} else if to.isValidPublicKey() {
@@ -509,9 +509,13 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			blns?.insert((Coin.baseCoin().symbol ?? ""), at: 0)
 			blns?.forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
-				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: coinFormatter)
+				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance,
+																																		 formatter: coinFormatter)
 				let title = coin + " (" + balanceString + ")"
-				let item = AccountPickerItem(title: title, address: address, balance: balance, coin: coin)
+				let item = AccountPickerItem(title: title,
+																		 address: address,
+																		 balance: balance,
+																		 coin: coin)
 				ret.append(item)
 			})
 		}
