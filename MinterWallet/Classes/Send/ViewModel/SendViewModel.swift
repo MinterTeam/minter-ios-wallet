@@ -574,31 +574,45 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	func sendButtonTaped() {
+		if nil == self.selectedAddress || isLoadingNonce.value == true {
+//			completion?(false)
+			return
+		}
 
-		getNonce { [weak self] (suc) in
+		Observable.combineLatest(GateManager.shared.nonce(address: "Mx" + selectedAddress!),
+														 GateManager.shared.minGas())
+			.do(onNext: { [weak self] (result) in
+				let (nonce, gas) = result
 
-			guard suc else {
-				assert(true)
-				self?.notifiableError.value = NotifiableError(title: "Can't get nonce", text: nil)
-				return
-			}
+				if (self?.currentGas.value ?? 1) != gas {
+					let payloadData = (try? self?.clearPayloadSubject.value() ?? "")?.data(using: .utf8)
+					let comissionText = self!.comissionText(for: gas, payloadData: payloadData)
+					self?.notifiableError.value = NotifiableError(title: "Transaction fee changed".localized(),
+																												text: "Current fee is: " + comissionText)
+				}
+				self?.nonce.value = nonce + 1
+				self?.currentGas.value = gas
 
-			//Get difficulty hash?
-			DispatchQueue.main.async {
 				let amount = self?.amount.value ?? 0.0
 				guard let address = self?.toAddress.value else {
 					//Show error?
 					return
 				}
-
+			
 				let vm = self?.sendPopupViewModel(to: self!.toField ?? address,
 																					address: address,
 																					amount: amount)
 				let vc = Storyboards.Popup.instantiateInitialViewController()
 				vc.viewModel = vm
 				self?.showPopup.value = vc
-			}
-		}
+		}, onError: { [weak self] (error) in
+			self?.notifiableError.value = NotifiableError(title: "Can't get nonce", text: nil)
+			self?.isLoadingNonce.value = false
+		}, onCompleted: { [weak self] in
+			self?.isLoadingNonce.value = false
+		}, onSubscribe: { [weak self] in
+			self?.isLoadingNonce.value = true
+		}).subscribe().disposed(by: disposeBag)
 	}
 
 	func submitSendButtonTaped() {
@@ -610,69 +624,12 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	func viewDidAppear() {
-		getGasPrice(completion: { [weak self] (gas) in
-			if nil != gas {
-				self?.currentGas.value = gas!
-			}
-		})
+		GateManager.shared.minGasPrice().subscribe(onNext: { [weak self] (gas) in
+			self?.currentGas.value = gas
+		}).disposed(by: disposeBag)
 	}
 
 	// MARK: -
-
-	func getGasPrice(completion: ((Int?) -> ())?) {
-
-		GateManager.shared.minGasPrice(completion: { (gas, error) in
-			var gs = 1
-
-			defer {
-				completion?(gs)
-			}
-
-			if nil != gas {
-				gs = gas!
-			}
-		})
-	}
-
-	func getNonce(completion: ((Bool) -> ())?) {
-
-		if nil == self.selectedAddress || isLoadingNonce.value == true {
-			completion?(false)
-			return
-		}
-		isLoadingNonce.value = true
-
-		GateManager.shared.nonce(for: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
-
-			self?.getGasPrice(completion: { (gas) in
-				if nil != gas {
-					if (self?.currentGas.value ?? 1) != gas {
-						let payloadData = (try? self?.clearPayloadSubject.value() ?? "")?.data(using: .utf8)
-						let comissionText = self!.comissionText(for: gas!, payloadData: payloadData)
-						self?.notifiableError.value = NotifiableError(title: "Transaction fee changed".localized(),
-																													text: "Current fee is: " + comissionText)
-					}
-				}
-
-				self?.currentGas.value = gas!
-
-				var success = false
-
-				defer {
-					self?.isLoadingNonce.value = false
-					completion?(success)
-				}
-
-				guard nil == err, nil != count else {
-					success = false
-					return
-				}
-
-				self?.nonce.value = NSDecimalNumber(decimal: count ?? 0).intValue + 1
-				success = true
-			})
-		}
-	}
 
 	func sendTX() {
 		let amount = self.amount.value ?? 0.0

@@ -13,13 +13,12 @@ protocol Notifiable {
 	var text: String? { get set }
 }
 
-struct NotifiableError : Notifiable {
+struct NotifiableError: Notifiable {
 	var title: String?
 	var text: String?
 }
 
-struct NotifiableSuccess : Notifiable {
+struct NotifiableSuccess: Notifiable {
 	var title: String?
 	var text: String?
-
 }
