@@ -74,7 +74,7 @@ AddressTextViewTableViewCellDelegate {
 
 		viewModel.viewDidAppear()
 
-		AnalyticsHelper.defaultAnalytics.track(event: .SendScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .SendScreen)
 	}
 
 	// MARK: -
@@ -167,26 +167,31 @@ AddressTextViewTableViewCellDelegate {
 extension SendViewController {
 
 	func configure(with viewModel: SendViewModel) {
-		viewModel.notifiableError.asObservable().filter({ (notification) -> Bool in
-			return nil != notification
-		}).subscribe(onNext: { (notification) in
+
+		viewModel.output.errorNotification
+			.asDriver(onErrorJustReturn: nil)
+			.filter({ (notification) -> Bool in
+				return nil != notification
+		}).drive(onNext: { (notification) in
 			let banner = NotificationBanner(title: notification?.title ?? "",
 																			subtitle: notification?.text,
 																			style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
 
-		viewModel.txError.asObservable().subscribe(onNext: { [weak self] (notification) in
-			guard nil != notification else {
-				return
-			}
+		viewModel.output.txErrorNotification
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { [weak self] (notification) in
+				guard nil != notification else {
+					return
+				}
 
-			self?.popupViewController?.dismiss(animated: true, completion: nil)
+				self?.popupViewController?.dismiss(animated: true, completion: nil)
 
-			let banner = NotificationBanner(title: notification?.title ?? "",
-																			subtitle: notification?.text,
-																			style: .danger)
-			banner.show()
+				let banner = NotificationBanner(title: notification?.title ?? "",
+																				subtitle: notification?.text,
+																				style: .danger)
+				banner.show()
 		}).disposed(by: disposeBag)
 
 		viewModel.showPopup.asObservable().subscribe(onNext: { [weak self] (popup) in

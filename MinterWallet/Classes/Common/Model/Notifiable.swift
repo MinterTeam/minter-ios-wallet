@@ -11,14 +11,25 @@ import Foundation
 protocol Notifiable {
 	var title: String? { get set }
 	var text: String? { get set }
+	init(title: String?, text: String?)
 }
 
 struct NotifiableError: Notifiable {
 	var title: String?
 	var text: String?
+
+	init(title: String? = nil, text: String? = nil) {
+		self.title = title
+		self.text = text
+	}
 }
 
 struct NotifiableSuccess: Notifiable {
 	var title: String?
 	var text: String?
+
+	init(title: String? = nil, text: String? = nil) {
+		self.title = title
+		self.text = text
+	}
 }
