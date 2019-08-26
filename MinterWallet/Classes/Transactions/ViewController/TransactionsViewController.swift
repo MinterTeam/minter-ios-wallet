@@ -114,6 +114,8 @@ class TransactionsViewController: BaseTableViewController {
 											 forCellReuseIdentifier: "MultisendTransactionTableViewCell")
 		tableView.register(UINib(nibName: "RedeemCheckTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "RedeemCheckTableViewCell")
+		tableView.register(UINib(nibName: "SystemTransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SystemTransactionTableViewCell")
 	}
 
 	// MARK: - Expandable
@@ -140,28 +142,6 @@ class TransactionsViewController: BaseTableViewController {
 		}
 		return UITableViewAutomaticDimension
 	}
-
-//		if (viewModel.cellItem(section: indexPath.section,
-//													 row: indexPath.row) as? SeparatorTableViewCellItem) != nil {
-//			return 1
-//		}
-//
-//		if let cell = rxDataSource?.tableView(self.tableView, cellForRowAt: indexPath) as? AccordionTableViewCell {
-//			if nil != cell as? MultisendTransactionTableViewCell {
-//				return expandedIdentifiers.contains(cell.identifier) ? 315 : 55
-//			} else if nil != cell as? ConvertTransactionTableViewCell {
-//				return expandedIdentifiers.contains(cell.identifier) ? 295 : 55
-//			}
-//			return expandedIdentifiers.contains(cell.identifier) ? 444 : 55
-//		}
-//
-//		if (viewModel.cellItem(section: indexPath.section,
-//													 row: indexPath.row) as? LoadingTableViewCellItem) != nil {
-//			return 52
-//		}
-//
-//		return 0.1
-//	}
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		super.tableView(tableView, didSelectRowAt: indexPath)
@@ -204,11 +184,9 @@ class TransactionsViewController: BaseTableViewController {
 		guard let section = viewModel.section(index: section) else {
 			return 0.1
 		}
-
 		if section.header == nil || section.header == "" {
 			return 0.1
 		}
-
 		return 52.0
 	}
 
@@ -240,10 +218,8 @@ extension TransactionsViewController: ExpandedTransactionTableViewCellDelegate {
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? TransactionCellItem,
 			let from = cellItem.from {
-
-			UIPasteboard.general.string = from
-
-			BannerHelper.performCopiedNotification()
+				UIPasteboard.general.string = from
+				BannerHelper.performCopiedNotification()
 		}
 	}
 
@@ -254,9 +230,8 @@ extension TransactionsViewController: ExpandedTransactionTableViewCellDelegate {
 			let cellItem = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) as? TransactionCellItem,
 			let to = cellItem.to {
-			UIPasteboard.general.string = to
-
-			BannerHelper.performCopiedNotification()
+				UIPasteboard.general.string = to
+				BannerHelper.performCopiedNotification()
 		}
 	}
 

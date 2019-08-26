@@ -33,7 +33,6 @@ protocol UIImpactFeedbackProtocol {
 	var lightImpactFeedbackGenerator: UIImpactFeedbackGenerator { get }
 
 	func performLightImpact()
-
 	func performHardImpact()
 }
 

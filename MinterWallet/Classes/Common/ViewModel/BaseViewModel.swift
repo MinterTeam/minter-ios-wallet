@@ -240,6 +240,61 @@ extension TransactionViewableViewModel {
 		return transactionCellItem
 	}
 
+	func systemTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
+
+		let dateFormatter = TransactionDateFormatter.transactionDateFormatter
+		let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
+
+		guard let transaction = transactionItem.transaction else {
+			return nil
+		}
+
+		let sectionId = transaction.hash ?? String.random()
+
+		let transactionCellItem = SystemTransactionTableViewCellItem(reuseIdentifier: "SystemTransactionTableViewCell",
+																																 identifier: "SystemTransactionTableViewCell_\(sectionId)")
+		transactionCellItem.txHash = transaction.hash
+		transactionCellItem.date = dateFormatter.string(from: transaction.date ?? Date())
+		transactionCellItem.time = timeFormatter.string(from: transaction.date ?? Date())
+//		transactionCellItem.payload = transaction.payload?.base64Decoded()
+//		let signMultiplier = transaction.type == .unbond ? 1.0 : -1.0
+//		if let data = transaction.data as? SystemTransactionTable {
+////			transactionCellItem.coin = data.coin
+////			transactionCellItem.amount = Decimal(signMultiplier) * (data.value ?? 0)
+////			transactionCellItem.title = data.coin ?? ""
+////			transactionCellItem.to = data.pubKey ?? ""
+////			transactionCellItem.from = transaction.from ?? ""
+//
+//		}
+		guard let txType = transaction.type else { return nil }
+
+		switch txType {
+		case .create:
+			transactionCellItem.title = "Create Coin"
+			break
+		case .createMultisig:
+			transactionCellItem.title = "Create Multisig"
+			break
+		case .declare:
+			transactionCellItem.title = "Declare Candidate"
+			break
+		case .editCandidate:
+			transactionCellItem.title = "Edit Candidate"
+			break
+		case .setCandidateOffline:
+			transactionCellItem.title = "Set Candidate Offline"
+			break
+		case .setCandidateOnline:
+			transactionCellItem.title = "Set Candidate Online"
+			break
+		default:
+			break
+		}
+		transactionCellItem.type = ""
+		transactionCellItem.image = UIImage(named: "systemTransactionImage")
+		return transactionCellItem
+	}
+
 	func explorerURL(section: Int, row: Int) -> URL? {
 		if let item = self.cellItem(section: section, row: row) as? TransactionCellItem {
 			return URL(string: MinterExplorerBaseURL! + "/transactions/" + (item.txHash ?? ""))

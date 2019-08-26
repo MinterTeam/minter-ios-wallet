@@ -306,7 +306,6 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 	}
 	
 	private func checkUsername() -> Observable<Bool> {
-		//formErrors.value[identifier] = "Some important error"
 		return Observable.create { [weak self] observer in
 			if let username = self?.username.value {
 				

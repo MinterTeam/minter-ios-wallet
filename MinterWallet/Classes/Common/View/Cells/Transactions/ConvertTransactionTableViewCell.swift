@@ -101,25 +101,24 @@ class ConvertTransactionTableViewCell: BaseTransactionCell {
 			amount.text = amountText(amount: transaction.toAmount ?? 0)
 		}
 		amount.textColor = ((transaction.toAmount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
-
-		expandedAmountLabel.text = CurrencyNumberFormatter.formattedDecimal(with: (transaction.fromAmount ?? 0),
-																																				formatter: CurrencyNumberFormatter.coinFormatter)
+		expandedAmountLabel.text = CurrencyNumberFormatter
+			.formattedDecimal(with: (transaction.fromAmount ?? 0),
+												formatter: CurrencyNumberFormatter.coinFormatter)
 		expandedReceivedAmountLabel.text = CurrencyNumberFormatter
 			.formattedDecimal(with: (transaction.toAmount ?? 0),
 												formatter: CurrencyNumberFormatter.coinFormatter)
-
 		coinLabel.text = transaction.fromCoin
 		expandedToCoinLabel.text = transaction.toCoin
 		dateLabel.text = dateFormatter.string(from: transaction.date ?? Date())
 		timeLabel.text = timeFormatter.string(from: transaction.date ?? Date())
-
 		coin.text = transaction.toCoin
 		expandable = transaction.expandable ?? false
 	}
 
 	private func amountText(amount: Decimal) -> String {
-		return CurrencyNumberFormatter.formattedDecimal(with: amount,
-																										formatter: 	CurrencyNumberFormatter.transactionFormatter)
+		return CurrencyNumberFormatter
+			.formattedDecimal(with: amount,
+												formatter: 	CurrencyNumberFormatter.transactionFormatter)
 	}
 
 }

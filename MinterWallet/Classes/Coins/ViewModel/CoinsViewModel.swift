@@ -153,7 +153,8 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 																							 Session.shared.USDRate.asObservable(),
 																							 changedBalanceTypeSubject.asObservable()))
 			.subscribe(onNext: { [weak self] (val) in
-
+				//Uncomment when balance change will be ready
+				/*
 				let (balance, usdRate, balanceType) = val
 				var newBalanceType: BalanceType
 
@@ -178,14 +179,14 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 																					 balance: balance,
 																					 usdRate: usdRate) {
 					self?.balanceTextSubject.onNext(headerItem)
-				}
+				}*/
 		}).disposed(by: disposeBag)
 
 		Observable.combineLatest(totalBalanceObservable,
 														 Session.shared.USDRate.asObservable())
 			.subscribe(onNext: { [weak self] (val) in
 				let (balance, usdRate) = val
-				var balanceType = BalanceType(rawValue: AppSettingsManager.shared.balanceType ?? "") ?? .balanceBIP
+				let balanceType = BalanceType(rawValue: AppSettingsManager.shared.balanceType ?? "") ?? .balanceBIP
 				if let headerItem = self?.balanceHeaderItem(balanceType: balanceType,
 																										balance: balance,
 																										usdRate: usdRate) {
@@ -247,36 +248,33 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
 																								 identifier: "SeparatorTableViewCell_" + sectionId)
 
-			if transaction.type == .send {
-				if let transactionCellItem = self.sendTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .multisend {
-				if let transactionCellItem = self.multisendTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .buy || transaction.type == .sell {
-				if let transactionCellItem = self.convertTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .sellAll {
-				if let transactionCellItem = self.convertTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .delegate || transaction.type == .unbond {
-				if let transactionCellItem = self.delegateTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .redeemCheck {
-				if let transactionCellItem = self.redeemCheckTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
+			guard let txType = transaction.type else { return }
+
+			var transactionCellItem: BaseCellItem?
+			switch txType {
+			case .send:
+				transactionCellItem = self.sendTransactionItem(with: transactionItem)
+				break
+			case .multisend:
+				transactionCellItem = self.multisendTransactionItem(with: transactionItem)
+				break
+			case .buy, .sell, .sellAll:
+				transactionCellItem = self.convertTransactionItem(with: transactionItem)
+				break
+			case .delegate, .unbond:
+				transactionCellItem = self.delegateTransactionItem(with: transactionItem)
+				break
+			case .redeemCheck:
+				transactionCellItem = self.redeemCheckTransactionItem(with: transactionItem)
+				break
+			case .create, .declare, .setCandidateOnline,
+					 .setCandidateOffline, .createMultisig, .editCandidate:
+				transactionCellItem = self.systemTransactionItem(with: transactionItem)
+				break
+			}
+			if let transactionCellItem = transactionCellItem {
+				section.items.append(transactionCellItem)
+				section.items.append(separator)
 			}
 		}
 

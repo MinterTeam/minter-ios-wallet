@@ -241,7 +241,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 		if self.shouldShowTestnetToolbar {
 			headerViewHeightConstraint.constant = 73.0 + 56.0
 			tableHeaderTopConstraint?.constant = 73.0 + 56.0
-
 			self.view?.addSubview(self.testnetToolbarView)
 			self.balanceTopConstraint.constant = 80
 		}
@@ -319,7 +318,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 	}
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
 		guard let item = viewModel.cellItem(section: indexPath.section,
 																				row: indexPath.row) else {
 			return 0.1
@@ -387,10 +385,11 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 	func didTapExplorerButton(cell: ExpandableCell) {
 		performLightImpact()
 
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton)
 
 		if let indexPath = tableView.indexPath(for: cell),
-			let url = viewModel.explorerURL(section: indexPath.section, row: indexPath.row) {
+			let url = viewModel.explorerURL(section: indexPath.section,
+																			row: indexPath.row) {
 			presentExplorerController(with: url)
 		}
 	}
@@ -444,6 +443,8 @@ extension CoinsViewController {
 											 forCellReuseIdentifier: "MultisendTransactionTableViewCell")
 		tableView.register(UINib(nibName: "RedeemCheckTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "RedeemCheckTableViewCell")
+		tableView.register(UINib(nibName: "SystemTransactionTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SystemTransactionTableViewCell")
 	}
 
 }

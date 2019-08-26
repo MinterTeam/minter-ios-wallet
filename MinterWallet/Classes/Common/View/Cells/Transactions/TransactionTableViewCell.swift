@@ -29,8 +29,6 @@ class TransactionTableViewCell: BaseTransactionCell {
 
 	// MARK: -
 
-	let formatter = CurrencyNumberFormatter.transactionFormatter
-	let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 	let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 	let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
 
@@ -82,7 +80,6 @@ class TransactionTableViewCell: BaseTransactionCell {
 	// MARK: -
 
 	override func configure(item: BaseCellItem) {
-
 		super.configure(item: item)
 
 		defer {

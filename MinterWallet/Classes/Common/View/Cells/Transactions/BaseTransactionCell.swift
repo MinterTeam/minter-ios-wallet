@@ -24,8 +24,8 @@ class BaseTransactionCell: ExpandableCell {
 			return
 		}
 
-		payloadText.text = transaction.payload
-		payloadTitle.isHidden = !(transaction.payload != nil && transaction.payload != "")
+		payloadText?.text = transaction.payload
+		payloadTitle?.isHidden = !(transaction.payload != nil && transaction.payload != "")
 		payloadBottomConstraint?.isActive = (transaction.payload != nil && transaction.payload != "")
 		setNeedsUpdateConstraints()
 	}

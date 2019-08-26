@@ -52,7 +52,7 @@ class PopupViewController: BaseViewController, CCMPlayNDropViewDelegate {
 	//MARK: - CCMPlayNDropView
 	
 	func ccmPlayNDropViewDidFinishDismissAnimation(withDynamics view: CCMPlayNDropView!) {
-//		self.dismiss(animated: true, completion: nil)
+
 	}
 	
 	func ccmPlayNDropViewWillStartDismissAnimation(withDynamics view: CCMPlayNDropView!) {
