@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class DefaultHeader: UITableViewHeaderFooterView {
 
 	@IBOutlet weak var titleLabel: UILabel!

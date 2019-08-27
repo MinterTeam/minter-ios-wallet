@@ -17,6 +17,7 @@ class AppSettingsManager {
 	enum SettingsKey: String {
 		case sounds
 		case fingerprint
+		case balanceType
 	}
 
 	static let shared = AppSettingsManager()
@@ -25,9 +26,13 @@ class AppSettingsManager {
 
 	// MARK: -
 
-	let database = UserDefaults.standard
+	private let database = UserDefaults.standard
+
+	// MARK: -
+	
 	var isSoundsEnabled: Bool = true
 	var isBiometricsEnabled = false
+	var balanceType: String?
 
 	// MARK: -
 
@@ -38,6 +43,9 @@ class AppSettingsManager {
 			}
 			if let fingerprint = settings[SettingsKey.fingerprint.rawValue] as? Bool {
 				isBiometricsEnabled = fingerprint
+			}
+			if let balance = settings[SettingsKey.balanceType.rawValue] as? String {
+				balanceType = balance
 			}
 		}
 	}
@@ -55,8 +63,11 @@ class AppSettingsManager {
 	}
 
 	func save() {
-		database.set([SettingsKey.sounds.rawValue : isSoundsEnabled,
-									SettingsKey.fingerprint.rawValue : isBiometricsEnabled],
+		database.set([
+			SettingsKey.sounds.rawValue: isSoundsEnabled,
+			SettingsKey.fingerprint.rawValue: isBiometricsEnabled,
+			SettingsKey.balanceType.rawValue: balanceType ?? ""
+			],
 								 forKey: AppSettingsManager.appSettingsKey)
 		database.synchronize()
 		restore()

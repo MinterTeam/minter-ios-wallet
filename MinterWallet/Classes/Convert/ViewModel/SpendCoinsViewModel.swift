@@ -214,13 +214,9 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 
 	var hasMultipleCoinsObserver: Observable<Bool> {
 		return Session.shared.allBalances.asObservable().map({ (balances) -> Bool in
-			var coinCount = 0
-			balances.keys.forEach { (key) in
-				balances[key]?.forEach({ (val) in
-					coinCount += 1
-				})
-			}
-			return coinCount > 1
+			balances.keys.map {
+				return Session.shared.allBalances.value[$0]?.count ?? 0
+			}.reduce(0, +) > 1
 		})
 	}
 
@@ -230,7 +226,6 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 
 	var minimumValueToBuy = Variable<Decimal?>(nil)
 
-	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
 	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 	private let decimalFormatter = CurrencyNumberFormatter.decimalFormatter
 

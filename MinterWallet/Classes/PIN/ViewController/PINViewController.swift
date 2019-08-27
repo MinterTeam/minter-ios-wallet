@@ -41,7 +41,6 @@ class PINViewController: BaseViewController, ControllerType {
 
 		self.rx.viewDidAppear.asDriver(onErrorJustReturn: false)
 			.drive(viewModel.input.viewDidAppear).disposed(by: disposeBag)
-
 	}
 
 	// MARK: -
@@ -62,7 +61,6 @@ class PINViewController: BaseViewController, ControllerType {
 	@IBOutlet weak var button8: UIButton!
 	@IBOutlet weak var button9: UIButton!
 	@IBOutlet weak var button0: UIButton!
-
 	@IBAction func buttonTap(sender: UIButton) {
 		let string = sender.title(for: .normal) ?? ""
 		let range = NSRange(location: (pinView.textField.text ?? "").count, length: 1)
@@ -77,7 +75,6 @@ class PINViewController: BaseViewController, ControllerType {
 			}
 		}
 	}
-
 	@IBAction func backspaceTap(_ sender: UIButton) {
 		let string = sender.title(for: .normal) ?? ""
 		let range = NSRange(location: max(0, (pinView.textField.text ?? "").count-1), length: 1)
@@ -107,8 +104,6 @@ class PINViewController: BaseViewController, ControllerType {
 
 		pinView.becomeFirstResponder()
 		pinView.textField.inputView = button0
-
-		setNavigationBarAppearance()
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -120,28 +115,21 @@ class PINViewController: BaseViewController, ControllerType {
 		animation.duration = 0.07
 		animation.repeatCount = 4
 		animation.autoreverses = true
-		animation.fromValue = NSValue(cgPoint: CGPoint(x: pinView.center.x - 10, y: pinView.center.y))
-		animation.toValue = NSValue(cgPoint: CGPoint(x: pinView.center.x + 10, y: pinView.center.y))
+		animation.fromValue = NSValue(cgPoint: CGPoint(x: pinView.center.x - 10,
+																									 y: pinView.center.y))
+		animation.toValue = NSValue(cgPoint: CGPoint(x: pinView.center.x + 10,
+																								 y: pinView.center.y))
 		pinView.layer.add(animation, forKey: "position")
 
 		pinView.clearEntry()
 
 		self.performHardImpact()
 	}
-
-	func setNavigationBarAppearance() {
-//		self.navigationController?.navigationBar.barTintColor = UIColor(hex: 0x502EC2)
-	}
-
-	// MARK: -
-
 }
 
 extension PINViewController: CBPinEntryViewDelegate {
 
-	func entryChanged(_ completed: Bool) {
-//		print(pinView.getPinAsString())
-	}
+	func entryChanged(_ completed: Bool) {}
 
 	func entryCompleted(with entry: String?) {
 		delegate?.PINViewControllerDidSucceed(controller: self, withPIN: pinView.getPinAsString())

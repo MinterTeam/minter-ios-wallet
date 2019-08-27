@@ -17,7 +17,7 @@ class AccountManager {
 		self.secureStorage = secureStorage
 	}
 
-	enum AccountManagerError : Error {
+	enum AccountManagerError: Error {
 		case privateKeyUnableToEncrypt
 		case privateKeyEncryptionFaulted
 		case privateKeyCanNotBeSaved
@@ -46,7 +46,6 @@ class AccountManager {
 		guard let seed = seed(mnemonic: mnemonic) else {
 			return nil
 		}
-
 		return account(id: id, seed: seed, encryptedBy: encryptedBy)
 	}
 
@@ -112,7 +111,7 @@ class AccountManager {
 		}
 		return nil
 	}
-	
+
 	//Save PK to SecureStorage
 
 	func save(mnemonic: String, password: Data) throws {
@@ -123,7 +122,6 @@ class AccountManager {
 		guard let data = try? encryptedMnemonic(mnemonic: mnemonic, password: password) else {
 			throw AccountManagerError.privateKeyCanNotBeSaved
 		}
-
 		secureStorage.set(data!, forKey: key)
 	}
 
@@ -161,17 +159,16 @@ class AccountManager {
 			let address = RawTransactionSigner.address(publicKey: publicKey) else {
 				return nil
 		}
-		
 		return address
 	}
-	
-	// MARK: -
-	
-	func privateKey(for address: String) -> PrivateKey? {
-		guard let mnemonic = self.mnemonic(for: address), let seed = self.seed(mnemonic: mnemonic) else {
-			return nil
-		}
 
+	// MARK: -
+
+	func privateKey(for address: String) -> PrivateKey? {
+		guard let mnemonic = self.mnemonic(for: address),
+			let seed = self.seed(mnemonic: mnemonic) else {
+				return nil
+		}
 		return self.privateKey(from: seed)
 	}
 
@@ -180,7 +177,6 @@ class AccountManager {
 			let password = self.password() else {
 			return nil
 		}
-
 		return decryptMnemonic(encrypted: encryptedMnemonic, password: password)
 	}
 
@@ -222,7 +218,6 @@ class AccountManager {
 										 address: dbModel.address,
 										 isMain: dbModel.isMain)
 		}
-
 		return res
 	}
 

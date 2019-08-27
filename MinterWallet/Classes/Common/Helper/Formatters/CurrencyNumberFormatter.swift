@@ -125,4 +125,18 @@ class CurrencyNumberFormatter : NumberFormatter {
 		return formatter
 	}
 	
+	class var USDFormatter : NumberFormatter {
+		let formatter = NumberFormatter()
+		formatter.numberStyle = .decimal
+		formatter.decimalSeparator = "."
+		formatter.groupingSeparator = " "
+		formatter.plusSign = ""
+		formatter.minusSign = ""
+		formatter.minimumFractionDigits = 2
+		formatter.maximumFractionDigits = 2
+//		formatter.positivePrefix = formatter.plusSign
+		formatter.roundingMode = .down
+		return formatter
+	}
+
 }

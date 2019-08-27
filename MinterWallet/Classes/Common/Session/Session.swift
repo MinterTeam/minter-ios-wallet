@@ -50,10 +50,13 @@ class Session {
 	var allBalances = Variable([String: [String: Decimal]]())
 	var balances = Variable([String: Decimal]())
 	var mainCoinBalance = Variable(Decimal(0.0))
+	var totalMainCoinBalance = BehaviorSubject<Decimal>(value: 0.0)
+	var totalUSDBalance = BehaviorSubject<Decimal>(value: 0.0)
 	var delegatedBalance = BehaviorSubject<Decimal>(value: 0.0)
+	var USDRate = BehaviorSubject<Decimal>(value: 0.1)
 	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
 	var accessToken = Variable<String?>(nil)
-	
+
 	var isPINRequired = BehaviorSubject<Bool>(value: PINManager.shared.isPINset)
 
 	private var refreshToken = Variable<String?>(nil)
@@ -195,9 +198,8 @@ class Session {
 		balances.value = [:]
 		mainCoinBalance.value = 0.0
 		user.value = nil
-		
+
 		isPINRequired.onNext(false)
-		
 	}
 
 	// MARK: -
@@ -259,9 +261,7 @@ class Session {
 				let item = TransactionItem()
 				item.transaction = transaction
 
-				let hasAddress = Session.shared.accounts.value.contains(where: { (account) -> Bool in
-					account.address.stripMinterHexPrefix().lowercased() == transaction.from?.stripMinterHexPrefix().lowercased()
-				})
+				let hasAddress = Session.shared.hasAddress(address: transaction.from ?? "")
 
 				var key = transaction.from?.lowercased()
 
@@ -299,45 +299,54 @@ class Session {
 	}
 
 	func loadBalances() {
-		
-		let addresses = accounts.value.map({ (account) -> String in
+
+		guard let address = accounts.value.map({ (account) -> String in
 			return "Mx" + account.address.stripMinterHexPrefix()
-		})
-		
-		guard addresses.count > 0 else {
+		}).first else {
 			return
 		}
-		
-		addressManager.addresses(addresses: addresses) { [weak self] (response, err) in
-			
+
+		addressManager.address(address: address, withSum: true) { [weak self] (response, err) in
+
 			guard (self?.isLoggedIn.value ?? false) || (self?.accounts.value ?? []).count > 0 else {
 				return
 			}
-			
+
 			guard nil == err else {
 				return
 			}
-			
+
 			var newMainCoinBalance = Decimal(0.0)
-			
-			response?.forEach({ (address) in
-				
-				guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(), let coins = address["balances"] as? [[String : Any]] else {
+
+//			response?.forEach({ (address) in
+			let address = response ?? [:]
+				guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(),
+					let coins = address["balances"] as? [[String : Any]] else {
 					return
 				}
-				
+			
+			if let totalBalanceBaseCoin = address["balanceSumInBaseCoin"] as? String,
+				let totalBalance = Decimal(string: totalBalanceBaseCoin) {
+				self?.totalMainCoinBalance.onNext(totalBalance)
+			}
+			
+			if let totalBalanceUSD = address["balanceSumInUSD"] as? String,
+				let totalBalance = Decimal(string: totalBalanceUSD) {
+				self?.totalUSDBalance.onNext(totalBalance)
+			}
+
 				let baseCoinBalance = coins.filter({ (dict) -> Bool in
 					return ((dict["coin"] as? String) ?? "").uppercased() == Coin.baseCoin().symbol!.uppercased()
 				}).map({ (dict) -> Decimal in
 					return Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
 				}).reduce(0, +)
-				
+
 				self?.baseCoinBalances.value[ads] = baseCoinBalance
-				
+
 				newMainCoinBalance += baseCoinBalance
-				
+
 				var newAllBalances = self?.allBalances.value
-				
+
 				var blncs = [String : Decimal]()
 				if let defaultCoin = Coin.baseCoin().symbol {
 					blncs[defaultCoin] = 0.0
@@ -348,16 +357,15 @@ class Session {
 						blncs[key.uppercased()] = amnt
 					}
 				})
-				
+
 				newAllBalances?[ads] = blncs
-				
 				self?.allBalances.value = newAllBalances ?? [:]
-			})
-			
+//			})
+
 			self?.mainCoinBalance.value = newMainCoinBalance
 		}
 	}
-	
+
 	func updateGas() {
 		gateManager.minGasPrice { (gas, err) in
 			if let gas = gas {
@@ -365,23 +373,23 @@ class Session {
 			}
 		}
 	}
-	
+
 	func loadUser() {
-		
+
 		guard let client = APIClient.withAuthentication() else {
 			return
 		}
-		
+
 		if nil == profileManager {
 			profileManager = ProfileManager(httpClient: client)
 		}
+
 		profileManager?.httpClient = client
-		
 		profileManager?.profile(completion: { [weak self] (user, err) in
 			guard nil == err else {
 				return
 			}
-			
+
 			if let user = user {
 				self?.user.value = user
 				self?.saveUser(user: user)

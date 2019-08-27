@@ -26,7 +26,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	// MARK: - ViewModelProtocol
 
 	var input: SendViewModel.Input!
-
 	var output: SendViewModel.Output!
 
 	struct Input {
@@ -34,7 +33,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	struct Output {
-
+		var errorNotification: Observable<NotifiableError?>
+		var txErrorNotification: Observable<NotifiableError?>
 	}
 
 	// MARK: -
@@ -121,7 +121,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			let cn = Coin.baseCoin().symbol,
 			let smt = balances[ads],
 			let blnc = smt[cn] {
-
 				return blnc
 		}
 		return 0
@@ -143,12 +142,12 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	private var currentCommission: Decimal {
-		let payloadCom = payloadComission() * TransactionCoinFactorDecimal
+		let payloadCom = payloadComission().decimalFromPIP()
 		if (toField ?? "").isValidPublicKey() {
-			let val = (payloadCom + RawTransactionType.delegate.commission()) / TransactionCoinFactorDecimal
+			let val = (payloadCom + RawTransactionType.delegate.commission()).PIPToDecimal()
 			return Decimal(Session.shared.currentGasPrice.value) * val
 		}
-		let val = (payloadCom + RawTransactionType.sendCoin.commission()) / TransactionCoinFactorDecimal
+		let val = (payloadCom + RawTransactionType.sendCoin.commission()).PIPToDecimal()
 		return Decimal(Session.shared.currentGasPrice.value) * val
 	}
 
@@ -172,9 +171,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	private let infoManager = InfoManager.default
 	private let payloadSubject = BehaviorSubject<String?>(value: "")
 	private let clearPayloadSubject = BehaviorSubject<String?>(value: "")
-
-	var notifiableError = Variable<NotifiableError?>(nil)
-	var txError = Variable<NotifiableError?>(nil)
+	private let errorNotificationSubject = PublishSubject<NotifiableError?>()
+	private let txErrorNotificationSubject = PublishSubject<NotifiableError?>()
 
 	var showPopup = Variable<PopupViewController?>(nil)
 
@@ -214,7 +212,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		super.init()
 
 		self.input = Input(payload: payloadSubject.asObserver())
-		self.output = Output()
+		self.output = Output(errorNotification: errorNotificationSubject.asObservable(),
+												 txErrorNotification: txErrorNotificationSubject.asObservable())
 
 		payloadSubject.asObservable().subscribe(onNext: { (payld) in
 			self.forceUpdateFee.onNext(())
@@ -440,12 +439,14 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 					self?.addressStateObservable.value = .invalid(error: "EMAIL CAN NOT BE FOUND".localized())
 					return
 				}
-				if address.isValidAddress(), let toFld = self?.toField?.lowercased(), let usr = user?.email?.lowercased(), toFld == usr {
-					self?.toAddress.value = address
-					self?.addressStateObservable.value = .default
+				if address.isValidAddress(),
+					let toFld = self?.toField?.lowercased(),
+					let usr = user?.email?.lowercased(),
+					toFld == usr {
+						self?.toAddress.value = address
+						self?.addressStateObservable.value = .default
 				} else {
 					self?.addressStateObservable.value = .invalid(error: "EMAIL CAN NOT BE FOUND".localized())
-					//Show address error
 				}
 			}
 		} else if to.isValidPublicKey() {
@@ -509,9 +510,13 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			blns?.insert((Coin.baseCoin().symbol ?? ""), at: 0)
 			blns?.forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
-				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance, formatter: coinFormatter)
+				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance,
+																																		 formatter: coinFormatter)
 				let title = coin + " (" + balanceString + ")"
-				let item = AccountPickerItem(title: title, address: address, balance: balance, coin: coin)
+				let item = AccountPickerItem(title: title,
+																		 address: address,
+																		 balance: balance,
+																		 coin: coin)
 				ret.append(item)
 			})
 		}
@@ -570,31 +575,44 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	func sendButtonTaped() {
+		if nil == self.selectedAddress || isLoadingNonce.value == true {
+			return
+		}
 
-		getNonce { [weak self] (suc) in
+		Observable.combineLatest(GateManager.shared.nonce(address: "Mx" + selectedAddress!),
+														 GateManager.shared.minGas())
+			.do(onNext: { [weak self] (result) in
+				let (nonce, gas) = result
 
-			guard suc else {
-				assert(true)
-				self?.notifiableError.value = NotifiableError(title: "Can't get nonce", text: nil)
-				return
-			}
+				if (self?.currentGas.value ?? 1) != gas {
+					let payloadData = (try? self?.clearPayloadSubject.value() ?? "")?.data(using: .utf8)
+					let comissionText = self!.comissionText(for: gas, payloadData: payloadData)
+					self?.errorNotificationSubject.onNext(NotifiableError(title: "Transaction fee changed".localized(),
+																																text: "Current fee is: " + comissionText))
+				}
+				self?.nonce.value = nonce + 1
+				self?.currentGas.value = gas
 
-			//Get difficulty hash?
-			DispatchQueue.main.async {
 				let amount = self?.amount.value ?? 0.0
 				guard let address = self?.toAddress.value else {
 					//Show error?
 					return
 				}
-
+			
 				let vm = self?.sendPopupViewModel(to: self!.toField ?? address,
 																					address: address,
 																					amount: amount)
 				let vc = Storyboards.Popup.instantiateInitialViewController()
 				vc.viewModel = vm
 				self?.showPopup.value = vc
-			}
-		}
+		}, onError: { [weak self] (error) in
+			self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't get nonce"))
+			self?.isLoadingNonce.value = false
+		}, onCompleted: { [weak self] in
+			self?.isLoadingNonce.value = false
+		}, onSubscribe: { [weak self] in
+			self?.isLoadingNonce.value = true
+		}).subscribe().disposed(by: disposeBag)
 	}
 
 	func submitSendButtonTaped() {
@@ -606,90 +624,24 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	func viewDidAppear() {
-		getGasPrice(completion: { [weak self] (gas) in
-			if nil != gas {
-				self?.currentGas.value = gas!
-			}
-		})
+		GateManager.shared.minGasPrice().subscribe(onNext: { [weak self] (gas) in
+			self?.currentGas.value = gas
+		}).disposed(by: disposeBag)
 	}
 
 	// MARK: -
-
-	func getGasPrice(completion: ((Int?) -> ())?) {
-
-		GateManager.shared.minGasPrice(completion: { (gas, error) in
-			var gs = 1
-
-			defer {
-				completion?(gs)
-			}
-
-			if nil != gas {
-				gs = gas!
-			}
-		})
-	}
-
-	func getNonce(completion: ((Bool) -> ())?) {
-
-		if nil == self.selectedAddress || isLoadingNonce.value == true {
-			completion?(false)
-			return
-		}
-		isLoadingNonce.value = true
-
-		GateManager.shared.nonce(for: "Mx" + self.selectedAddress!) { [weak self] (count, err) in
-
-			self?.getGasPrice(completion: { (gas) in
-				if nil != gas {
-					if (self?.currentGas.value ?? 1) != gas {
-						let payloadData = (try? self?.clearPayloadSubject.value() ?? "")?.data(using: .utf8)
-						let comissionText = self!.comissionText(for: gas!, payloadData: payloadData)
-						self?.notifiableError.value = NotifiableError(title: "Transaction fee changed".localized(),
-																													text: "Current fee is: " + comissionText)
-					}
-				}
-
-				self?.currentGas.value = gas!
-
-				var success = false
-
-				defer {
-					self?.isLoadingNonce.value = false
-					completion?(success)
-				}
-
-				guard nil == err, nil != count else {
-					success = false
-					return
-				}
-
-				self?.nonce.value = NSDecimalNumber(decimal: count ?? 0).intValue + 1
-				success = true
-			})
-		}
-	}
 
 	func sendTX() {
 		let amount = self.amount.value ?? 0.0
 		guard let to = self.toAddress.value,
 			let selectedCoin = self.selectedCoin.value,
 			let nonce = self.nonce.value else {
-
-			self.notifiableError.value = NotifiableError(title: "Transaction can't be sent".localized(), text: nil)
+			self.errorNotificationSubject.onNext(NotifiableError(title: "Transaction can't be sent".localized()))
 			return
 		}
 
-		guard let strVal = decimalsNoMantissaFormatter.string(from: amount * TransactionCoinFactorDecimal as NSNumber) else {
-			return
-		}
-
-		let value = (BigUInt(strVal) ?? BigUInt(0))
-		let selectedBalance = self.selectedAddressBalance ?? 0.0
-		let maxComparableSelectedBalance = (Decimal(string: formatter.string(from: (selectedBalance) as NSNumber) ?? "") ?? 0.0) * TransactionCoinFactorDecimal
-
-		let maxComparableBalance = decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
-		let isMax = (value > 0 && value == (BigUInt(maxComparableBalance) ?? BigUInt(0)))
+		let isMax = (Decimal.PIPComparableBalance(from: amount)
+			== Decimal.PIPComparableBalance(from: (self.selectedAddressBalance ?? 0.0)))
 
 		let isBaseCoin = selectedCoin == Coin.baseCoin().symbol!
 		let payload = self.payload()
@@ -701,21 +653,21 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 				//Error no Private key found
 				assert(true)
 				DispatchQueue.main.async {
-					self?.notifiableError.value = NotifiableError(title: "No private key found".localized(), text: nil)
+					self?.errorNotificationSubject.onNext(NotifiableError(title: "No private key found".localized()))
 				}
 				return
 			}
 
 			guard let selectedCoin = self?.selectedCoin.value else {
 				DispatchQueue.main.async {
-					self?.notifiableError.value = NotifiableError(title: "Can't get nonce".localized(), text: nil)
+					self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't get nonce".localized()))
 				}
 				return
 			}
 
 			let toFld = self?.toField
 
-			var newAmount = amount * TransactionCoinFactorDecimal
+			var newAmount = amount.decimalFromPIP()
 			if isMax {
 				//if we want to send all coins at first we check if can pay comission with the base coin
 				//if so we subtract commission amount from the requested amount
@@ -725,13 +677,13 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 					let amountWithCommission = max(0, amount - (self?.currentCommission ?? 0))
 					guard (self?.selectedAddressBalance ?? 0) >= amountWithCommission else {
 						let needs = self?.formatter.string(from: amountWithCommission as NSNumber) ?? ""
-						self?.notifiableError.value = NotifiableError(title: "Not enough coins.",
-																													text: "Needs " + needs)
+						self?.errorNotificationSubject.onNext(NotifiableError(title: "Not enough coins.",
+																																	text: "Needs " + needs))
 						self?.showPopup.value = nil
 						return
 					}
 
-					newAmount = amountWithCommission * TransactionCoinFactorDecimal
+					newAmount = amountWithCommission.decimalFromPIP()
 					self?.proceedSend(seed: seed,
 														nonce: nonce,
 														to: to,
@@ -764,7 +716,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 																										 privateKey: self?.fakePK ?? "") else {
 
 						DispatchQueue.main.async {
-							self?.notifiableError.value = NotifiableError(title: "Can't check tx".localized(), text: nil)
+							self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't check tx".localized()))
 							self?.showPopup.value = nil
 						}
 						return
@@ -776,14 +728,14 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 						guard error == nil, nil != commission else {
 							return
 						}
-						let normalizedCommission = commission! / TransactionCoinFactorDecimal
+						let normalizedCommission = commission!.PIPToDecimal()
 						let normalizedAmount = amount - normalizedCommission
 						//if new amount less than 0 - show error
 						if normalizedAmount < 0 {
 							//error
 							let needs = self?.formatter.string(from: (amount + normalizedCommission) as NSNumber) ?? ""
-							self?.notifiableError.value = NotifiableError(title: "Not enough coins.".localized(),
-																														text: "Needs ".localized() + needs)
+							self?.errorNotificationSubject.onNext(NotifiableError(title: "Not enough coins.".localized(),
+																																		text: "Needs ".localized() + needs))
 							self?.showPopup.value = nil
 							return
 						}
@@ -793,12 +745,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 															to: to,
 															toFld: toFld,
 															commissionCoin: selectedCoin,
-															amount: normalizedAmount * TransactionCoinFactorDecimal,
+															amount: normalizedAmount.decimalFromPIP(),
 															payload: payload)
 					})
 				} else {
-					//otherwise just multiply decimal amount to factor
-					newAmount = (self?.selectedAddressBalance ?? 0) * TransactionCoinFactorDecimal
+					newAmount = (self?.selectedAddressBalance ?? 0).decimalFromPIP()
 					self?.proceedSend(seed: seed,
 														nonce: nonce,
 														to: to,
@@ -919,10 +870,10 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	private func comissionText(for gas: Int, payloadData: Data? = nil) -> String {
-		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice * TransactionCoinFactorDecimal
-		var commission = (RawTransactionType.sendCoin.commission() + payloadCom) / TransactionCoinFactorDecimal * Decimal(gas)
+		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
+		var commission = (RawTransactionType.sendCoin.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
 		if (toField ?? "").isValidPublicKey() {
-			commission = (RawTransactionType.delegate.commission() + payloadCom) / TransactionCoinFactorDecimal * Decimal(gas)
+			commission = (RawTransactionType.delegate.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
 		}
 
 		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: commission,
@@ -964,6 +915,36 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	// MARK: -
 
+	func lastTransactionExplorerURL() -> URL? {
+		guard nil != lastSentTransactionHash else {
+			return nil
+		}
+		return URL(string: MinterExplorerBaseURL! + "/transactions/" + (lastSentTransactionHash ?? ""))
+	}
+
+	// MARK: -
+
+	private func handle(error: Error) {
+		var notification: NotifiableError
+		if let error = error as? HTTPClientError {
+			if let errorMessage = error.userData?["log"] as? String {
+				notification = NotifiableError(title: "An Error Occurred".localized(),
+																			 text: errorMessage)
+			} else {
+				notification = NotifiableError(title: "An Error Occurred".localized(),
+																			 text: "Unable to send transaction".localized())
+			}
+		} else {
+			notification = NotifiableError(title: "An Error Occurred".localized(),
+																		 text: "Unable to send transaction".localized())
+		}
+		self.txErrorNotificationSubject.onNext(notification)
+	}
+}
+
+extension SendViewModel {
+	// MARK: - ViewModels
+
 	func sendPopupViewModel(to: String, address: String, amount: Decimal) -> SendPopupViewModel {
 		let vm = SendPopupViewModel()
 		vm.amount = amount
@@ -979,7 +960,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		vm.cancelTitle = "CANCEL".localized()
 		return vm
 	}
-
+	
 	func sentViewModel(to: String, address: String) -> SentPopupViewModel {
 		let vm = SentPopupViewModel()
 		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
@@ -994,29 +975,4 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		return vm
 	}
 
-	// MARK: -
-
-	func lastTransactionExplorerURL() -> URL? {
-		guard nil != lastSentTransactionHash else {
-			return nil
-		}
-		return URL(string: MinterExplorerBaseURL! + "/transactions/" + (lastSentTransactionHash ?? ""))
-	}
-
-	// MARK: -
-
-	private func handle(error: Error) {
-		if let error = error as? HTTPClientError {
-			if let errorMessage = error.userData?["log"] as? String {
-				self.txError.value =  NotifiableError(title: "An Error Occurred".localized(),
-																							text: errorMessage)
-			} else {
-				self.txError.value = NotifiableError(title: "An Error Occurred".localized(),
-																						 text: "Unable to send transaction".localized())
-			}
-		} else {
-			self.txError.value = NotifiableError(title: "An Error Occurred".localized(),
-																					 text: "Unable to send transaction".localized())
-		}
-	}
 }

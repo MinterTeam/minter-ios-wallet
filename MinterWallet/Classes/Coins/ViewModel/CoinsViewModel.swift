@@ -13,34 +13,50 @@ import MinterMy
 
 class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProtocol {
 
+	typealias BalanceHeaderItem = (title: String?, text: NSAttributedString?, animated: Bool)
+
 	// MARK: - ViewModelProtocol
 
 	var input: CoinsViewModel.Input!
-
 	var output: CoinsViewModel.Output!
 
 	struct Input {
 		var didRefresh: AnyObserver<Void>
+		var didTapBalance: AnyObserver<Void>
 	}
 
 	struct Output {
 		var totalDelegatedBalance: Observable<String?>
+		var balanceInUSD: Observable<String?>
+		var balanceText: Observable<BalanceHeaderItem>
 	}
+
+	// MARK: - I/O Subjects
+
+	private var totalDelegatedBalanceSubject = ReplaySubject<String?>.create(bufferSize: 1)
+	private var balanceInUSDSubject = ReplaySubject<String?>.create(bufferSize: 1)
+	private var balanceTextSubject = ReplaySubject<BalanceHeaderItem>.create(bufferSize: 1)
+
+	private var didRefreshSubject = PublishSubject<Void>()
+	private var didTapBalanceSubject = PublishSubject<Void>()
 
 	// MARK: -
 
-	enum cellIdentifierPrefix : String {
+	enum cellIdentifierPrefix: String {
 	 case transactions = "ButtonTableViewCell_Transactions"
 	 case convert = "ButtonTableViewCell_Convert"
 	}
 
 	// MARK: -
 
-	var title: String {
-		get {
-			return "Coins".localized()
-		}
+	enum BalanceType: String {
+		case balanceBIP
+		case totalBalanceBIP
+		case totalBalanceUSD
 	}
+
+	var changedBalanceTypeSubject =
+		BehaviorSubject<BalanceType>(value: BalanceType(rawValue: AppSettingsManager.shared.balanceType ?? "") ?? .balanceBIP)
 
 	var basicCoinSymbol: String {
 		return Coin.baseCoin().symbol ?? "bip"
@@ -55,9 +71,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 	var totalBalanceObservable: Observable<Decimal> {
 		return Session.shared.mainCoinBalance.asObservable()
 	}
-
-	var totalDelegatedBalanceSubject = ReplaySubject<String?>.create(bufferSize: 1)
-	var didRefreshSubject = PublishSubject<Void>()
 
 	var usernameViewObservable: Observable<User?> {
 		return Session.shared.user.asObservable()
@@ -78,8 +91,9 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		if let id = Session.shared.user.value?.id {
 			url = MinterMyAPIURL.avatarUserId(id: id).url()
 		}
-		if let avatarURLString = Session.shared.user.value?.avatar, let avatarURL = URL(string: avatarURLString) {
-			url = avatarURL
+		if let avatarURLString = Session.shared.user.value?.avatar,
+			let avatarURL = URL(string: avatarURLString) {
+				url = avatarURL
 		}
 		return url
 	}
@@ -94,9 +108,12 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 	override init() {
 		super.init()
 
-		self.input = Input(didRefresh: didRefreshSubject.asObserver())
+		self.input = Input(didRefresh: didRefreshSubject.asObserver(),
+											 didTapBalance: didTapBalanceSubject.asObserver())
 
-		self.output = Output(totalDelegatedBalance: totalDelegatedBalanceSubject.asObservable())
+		self.output = Output(totalDelegatedBalance: totalDelegatedBalanceSubject.asObservable(),
+												 balanceInUSD: balanceInUSDSubject.asObservable(),
+												 balanceText: balanceTextSubject.asObservable())
 
 		Observable.combineLatest(Session.shared.transactions.asObservable(),
 														 Session.shared.balances.asObservable(),
@@ -114,7 +131,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 				}
 				self?.coinObservables[key]?.onNext(bal[key] ?? 0.0)
 			}
-
 		}).disposed(by: disposeBag)
 
 		Session.shared.delegatedBalance.subscribe(onNext: { [weak self] (val) in
@@ -131,6 +147,94 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 			Session.shared.loadTransactions()
 			Session.shared.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
+
+		didTapBalanceSubject.skip(1)
+			.withLatestFrom(Observable.combineLatest(Session.shared.mainCoinBalance.asObservable(),
+																							 Session.shared.totalUSDBalance,
+																							 Session.shared.totalMainCoinBalance.asObservable(),
+																							 changedBalanceTypeSubject.asObservable()))
+			.subscribe(onNext: { [weak self] (val) in
+
+				let (balance, usdBalance, totalBalance, balanceType) = val
+				var newBalanceType: BalanceType
+				var resultBalance: Decimal
+
+				switch balanceType {
+				case .totalBalanceUSD:
+					newBalanceType = .totalBalanceBIP
+					resultBalance = totalBalance
+					break
+				case .balanceBIP:
+					newBalanceType = .totalBalanceUSD
+					resultBalance = usdBalance
+					break
+				case .totalBalanceBIP:
+					newBalanceType = .balanceBIP
+					resultBalance = balance
+					break
+				}
+
+				self?.changedBalanceTypeSubject.onNext(newBalanceType)
+
+				AppSettingsManager.shared.balanceType = newBalanceType.rawValue
+				AppSettingsManager.shared.save()
+
+				if let headerItem = self?.balanceHeaderItem(balanceType: balanceType,
+																					 balance: resultBalance,
+																					 isUSD: newBalanceType == .totalBalanceUSD) {
+					self?.balanceTextSubject.onNext(headerItem)
+				}
+		}).disposed(by: disposeBag)
+
+		Observable.combineLatest(Session.shared.mainCoinBalance.asObservable(),
+														 Session.shared.totalUSDBalance.asObservable(),
+														 Session.shared.totalMainCoinBalance
+														 )
+			.subscribe(onNext: { [weak self] (val) in
+				let (balance, usdBalance, totalBalance) = val
+				let balanceType = BalanceType(rawValue: AppSettingsManager.shared.balanceType ?? "") ?? .balanceBIP
+				var resultBalance: Decimal
+				switch balanceType {
+				case .balanceBIP:
+					resultBalance = balance
+					break
+				case .totalBalanceBIP:
+					resultBalance = totalBalance
+					break
+				case .totalBalanceUSD:
+					resultBalance = usdBalance
+					break
+				}
+				if let headerItem = self?.balanceHeaderItem(balanceType: balanceType,
+																										balance: resultBalance,
+																										isUSD: balanceType == .totalBalanceUSD) {
+					self?.balanceTextSubject.onNext(headerItem)
+				}
+		}).disposed(by: disposeBag)
+	}
+
+	private func balanceHeaderItem(balanceType: BalanceType,
+																 balance: Decimal,
+																 isUSD: Bool) -> BalanceHeaderItem {
+
+		var text: NSAttributedString?
+		var title: String?
+
+		switch balanceType {
+		case .balanceBIP:
+			title = "Total Balance".localized()
+			break
+
+		case .totalBalanceBIP:
+			title = "Total Balance".localized()
+			break
+
+		case .totalBalanceUSD:
+			title = "Available Balance".localized()
+			break
+		}
+		text = headerViewTitleText(with: balance, isUSD: isUSD)
+		return BalanceHeaderItem(title: title, text: text, animated: false)
 	}
 
 	func createSection() {
@@ -155,42 +259,38 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 			guard let transaction = transactionItem.transaction else {
 				return
 			}
-
 			let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash ?? String.random(length: 20))
 
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
 																								 identifier: "SeparatorTableViewCell_" + sectionId)
 
-			if transaction.type == .send {
-				if let transactionCellItem = self.sendTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .multisend {
-				if let transactionCellItem = self.multisendTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .buy || transaction.type == .sell {
-				if let transactionCellItem = self.convertTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .sellAll {
-				if let transactionCellItem = self.convertTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .delegate || transaction.type == .unbond {
-				if let transactionCellItem = self.delegateTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
-			} else if transaction.type == .redeemCheck {
-				if let transactionCellItem = self.redeemCheckTransactionItem(with: transactionItem) {
-					section.items.append(transactionCellItem)
-					section.items.append(separator)
-				}
+			guard let txType = transaction.type else { return }
+
+			var transactionCellItem: BaseCellItem?
+			switch txType {
+			case .send:
+				transactionCellItem = self.sendTransactionItem(with: transactionItem)
+				break
+			case .multisend:
+				transactionCellItem = self.multisendTransactionItem(with: transactionItem)
+				break
+			case .buy, .sell, .sellAll:
+				transactionCellItem = self.convertTransactionItem(with: transactionItem)
+				break
+			case .delegate, .unbond:
+				transactionCellItem = self.delegateTransactionItem(with: transactionItem)
+				break
+			case .redeemCheck:
+				transactionCellItem = self.redeemCheckTransactionItem(with: transactionItem)
+				break
+			case .create, .declare, .setCandidateOnline,
+					 .setCandidateOffline, .createMultisig, .editCandidate:
+				transactionCellItem = self.systemTransactionItem(with: transactionItem)
+				break
+			}
+			if let transactionCellItem = transactionCellItem {
+				section.items.append(transactionCellItem)
+				section.items.append(separator)
 			}
 		}
 
@@ -210,7 +310,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 
 			let bal = Session.shared.balances.value
 			let balanceKey = CurrencyNumberFormatter.decimalShortFormatter.string(from: (bal[key] ?? 0) as NSNumber)
-//			let cellAdditionalId = "\(key)_\(balanceKey ?? "")"
 
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
 																								 identifier: "SeparatorTableViewCell_\(key)")
@@ -274,11 +373,16 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 
 	// MARK: -
 
-	func headerViewTitleText(with balance: Decimal) -> NSAttributedString {
-		let formatter = coinFormatter
+	func headerViewTitleText(with balance: Decimal, isUSD: Bool = false) -> NSAttributedString {
+		let formatter = isUSD ? CurrencyNumberFormatter.USDFormatter : coinFormatter
 		let balanceString = Array((formatter.string(from: balance as NSNumber) ?? "").split(separator: "."))
 
 		let string = NSMutableAttributedString()
+		if isUSD {
+			string.append(NSAttributedString(string: "$",
+																			 attributes: [.foregroundColor: UIColor.white,
+																										.font: UIFont.boldFont(of: 32.0)]))
+		}
 		string.append(NSAttributedString(string: String(balanceString[0]),
 																		 attributes: [.foregroundColor: UIColor.white,
 																									.font: UIFont.boldFont(of: 32.0)]))
@@ -289,9 +393,11 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		string.append(NSAttributedString(string: String(balanceString[1]),
 																		 attributes: [.foregroundColor: UIColor.white,
 																									.font: UIFont.boldFont(of: 20.0)]))
-		string.append(NSAttributedString(string: " " + self.basicCoinSymbol,
-																		 attributes: [.foregroundColor: UIColor.white,
-																									.font: UIFont.boldFont(of: 18.0)]))
+		if !isUSD {
+			string.append(NSAttributedString(string: " " + self.basicCoinSymbol,
+																			 attributes: [.foregroundColor: UIColor.white,
+																										.font: UIFont.boldFont(of: 18.0)]))
+		}
 		return string
 	}
 

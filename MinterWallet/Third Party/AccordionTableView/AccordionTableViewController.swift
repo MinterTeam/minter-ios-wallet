@@ -55,7 +55,6 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 															 willDisplay cell: UITableViewCell,
 															 forRowAt indexPath: IndexPath) {
 		if let cell = cell as? AccordionTableViewCell {
-//			let expanded = expandedIndexPaths.contains(indexPath)
 			let expanded1 = expandedIdentifiers.contains(cell.identifier)
 			cell.setExpanded(expanded1, animated: false)
 		}
@@ -68,7 +67,6 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 				cell.toggle(!cell.expanded, animated: shouldAnimateCellToggle)
 				toggleCell(cell, animated: shouldAnimateCellToggle)
 			}
-
 		}
 	}
 
@@ -79,9 +77,7 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 
 			if !animated {
 				cell.setExpanded(true, animated: false)
-//				expandedIdentifiers.append(cell.identifier)
 				expandedIdentifiers.insert(cell.identifier)
-
 				tableView.reloadData()
 				scrollIfNeededAfterExpandingCell(at: indexPath)
 			} else {
@@ -93,26 +89,19 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 					cell.setExpanded(true, animated: true)
 					self.scrollIfNeededAfterExpandingCell(at: indexPath)
 				})
-
 				// 1. expand cell height
 				tableView.beginUpdates()
-
-//				expandedIdentifiers.append(cell.identifier)
 				expandedIdentifiers.insert(cell.identifier)
-
 				tableView.endUpdates()
-
 				CATransaction.commit()
 			}
 		}
 	}
 
 	private func collapseCell(_ cell: AccordionTableViewCell, animated: Bool) {
-		if let indexPath = tableView.indexPath(for: cell) {
-
+		if tableView.indexPath(for: cell) != nil {
 			if !animated {
 				cell.setExpanded(false, animated: false)
-
 				if let idx = (expandedIdentifiers.index { (id) -> Bool in
 					return id == cell.identifier
 				}) {
@@ -126,37 +115,17 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 					DispatchQueue.main.async {
 						// 2. collapse cell height
 						self.tableView.beginUpdates()
-						
-//						if let idx = (self.expandedIdentifiers.index { (id) -> Bool in
-//							return id == cell.identifier
-//						}) {
-////							self.expandedIdentifiers.remove(at: idx)
-//						}
-						
 						self.expandedIdentifiers.remove(cell.identifier)
-						
 						self.tableView.endUpdates()
-						
 					}
 				})
 				// 1. animate views before collapsing
 				cell.setExpanded(false, animated: true)
-				
 				CATransaction.commit()
 			}
 		}
 	}
-	
-//	private func addToExpandedIndexPaths(_ indexPath: IndexPath) {
-//		expandedIndexPaths.append(indexPath)
-//	}
-	
-//	private func removeFromExpandedIndexPaths(_ indexPath: IndexPath) {
-//		if let index = expandedIndexPaths.index(of: indexPath) {
-//			expandedIndexPaths.remove(at: index)
-//		}
-//	}
-	
+
 	private func scrollIfNeededAfterExpandingCell(at indexPath: IndexPath) {
 		guard shouldScrollIfNeededAfterCellExpand,
 			let cell = tableView.cellForRow(at: indexPath) as? AccordionTableViewCell else {
@@ -168,14 +137,5 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 			tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
 		}
 	}
-	
-	//MARK: - 
-	
-//	public func shiftIndexPaths(number: Int) {
-//		let newExpanded = expandedIndexPaths.map { (indexPath) -> IndexPath in
-//			return IndexPath(row: indexPath.row + number, section: indexPath.section)
-//		}
-//		expandedIndexPaths = newExpanded
-//	}
-	
+
 }

@@ -102,7 +102,6 @@ class RootViewController: UIViewController, ControllerType {
 		case .cellular:
 			print("Reachable via Cellular")
 		case .none:
-	//		print("Network not reachable")
 			let banner = NotificationBanner(title: "Network is not reachable".localized(),
 																			subtitle: nil,
 																			style: .danger)

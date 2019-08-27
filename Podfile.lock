@@ -43,6 +43,9 @@ PODS:
     - Differentiator (~> 3.0)
     - RxCocoa (~> 4.0)
     - RxSwift (~> 4.0)
+  - RxGesture (1.2.1):
+    - RxCocoa (~> 4.0)
+    - RxSwift (~> 4.0)
   - RxSwift (4.3.1)
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
@@ -68,7 +71,7 @@ DEPENDENCIES:
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - KeychainSwift (= 12.0.0)
   - MinterCore
-  - MinterExplorer (from `../minter-ios-explorer/`)
+  - MinterExplorer (from `../minter-ios-explorer`)
   - MinterMy
   - NotificationBannerSwift (= 1.8.0)
   - ObjectMapper (~> 3.3)
@@ -76,6 +79,7 @@ DEPENDENCIES:
   - RealmSwift (= 3.11.0)
   - RxAppState (= 1.2.0)
   - RxDataSources (~> 3.0)
+  - RxGesture
   - RxSwift (= 4.3.1)
   - SwiftCentrifuge
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, branch `master`)
@@ -105,6 +109,7 @@ SPEC REPOS:
     - RxAppState
     - RxCocoa
     - RxDataSources
+    - RxGesture
     - RxSwift
     - secp256k1.swift
     - SipHash
@@ -121,7 +126,7 @@ EXTERNAL SOURCES:
   GoldenKeystore:
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterExplorer:
-    :path: "../minter-ios-explorer/"
+    :path: "../minter-ios-explorer"
   SwiftValidator:
     :branch: master
     :git: https://github.com/jpotts18/SwiftValidator.git
@@ -157,6 +162,7 @@ SPEC CHECKSUMS:
   RxAppState: abff6ddb6cf6e0d7c3d7fec65e5892d5e856ba9b
   RxCocoa: 2f35a76bf8887872e28a1914112395b11b8e0e64
   RxDataSources: a843bad90c29817f5923ec8163f4af2de084ceb3
+  RxGesture: c278eb05b187abd47e11e65464ae4de53ab71d95
   RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
@@ -170,6 +176,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 570911e19e38707dfa48da66dfed02d5240ac3d1
+PODFILE CHECKSUM: 8ee4d602f14b74507269059e92997e9b4a69d998
 
 COCOAPODS: 1.7.5
