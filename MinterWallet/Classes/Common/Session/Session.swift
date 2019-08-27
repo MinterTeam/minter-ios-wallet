@@ -50,6 +50,8 @@ class Session {
 	var allBalances = Variable([String: [String: Decimal]]())
 	var balances = Variable([String: Decimal]())
 	var mainCoinBalance = Variable(Decimal(0.0))
+	var totalMainCoinBalance = BehaviorSubject<Decimal>(value: 0.0)
+	var totalUSDBalance = BehaviorSubject<Decimal>(value: 0.0)
 	var delegatedBalance = BehaviorSubject<Decimal>(value: 0.0)
 	var USDRate = BehaviorSubject<Decimal>(value: 0.1)
 	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
@@ -298,15 +300,13 @@ class Session {
 
 	func loadBalances() {
 
-		let addresses = accounts.value.map({ (account) -> String in
+		guard let address = accounts.value.map({ (account) -> String in
 			return "Mx" + account.address.stripMinterHexPrefix()
-		})
-
-		guard addresses.count > 0 else {
+		}).first else {
 			return
 		}
 
-		addressManager.addresses(addresses: addresses) { [weak self] (response, err) in
+		addressManager.address(address: address, withSum: true) { [weak self] (response, err) in
 
 			guard (self?.isLoggedIn.value ?? false) || (self?.accounts.value ?? []).count > 0 else {
 				return
@@ -318,12 +318,22 @@ class Session {
 
 			var newMainCoinBalance = Decimal(0.0)
 
-			response?.forEach({ (address) in
-
+//			response?.forEach({ (address) in
+			let address = response ?? [:]
 				guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(),
 					let coins = address["balances"] as? [[String : Any]] else {
 					return
 				}
+			
+			if let totalBalanceBaseCoin = address["balanceSumInBaseCoin"] as? String,
+				let totalBalance = Decimal(string: totalBalanceBaseCoin) {
+				self?.totalMainCoinBalance.onNext(totalBalance)
+			}
+			
+			if let totalBalanceUSD = address["balanceSumInUSD"] as? String,
+				let totalBalance = Decimal(string: totalBalanceUSD) {
+				self?.totalUSDBalance.onNext(totalBalance)
+			}
 
 				let baseCoinBalance = coins.filter({ (dict) -> Bool in
 					return ((dict["coin"] as? String) ?? "").uppercased() == Coin.baseCoin().symbol!.uppercased()
@@ -350,7 +360,7 @@ class Session {
 
 				newAllBalances?[ads] = blncs
 				self?.allBalances.value = newAllBalances ?? [:]
-			})
+//			})
 
 			self?.mainCoinBalance.value = newMainCoinBalance
 		}

@@ -149,24 +149,28 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		}).disposed(by: disposeBag)
 
 		didTapBalanceSubject.skip(1)
-			.withLatestFrom(Observable.combineLatest(totalBalanceObservable,
-																							 Session.shared.USDRate.asObservable(),
+			.withLatestFrom(Observable.combineLatest(Session.shared.mainCoinBalance.asObservable(),
+																							 Session.shared.totalUSDBalance,
+																							 Session.shared.totalMainCoinBalance.asObservable(),
 																							 changedBalanceTypeSubject.asObservable()))
 			.subscribe(onNext: { [weak self] (val) in
-				//Uncomment when balance change will be ready
-				/*
-				let (balance, usdRate, balanceType) = val
+
+				let (balance, usdBalance, totalBalance, balanceType) = val
 				var newBalanceType: BalanceType
+				var resultBalance: Decimal
 
 				switch balanceType {
 				case .totalBalanceUSD:
 					newBalanceType = .totalBalanceBIP
+					resultBalance = totalBalance
 					break
 				case .balanceBIP:
 					newBalanceType = .totalBalanceUSD
+					resultBalance = usdBalance
 					break
 				case .totalBalanceBIP:
 					newBalanceType = .balanceBIP
+					resultBalance = balance
 					break
 				}
 
@@ -176,20 +180,34 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 				AppSettingsManager.shared.save()
 
 				if let headerItem = self?.balanceHeaderItem(balanceType: balanceType,
-																					 balance: balance,
-																					 usdRate: usdRate) {
+																					 balance: resultBalance,
+																					 isUSD: newBalanceType == .totalBalanceUSD) {
 					self?.balanceTextSubject.onNext(headerItem)
-				}*/
+				}
 		}).disposed(by: disposeBag)
 
-		Observable.combineLatest(totalBalanceObservable,
-														 Session.shared.USDRate.asObservable())
+		Observable.combineLatest(Session.shared.mainCoinBalance.asObservable(),
+														 Session.shared.totalUSDBalance.asObservable(),
+														 Session.shared.totalMainCoinBalance
+														 )
 			.subscribe(onNext: { [weak self] (val) in
-				let (balance, usdRate) = val
+				let (balance, usdBalance, totalBalance) = val
 				let balanceType = BalanceType(rawValue: AppSettingsManager.shared.balanceType ?? "") ?? .balanceBIP
+				var resultBalance: Decimal
+				switch balanceType {
+				case .balanceBIP:
+					resultBalance = balance
+					break
+				case .totalBalanceBIP:
+					resultBalance = totalBalance
+					break
+				case .totalBalanceUSD:
+					resultBalance = usdBalance
+					break
+				}
 				if let headerItem = self?.balanceHeaderItem(balanceType: balanceType,
-																										balance: balance,
-																										usdRate: usdRate) {
+																										balance: resultBalance,
+																										isUSD: balanceType == .totalBalanceUSD) {
 					self?.balanceTextSubject.onNext(headerItem)
 				}
 		}).disposed(by: disposeBag)
@@ -197,7 +215,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 
 	private func balanceHeaderItem(balanceType: BalanceType,
 																 balance: Decimal,
-																 usdRate: Decimal) -> BalanceHeaderItem {
+																 isUSD: Bool) -> BalanceHeaderItem {
 
 		var text: NSAttributedString?
 		var title: String?
@@ -205,19 +223,17 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		switch balanceType {
 		case .balanceBIP:
 			title = "Total Balance".localized()
-			text = headerViewTitleText(with: balance, isUSD: false)
 			break
 
 		case .totalBalanceBIP:
 			title = "Total Balance".localized()
-			text = headerViewTitleText(with: balance * usdRate, isUSD: true)
 			break
 
 		case .totalBalanceUSD:
 			title = "Available Balance".localized()
-			text = headerViewTitleText(with: balance, isUSD: false)
 			break
 		}
+		text = headerViewTitleText(with: balance, isUSD: isUSD)
 		return BalanceHeaderItem(title: title, text: text, animated: false)
 	}
 
