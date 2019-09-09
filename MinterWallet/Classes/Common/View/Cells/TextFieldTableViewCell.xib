@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -30,7 +30,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fDJ-ug-mwR">
-                        <rect key="frame" x="58" y="19" width="307" height="0.0"/>
+                        <rect key="frame" x="58" y="18.5" width="307" height="0.0"/>
                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                         <color key="textColor" red="0.95693963766098022" green="0.23488524556159973" blue="0.21839424967765808" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
@@ -55,7 +55,7 @@
                     <constraint firstItem="fDJ-ug-mwR" firstAttribute="centerY" secondItem="nHc-GT-F7U" secondAttribute="centerY" id="Cms-Dl-GIR"/>
                     <constraint firstItem="gEW-Yp-p6t" firstAttribute="trailing" secondItem="Myo-4g-g52" secondAttribute="trailing" constant="10" id="E3O-7M-ouM"/>
                     <constraint firstItem="gEW-Yp-p6t" firstAttribute="top" secondItem="nHc-GT-F7U" secondAttribute="bottom" constant="8.5" id="EDA-ng-rkp"/>
-                    <constraint firstAttribute="bottom" secondItem="gEW-Yp-p6t" secondAttribute="bottom" constant="20" id="FSQ-TG-le9"/>
+                    <constraint firstAttribute="bottom" secondItem="gEW-Yp-p6t" secondAttribute="bottom" priority="999" constant="20" id="FSQ-TG-le9"/>
                     <constraint firstItem="fDJ-ug-mwR" firstAttribute="trailing" secondItem="gEW-Yp-p6t" secondAttribute="trailing" id="JAj-h6-Ybe"/>
                     <constraint firstItem="gEW-Yp-p6t" firstAttribute="leading" secondItem="gFd-nU-9ZI" secondAttribute="leading" constant="10" id="OHH-2B-Z8c"/>
                     <constraint firstItem="Myo-4g-g52" firstAttribute="centerY" secondItem="gEW-Yp-p6t" secondAttribute="centerY" id="TZK-fh-RTW"/>

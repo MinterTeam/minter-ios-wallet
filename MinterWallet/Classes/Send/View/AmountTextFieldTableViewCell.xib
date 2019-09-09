@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -73,7 +73,7 @@
                     <constraint firstItem="H5j-b4-ihl" firstAttribute="centerY" secondItem="dre-gy-gzx" secondAttribute="centerY" id="AsD-98-LZB"/>
                     <constraint firstItem="4Vh-DY-qeM" firstAttribute="centerY" secondItem="Ond-CZ-BlM" secondAttribute="centerY" id="Bba-Nx-nIj"/>
                     <constraint firstItem="Ond-CZ-BlM" firstAttribute="trailing" secondItem="4Vh-DY-qeM" secondAttribute="trailing" constant="85" id="DWx-cv-ScE"/>
-                    <constraint firstAttribute="bottom" secondItem="Ond-CZ-BlM" secondAttribute="bottom" constant="20" id="OTc-f2-IvQ"/>
+                    <constraint firstAttribute="bottom" secondItem="Ond-CZ-BlM" secondAttribute="bottom" priority="999" constant="20" id="OTc-f2-IvQ"/>
                     <constraint firstItem="aKF-ms-b8X" firstAttribute="centerY" secondItem="Ond-CZ-BlM" secondAttribute="centerY" id="VEm-Am-Hxm"/>
                     <constraint firstAttribute="trailing" secondItem="Ond-CZ-BlM" secondAttribute="trailing" constant="10" id="hru-jW-8d9"/>
                     <constraint firstItem="Ond-CZ-BlM" firstAttribute="leading" secondItem="83j-Qc-TsO" secondAttribute="leading" constant="10" id="m23-j8-7Nq"/>

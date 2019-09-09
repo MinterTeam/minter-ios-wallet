@@ -282,7 +282,6 @@
 		FA333062224A4B3C003B4763 /* TextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB865FE20C7D0B3002568A4 /* TextViewTableViewCell.xib */; };
 		FA333063224A4B3C003B4763 /* CoinsTableViewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4542792106106200DB6634 /* CoinsTableViewHeaderView.xib */; };
 		FA333064224A4B3C003B4763 /* pop_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2421930E8B00463F66 /* pop_hi.wav */; };
-		FA333065224A4B3C003B4763 /* AddressTextViewTableViewCell~.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA670A3D20E63431000A5169 /* AddressTextViewTableViewCell~.xib */; };
 		FA333067224A4B3C003B4763 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B6E207239F200AD110A /* Main.storyboard */; };
 		FA333068224A4B3C003B4763 /* pop_zap.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F2621930E9F00463F66 /* pop_zap.wav */; };
 		FA333069224A4B3C003B4763 /* Ubuntu-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BB12072483100AD110A /* Ubuntu-R.ttf */; };
@@ -377,13 +376,16 @@
 		FA670A3920E27352000A5169 /* ReceiveAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA670A3820E27352000A5169 /* ReceiveAddressTableViewCell.swift */; };
 		FA670A3B20E291C0000A5169 /* TransactionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA670A3A20E291C0000A5169 /* TransactionItem.swift */; };
 		FA670A3E20E63431000A5169 /* AddressTextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA670A3C20E63431000A5169 /* AddressTextViewTableViewCell.swift */; };
-		FA670A3F20E63431000A5169 /* AddressTextViewTableViewCell~.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA670A3D20E63431000A5169 /* AddressTextViewTableViewCell~.xib */; };
 		FA672DEC230CFB9C0028FE29 /* UIView+Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA672DEB230CFB9C0028FE29 /* UIView+Transition.swift */; };
 		FA672DED230CFB9C0028FE29 /* UIView+Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA672DEB230CFB9C0028FE29 /* UIView+Transition.swift */; };
 		FA672DF02313CD410028FE29 /* SystemTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA672DEE2313CD410028FE29 /* SystemTransactionTableViewCell.swift */; };
 		FA672DF12313CD410028FE29 /* SystemTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA672DEE2313CD410028FE29 /* SystemTransactionTableViewCell.swift */; };
 		FA672DF22313CD410028FE29 /* SystemTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA672DEF2313CD410028FE29 /* SystemTransactionTableViewCell.xib */; };
 		FA672DF32313CD410028FE29 /* SystemTransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA672DEF2313CD410028FE29 /* SystemTransactionTableViewCell.xib */; };
+		FA672DF62316C6170028FE29 /* UsernameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA672DF42316C6170028FE29 /* UsernameTableViewCell.swift */; };
+		FA672DF72316C6170028FE29 /* UsernameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA672DF42316C6170028FE29 /* UsernameTableViewCell.swift */; };
+		FA672DF82316C6170028FE29 /* UsernameTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA672DF52316C6170028FE29 /* UsernameTableViewCell.xib */; };
+		FA672DF92316C6170028FE29 /* UsernameTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA672DF52316C6170028FE29 /* UsernameTableViewCell.xib */; };
 		FA6760AA20A9E90900F970E7 /* DatabaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6760A920A9E90900F970E7 /* DatabaseStorage.swift */; };
 		FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */; };
 		FA6A8139207BAE1300DC97E5 /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */; };
@@ -712,10 +714,11 @@
 		FA670A3820E27352000A5169 /* ReceiveAddressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveAddressTableViewCell.swift; sourceTree = "<group>"; };
 		FA670A3A20E291C0000A5169 /* TransactionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionItem.swift; sourceTree = "<group>"; };
 		FA670A3C20E63431000A5169 /* AddressTextViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTextViewTableViewCell.swift; sourceTree = "<group>"; };
-		FA670A3D20E63431000A5169 /* AddressTextViewTableViewCell~.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "AddressTextViewTableViewCell~.xib"; sourceTree = "<group>"; };
 		FA672DEB230CFB9C0028FE29 /* UIView+Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Transition.swift"; sourceTree = "<group>"; };
 		FA672DEE2313CD410028FE29 /* SystemTransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemTransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FA672DEF2313CD410028FE29 /* SystemTransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SystemTransactionTableViewCell.xib; sourceTree = "<group>"; };
+		FA672DF42316C6170028FE29 /* UsernameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameTableViewCell.swift; sourceTree = "<group>"; };
+		FA672DF52316C6170028FE29 /* UsernameTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UsernameTableViewCell.xib; sourceTree = "<group>"; };
 		FA6760A920A9E90900F970E7 /* DatabaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStorage.swift; sourceTree = "<group>"; };
 		FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		FA6A8137207BAE1300DC97E5 /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
@@ -1181,12 +1184,13 @@
 			isa = PBXGroup;
 			children = (
 				FA670A3C20E63431000A5169 /* AddressTextViewTableViewCell.swift */,
-				FA670A3D20E63431000A5169 /* AddressTextViewTableViewCell~.xib */,
 				FA4DF4AE2108FA1500E64F1B /* AmountTextFieldTableViewCell.swift */,
 				FA4DF4AF2108FA1500E64F1B /* AmountTextFieldTableViewCell.xib */,
 				FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell.xib */,
 				FA0D3C0E22A16966004F5AE1 /* PayloadTableViewCell.swift */,
 				FA0D3C0F22A16966004F5AE1 /* PayloadTableViewCell.xib */,
+				FA672DF42316C6170028FE29 /* UsernameTableViewCell.swift */,
+				FA672DF52316C6170028FE29 /* UsernameTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2231,8 +2235,8 @@
 				FA333061224A4B3C003B4763 /* DelegateTransactionTableViewCell.xib in Resources */,
 				FA333062224A4B3C003B4763 /* TextViewTableViewCell.xib in Resources */,
 				FA333063224A4B3C003B4763 /* CoinsTableViewHeaderView.xib in Resources */,
+				FA672DF82316C6170028FE29 /* UsernameTableViewCell.xib in Resources */,
 				FA333064224A4B3C003B4763 /* pop_hi.wav in Resources */,
-				FA333065224A4B3C003B4763 /* AddressTextViewTableViewCell~.xib in Resources */,
 				FA333067224A4B3C003B4763 /* Main.storyboard in Resources */,
 				FA333068224A4B3C003B4763 /* pop_zap.wav in Resources */,
 				FA333069224A4B3C003B4763 /* Ubuntu-R.ttf in Resources */,
@@ -2300,8 +2304,8 @@
 				FAE43C9421539F2A002027D4 /* DelegateTransactionTableViewCell.xib in Resources */,
 				FAB8660020C7D0B3002568A4 /* TextViewTableViewCell.xib in Resources */,
 				FA45427A2106106200DB6634 /* CoinsTableViewHeaderView.xib in Resources */,
+				FA672DF92316C6170028FE29 /* UsernameTableViewCell.xib in Resources */,
 				FADD8F2521930E8C00463F66 /* pop_hi.wav in Resources */,
-				FA670A3F20E63431000A5169 /* AddressTextViewTableViewCell~.xib in Resources */,
 				FA669B70207239F200AD110A /* Main.storyboard in Resources */,
 				FADD8F2721930E9F00463F66 /* pop_zap.wav in Resources */,
 				FA669BC52072483100AD110A /* Ubuntu-R.ttf in Resources */,
@@ -2435,6 +2439,7 @@
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/GoldenKeystore/GoldenKeystore.framework",
+				"${BUILT_PRODUCTS_DIR}/GrowingTextView/GrowingTextView.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterCore/MinterCore.framework",
@@ -2471,6 +2476,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoldenKeystore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GrowingTextView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterCore.framework",
@@ -2561,6 +2567,7 @@
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/GoldenKeystore/GoldenKeystore.framework",
+				"${BUILT_PRODUCTS_DIR}/GrowingTextView/GrowingTextView.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/MinterCore/MinterCore.framework",
@@ -2597,6 +2604,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoldenKeystore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GrowingTextView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MinterCore.framework",
@@ -2735,6 +2743,7 @@
 				FA332FE0224A4B3C003B4763 /* String+Validation.swift in Sources */,
 				FA332FE1224A4B3C003B4763 /* AnalyticsEvents.swift in Sources */,
 				FA332FE2224A4B3C003B4763 /* NextGrowingInternalTextView.swift in Sources */,
+				FA672DF62316C6170028FE29 /* UsernameTableViewCell.swift in Sources */,
 				FA332FE3224A4B3C003B4763 /* UIViewController+TopMost.swift in Sources */,
 				FA332FE4224A4B3C003B4763 /* LoginViewController.swift in Sources */,
 				FA332FE5224A4B3C003B4763 /* AdvancedModeBaseViewModel.swift in Sources */,
@@ -2941,6 +2950,7 @@
 				FA77578121B92B20006CE586 /* Decimal+Flaoting.swift in Sources */,
 				FAC4BA1220D94604005A1B90 /* String+Validation.swift in Sources */,
 				FA9BE30B213FE7E0002160F3 /* AnalyticsEvents.swift in Sources */,
+				FA672DF72316C6170028FE29 /* UsernameTableViewCell.swift in Sources */,
 				FA0AF8DC21B5297E000B571B /* NextGrowingInternalTextView.swift in Sources */,
 				FA6B5746207513BE002124D0 /* UIViewController+TopMost.swift in Sources */,
 				2177DA1D3DFAC5A28E961357 /* LoginViewController.swift in Sources */,

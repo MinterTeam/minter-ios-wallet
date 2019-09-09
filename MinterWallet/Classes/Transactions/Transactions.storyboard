@@ -43,6 +43,7 @@
                     <connections>
                         <outlet property="noTransactionsLabel" destination="bbl-T4-esr" id="dlY-O9-0Iz"/>
                         <outlet property="tableView" destination="Uqw-AW-24T" id="1Ab-s2-8NQ"/>
+                        <outlet property="tableViewTopConstraint" destination="xRF-aE-yVg" id="HHP-jo-8Jz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zep-Mt-rZ5" userLabel="First Responder" sceneMemberID="firstResponder"/>

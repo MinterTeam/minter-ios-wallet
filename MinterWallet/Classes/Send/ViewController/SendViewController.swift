@@ -20,7 +20,7 @@ UITableViewDataSource,
 SendPopupViewControllerDelegate,
 SentPopupViewControllerDelegate,
 TextViewTableViewCellDelegate,
-AddressTextViewTableViewCellDelegate {
+UsernameTableViewCellDelegate {
 
 	// MARK: - ControllerType
 
@@ -66,7 +66,7 @@ AddressTextViewTableViewCellDelegate {
 
 		setUpTestnetToolbar()
 
-		automaticallyAdjustsScrollViewInsets = false
+		automaticallyAdjustsScrollViewInsets = true
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -75,31 +75,6 @@ AddressTextViewTableViewCellDelegate {
 		viewModel.viewDidAppear()
 
 		AnalyticsHelper.defaultAnalytics.track(event: .SendScreen)
-	}
-
-	// MARK: -
-
-	private func registerCells() {
-		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "TextFieldTableViewCell")
-		tableView.register(UINib(nibName: "PayloadTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "PayloadTableViewCell")
-		tableView.register(UINib(nibName: "AmountTextFieldTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "AmountTextFieldTableViewCell")
-		tableView.register(UINib(nibName: "AddressTextViewTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "AddressTextViewTableViewCell")
-		tableView.register(UINib(nibName: "PickerTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "PickerTableViewCell")
-		tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "SwitchTableViewCell")
-		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "TwoTitleTableViewCell")
-		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "SeparatorTableViewCell")
-		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "ButtonTableViewCell")
-		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "BlankTableViewCell")
 	}
 
 	// MARK: -
@@ -148,7 +123,7 @@ AddressTextViewTableViewCellDelegate {
 			textField.amountDelegate = self
 		}
 
-		if let addressCell = cell as? AddressTextViewTableViewCell {
+		if let addressCell = cell as? UsernameTableViewCell {
 			addressCell.addressDelegate = self
 		}
 
@@ -357,37 +332,26 @@ extension SendViewController {
 
 	func didFinish(viewController: SendPopupViewController) {
 		SoundHelper.playSoundIfAllowed(type: .bip)
-
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupSendButton, params: nil)
-
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupSendButton)
 		viewModel.submitSendButtonTaped()
 	}
 
 	func didCancel(viewController: SendPopupViewController) {
-
 		SoundHelper.playSoundIfAllowed(type: .cancel)
-
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupCancelButton, params: nil)
-
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupCancelButton)
 		viewController.dismiss(animated: true, completion: nil)
-
 		viewModel.sendCancelButtonTapped()
 	}
 
 	// MARK: - SentPopupViewControllerDelegate
 
 	func didTapActionButton(viewController: SentPopupViewController) {
-
 		SoundHelper.playSoundIfAllowed(type: .click)
-
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupViewTransactionButton, params: nil)
-
+		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupViewTransactionButton)
 		viewController.dismiss(animated: true) { [weak self] in
 			if let url = self?.viewModel.lastTransactionExplorerURL() {
 				let vc = BaseSafariViewController(url: url)
@@ -398,12 +362,9 @@ extension SendViewController {
 
 	func didTapSecondActionButton(viewController: SentPopupViewController) {
 		SoundHelper.playSoundIfAllowed(type: .click)
-
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupShareTransactionButton, params: nil)
-
+		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupShareTransactionButton)
 		viewController.dismiss(animated: true) { [weak self] in
 			if let url = self?.viewModel.lastTransactionExplorerURL() {
 				let vc = ActivityRouter.activityViewController(activities: [url], sourceView: self!.view)
@@ -413,20 +374,15 @@ extension SendViewController {
 	}
 
 	func didTapSecondButton(viewController: SentPopupViewController) {
-
 		SoundHelper.playSoundIfAllowed(type: .cancel)
-
 		lightImpactFeedbackGenerator.prepare()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupCloseButton, params: nil)
-
+		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupCloseButton)
 		viewController.dismiss(animated: true, completion: nil)
 	}
 
 	// MARK: -
 
 	func heightDidChange(cell: TextViewTableViewCell) {
-
 		if nil != cell as? PayloadTableViewCell {
 			guard let rect = cell.textView?
 				.caretRect(for: cell.textView.selectedTextRange!.start) else { return }
@@ -455,24 +411,21 @@ extension SendViewController {
 
 	func heightWillChange(cell: TextViewTableViewCell) {}
 
-	func didTapScanButton(cell: AddressTextViewTableViewCell?) {
-
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsQRButton, params: nil)
-
+	func didTapScanButton(cell: UsernameTableViewCell?) {
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsQRButton)
 		// Retrieve the QRCode content
 		// By using the delegate pattern
 		readerVC.delegate = self
 		// Or by using the closure pattern
-		cell?.textViewScroll.textView.becomeFirstResponder()
+		cell?.textView.becomeFirstResponder()
 		readerVC.completionBlock = { (result: QRCodeReaderResult?) in
 			if let indexPath = self.tableView.indexPath(for: cell!),
 				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 
-				cell?.textViewScroll.textView.text = result?.value
+				cell?.textView.text = result?.value
 				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
 			}
 		}
-
 		// Presents the readerVC as modal form sheet
 		readerVC.modalPresentationStyle = .formSheet
 		present(readerVC, animated: true, completion: nil)
@@ -506,7 +459,6 @@ extension SendViewController: QRCodeReaderViewControllerDelegate {
 
 	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
 		reader.stopScanning()
-
 		dismiss(animated: true, completion: nil)
 	}
 
@@ -518,11 +470,8 @@ extension SendViewController: QRCodeReaderViewControllerDelegate {
 	}
 
 	func readerDidCancel(_ reader: QRCodeReaderViewController) {
-
 		SoundHelper.playSoundIfAllowed(type: .cancel)
-
 		reader.stopScanning()
-
 		dismiss(animated: true, completion: nil)
 	}
 }
@@ -531,14 +480,11 @@ extension SendViewController: AmountTextFieldTableViewCellDelegate {
 
 	func didTapUseMax() {
 		self.view.endEditing(true)
-
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsUseMaxButton)
-
 		let indexPath = IndexPath(row: 2, section: 0)
 		guard let amountCell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell else {
 				return
 		}
-
 		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 			amountCell.textField.text = viewModel.selectedBalanceText
 			_ = viewModel.validateField(item: item, value: amountCell.textField.text ?? "")
@@ -550,12 +496,41 @@ extension SendViewController {
 
 	func setUpTestnetToolbar() {
 		if self.shouldShowTestnetToolbar {
-			self.tableView.contentInset = UIEdgeInsets(top: 70,
-																								 left: 0,
-																								 bottom: 0,
-																								 right: 0)
+			self.tableView.contentInset = UIEdgeInsets(top: 70.0,
+																								 left: 0.0,
+																								 bottom: 200.0,
+																								 right: 0.0)
 			self.view.addSubview(self.testnetToolbarView)
 		}
+	}
+
+}
+
+extension SendViewController {
+
+	private func registerCells() {
+		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "TextFieldTableViewCell")
+		tableView.register(UINib(nibName: "UsernameTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "UsernameTableViewCell")
+		tableView.register(UINib(nibName: "PayloadTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "PayloadTableViewCell")
+		tableView.register(UINib(nibName: "AmountTextFieldTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "AmountTextFieldTableViewCell")
+		tableView.register(UINib(nibName: "AddressTextViewTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "AddressTextViewTableViewCell")
+		tableView.register(UINib(nibName: "PickerTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "PickerTableViewCell")
+		tableView.register(UINib(nibName: "SwitchTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SwitchTableViewCell")
+		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "TwoTitleTableViewCell")
+		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SeparatorTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "ButtonTableViewCell")
+		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "BlankTableViewCell")
 	}
 
 }

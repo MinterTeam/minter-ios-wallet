@@ -12,6 +12,7 @@ PODS:
   - Fabric (1.9.0)
   - GoldenKeystore (1.0.3):
     - TrezorCrypto (= 0.0.9)
+  - GrowingTextView (0.7.1)
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
   - MinterCore (0.1.22):
@@ -69,6 +70,7 @@ DEPENDENCIES:
   - CryptoSwift
   - Fabric (~> 1.7)
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
+  - GrowingTextView
   - KeychainSwift (= 12.0.0)
   - MinterCore
   - MinterExplorer (from `../minter-ios-explorer`)
@@ -97,6 +99,7 @@ SPEC REPOS:
     - CryptoSwift
     - Differentiator
     - Fabric
+    - GrowingTextView
     - KeychainSwift
     - MarqueeLabel
     - MinterCore
@@ -149,6 +152,7 @@ SPEC CHECKSUMS:
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   GoldenKeystore: 6d176bbb332a4abb99024ebce06a3e3067c73a8a
+  GrowingTextView: 6dff7eedf2fc93f8378d20d456782afd0267b0cc
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   MinterCore: 936b9d42547c26a61689dbb81e75dec522a93b19
@@ -176,6 +180,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 8ee4d602f14b74507269059e92997e9b4a69d998
+PODFILE CHECKSUM: be966a6c3c93d8747ae768d05b52386d8c8cebfb
 
 COCOAPODS: 1.7.5

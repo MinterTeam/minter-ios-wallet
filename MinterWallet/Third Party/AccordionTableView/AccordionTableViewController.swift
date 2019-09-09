@@ -13,16 +13,14 @@ Just subclass it and implement `tableView:heightForRowAtIndexPath:`
 (based on information in `expandedIndexPaths` property).
 */
 open class AccordionTableViewController: UIViewController, UITableViewDelegate {
-	
+
 	// MARK: Properties
-	
+
 	@IBOutlet weak var tableView: UITableView!
-	
-	
+
 	/// Array of `IndexPath` objects for all of the expanded cells.
-//	open var expandedIndexPaths = [IndexPath]()
 	open var expandedIdentifiers = Set<String>()
-	
+
 	/// Flag that indicates if cell toggle should be animated. Defaults to `true`.
 	open var shouldAnimateCellToggle = true
 
@@ -34,7 +32,6 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 
 	/**
 	Expand or collapse the cell.
-	
 	- parameter cell: Cell that should be expanded or collapsed.
 	- parameter animated: If `true` action should be animated.
 	*/
@@ -74,12 +71,15 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 
 	private func expandCell(_ cell: AccordionTableViewCell, animated: Bool) {
 		if let indexPath = tableView.indexPath(for: cell) {
-
 			if !animated {
 				cell.setExpanded(true, animated: false)
 				expandedIdentifiers.insert(cell.identifier)
 				tableView.reloadData()
-				scrollIfNeededAfterExpandingCell(at: indexPath)
+				if #available(iOS 11.0, *) {
+					scrollIfNeededAfterExpandingCell(at: indexPath, at: .bottom)
+				} else {
+					scrollIfNeededAfterExpandingCell(at: indexPath, at: .top)
+				}
 			} else {
 				CATransaction.begin()
 				CATransaction.setAnimationDuration(0.1)
@@ -87,7 +87,11 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 				CATransaction.setCompletionBlock({ () -> Void in
 					// 2. animate views after expanding
 					cell.setExpanded(true, animated: true)
-					self.scrollIfNeededAfterExpandingCell(at: indexPath)
+					if #available(iOS 11.0, *) {
+						self.scrollIfNeededAfterExpandingCell(at: indexPath, at: .bottom)
+					} else {
+						self.scrollIfNeededAfterExpandingCell(at: indexPath, at: .top)
+					}
 				})
 				// 1. expand cell height
 				tableView.beginUpdates()
@@ -126,7 +130,7 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 
-	private func scrollIfNeededAfterExpandingCell(at indexPath: IndexPath) {
+	private func scrollIfNeededAfterExpandingCell(at indexPath: IndexPath, at position: UITableView.ScrollPosition = .bottom) {
 		guard shouldScrollIfNeededAfterCellExpand,
 			let cell = tableView.cellForRow(at: indexPath) as? AccordionTableViewCell else {
 				return
@@ -134,7 +138,9 @@ open class AccordionTableViewController: UIViewController, UITableViewDelegate {
 		let cellRect = tableView.rectForRow(at: indexPath)
 		let isCompletelyVisible = tableView.bounds.contains(cellRect)
 		if cell.expanded && !isCompletelyVisible {
-			tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+				self.tableView.scrollToRow(at: indexPath, at: position, animated: true)
+			}
 		}
 	}
 

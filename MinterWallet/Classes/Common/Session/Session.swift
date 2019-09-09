@@ -53,7 +53,6 @@ class Session {
 	var totalMainCoinBalance = BehaviorSubject<Decimal>(value: 0.0)
 	var totalUSDBalance = BehaviorSubject<Decimal>(value: 0.0)
 	var delegatedBalance = BehaviorSubject<Decimal>(value: 0.0)
-	var USDRate = BehaviorSubject<Decimal>(value: 0.1)
 	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
 	var accessToken = Variable<String?>(nil)
 
@@ -190,6 +189,10 @@ class Session {
 		secureStorage.removeAll()
 		localStorage.removeAll()
 		dataBaseStorage.removeAll()
+		
+		delegatedBalance.onNext(0.0)
+		totalMainCoinBalance.onNext(0.0)
+		totalUSDBalance.onNext(0.0)
 
 		baseCoinBalances.value = [:]
 		accounts.value = []

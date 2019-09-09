@@ -42,7 +42,11 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 
 	@IBOutlet weak var title: UILabel!
 	@IBOutlet weak var errorTitle: UILabel!
-	@IBOutlet weak var textView: UITextView!
+	@IBOutlet weak var textView: UITextView! {
+		didSet {
+			textView.delegate = self
+		}
+	}
 	var activityIndicator: UIActivityIndicatorView?
 
 	// MARK: -
@@ -133,6 +137,7 @@ extension TextViewTableViewCell: UITextViewDelegate {
 
 extension TextViewTableViewCell: ValidatableCellProtocol {
 
+	@objc
 	func setValid() {
 		self.textView.layer.cornerRadius = 8.0
 		self.textView.layer.borderWidth = 2
@@ -140,6 +145,7 @@ extension TextViewTableViewCell: ValidatableCellProtocol {
 		self.errorTitle.text = ""
 	}
 
+	@objc
 	func setInvalid(message: String?) {
 		self.textView.layer.cornerRadius = 8.0
 		self.textView.layer.borderWidth = 2
@@ -150,6 +156,7 @@ extension TextViewTableViewCell: ValidatableCellProtocol {
 		}
 	}
 
+	@objc
 	func setDefault() {
 		self.textView.layer.cornerRadius = 8.0
 		self.textView.layer.borderWidth = 2

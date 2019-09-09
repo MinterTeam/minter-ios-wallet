@@ -16,6 +16,7 @@ class TransactionsViewController: BaseTableViewController {
 
 	// MARK: -
 
+	@IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 	@IBOutlet var noTransactionsLabel: UILabel!
 
 	// MARK: -
@@ -42,7 +43,9 @@ class TransactionsViewController: BaseTableViewController {
 		self.title = viewModel.title
 
 		self.tableView.tableFooterView = UIView()
+		tableViewTopConstraint.constant = 0.0
 		self.tableView.contentInset = UIEdgeInsets(top: -37, left: 0, bottom: 0, right: 0)
+		self.tableView.estimatedRowHeight = 55.0
 		self.automaticallyAdjustsScrollViewInsets = true
 
 		registerViews()
@@ -55,13 +58,10 @@ class TransactionsViewController: BaseTableViewController {
 					let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
 					return UITableViewCell()
 				}
-
 				cell.configure(item: item)
-
 				if let transactionCell = cell as? ExpandableCell {
 					transactionCell.delegate = self
 				}
-
 				return cell
 		})
 
@@ -71,7 +71,8 @@ class TransactionsViewController: BaseTableViewController {
 
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
-		viewModel.sectionsObservable.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
+		viewModel.sectionsObservable
+			.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
 
 		viewModel.noTransactionsObservable.asObservable().subscribe(onNext: { (val) in
 			if val {
@@ -82,8 +83,10 @@ class TransactionsViewController: BaseTableViewController {
 		}).disposed(by: disposeBag)
 
 		if self.shouldShowTestnetToolbar {
-			self.view.addSubview(self.testnetToolbarView)
-			self.tableView.contentInset = UIEdgeInsets(top: 0,
+			let toolbar = self.testnetToolbarView
+			self.view.addSubview(toolbar)
+			tableViewTopConstraint.constant = 54.0
+			self.tableView.contentInset = UIEdgeInsets(top: -54.0,
 																								 left: 0,
 																								 bottom: 0,
 																								 right: 0)

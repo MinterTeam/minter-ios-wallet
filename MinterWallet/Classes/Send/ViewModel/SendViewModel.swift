@@ -40,7 +40,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	// MARK: -
 
 	enum cellIdentifierPrefix: String {
-		case address = "TextFieldTableViewCell_Address"
+		case address = "UsernameTableViewCell_Address"
 		case coin = "PickerTableViewCell_Coin"
 		case amount = "AmountTextFieldTableViewCell_Amount"
 		case fee = "TwoTitleTableViewCell_TransactionFee"
@@ -240,7 +240,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			if let addr = self?.selectedAddress,
 				let selCoin = self?.selectedCoin.value,
 				nil == val[addr]?[selCoin] {
-
 					self?.selectedAddress = nil
 					self?.selectedCoin.value = nil
 			}
@@ -260,16 +259,14 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	func createSections() -> [BaseTableSectionItem] {
 
-		let username = AddressTextViewTableViewCellItem(reuseIdentifier: "AddressTextViewTableViewCell",
-																										identifier: cellIdentifierPrefix.address.rawValue)
-
+		let username = UsernameTableViewCellItem(reuseIdentifier: "UsernameTableViewCell",
+																						 identifier: cellIdentifierPrefix.address.rawValue)
 		username.title = "TO (MX ADDRESS OR PUBLIC KEY)".localized()
 		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy,
 			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate,
 			appDele.isTestnet {
 			username.title = "TO (@USERNAME, EMAIL, MX ADDRESS OR PUBLIC KEY)".localized()
 		}
-
 		username.isLoadingObservable = isLoadingAddress.asObservable()
 		username.stateObservable = addressStateObservable.asObservable()
 		username.value = toField ?? ""

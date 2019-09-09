@@ -27,6 +27,7 @@ def shared_pods
 	pod 'YandexMobileMetrica/Dynamic', '3.2.0'
 	pod 'SwiftCentrifuge'
 	pod 'GoldenKeystore', :git => 'https://github.com/sidorov-panda/GoldenKeystore'
+	pod 'GrowingTextView'
 end
 
 target 'MinterWallet' do
