@@ -179,7 +179,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 				AppSettingsManager.shared.balanceType = newBalanceType.rawValue
 				AppSettingsManager.shared.save()
 
-				if let headerItem = self?.balanceHeaderItem(balanceType: balanceType,
+				if let headerItem = self?.balanceHeaderItem(balanceType: newBalanceType,
 																					 balance: resultBalance,
 																					 isUSD: newBalanceType == .totalBalanceUSD) {
 					self?.balanceTextSubject.onNext(headerItem)

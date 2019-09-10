@@ -25,12 +25,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 	func configure(with viewModel: CoinsViewModel) {
 
 		// Input
-
 		refreshControl.rx.controlEvent([.valueChanged])
 			.subscribe(viewModel.input.didRefresh).disposed(by: disposeBag)
 
 		// Output
-
 		viewModel.output
 			.totalDelegatedBalance
 			.asDriver(onErrorJustReturn: "").drive(onNext: { [weak self] (val) in
@@ -119,6 +117,7 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
 			tableView.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
+			tableView.estimatedRowHeight = 50.0
 		}
 	}
 	@IBOutlet weak var dotCircle1ImageView: UIImageView!
@@ -327,10 +326,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 			return 8.0
 		} else if item.reuseIdentifier == "SeparatorTableViewCell" {
 			return 1.0
-		} else if !expandedIdentifiers.contains(item.identifier) {
-			return 55.0
 		} else if item.reuseIdentifier == "ButtonTableViewCell" {
 			return 70.0
+		} else if !expandedIdentifiers.contains(item.identifier) {
+			return 55.0
 		}
 		return UITableViewAutomaticDimension
 	}

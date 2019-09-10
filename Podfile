@@ -6,7 +6,7 @@ platform :ios, '10.0'
 def shared_pods
 	pod 'MinterCore'
 	pod 'MinterMy'
-	pod 'MinterExplorer', :path => '../minter-ios-explorer'
+	pod 'MinterExplorer'
 	pod 'Alamofire', '4.7.3'
 	pod 'AlamofireImage', '3.4.1'
 	pod 'RxSwift', '4.3.1'

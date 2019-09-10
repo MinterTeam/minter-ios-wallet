@@ -13,7 +13,7 @@ protocol ButtonTableViewCellDelegate: class {
 	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell)
 }
 
-class ButtonTableViewCellItem : BaseCellItem {
+class ButtonTableViewCellItem: BaseCellItem {
 	var title: String?
 	var buttonPattern: String?
 	var isButtonEnabled = true
@@ -63,7 +63,7 @@ class ButtonTableViewCell: BaseCell {
 
 			buttonItem.isLoadingObserver?.bind(onNext: { [weak self] (val) in
 
-				var defaultState = buttonItem.isButtonEnabled
+				let defaultState = buttonItem.isButtonEnabled
 
 				self?.button?.isEnabled = defaultState//!val
 				self?.activityIndicator?.isHidden = !val

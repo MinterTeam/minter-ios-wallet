@@ -30,11 +30,11 @@ PODS:
     - SnapKit (~> 4.0.1)
   - ObjectMapper (3.4.2)
   - ReachabilitySwift (4.3.0)
-  - Realm (3.11.0):
-    - Realm/Headers (= 3.11.0)
-  - Realm/Headers (3.11.0)
-  - RealmSwift (3.11.0):
-    - Realm (= 3.11.0)
+  - Realm (3.17.3):
+    - Realm/Headers (= 3.17.3)
+  - Realm/Headers (3.17.3)
+  - RealmSwift (3.17.3):
+    - Realm (= 3.17.3)
   - RxAppState (1.2.0):
     - RxCocoa (~> 4.3)
     - RxSwift (~> 4.3)
@@ -78,7 +78,7 @@ DEPENDENCIES:
   - NotificationBannerSwift (= 1.8.0)
   - ObjectMapper (~> 3.3)
   - ReachabilitySwift (~> 4.3)
-  - RealmSwift (= 3.11.0)
+  - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
   - RxAppState (= 1.2.0)
   - RxDataSources (~> 3.0)
   - RxGesture
@@ -108,7 +108,6 @@ SPEC REPOS:
     - ObjectMapper
     - ReachabilitySwift
     - Realm
-    - RealmSwift
     - RxAppState
     - RxCocoa
     - RxDataSources
@@ -130,6 +129,10 @@ EXTERNAL SOURCES:
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterExplorer:
     :path: "../minter-ios-explorer"
+  RealmSwift:
+    :branch: master
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
   SwiftValidator:
     :branch: master
     :git: https://github.com/jpotts18/SwiftValidator.git
@@ -138,6 +141,10 @@ CHECKOUT OPTIONS:
   GoldenKeystore:
     :commit: 2f58a6eb405561bec305d5a197bcaa1514eed77e
     :git: https://github.com/sidorov-panda/GoldenKeystore
+  RealmSwift:
+    :commit: 8ed9590320d52c539d35e2e5fe191af3a1ceb781
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
   SwiftValidator:
     :commit: c0ee801a2d107eca5f748d07932b449666d8effd
     :git: https://github.com/jpotts18/SwiftValidator.git
@@ -161,8 +168,8 @@ SPEC CHECKSUMS:
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
   ObjectMapper: 0d4402610f4e468903ae64629eec4784531e5c51
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
-  Realm: 92f09a102692b96a9a10e9617f214f15c5ab85fc
-  RealmSwift: 5f0481cd658bb751c509314b964a35eaa264d2cf
+  Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
+  RealmSwift: b7fdc2d18616621c31df5c7a398a45a2163f8eb0
   RxAppState: abff6ddb6cf6e0d7c3d7fec65e5892d5e856ba9b
   RxCocoa: 2f35a76bf8887872e28a1914112395b11b8e0e64
   RxDataSources: a843bad90c29817f5923ec8163f4af2de084ceb3
@@ -180,6 +187,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: be966a6c3c93d8747ae768d05b52386d8c8cebfb
+PODFILE CHECKSUM: 95dd16cd7ae64f7c8934c3b9fde0af46aae4b929
 
 COCOAPODS: 1.7.5

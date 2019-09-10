@@ -595,7 +595,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 					//Show error?
 					return
 				}
-			
+
 				let vm = self?.sendPopupViewModel(to: self!.toField ?? address,
 																					address: address,
 																					amount: amount)
