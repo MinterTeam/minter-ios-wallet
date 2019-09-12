@@ -36,7 +36,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 	private var totalDelegatedBalanceSubject = ReplaySubject<String?>.create(bufferSize: 1)
 	private var balanceInUSDSubject = ReplaySubject<String?>.create(bufferSize: 1)
 	private var balanceTextSubject = ReplaySubject<BalanceHeaderItem>.create(bufferSize: 1)
-
 	private var didRefreshSubject = PublishSubject<Void>()
 	private var didTapBalanceSubject = PublishSubject<Void>()
 
@@ -154,7 +153,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 																							 Session.shared.totalMainCoinBalance.asObservable(),
 																							 changedBalanceTypeSubject.asObservable()))
 			.subscribe(onNext: { [weak self] (val) in
-
+				return;
 				let (balance, usdBalance, totalBalance, balanceType) = val
 				var newBalanceType: BalanceType
 				var resultBalance: Decimal
@@ -224,11 +223,9 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		case .balanceBIP:
 			title = "Total Balance".localized()
 			break
-
 		case .totalBalanceBIP:
 			title = "Total Balance".localized()
 			break
-
 		case .totalBalanceUSD:
 			title = "Available Balance".localized()
 			break
@@ -255,7 +252,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		}
 
 		trans.forEach { (transactionItem) in
-
 			guard let transaction = transactionItem.transaction else {
 				return
 			}
@@ -298,7 +294,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 																				 identifier: "ButtonTableViewCell_Transactions")
 		button.buttonPattern = "blank"
 		button.title = "ALL TRANSACTIONS".localized()
-
 		section.items.append(button)
 
 		var section1 = BaseTableSectionItem(header: "My Coins".localized())
@@ -307,7 +302,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		Session.shared.balances.value.keys.sorted(by: { (key1, key2) -> Bool in
 			return key1 < key2
 		}).forEach { (key) in
-
 			let bal = Session.shared.balances.value
 			let balanceKey = CurrencyNumberFormatter.decimalShortFormatter.string(from: (bal[key] ?? 0) as NSNumber)
 

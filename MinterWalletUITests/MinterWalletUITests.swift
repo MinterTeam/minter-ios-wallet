@@ -47,7 +47,7 @@ class MinterWalletUITests: XCTestCase {
 	}
 	
 	func isBalanceAvailable() {
-		let label = app.staticTexts["My Balance"]
+		let label = app.staticTexts["Total Balance"]
 		
 		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label, handler: nil)
 		waitForExpectations(timeout: 15, handler: nil)
@@ -88,15 +88,15 @@ class MinterWalletUITests: XCTestCase {
 		
 		if self.app.tabBars.buttons["Send"].exists {
 			self.app.tabBars.buttons["Send"].tap()
-			
+
 			let textView = self.app.textViews.firstMatch
-			
+
 			expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: textView, handler: nil)
 			waitForExpectations(timeout: 20, handler: nil)
-			
+
 			textView.tap()
 			textView.typeText("@ody344")
-			
+
 			self.app.textFields.element(boundBy: 1).tap()
 			self.app.textFields.element(boundBy: 1).typeText("0.000001")
 			
@@ -105,11 +105,9 @@ class MinterWalletUITests: XCTestCase {
 				return true
 			}
 			waitForExpectations(timeout: 20, handler: nil)
-			
-//			self.app.tables.buttons["SEND"].tap()
-			
+
 			let button = self.app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).buttons["SEND"]
-			
+
 			expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: button, handler: nil)
 			waitForExpectations(timeout: 15, handler: nil)
 			
@@ -179,9 +177,6 @@ class MinterWalletUITests: XCTestCase {
 			
 			self.app.tables.buttons["USE MAX"].tap()
 			
-//			self.app.textFields.element(boundBy: 1).tap()
-//			self.app.textFields.element(boundBy: 1).typeText("0.0001")
-			
 			self.app.tables.buttons["SEND"].tap()
 			
 			let button = self.app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).buttons["SEND"]
@@ -241,7 +236,7 @@ class MinterWalletUITests: XCTestCase {
 	func testCheckBalance() {
 		loginAdvancedMode()
 		
-		XCTAssertTrue(app.staticTexts["My Balance"].exists)
+		XCTAssertTrue(app.staticTexts["Total Balance"].exists)
 	}
 	
 	//Login
@@ -267,7 +262,7 @@ class MinterWalletUITests: XCTestCase {
 		
 		tablesQuery/*@START_MENU_TOKEN@*/.buttons["CONTINUE"]/*[[".cells.buttons[\"CONTINUE\"]",".buttons[\"CONTINUE\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
 		
-		let label = app.staticTexts["My Balance"]
+		let label = app.staticTexts["Total Balance"]
 		
 		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label, handler: nil)
 		waitForExpectations(timeout: 15, handler: nil)
@@ -299,14 +294,13 @@ class MinterWalletUITests: XCTestCase {
 		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label, handler: nil)
 		waitForExpectations(timeout: 15, handler: nil)
 	}
-	
-	
+
 	func testLoginAdvancedModeNewAccount() {
 		loginAdvancedModeNewAccount()
 
 		isBalanceAvailable()
 	}
-	
+
 	func testConvertCoin() {
 		loginAdvancedMode()
 		
@@ -321,8 +315,6 @@ class MinterWalletUITests: XCTestCase {
 		let scrollViewsQuery = elementsQuery.scrollViews
 		scrollViewsQuery.children(matching: .textField).element(boundBy: 0).tap()
 		app.pickerWheels.firstMatch.swipeUp()
-
-		XCUIApplication().children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).tap()
 		
 		app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).tap()
 
@@ -345,47 +337,6 @@ class MinterWalletUITests: XCTestCase {
 		
 		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: sucLabel, handler: nil)
 		waitForExpectations(timeout: 15, handler: nil)
-//		}
-	}
-	
-		func testMnemonics() {
-
-			let app = self.app!
-			app.buttons["ADVANCED MODE"].tap()
-			app.buttons["GENERATE ADDRESS"].tap()
-			
-			let app2 = app
-			app2.tables/*@START_MENU_TOKEN@*/.buttons["Copy"]/*[[".cells.buttons[\"Copy\"]",".buttons[\"Copy\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
-			let textView = app.webViews.otherElements["BIP39 - Mnemonic Code"].children(matching: .other).element(boundBy: 4).children(matching: .textView).element(boundBy: 0)
-			textView.tap()
-			var text = UIPasteboard.general.string ?? ""
-			print("-----TEST STARTED----")
-			print(text)
-//			text = "forget token answer whip crowd faith inquiry size secret reopen cabbage also"
-			textView.typeText(text)
-			
-			
-			let element = XCUIApplication().webViews.otherElements["BIP39 - Mnemonic Code"].children(matching: .other).element(boundBy: 4)
-			XCUIApplication().webViews.otherElements["BIP39 - Mnemonic Code"].children(matching: .other).element(boundBy: 4).children(matching: .textView).element(boundBy: 2).tap()
-			let val = element.children(matching: .textView).element(boundBy: 2).value as? String
-			if (val ?? "") == "" {
-				print("MNEMONICS: " + text)
-				print("MNEMONICS: -----TEST ENDED FAILED----")
-				fatalError(val ?? "")
-			} else {
-				print("MNEMONICS: " + text)
-				print("MNEMONICS: Seed:" + (val ?? ""))
-				print("MNEMONICS: -----TEST ENDED SUC----")
-			}
-
-			app.navigationBars["Generate Address"].buttons["Back"].tap()
-			app.navigationBars["Advanced Mode"].buttons["Back"].tap()
-	}
-	
-	func testMnemonicsAgain() {
-		for _ in 0...10000 {
-			testMnemonics()
-		}
 	}
 	
 	func testConvertCoinGet() {
@@ -418,6 +369,5 @@ class MinterWalletUITests: XCTestCase {
 		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: sucLabel, handler: nil)
 		waitForExpectations(timeout: 15, handler: nil)
 	}
-//	}
 
 }

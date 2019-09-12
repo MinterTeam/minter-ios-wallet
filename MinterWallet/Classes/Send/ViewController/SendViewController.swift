@@ -63,17 +63,13 @@ UsernameTableViewCellDelegate {
 
 		registerCells()
 		configure(with: viewModel)
-
 		setUpTestnetToolbar()
-
 		automaticallyAdjustsScrollViewInsets = true
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-
 		viewModel.viewDidAppear()
-
 		AnalyticsHelper.defaultAnalytics.track(event: .SendScreen)
 	}
 
@@ -257,7 +253,6 @@ extension SendViewController: ButtonTableViewCellDelegate {
 					})
 					return
 				}
-
 				fieldCell.setDefault()
 			}
 		} else if let viewCell = cell as? TextViewTableViewCell {
@@ -283,7 +278,6 @@ extension SendViewController {
 								 inPopupViewController: PopupViewController? = nil) {
 
 		if nil != inPopupViewController {
-
 			guard let currentViewController = (inPopupViewController?
 				.childViewControllers.last as? PopupViewController) ?? inPopupViewController else {
 				return

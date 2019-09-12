@@ -15,7 +15,7 @@ PODS:
   - GrowingTextView (0.7.1)
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
-  - MinterCore (0.1.22):
+  - MinterCore (0.1.23):
     - Alamofire (= 4.7.3)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 0.9)
@@ -72,9 +72,9 @@ DEPENDENCIES:
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - GrowingTextView
   - KeychainSwift (= 12.0.0)
-  - MinterCore
-  - MinterExplorer (from `../minter-ios-explorer`)
-  - MinterMy
+  - MinterCore (from `../minter-ios-core/`)
+  - MinterExplorer (from `../minter-ios-explorer/`)
+  - MinterMy (from `../minter-ios-my/`)
   - NotificationBannerSwift (= 1.8.0)
   - ObjectMapper (~> 3.3)
   - ReachabilitySwift (~> 4.3)
@@ -102,8 +102,6 @@ SPEC REPOS:
     - GrowingTextView
     - KeychainSwift
     - MarqueeLabel
-    - MinterCore
-    - MinterMy
     - NotificationBannerSwift
     - ObjectMapper
     - ReachabilitySwift
@@ -127,8 +125,12 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   GoldenKeystore:
     :git: https://github.com/sidorov-panda/GoldenKeystore
+  MinterCore:
+    :path: "../minter-ios-core/"
   MinterExplorer:
-    :path: "../minter-ios-explorer"
+    :path: "../minter-ios-explorer/"
+  MinterMy:
+    :path: "../minter-ios-my/"
   RealmSwift:
     :branch: master
     :git: https://github.com/realm/realm-cocoa.git
@@ -162,9 +164,9 @@ SPEC CHECKSUMS:
   GrowingTextView: 6dff7eedf2fc93f8378d20d456782afd0267b0cc
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
-  MinterCore: 936b9d42547c26a61689dbb81e75dec522a93b19
+  MinterCore: 82f41771a820b9ca5f5f06e0e340892997633336
   MinterExplorer: 70eaab08988fd2c7cc37f8cedffa1f9d639ba4f9
-  MinterMy: 9a3ae2ae14fe7a834b4f714c5fc1ac2e4cd750dd
+  MinterMy: 259b8c09fdf6bb8c6abd80aa4f6632f8d6b6a41c
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
   ObjectMapper: 0d4402610f4e468903ae64629eec4784531e5c51
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
@@ -187,6 +189,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 95dd16cd7ae64f7c8934c3b9fde0af46aae4b929
+PODFILE CHECKSUM: 48c37e84c3a043f1bd58b85910152756913a23c7
 
 COCOAPODS: 1.7.5

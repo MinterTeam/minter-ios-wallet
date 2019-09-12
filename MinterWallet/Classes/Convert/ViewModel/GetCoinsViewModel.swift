@@ -193,15 +193,14 @@ class GetCoinsViewModel: ConvertCoinsViewModel {
 
 		DispatchQueue.global(qos: .userInitiated).async {
 			guard let mnemonic = self.accountManager.mnemonic(for: selectedAddress),
-				let seed = self.accountManager.seed(mnemonic: mnemonic) else {
+				let seed = self.accountManager.seed(mnemonic: mnemonic),
+				let pk = try? self.accountManager.privateKey(from: seed).raw.toHexString() else {
 				self.isLoading.onNext(false)
 				//Error no Private key found
 				assert(true)
 				self.errorNotification.onNext(NotifiableError(title: "No private key found", text: nil))
 				return
 			}
-
-			let pk = self.accountManager.privateKey(from: seed).raw.toHexString()
 
 			GateManager.shared.nonce(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
 

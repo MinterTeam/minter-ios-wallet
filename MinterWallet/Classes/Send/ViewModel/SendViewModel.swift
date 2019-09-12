@@ -813,12 +813,10 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 											payload: String,
 											completion: ((Bool?) -> ())? = nil) {
 
-		let newPk = self.accountManager.privateKey(from: seed)
 		let nonce = BigUInt(nonce)
-
-		let decimalAmount = BigUInt(decimal: amount)
-
-		guard let value = decimalAmount else {
+		guard
+			let newPk = try? self.accountManager.privateKey(from: seed),
+			let value = BigUInt(decimal: amount) else {
 			completion?(false)
 			return
 		}

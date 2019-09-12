@@ -50,9 +50,9 @@ class AccountManager {
 	}
 
 	func account(id: Int, seed: Data, encryptedBy: Account.EncryptedBy = .me) -> Account? {
-		let newPk = self.privateKey(from: seed)
 
 		guard
+			let newPk = try? self.privateKey(from: seed),
 			let publicKey = RawTransactionSigner.publicKey(privateKey: newPk.raw, compressed: false)?.dropFirst(),
 			let address = RawTransactionSigner.address(publicKey: publicKey) else {
 				return nil
@@ -63,9 +63,9 @@ class AccountManager {
 		return acc
 	}
 
-	func privateKey(from seed: Data) -> PrivateKey {
+	func privateKey(from seed: Data) throws -> PrivateKey {
 		let pk = PrivateKey(seed: seed)
-		let newPk = pk.derive(at: 44, hardened: true)
+		let newPk = try pk.derive(at: 44, hardened: true)
 			.derive(at: 60, hardened: true)
 			.derive(at: 0, hardened: true)
 			.derive(at: 0)
@@ -148,13 +148,13 @@ class AccountManager {
 		}
 
 		let pk = PrivateKey(seed: seed)
-		let newPk = pk.derive(at: 44, hardened: true)
-			.derive(at: 60, hardened: true)
-			.derive(at: 0, hardened: true)
-			.derive(at: 0)
-			.derive(at: 0)
 
 		guard
+			let newPk = try? pk.derive(at: 44, hardened: true)
+				.derive(at: 60, hardened: true)
+				.derive(at: 0, hardened: true)
+				.derive(at: 0)
+				.derive(at: 0),
 			let publicKey = RawTransactionSigner.publicKey(privateKey: newPk.raw, compressed: false)?.dropFirst(),
 			let address = RawTransactionSigner.address(publicKey: publicKey) else {
 				return nil
@@ -169,7 +169,11 @@ class AccountManager {
 			let seed = self.seed(mnemonic: mnemonic) else {
 				return nil
 		}
-		return self.privateKey(from: seed)
+		do {
+			return try? self.privateKey(from: seed)
+		} catch {
+			return nil
+		}
 	}
 
 	func mnemonic(for address: String) -> String? {

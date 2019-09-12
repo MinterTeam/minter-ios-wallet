@@ -290,7 +290,8 @@ class Session {
 		}
 
 		ExplorerAddressManager.default
-			.delegations(address: addresses.first!).subscribe(onNext: { [weak self] (delegation, total) in
+			.delegations(address: addresses.first!)
+			.subscribe(onNext: { [weak self] (delegation, total) in
 				self?.allDelegatedBalance.onNext(delegation ?? [])
 				if total != nil {
 					self?.delegatedBalance.onNext(total ?? 0.0)
@@ -321,12 +322,11 @@ class Session {
 
 			var newMainCoinBalance = Decimal(0.0)
 
-//			response?.forEach({ (address) in
 			let address = response ?? [:]
-				guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(),
-					let coins = address["balances"] as? [[String : Any]] else {
-					return
-				}
+			guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(),
+				let coins = address["balances"] as? [[String : Any]] else {
+				return
+			}
 			
 			if let totalBalanceBaseCoin = address["balanceSumInBaseCoin"] as? String,
 				let totalBalance = Decimal(string: totalBalanceBaseCoin) {
@@ -338,33 +338,31 @@ class Session {
 				self?.totalUSDBalance.onNext(totalBalance)
 			}
 
-				let baseCoinBalance = coins.filter({ (dict) -> Bool in
-					return ((dict["coin"] as? String) ?? "").uppercased() == Coin.baseCoin().symbol!.uppercased()
-				}).map({ (dict) -> Decimal in
-					return Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
-				}).reduce(0, +)
+			let baseCoinBalance = coins.filter({ (dict) -> Bool in
+				return ((dict["coin"] as? String) ?? "").uppercased() == Coin.baseCoin().symbol!.uppercased()
+			}).map({ (dict) -> Decimal in
+				return Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
+			}).reduce(0, +)
 
-				self?.baseCoinBalances.value[ads] = baseCoinBalance
+			self?.baseCoinBalances.value[ads] = baseCoinBalance
 
-				newMainCoinBalance += baseCoinBalance
+			newMainCoinBalance += baseCoinBalance
 
-				var newAllBalances = self?.allBalances.value
+			var newAllBalances = self?.allBalances.value
 
-				var blncs = [String : Decimal]()
-				if let defaultCoin = Coin.baseCoin().symbol {
-					blncs[defaultCoin] = 0.0
+			var blncs = [String : Decimal]()
+			if let defaultCoin = Coin.baseCoin().symbol {
+				blncs[defaultCoin] = 0.0
+			}
+			coins.forEach({ (dict) in
+				if let key = dict["coin"] as? String {
+					let amnt = Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
+					blncs[key.uppercased()] = amnt
 				}
-				coins.forEach({ (dict) in
-					if let key = dict["coin"] as? String {
-						let amnt = Decimal(string: (dict["amount"] as? String) ?? "0.0") ?? 0.0
-						blncs[key.uppercased()] = amnt
-					}
-				})
+			})
 
-				newAllBalances?[ads] = blncs
-				self?.allBalances.value = newAllBalances ?? [:]
-//			})
-
+			newAllBalances?[ads] = blncs
+			self?.allBalances.value = newAllBalances ?? [:]
 			self?.mainCoinBalance.value = newMainCoinBalance
 		}
 	}
@@ -404,7 +402,9 @@ class Session {
 
 extension Session {
 
-	func checkPin(_ pin: String, forChange: Bool = false, completion: ((Bool) -> ())?) {
+	func checkPin(_ pin: String,
+								forChange: Bool = false,
+								completion: ((Bool) -> ())?) {
 		let pinAttempts = self.getPINAttempts()
 		if pinAttempts >= PINMaxAttempts {
 			self.logout()
