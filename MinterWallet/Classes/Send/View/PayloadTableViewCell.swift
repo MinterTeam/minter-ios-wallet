@@ -10,10 +10,6 @@ import UIKit
 
 class PayloadTableViewCellItem: TextViewTableViewCellItem {}
 
-protocol PayloadTableViewCellDelegate: class {
-	func didTapScanButton(cell: PayloadTableViewCell?)
-}
-
 class PayloadTableViewCell: TextViewTableViewCell {
 
 	var maxLength = 1024

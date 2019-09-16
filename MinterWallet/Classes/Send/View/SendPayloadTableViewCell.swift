@@ -1,35 +1,23 @@
 //
-//  UsernameTableViewCell.swift
+//  SendPayloadTableViewCell.swift
 //  MinterWallet
 //
-//  Created by Alexey Sidorov on 28/08/2019.
+//  Created by Alexey Sidorov on 12/09/2019.
 //  Copyright © 2019 Minter. All rights reserved.
 //
 
 import UIKit
 
-class UsernameTableViewCellItem: TextViewTableViewCellItem {}
+class SendPayloadTableViewCellItem: TextViewTableViewCellItem {}
 
-protocol UsernameTableViewCellDelegate: class {
-	func didTapScanButton(cell: UsernameTableViewCell?)
-}
-
-class UsernameTableViewCell: TextViewTableViewCell {
+class SendPayloadTableViewCell: TextViewTableViewCell {
 
 	var borderLayer: CAShapeLayer?
 
 	// MARK: - IBOutlets
-
-	@IBOutlet weak var scanButton: UIButton!
-	@IBAction func scanButtonDidTap(_ sender: Any) {
-		addressDelegate?.didTapScanButton(cell: self)
-	}
-
 	// MARK: -
 
 	var maxLength = 110
-
-	weak var addressDelegate: UsernameTableViewCellDelegate?
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
@@ -37,9 +25,9 @@ class UsernameTableViewCell: TextViewTableViewCell {
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-
 		activityIndicator?.backgroundColor = .clear
 		textView.font = UIFont.mediumFont(of: 16.0)
+		setDefault()
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
@@ -47,12 +35,18 @@ class UsernameTableViewCell: TextViewTableViewCell {
 	}
 
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-		if text != "" && text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
-			return false
-		}
-		var txtAfterUpdate = textView.text ?? ""
-		txtAfterUpdate = (txtAfterUpdate as NSString)
-			.replacingCharacters(in: range, with: text).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+//		if text != "" && text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
+//			return false
+//		}
+
+//		var txtAfterUpdate = textView.text ?? ""
+//		txtAfterUpdate = (txtAfterUpdate as NSString)
+//			.replacingCharacters(in: range, with: text).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+
+//		if text.contains(UIPasteboard.general.string ?? "") {
+//			textViewScroll.layoutSubviews()
+//			return true
+//		}
 		return true
 	}
 
@@ -73,7 +67,7 @@ class UsernameTableViewCell: TextViewTableViewCell {
 		self.textView?.superview?.layer.cornerRadius = 8.0
 		self.textView?.superview?.layer.borderWidth = 2
 		self.textView?.superview?.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
-		
+
 		if nil != message {
 			self.errorTitle.text = message
 		}

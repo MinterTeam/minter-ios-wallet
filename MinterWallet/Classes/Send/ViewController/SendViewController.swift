@@ -30,10 +30,10 @@ UsernameTableViewCellDelegate {
 
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
-			tableView.contentInset = UIEdgeInsets(top: 10,
-																						left: 0,
-																						bottom: 0,
-																						right: 0)
+			tableView.contentInset = UIEdgeInsets(top: 10.0,
+																						left: 0.0,
+																						bottom: 0.0,
+																						right: 0.0)
 			tableView.rowHeight = UITableViewAutomaticDimension
 			tableView.estimatedRowHeight = 70
 		}
@@ -86,7 +86,6 @@ UsernameTableViewCellDelegate {
 
 	func tableView(_ tableView: UITableView,
 								 cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
 		guard let item = self.viewModel.cellItem(section: indexPath.section,
 																						 row: indexPath.row),
 			let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier,
@@ -109,7 +108,7 @@ UsernameTableViewCellDelegate {
 		if let textViewCell = cell as? TextViewTableViewCell {
 			textViewCell.delegate = self
 
-			if nil != textViewCell as? PayloadTableViewCell {
+			if nil != textViewCell as? SendPayloadTableViewCell {
 				textViewCell.textView?.rx.text
 					.subscribe(viewModel.input.payload).disposed(by: self.disposeBag)
 			}
@@ -132,13 +131,11 @@ UsernameTableViewCellDelegate {
 
 		return cell
 	}
-
 }
 
 extension SendViewController {
 
 	func configure(with viewModel: SendViewModel) {
-
 		viewModel.output.errorNotification
 			.asDriver(onErrorJustReturn: nil)
 			.filter({ (notification) -> Bool in
@@ -156,9 +153,7 @@ extension SendViewController {
 				guard nil != notification else {
 					return
 				}
-
 				self?.popupViewController?.dismiss(animated: true, completion: nil)
-
 				let banner = NotificationBanner(title: notification?.title ?? "",
 																				subtitle: notification?.text,
 																				style: .danger)
@@ -190,9 +185,7 @@ extension SendViewController {
 		}).disposed(by: disposeBag)
 
 		viewModel.sections.asObservable().subscribe(onNext: { [weak self] (_) in
-
 			self?.tableView.reloadData()
-
 			guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
 				return
 			}
@@ -202,8 +195,23 @@ extension SendViewController {
 				balanceCell.selectField.text = selectedPickerItem.title
 			}
 		}).disposed(by: disposeBag)
-	}
 
+		if #available(iOS 11.0, *) {
+			self.tableView.contentInset = UIEdgeInsets(top: 10.0,
+																								 left: 0.0,
+																								 bottom: 0.0,
+																								 right: 0.0)
+		} else {
+			NotificationCenter.default.rx
+				.notification(NSNotification.Name.UIKeyboardWillHide)
+				.subscribe(onNext: { (not) in
+					self.tableView.contentInset = UIEdgeInsets(top: 10.0,
+																										 left: 0.0,
+																										 bottom: 50.0,
+																										 right: 0.0)
+			}).disposed(by: disposeBag)
+		}
+	}
 }
 
 extension SendViewController: PickerTableViewCellDelegate {
@@ -233,7 +241,7 @@ extension SendViewController: ButtonTableViewCellDelegate {
 		SoundHelper.playSoundIfAllowed(type: .bip)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsSendButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsSendButton)
 		tableView.endEditing(true)
 		viewModel.sendButtonTaped()
 	}
@@ -264,12 +272,10 @@ extension SendViewController: ButtonTableViewCellDelegate {
 					})
 					return
 				}
-
 				viewCell.setDefault()
 			}
 		}
 	}
-
 }
 
 extension SendViewController {
@@ -282,13 +288,9 @@ extension SendViewController {
 				.childViewControllers.last as? PopupViewController) ?? inPopupViewController else {
 				return
 			}
-
 			currentViewController.addChildViewController(viewController)
-
 			viewController.willMove(toParentViewController: currentViewController)
-
 			currentViewController.didMove(toParentViewController: viewController)
-
 			currentViewController.view.addSubview(viewController.view)
 			viewController.view.alpha = 0.0
 			viewController.blurView.effect = nil
@@ -296,15 +298,16 @@ extension SendViewController {
 			guard let popupView = viewController.popupView else {
 				return
 			}
-
 			popupView.frame = CGRect(x: currentViewController.view.frame.width,
 															 y: popupView.frame.origin.y,
 															 width: popupView.frame.width,
 															 height: popupView.frame.height)
 			popupView.center = CGPoint(x: popupView.center.x,
 																 y: currentViewController.view.center.y)
-
-			UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseInOut, animations: {
+			UIView.animate(withDuration: 0.4,
+										 delay: 0,
+										 options: .curveEaseInOut,
+										 animations: {
 				currentViewController.popupView.frame = CGRect(x: -currentViewController.popupView.frame.width,
 																											 y: currentViewController.popupView.frame.origin.y,
 																											 width: currentViewController.popupView.frame.width,
@@ -315,10 +318,8 @@ extension SendViewController {
 			})
 			return
 		}
-
 		viewController.modalPresentationStyle = .overFullScreen
 		viewController.modalTransitionStyle = .crossDissolve
-
 		self.tabBarController?.present(viewController, animated: true, completion: nil)
 	}
 
@@ -377,22 +378,6 @@ extension SendViewController {
 	// MARK: -
 
 	func heightDidChange(cell: TextViewTableViewCell) {
-		if nil != cell as? PayloadTableViewCell {
-			guard let rect = cell.textView?
-				.caretRect(for: cell.textView.selectedTextRange!.start) else { return }
-
-			let caretRect = cell.textView.convert(rect, to: tableView)
-			let additionalInset = 102 - (view.bounds.width > 320 ? 0 : caretRect.height*2)
-			let newRect = CGRect(x: 0,
-													 y: caretRect.maxY - additionalInset,
-													 width: caretRect.width,
-													 height: caretRect.height + caretRect.size.height/2)
-
-			DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
-				self.tableView.scrollRectToVisible(newRect, animated: false)
-			}
-		}
-
 		// Disabling animations gives us our desired behaviour
 		UIView.setAnimationsEnabled(false)
 		/* These will causes table cell heights to be recaluclated,
@@ -401,21 +386,32 @@ extension SendViewController {
 		tableView.endUpdates()
 		// Re-enable animations
 		UIView.setAnimationsEnabled(true)
+
+		if let cell = cell as? SendPayloadTableViewCell {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+				let textView = cell.textView
+				if let startIndex = textView?.selectedTextRange?.start,
+					let caretRect = textView?.caretRect(for: startIndex) {
+					let newPosition = cell.textView.convert(caretRect, to: self.tableView).origin
+					self.tableView.scrollRectToVisible(CGRect(x: 0,
+																										y: newPosition.y,
+																										width: self.tableView.bounds.width,
+																										height: textView?.bounds.height ?? 0),
+																						 animated: true)
+				}
+			}
+		}
 	}
 
 	func heightWillChange(cell: TextViewTableViewCell) {}
 
 	func didTapScanButton(cell: UsernameTableViewCell?) {
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsQRButton)
-		// Retrieve the QRCode content
-		// By using the delegate pattern
 		readerVC.delegate = self
-		// Or by using the closure pattern
 		cell?.textView.becomeFirstResponder()
 		readerVC.completionBlock = { (result: QRCodeReaderResult?) in
 			if let indexPath = self.tableView.indexPath(for: cell!),
 				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-
 				cell?.textView.text = result?.value
 				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
 			}
@@ -492,12 +488,11 @@ extension SendViewController {
 		if self.shouldShowTestnetToolbar {
 			self.tableView.contentInset = UIEdgeInsets(top: 70.0,
 																								 left: 0.0,
-																								 bottom: 200.0,
+																								 bottom: 0.0,
 																								 right: 0.0)
 			self.view.addSubview(self.testnetToolbarView)
 		}
 	}
-
 }
 
 extension SendViewController {
@@ -525,6 +520,7 @@ extension SendViewController {
 											 forCellReuseIdentifier: "ButtonTableViewCell")
 		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "BlankTableViewCell")
+		tableView.register(UINib(nibName: "SendPayloadTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SendPayloadTableViewCell")
 	}
-
 }

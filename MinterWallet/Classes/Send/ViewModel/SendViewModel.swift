@@ -301,8 +301,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		amount.stateObservable = amountStateObservable.asObservable()
 		amount.keyboardType = .decimalPad
 
-		let payload = TextViewTableViewCellItem(reuseIdentifier: "PayloadTableViewCell",
-																						identifier: "PayloadTableViewCell_Payload")
+		let payload = TextViewTableViewCellItem(reuseIdentifier: "SendPayloadTableViewCell",
+																						identifier: "SendPayloadTableViewCell_Payload")
 		payload.title = "PAYLOAD MESSAGE (max 1024 symbols)".localized()
 		payload.keybordType = .default
 		payload.stateObservable = payloadStateObservable.asObservable()

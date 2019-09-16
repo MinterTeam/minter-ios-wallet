@@ -420,6 +420,12 @@
 		FA9BBCC922A9512B0030E92E /* AddressManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */; };
 		FA9BE30B213FE7E0002160F3 /* AnalyticsEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BE30A213FE7E0002160F3 /* AnalyticsEvents.swift */; };
 		FA9BE30D214006A5002160F3 /* AnalyticsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */; };
+		FAA0B2A7232A443B001C5C72 /* AddressTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA0B2A6232A443B001C5C72 /* AddressTextView.swift */; };
+		FAA0B2A8232A443B001C5C72 /* AddressTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA0B2A6232A443B001C5C72 /* AddressTextView.swift */; };
+		FAA0B2AB232A44E7001C5C72 /* SendPayloadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA0B2A9232A44E7001C5C72 /* SendPayloadTableViewCell.swift */; };
+		FAA0B2AC232A44E7001C5C72 /* SendPayloadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA0B2A9232A44E7001C5C72 /* SendPayloadTableViewCell.swift */; };
+		FAA0B2AD232A44E7001C5C72 /* SendPayloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA0B2AA232A44E7001C5C72 /* SendPayloadTableViewCell.xib */; };
+		FAA0B2AE232A44E7001C5C72 /* SendPayloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA0B2AA232A44E7001C5C72 /* SendPayloadTableViewCell.xib */; };
 		FAA234DE20848EC900F999DE /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */; };
 		FAA234DF20848EC900F999DE /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA234DD20848EC900F999DE /* SwitchTableViewCell.xib */; };
 		FAA234E2208495B900F999DE /* TwoTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234E0208495B900F999DE /* TwoTitleTableViewCell.swift */; };
@@ -751,6 +757,9 @@
 		FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressManager+Rx.swift"; sourceTree = "<group>"; };
 		FA9BE30A213FE7E0002160F3 /* AnalyticsEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEvents.swift; sourceTree = "<group>"; };
 		FA9BE30C214006A5002160F3 /* AnalyticsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsHelper.swift; sourceTree = "<group>"; };
+		FAA0B2A6232A443B001C5C72 /* AddressTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTextView.swift; sourceTree = "<group>"; };
+		FAA0B2A9232A44E7001C5C72 /* SendPayloadTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendPayloadTableViewCell.swift; sourceTree = "<group>"; };
+		FAA0B2AA232A44E7001C5C72 /* SendPayloadTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SendPayloadTableViewCell.xib; sourceTree = "<group>"; };
 		FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		FAA234DD20848EC900F999DE /* SwitchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchTableViewCell.xib; sourceTree = "<group>"; };
 		FAA234E0208495B900F999DE /* TwoTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoTitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -1191,6 +1200,8 @@
 				FA0D3C0F22A16966004F5AE1 /* PayloadTableViewCell.xib */,
 				FA672DF42316C6170028FE29 /* UsernameTableViewCell.swift */,
 				FA672DF52316C6170028FE29 /* UsernameTableViewCell.xib */,
+				FAA0B2A9232A44E7001C5C72 /* SendPayloadTableViewCell.swift */,
+				FAA0B2AA232A44E7001C5C72 /* SendPayloadTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1815,6 +1826,7 @@
 				FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */,
 				FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */,
 				FAA2AAEE2297DB4C00581D47 /* Tabbar.swift */,
+				FAA0B2A6232A443B001C5C72 /* AddressTextView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2278,6 +2290,7 @@
 				FA333089224A4B3C003B4763 /* Settings.storyboard in Resources */,
 				FA33308A224A4B3C003B4763 /* CoinAutocompleteCell.xib in Resources */,
 				FA33308B224A4B3C003B4763 /* Address.storyboard in Resources */,
+				FAA0B2AD232A44E7001C5C72 /* SendPayloadTableViewCell.xib in Resources */,
 				FA33308C224A4B3C003B4763 /* AdvancedMode.storyboard in Resources */,
 				FA33308D224A4B3C003B4763 /* Convert.storyboard in Resources */,
 			);
@@ -2347,6 +2360,7 @@
 				DF95C2FD52E1D7EB13A9336F /* Settings.storyboard in Resources */,
 				FA11EA64214ABFD300C8DFB0 /* CoinAutocompleteCell.xib in Resources */,
 				7E3C7A1AC5554EB64E0510A3 /* Address.storyboard in Resources */,
+				FAA0B2AE232A44E7001C5C72 /* SendPayloadTableViewCell.xib in Resources */,
 				87C18150AF076473B806044A /* AdvancedMode.storyboard in Resources */,
 				3A2FF1E94AD830202FF84725 /* Convert.storyboard in Resources */,
 			);
@@ -2708,6 +2722,7 @@
 				FA332FBC224A4B3C003B4763 /* CIColorExtension.swift in Sources */,
 				FA332FBE224A4B3C003B4763 /* DatabaseStorage.swift in Sources */,
 				FA332FBF224A4B3C003B4763 /* SpendCoinsViewModel.swift in Sources */,
+				FAA0B2A7232A443B001C5C72 /* AddressTextView.swift in Sources */,
 				FA332FC0224A4B3C003B4763 /* TransactionManager+Rx.swift in Sources */,
 				FA332FC1224A4B3C003B4763 /* McTextField.swift in Sources */,
 				FA332FC2224A4B3C003B4763 /* String+Localized.swift in Sources */,
@@ -2807,6 +2822,7 @@
 				FA33301B224A4B3C003B4763 /* CoinManager+Rx.swift in Sources */,
 				FA33301C224A4B3C003B4763 /* GenerateAddressViewModel.swift in Sources */,
 				FAA2AAEA2296E42300581D47 /* TransactionAddressButton.swift in Sources */,
+				FAA0B2AB232A44E7001C5C72 /* SendPayloadTableViewCell.swift in Sources */,
 				FA33301D224A4B3C003B4763 /* SentPopupViewModel.swift in Sources */,
 				FA33301E224A4B3C003B4763 /* InfoManager+Rx.swift in Sources */,
 				FA0D3C1022A16966004F5AE1 /* PayloadTableViewCell.swift in Sources */,
@@ -2915,6 +2931,7 @@
 				FA0AF8E721B534EF000B571B /* CIColorExtension.swift in Sources */,
 				FA6760AA20A9E90900F970E7 /* DatabaseStorage.swift in Sources */,
 				FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */,
+				FAA0B2A8232A443B001C5C72 /* AddressTextView.swift in Sources */,
 				FA17817B21F733D800FECDED /* TransactionManager+Rx.swift in Sources */,
 				FA0F297A21B179BB00E10F5E /* McTextField.swift in Sources */,
 				FA669BA12072461700AD110A /* String+Localized.swift in Sources */,
@@ -3014,6 +3031,7 @@
 				FA83186A21FF003F007F268D /* CoinManager+Rx.swift in Sources */,
 				FAA2607C209355BD009FF3DE /* GenerateAddressViewModel.swift in Sources */,
 				FAA2AAEB2296E42300581D47 /* TransactionAddressButton.swift in Sources */,
+				FAA0B2AC232A44E7001C5C72 /* SendPayloadTableViewCell.swift in Sources */,
 				FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */,
 				FA17817D21F73E4200FECDED /* InfoManager+Rx.swift in Sources */,
 				FA0D3C1122A16966004F5AE1 /* PayloadTableViewCell.swift in Sources */,
