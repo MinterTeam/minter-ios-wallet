@@ -303,7 +303,6 @@ class Session {
 	}
 
 	func loadBalances() {
-
 		guard let address = accounts.value.map({ (account) -> String in
 			return "Mx" + account.address.stripMinterHexPrefix()
 		}).first else {
@@ -311,7 +310,6 @@ class Session {
 		}
 
 		addressManager.address(address: address, withSum: true) { [weak self] (response, err) in
-
 			guard (self?.isLoggedIn.value ?? false) || (self?.accounts.value ?? []).count > 0 else {
 				return
 			}
@@ -327,13 +325,13 @@ class Session {
 				let coins = address["balances"] as? [[String : Any]] else {
 				return
 			}
-			
-			if let totalBalanceBaseCoin = address["balanceSumInBaseCoin"] as? String,
+
+			if let totalBalanceBaseCoin = address["total_balance_sum"] as? String,
 				let totalBalance = Decimal(string: totalBalanceBaseCoin) {
 				self?.totalMainCoinBalance.onNext(totalBalance)
 			}
-			
-			if let totalBalanceUSD = address["balanceSumInUSD"] as? String,
+
+			if let totalBalanceUSD = address["total_balance_sum_usd"] as? String,
 				let totalBalance = Decimal(string: totalBalanceUSD) {
 				self?.totalUSDBalance.onNext(totalBalance)
 			}

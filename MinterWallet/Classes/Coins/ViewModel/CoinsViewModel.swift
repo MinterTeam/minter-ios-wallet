@@ -153,7 +153,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 																							 Session.shared.totalMainCoinBalance.asObservable(),
 																							 changedBalanceTypeSubject.asObservable()))
 			.subscribe(onNext: { [weak self] (val) in
-				return;
 				let (balance, usdBalance, totalBalance, balanceType) = val
 				var newBalanceType: BalanceType
 				var resultBalance: Decimal

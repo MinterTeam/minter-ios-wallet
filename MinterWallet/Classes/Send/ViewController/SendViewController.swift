@@ -197,7 +197,7 @@ extension SendViewController {
 		}).disposed(by: disposeBag)
 
 		if #available(iOS 11.0, *) {
-			self.tableView.contentInset = UIEdgeInsets(top: 10.0,
+			self.tableView.contentInset = UIEdgeInsets(top: self.shouldShowTestnetToolbar ? 70.0 : 10.0,
 																								 left: 0.0,
 																								 bottom: 0.0,
 																								 right: 0.0)
@@ -205,7 +205,7 @@ extension SendViewController {
 			NotificationCenter.default.rx
 				.notification(NSNotification.Name.UIKeyboardWillHide)
 				.subscribe(onNext: { (not) in
-					self.tableView.contentInset = UIEdgeInsets(top: 10.0,
+					self.tableView.contentInset = UIEdgeInsets(top: self.shouldShowTestnetToolbar ? 70.0 : 10.0,
 																										 left: 0.0,
 																										 bottom: 50.0,
 																										 right: 0.0)
@@ -393,6 +393,7 @@ extension SendViewController {
 				if let startIndex = textView?.selectedTextRange?.start,
 					let caretRect = textView?.caretRect(for: startIndex) {
 					let newPosition = cell.textView.convert(caretRect, to: self.tableView).origin
+					print(newPosition)
 					self.tableView.scrollRectToVisible(CGRect(x: 0,
 																										y: newPosition.y,
 																										width: self.tableView.bounds.width,
@@ -452,12 +453,7 @@ extension SendViewController: QRCodeReaderViewControllerDelegate {
 		dismiss(animated: true, completion: nil)
 	}
 
-	//This is an optional delegate method, that allows you to be notified when the user switches the cameraName
-	//By pressing on the switch camera button
-	func reader(_ reader: QRCodeReaderViewController, didSwitchCamera newCaptureDevice: AVCaptureDeviceInput) {
-		let cameraName = newCaptureDevice.device.localizedName
-		print("Switching capturing to: \(cameraName)")
-	}
+	func reader(_ reader: QRCodeReaderViewController, didSwitchCamera newCaptureDevice: AVCaptureDeviceInput) {}
 
 	func readerDidCancel(_ reader: QRCodeReaderViewController) {
 		SoundHelper.playSoundIfAllowed(type: .cancel)

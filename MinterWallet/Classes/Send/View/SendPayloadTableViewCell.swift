@@ -35,18 +35,6 @@ class SendPayloadTableViewCell: TextViewTableViewCell {
 	}
 
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//		if text != "" && text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
-//			return false
-//		}
-
-//		var txtAfterUpdate = textView.text ?? ""
-//		txtAfterUpdate = (txtAfterUpdate as NSString)
-//			.replacingCharacters(in: range, with: text).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-
-//		if text.contains(UIPasteboard.general.string ?? "") {
-//			textViewScroll.layoutSubviews()
-//			return true
-//		}
 		return true
 	}
 
