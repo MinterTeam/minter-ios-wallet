@@ -395,7 +395,6 @@ class Session {
 			}
 		})
 	}
-
 }
 
 extension Session {
@@ -419,5 +418,4 @@ extension Session {
 		}
 		completion?(check)
 	}
-
 }

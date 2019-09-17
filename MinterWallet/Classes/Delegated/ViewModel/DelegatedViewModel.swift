@@ -17,6 +17,7 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 	// MARK: -
 
 	private var datasource = [String: [[String: Decimal]]]()
+	private var validators = [String: [String: Any?]]()
 	private var source: [String] {
 		let src = datasource.keys.sorted(by: { (del1, del2) -> Bool in
 			return del1 > del2
@@ -32,11 +33,9 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 		var viewDidLoad: AnyObserver<Void>
 		var willDisplayCell: AnyObserver<WillDisplayCellEvent>
 	}
-
 	struct Output {
 		var sections: Observable<[BaseTableSectionItem]>
 	}
-
 	var input: DelegatedViewModel.Input!
 	var output: DelegatedViewModel.Output!
 
@@ -46,7 +45,6 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 	private var page = 2
 	private var isLoading = false
 	private var canLoadMore = true
-
 	private var sections = PublishSubject<[BaseTableSectionItem]>()
 	private var viewDidLoad = PublishSubject<Void>()
 	private var willDisplayCell = PublishSubject<WillDisplayCellEvent>()
@@ -56,7 +54,6 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 
 		self.input = Input(viewDidLoad: viewDidLoad.asObserver(),
 											 willDisplayCell: willDisplayCell.asObserver())
-
 		self.output = Output(sections: sections.asObservable())
 
 		viewDidLoad.subscribe(onNext: { [weak self] (_) in
@@ -64,13 +61,13 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 			self?.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
 
-		Observable.combineLatest(willDisplayCell.asObservable(), sections.asObservable())
+		Observable.combineLatest(willDisplayCell.asObservable(),
+														 sections.asObservable())
 			.subscribe(onNext: { [weak self] (val) in
 				let indexPath = val.0.indexPath
 				if false == self?.isLoading
 					&& true == self?.canLoadMore
 					&& indexPath.section >= val.1.count - 5 {
-
 					//should reload now?
 					self?.loadDelegatedBalance()
 				}
@@ -80,31 +77,34 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 	func createSections() {
 		var sections = [BaseTableSectionItem]()
 		datasource = [:]
-
 		balances.sorted(by: { (del1, del2) -> Bool in
 			return (del1.publicKey ?? "") > (del2.publicKey ?? "")
 		}).forEach { (del) in
 			let newVal = [del.coin ?? "": del.value ?? 0]
 			let publicKey = del.publicKey ?? ""
-
 			if nil != datasource[publicKey] {
 				datasource[publicKey]?.append(newVal)
 			} else {
 				datasource[publicKey] = [newVal]
 			}
+			validators[publicKey] = ["name": del.validatorName,
+															 "desc": del.validatorDesc,
+															 "icon": del.validatorIconURL,
+															 "site": del.validatorSiteURL
+			]
 		}
 
 		source.forEach { (publicKey) in
 			var cells = [BaseCellItem]()
 			let nodeCell = DelegatedTableViewCellItem(reuseIdentifier: "DelegatedTableViewCell",
 																								identifier: "DelegatedTableViewCell_" + publicKey)
-
+			nodeCell.title = validators[publicKey]?["name"] as? String
+			nodeCell.iconURL = validators[publicKey]?["icon"] as? URL
 			nodeCell.publicKey = publicKey
 			cells.append(nodeCell)
 
 			(datasource[publicKey] ?? []).forEach({ (del) in
 				del.keys.forEach({ (key) in
-
 					let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
 																										 identifier: "SeparatorTableViewCell_" + publicKey + key + String.random())
 					cells.append(separator)
@@ -148,12 +148,10 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 				self.isLoading = true
 			}).subscribe(onNext: { [weak self] (delegation, total) in
 				self?.page += 1
-
 				if (delegation ?? []).count > 0 {
 					self?.balances.append(contentsOf: delegation ?? [])
 					self?.createSections()
 				}
-
 				if delegation?.count == 0 {
 					self?.canLoadMore = false
 				}
@@ -172,5 +170,4 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 		}
 		return nil
 	}
-
 }

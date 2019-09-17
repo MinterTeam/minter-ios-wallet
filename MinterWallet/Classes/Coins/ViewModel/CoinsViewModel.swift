@@ -159,16 +159,16 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 
 				switch balanceType {
 				case .totalBalanceUSD:
+					newBalanceType = .balanceBIP
+					resultBalance = balance
+					break
+				case .balanceBIP:
 					newBalanceType = .totalBalanceBIP
 					resultBalance = totalBalance
 					break
-				case .balanceBIP:
+				case .totalBalanceBIP:
 					newBalanceType = .totalBalanceUSD
 					resultBalance = usdBalance
-					break
-				case .totalBalanceBIP:
-					newBalanceType = .balanceBIP
-					resultBalance = balance
 					break
 				}
 
@@ -220,13 +220,13 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 
 		switch balanceType {
 		case .balanceBIP:
-			title = "Total Balance".localized()
+			title = "Available Balance".localized()
 			break
 		case .totalBalanceBIP:
 			title = "Total Balance".localized()
 			break
 		case .totalBalanceUSD:
-			title = "Available Balance".localized()
+			title = "Total Balance".localized()
 			break
 		}
 		text = headerViewTitleText(with: balance, isUSD: isUSD)
@@ -255,7 +255,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 				return
 			}
 			let sectionId = nil != transaction.txn ? String(transaction.txn!) : (transaction.hash ?? String.random(length: 20))
-
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
 																								 identifier: "SeparatorTableViewCell_" + sectionId)
 

@@ -34,7 +34,6 @@ class DelegatedViewController: BaseViewController, ControllerType {
 	// MARK: -
 
 	var viewModel = DelegatedViewModel()
-
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 	var disposeBag = DisposeBag()
 
@@ -72,15 +71,13 @@ class DelegatedViewController: BaseViewController, ControllerType {
 		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "SeparatorTableViewCell")
 	}
-
-	// MARK: -
-
 }
 
 extension DelegatedViewController: DelegatedTableViewCellDelegate, UITableViewDelegate {
 
 	func DelegatedTableViewCellDidTapCopy(cell: DelegatedTableViewCell) {
-		guard let indexPath = tableView.indexPath(for: cell), let key = viewModel.publicKey(for: indexPath.section) else {
+		guard let indexPath = tableView.indexPath(for: cell),
+			let key = viewModel.publicKey(for: indexPath.section) else {
 			return
 		}
 

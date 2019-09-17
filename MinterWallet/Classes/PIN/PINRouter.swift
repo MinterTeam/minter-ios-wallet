@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class PINRouter : BaseRouter {
+class PINRouter: BaseRouter {
 
 	static var patterns: [String] {
 		return []

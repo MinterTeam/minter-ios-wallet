@@ -393,7 +393,6 @@ extension SendViewController {
 				if let startIndex = textView?.selectedTextRange?.start,
 					let caretRect = textView?.caretRect(for: startIndex) {
 					let newPosition = cell.textView.convert(caretRect, to: self.tableView).origin
-					print(newPosition)
 					self.tableView.scrollRectToVisible(CGRect(x: 0,
 																										y: newPosition.y,
 																										width: self.tableView.bounds.width,

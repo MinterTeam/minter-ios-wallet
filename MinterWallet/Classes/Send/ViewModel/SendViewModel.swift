@@ -96,7 +96,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	private var addressStateObservable = Variable(TextViewTableViewCell.State.default)
 	private var amountStateObservable = Variable(TextFieldTableViewCell.State.default)
 	private var payloadStateObservable = PublishSubject<TextViewTableViewCell.State>()
-
 	private var selectedAddress: String?
 	private var selectedAddressBalance: Decimal? {
 		guard nil != selectedAddress && nil != selectedCoin.value else {
