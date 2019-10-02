@@ -14,11 +14,37 @@ protocol ButtonTableViewCellDelegate: class {
 }
 
 class ButtonTableViewCellItem: BaseCellItem {
+
+	// MARK: - I/O
+
+	struct Input {
+		var didTapButton: AnyObserver<Void>
+	}
+	struct Output {
+		var didTapButton: Observable<Void>
+	}
+
+	var input: Input?
+	var output: Output?
+
+	// MARK: - Subjects
+
+	var didTapButtonSubject = PublishSubject<Void>()
+
+	// MARK: -
+
 	var title: String?
 	var buttonPattern: String?
 	var isButtonEnabled = true
 	var isButtonEnabledObservable: Observable<Bool>?
 	var isLoadingObserver: Observable<Bool>?
+
+	override init(reuseIdentifier: String, identifier: String) {
+		super.init(reuseIdentifier: reuseIdentifier, identifier: identifier)
+
+		input = Input(didTapButton: didTapButtonSubject.asObserver())
+		output = Output(didTapButton: didTapButtonSubject.asObservable())
+	}
 }
 
 class ButtonTableViewCell: BaseCell {
@@ -59,13 +85,12 @@ class ButtonTableViewCell: BaseCell {
 			button?.isEnabled = buttonItem.isButtonEnabled
 			activityIndicator?.isHidden = true
 
-			buttonItem.isButtonEnabledObservable?.bind(to: button.rx.isEnabled).disposed(by: disposeBag)
+			buttonItem.isButtonEnabledObservable?
+				.bind(to: button.rx.isEnabled).disposed(by: disposeBag)
 
 			buttonItem.isLoadingObserver?.bind(onNext: { [weak self] (val) in
-
 				let defaultState = buttonItem.isButtonEnabled
-
-				self?.button?.isEnabled = defaultState//!val
+				self?.button?.isEnabled = defaultState
 				self?.activityIndicator?.isHidden = !val
 				if val {
 					self?.activityIndicator?.startAnimating()
@@ -75,7 +100,8 @@ class ButtonTableViewCell: BaseCell {
 				}
 			}).disposed(by: disposeBag)
 
+			button?.rx.tap.asDriver(onErrorJustReturn: ())
+				.drive(buttonItem.didTapButtonSubject).disposed(by: disposeBag)
 		}
 	}
-
 }

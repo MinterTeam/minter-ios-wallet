@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 
-protocol Configurable where Self : UITableViewCell {
+protocol Configurable where Self: UITableViewCell {
 	func configure(item: BaseCellItem)
 }
 
@@ -25,7 +25,6 @@ class BaseCell: ConfigurableCell {
 		super.prepareForReuse()
 		disposeBag = DisposeBag()
 	}
-
 }
 
 class ExpandableCell: AccordionTableViewCell, Configurable {
@@ -97,8 +96,6 @@ class ExpandableCell: AccordionTableViewCell, Configurable {
 		super.prepareForReuse()
 
 		toggling = false
-
 		disposeBag = DisposeBag()
 	}
-
 }

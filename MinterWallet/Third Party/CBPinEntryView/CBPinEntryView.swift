@@ -186,7 +186,7 @@ public protocol CBPinEntryViewDelegate: class {
             button.backgroundColor = entryBackgroundColour
             button.setTitleColor(entryTextColour, for: .normal)
             button.titleLabel?.font = entryFont
-
+						button.titleLabel?.lineBreakMode = .byCharWrapping
             button.layer.cornerRadius = entryCornerRadius
             button.layer.borderColor = entryDefaultBorderColour.cgColor
             button.layer.borderWidth = entryBorderWidth

@@ -56,17 +56,20 @@ class DelegatedTableViewCell: BaseCell {
 		self.validatorIcon.af_setImage(withURL: image,
 																	 placeholderImage: UIImage(named: "delegateImage"),
 																	 filter: nil,
-																	 progress: { (progress) in
-																		
-		}, progressQueue: DispatchQueue.main,
+																	 progress: { (progress) in},
+																	 progressQueue: DispatchQueue.main,
 			 imageTransition: UIImageView.ImageTransition.crossDissolve(0.1),
-			 runImageTransitionIfCached: false) { (image) in
-				
-			}
+			 runImageTransitionIfCached: false) { (image) in}
 		}
 
 		copyButton.rx.tap.subscribe(onNext: { [weak self] (_) in
 			self?.delegate?.DelegatedTableViewCellDidTapCopy(cell: self!)
 		}).disposed(by: disposeBag)
+	}
+
+	override func prepareForReuse() {
+		super.prepareForReuse()
+
+		self.validatorIcon?.image = nil
 	}
 }

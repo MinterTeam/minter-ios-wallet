@@ -301,7 +301,8 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 			return key1 < key2
 		}).forEach { (key) in
 			let bal = Session.shared.balances.value
-			let balanceKey = CurrencyNumberFormatter.decimalShortFormatter.string(from: (bal[key] ?? 0) as NSNumber)
+			let balanceKey = CurrencyNumberFormatter
+				.decimalShortFormatter.string(from: (bal[key] ?? 0) as NSNumber)
 
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
 																								 identifier: "SeparatorTableViewCell_\(key)")

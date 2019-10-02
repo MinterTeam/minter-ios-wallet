@@ -14,8 +14,7 @@ protocol BaseRouter: class {
 
 	static var patterns: [String] {get}
 
-	static func viewController(path: [String], param: [String : Any]) -> UIViewController?
-
+	static func viewController(path: [String], param: [String: Any]) -> UIViewController?
 }
 
 class Router {
@@ -34,7 +33,7 @@ class Router {
 
 	// MARK: -
 
-	static var patterns = [String : AnyClass]()
+	static var patterns = [String: AnyClass]()
 
 	static func viewController(by url: URL) -> UIViewController? {
 
@@ -101,7 +100,6 @@ class Router {
 		}
 
 		allClasses.deallocate(capacity: Int(expectedClassCount))
-
 		return classes
 	}
 
@@ -171,12 +169,9 @@ class Router {
 	}
 }
 
-@objc protocol URLInitializable : class {
-
+@objc protocol URLInitializable: class {
 	static var pattern: String { get }
-
 	static func viewController(params: [String : Any]) -> BaseViewController?
-
 }
 
 extension BaseViewModel {

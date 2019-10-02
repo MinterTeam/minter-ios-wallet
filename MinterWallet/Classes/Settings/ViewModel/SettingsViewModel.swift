@@ -250,7 +250,9 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 		if PINManager.shared.canUseBiometric() {
 			section1.items.append(contentsOf: [enableBiometrics, separator])
 		}
-		section1.items.append(contentsOf: [changePin, separator])
+		if PINManager.shared.isPINset {
+			section1.items.append(contentsOf: [changePin, separator])
+		}
 
 		sctns.append(section1)
 

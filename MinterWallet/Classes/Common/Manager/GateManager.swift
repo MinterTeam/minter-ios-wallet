@@ -17,7 +17,6 @@ enum GateManagerError : Error {
 }
 
 enum MinterGateAPIURL {
-
 	case nonce(address: String)
 	case minGasPrice
 	case estimateTXComission
@@ -49,12 +48,11 @@ enum MinterGateAPIURL {
 
 		case .send:
 			return URL(string: MinterGateBaseURLString + "/api/v1/transaction/push")!
-
 		}
 	}
 }
 
-class GateManager : BaseManager {
+class GateManager: BaseManager {
 
 	// MARK: -
 
@@ -304,5 +302,4 @@ class GateManager : BaseManager {
 			}
 		}
 	}
-
 }

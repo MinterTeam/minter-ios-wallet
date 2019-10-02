@@ -4,9 +4,9 @@ use_frameworks!
 platform :ios, '10.0'
 
 def shared_pods
-	pod 'MinterCore', :path => '../minter-ios-core/'
-	pod 'MinterMy', :path => '../minter-ios-my/'
-	pod 'MinterExplorer', :path => '../minter-ios-explorer/'
+	pod 'MinterCore'
+	pod 'MinterMy'
+	pod 'MinterExplorer'
 	pod 'Alamofire', '4.7.3'
 	pod 'AlamofireImage', '3.4.1'
 	pod 'RxSwift', '4.3.1'
@@ -16,7 +16,6 @@ def shared_pods
 	pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
 	pod 'TPKeyboardAvoiding', '~> 1.3'
 	pod 'KeychainSwift', '12.0.0'
-#	pod 'RealmSwift', '3.11.0'
 	pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa.git', branch: 'master', submodules: true
 	pod 'AFDateHelper', '~> 4.2.2'
 	pod 'NotificationBannerSwift', '1.8.0'
@@ -29,6 +28,7 @@ def shared_pods
 	pod 'SwiftCentrifuge'
 	pod 'GoldenKeystore', :git => 'https://github.com/sidorov-panda/GoldenKeystore'
 	pod 'GrowingTextView'
+	pod 'CryptoSwift', '~> 1.0'
 end
 
 target 'MinterWallet' do
@@ -40,6 +40,6 @@ target 'MinterWalletTestnet' do
 end
 
 target 'MinterWalletTests' do
-	pod 'CryptoSwift'
+	pod 'CryptoSwift', '~> 1.0'
 	pod 'RxSwift', '4.3.1'
 end

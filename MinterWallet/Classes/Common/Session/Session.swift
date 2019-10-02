@@ -38,7 +38,6 @@ class Session {
 	private let secureStorage = SecureStorage()
 	private let localStorage = LocalStorage()
 	private let dataBaseStorage = RealmDatabaseStorage.shared
-	
 	private var lastBackgroundDate: Date?
 
 	// MARK: -
@@ -79,7 +78,6 @@ class Session {
 					newBalance[key]! += (adr[key] ?? 0.0)
 				})
 			}
-
 			self?.balances.value = newBalance
 		}).disposed(by: disposeBag)
 
@@ -111,7 +109,7 @@ class Session {
 			self?.loadBalances()
 			self?.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
-		
+
 		UIApplication.shared.rx.applicationDidEnterBackground
 			.subscribe(onNext: { [weak self] (state) in
 				self?.lastBackgroundDate = Date()
@@ -131,7 +129,6 @@ class Session {
 	}
 
 	func setPINAttempts(attempts: Int) {
-
 		secureStorage.set(String(attempts).data(using: .utf8) ?? Data(),
 											forKey: SessionPINAttemptNumberKey)
 	}

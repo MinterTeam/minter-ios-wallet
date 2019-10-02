@@ -8,13 +8,13 @@
 
 import Foundation
 import MinterCore
+import BigInt
 
 public extension Decimal {
 
-	public var significantFractionalDecimalDigits: Int {
+	var significantFractionalDecimalDigits: Int {
 		return max(-exponent, 0)
 	}
-
 }
 
 public extension Decimal {
@@ -39,4 +39,8 @@ public extension Decimal {
 		return self * TransactionCoinFactorDecimal
 	}
 
+	init?(bigInt: BigUInt) {
+		let str = String(bigInt)
+		self.init(string: str)
+	}
 }

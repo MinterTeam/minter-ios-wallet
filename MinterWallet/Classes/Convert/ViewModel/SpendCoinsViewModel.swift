@@ -464,8 +464,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 																				coinTo: coinTo,
 																				value: convertVal,
 																				minimumValueToBuy: minValBuy)
-					}
-
+					}		
 					let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk.raw.toHexString())
 					return GateManager.shared.send(rawTx: signedTx)
 				}).subscribe(onNext: { [observer] (hash) in

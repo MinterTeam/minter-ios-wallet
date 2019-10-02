@@ -124,15 +124,10 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 	var validationText: String {
 		return textView.text ?? ""
 	}
-
-	// MARK: -
-
 }
 
 extension TextViewTableViewCell: UITextViewDelegate {
-
 	func textViewDidEndEditing(_ textView: UITextView) {}
-
 }
 
 extension TextViewTableViewCell: ValidatableCellProtocol {
@@ -163,5 +158,4 @@ extension TextViewTableViewCell: ValidatableCellProtocol {
 		self.textView.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
 		self.errorTitle.text = ""
 	}
-
 }

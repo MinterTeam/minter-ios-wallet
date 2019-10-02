@@ -52,7 +52,8 @@ class UsernameTableViewCell: TextViewTableViewCell {
 		}
 		var txtAfterUpdate = textView.text ?? ""
 		txtAfterUpdate = (txtAfterUpdate as NSString)
-			.replacingCharacters(in: range, with: text).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+			.replacingCharacters(in: range, with: text)
+			.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 		return true
 	}
 

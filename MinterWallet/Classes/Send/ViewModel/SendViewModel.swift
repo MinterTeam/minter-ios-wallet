@@ -251,13 +251,13 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
 			self?.clear()
+			self?.sections.value = self?.createSections() ?? []
 		}).disposed(by: disposeBag)
 	}
 
 	// MARK: - Sections
 
 	func createSections() -> [BaseTableSectionItem] {
-
 		let username = UsernameTableViewCellItem(reuseIdentifier: "UsernameTableViewCell",
 																						 identifier: cellIdentifierPrefix.address.rawValue)
 		username.title = "TO (MX ADDRESS OR PUBLIC KEY)".localized()
@@ -349,7 +349,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		if nil == self.amount.value {
 			errs[cellIdentifierPrefix.address.rawValue] = "AMOUNT IS INCORRECT".localized()
 		}
-
 		return errs
 	}
 
@@ -361,14 +360,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
 			self.amountField = value.replacingOccurrences(of: ",", with: ".")
-
 			return isAmountValid(amount: Decimal(string: value) ?? 0)
 		} else if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) && value.count >= 5 {
 			self.toField = value
-
 			return isToValid(to: value)
 		}
-
 		assert(true)
 		return false
 	}
@@ -382,11 +378,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			} else {
 				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
 			}
-		}
-		else if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) {
+		} else if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) {
 			self.toField = value
 		}
-
 		self._sections.value = self.createSections()
 	}
 
@@ -408,7 +402,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		let to = (toField ?? "")
 
 		guard isToValid(to: to) else {
-
 			if to.count > 66 {
 				self.addressStateObservable.value = .invalid(error: "TOO MANY SYMBOLS".localized())
 			} else if to == "" || to.count < 6 {
@@ -553,7 +546,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		guard nil != balance else {
 			return
 		}
-
 		selectedAddress = balance?.key
 		selectedCoin.value = item.coin
 	}
@@ -643,7 +635,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		let payload = self.payload()
 
 		DispatchQueue.global().async { [weak self] in
-
 			guard let mnemonic = self?.accountManager.mnemonic(for: self!.selectedAddress!),
 				let seed = self?.accountManager.seed(mnemonic: mnemonic) else {
 				//Error no Private key found
@@ -662,7 +653,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			}
 
 			let toFld = self?.toField
-
 			var newAmount = amount.decimalFromPIP()
 			if isMax {
 				//if we want to send all coins at first we check if can pay comission with the base coin
@@ -786,7 +776,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			guard res == true else { return }
 
 			self?.clear()
-
 			self?.sections.value = self?.createSections() ?? []
 
 			DispatchQueue.main.async {
@@ -795,7 +784,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 				}
 			}
 
-			DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2), execute: {
+			DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(2), execute: {
 				Session.shared.loadTransactions()
 				Session.shared.loadBalances()
 				Session.shared.loadDelegatedBalance()
@@ -838,7 +827,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		}
 
 		let pkString = newPk.raw.toHexString()
-
 		guard let signedTx = RawTransactionSigner.sign(rawTx: tx,
 																									 privateKey: pkString) else {
 			completion?(false)
@@ -846,7 +834,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		}
 
 		self.nonce.value = nil
-
 		GateManager.shared.send(rawTx: signedTx).do(onNext: { [weak self] (hash) in
 
 			guard let hash = hash else {
@@ -937,6 +924,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 }
 
 extension SendViewModel {
+
 	// MARK: - ViewModels
 
 	func sendPopupViewModel(to: String, address: String, amount: Decimal) -> SendPopupViewModel {
@@ -954,7 +942,7 @@ extension SendViewModel {
 		vm.cancelTitle = "CANCEL".localized()
 		return vm
 	}
-	
+
 	func sentViewModel(to: String, address: String) -> SentPopupViewModel {
 		let vm = SentPopupViewModel()
 		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
@@ -968,5 +956,4 @@ extension SendViewModel {
 		vm.title = "Success!".localized()
 		return vm
 	}
-
 }

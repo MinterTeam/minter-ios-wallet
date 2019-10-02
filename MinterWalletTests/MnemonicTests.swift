@@ -12,39 +12,31 @@ import CryptoSwift
 @testable import MinterWallet
 
 class MnemonicTests: XCTestCase {
-	
+
 	let accountManager = AccountManager()
-    
+
 	override func setUp() {
 		super.setUp()
 	}
-	
-	override func tearDown() {
 
+	override func tearDown() {
 		super.tearDown()
 	}
-	
+
 	func testEnc() {
 		let mnemonic = "globe arrange forget twice potato nurse ice dwarf arctic piano scorpion tube"
 		let rawPassword = "123456".bytes.sha256()
 		let encryptedMnemonic = "e28513acd2336aa048b68cf382a45ec0bc7bed1e7d35f2b7bf0b6c1406e6f3c57fc91c08ba972f7ed82050e54867e1624b2e2f145aa8d0a40d51ad4eb258faa7e2a9ccaed555d15d7830df188897c054"
-		
 		let res = try! accountManager.encryptedMnemonic(mnemonic: mnemonic, password: Data(bytes: rawPassword))
-		
-		
 		XCTAssert(res?.toHexString() == encryptedMnemonic)
-		
 	}
-	
+
 	func testDecrypt() {
 		let encryptedMnemonic = "e28513acd2336aa048b68cf382a45ec0bc7bed1e7d35f2b7bf0b6c1406e6f3c57fc91c08ba972f7ed82050e54867e1624b2e2f145aa8d0a40d51ad4eb258faa7e2a9ccaed555d15d7830df188897c054"
 		let mnemonic = "globe arrange forget twice potato nurse ice dwarf arctic piano scorpion tube"
 		let rawPassword = "123456".bytes.sha256()
-		
 		let res = try! accountManager.decryptMnemonic(encrypted: Data(hex: encryptedMnemonic), password: Data(bytes: rawPassword))
-		
 		XCTAssert(res == mnemonic)
-		
 	}
 	
 	func testDecryptedAddress() {
@@ -73,23 +65,22 @@ class MnemonicTests: XCTestCase {
 		
 		XCTAssert(Data(bytes: ciphertext).toHexString() == encryptedMnemonic)
 	}
-	
+
 	func testPasswordHash() {
 		let originalPassword = "123456"
 		let passwordHash = "49dc52e6bf2abe5ef6e2bb5b0f1ee2d765b922ae6cc8b95d39dc06c21c848f8c"
 		XCTAssert(originalPassword.sha256().sha256() == passwordHash)
 	}
-	
+
 	func testAccountPassword() {
 		let originalPassword = "123456"
 		let passwordHash = "49dc52e6bf2abe5ef6e2bb5b0f1ee2d765b922ae6cc8b95d39dc06c21c848f8c"
 		XCTAssert(accountManager.accountPassword(originalPassword) == passwordHash)
 	}
-	
+
 	func testDerive() {
 		let mnemonic = "globe arrange forget twice potato nurse ice dwarf arctic piano scorpion tube"
 		let adds = accountManager.address(from: mnemonic)
 		XCTAssert(adds?.uppercased() == "676138799eE899a214D6d878B4658Fc77e2f0922".uppercased())
 	}
-
 }

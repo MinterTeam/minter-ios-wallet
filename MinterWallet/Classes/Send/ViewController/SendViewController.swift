@@ -125,10 +125,8 @@ UsernameTableViewCellDelegate {
 		if let switchCell = cell as? SwitchTableViewCell {
 			switchCell.delegate = self
 		}
-
 		var validatableCell = cell as? ValidatableCellProtocol
 		validatableCell?.validateDelegate = self
-
 		return cell
 	}
 }
@@ -160,28 +158,29 @@ extension SendViewController {
 				banner.show()
 		}).disposed(by: disposeBag)
 
-		viewModel.showPopup.asObservable().subscribe(onNext: { [weak self] (popup) in
-			if popup == nil {
-				self?.popupViewController?.dismiss(animated: true, completion: nil)
-				return
-			}
+		viewModel.showPopup.asObservable()
+			.subscribe(onNext: { [weak self] (popup) in
+				if popup == nil {
+					self?.popupViewController?.dismiss(animated: true, completion: nil)
+					return
+				}
 
-			if let sent = popup as? SentPopupViewController {
-				sent.delegate = self
-			}
+				if let sent = popup as? SentPopupViewController {
+					sent.delegate = self
+				}
 
-			if let send = popup as? SendPopupViewController {
-				self?.popupViewController = nil
-				send.delegate = self
-			}
+				if let send = popup as? SendPopupViewController {
+					self?.popupViewController = nil
+					send.delegate = self
+				}
 
-			if self?.popupViewController == nil {
-				self?.showPopup(viewController: popup!)
-				self?.popupViewController = popup
-			} else {
-				self?.showPopup(viewController: popup!,
-												inPopupViewController: self!.popupViewController)
-			}
+				if self?.popupViewController == nil {
+					self?.showPopup(viewController: popup!)
+					self?.popupViewController = popup
+				} else {
+					self?.showPopup(viewController: popup!,
+													inPopupViewController: self!.popupViewController)
+				}
 		}).disposed(by: disposeBag)
 
 		viewModel.sections.asObservable().subscribe(onNext: { [weak self] (_) in

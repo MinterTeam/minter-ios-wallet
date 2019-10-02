@@ -30,9 +30,7 @@ UITextFieldDelegate {
 	// MARK: - IBOutlet
 
 	@IBOutlet weak var useMaxButton: UIButton!
-
 	@IBOutlet weak var scrollView: TPKeyboardAvoidingScrollView!
-
 	@IBOutlet weak var spendCoinTextField: ValidatableTextField! {
 		didSet {
 			setAppearance(for: spendCoinTextField)
@@ -46,7 +44,6 @@ UITextFieldDelegate {
 			spendCoinTextField?.rightViewMode = .always
 		}
 	}
-
 	@IBOutlet weak var spendAmountTextField: ValidatableTextField! {
 		didSet {
 			setAppearance(for: spendAmountTextField)
@@ -63,7 +60,6 @@ UITextFieldDelegate {
 	}
 
 	@IBOutlet weak var amountErrorLabel: UILabel!
-
 	@IBOutlet weak var getCoinErrorLabel: UILabel!
 
 	@IBAction func didTapUseMax(_ sender: Any) {

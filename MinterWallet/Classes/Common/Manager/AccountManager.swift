@@ -29,15 +29,12 @@ class AccountManager {
 	private let secureStorage: Storage
 
 	// MARK: -
-
 	//TODO: rename
 	private let passwordKey = "AccountPassword"
 	private let iv = Data(bytes: "Minter seed".bytes).setLengthRight(16)
 
 	// MARK: -
-
 	//Account with seed
-
 	func accountPassword(_ password: String) -> String {
 		return password.sha256().sha256()
 	}
@@ -50,14 +47,12 @@ class AccountManager {
 	}
 
 	func account(id: Int, seed: Data, encryptedBy: Account.EncryptedBy = .me) -> Account? {
-
 		guard
 			let newPk = try? self.privateKey(from: seed),
 			let publicKey = RawTransactionSigner.publicKey(privateKey: newPk.raw, compressed: false)?.dropFirst(),
 			let address = RawTransactionSigner.address(publicKey: publicKey) else {
 				return nil
 		}
-
 		var acc = Account(id: id, encryptedBy: .me, address: address)
 		acc.encryptedBy = encryptedBy
 		return acc
@@ -105,7 +100,6 @@ class AccountManager {
 
 	//Generate Seed from mnemonic
 	func seed(mnemonic: String, passphrase: String = "") -> Data? {
-		
 		if let seed = RawTransactionSigner.seed(from: mnemonic) {
 			return Data(hex: seed)
 		}
@@ -189,10 +183,9 @@ class AccountManager {
 	}
 
 	func decryptMnemonic(encrypted: Data, password: Data) -> String? {
-
 		let key = password
 		let aes = try? AES(key: password.bytes, blockMode: CBC(iv: self.iv!.bytes))
-		
+	
 		guard let decrypted = try? aes?.decrypt(encrypted.bytes) else {
 			return nil
 		}
@@ -213,8 +206,8 @@ class AccountManager {
 	// MARK: -
 
 	func loadLocalAccounts() -> [Account]? {
-
-		let accounts = database.objects(class: AccountDataBaseModel.self, query: nil) as? [AccountDataBaseModel]
+		let accounts = database.objects(class: AccountDataBaseModel.self,
+																		query: nil) as? [AccountDataBaseModel]
 
 		let res = accounts?.map { (dbModel) -> Account in
 			return Account(id: dbModel.id,
@@ -226,7 +219,6 @@ class AccountManager {
 	}
 
 	func loadRemoteAccounts(completion: (([String]) -> ())?) {
-
 		guard let accessToken = Session.shared.accessToken.value else {
 			return
 		}
@@ -248,7 +240,6 @@ class AccountManager {
 	// MARK: -
 
 	func saveLocalAccount(account: Account) {
-
 		guard let res = database.objects(class: AccountDataBaseModel.self,
 																		 query: "address == \"\(account.address)\"")?.first as? AccountDataBaseModel else {
 			let dbModel = AccountDataBaseModel()

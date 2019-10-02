@@ -68,6 +68,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
+	
+	func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+		
+		if let vc = Router.viewController(by: url) {
+			window?.rootViewController?.show(vc, sender: self)
+		}
+		return true
+	}
 
 	// MARK: -
 
@@ -76,8 +84,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		UINavigationBar.appearance().tintColor = .white
 		UINavigationBar.appearance().barTintColor = UIColor(hex: 0x502EC2)
 		UINavigationBar.appearance().titleTextAttributes = [
-			NSAttributedStringKey.foregroundColor : UIColor.white,
-			NSAttributedStringKey.font : UIFont.boldFont(of: 18.0)
+			NSAttributedStringKey.foregroundColor: UIColor.white,
+			NSAttributedStringKey.font: UIFont.boldFont(of: 18.0)
 		]
 		if #available(iOS 11.0, *) {
 			UINavigationBar.appearance().setTitleVerticalPositionAdjustment(-2, for: .default)
@@ -113,6 +121,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.foregroundColor : UIColor(hex: 0x502EC2)!,
 			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
 		], for: .selected)
-		
 	}
 }

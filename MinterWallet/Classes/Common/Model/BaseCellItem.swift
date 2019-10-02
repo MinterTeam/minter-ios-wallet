@@ -12,7 +12,6 @@ import RxDataSources
 public class BaseCellItem: IdentifiableType, Equatable {
 
 	let reuseIdentifier: String
-
 	let identifier: String
 
 	init(reuseIdentifier: String, identifier: String) {

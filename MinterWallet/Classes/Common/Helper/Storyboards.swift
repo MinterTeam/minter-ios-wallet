@@ -24,27 +24,6 @@ protocol Storyboard {
 
 struct Storyboards {
 
-    struct PIN: Storyboard {
-
-        static let identifier = "PIN"
-
-        static var storyboard: UIStoryboard {
-            return UIStoryboard(name: self.identifier, bundle: nil)
-        }
-
-        static func instantiateInitialViewController() -> PINViewController {
-            return self.storyboard.instantiateInitialViewController() as! PINViewController
-        }
-
-        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: identifier)
-        }
-
-        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
-            return self.storyboard.instantiateViewController(ofType: type)
-        }
-    }
-
     struct Settings: Storyboard {
 
         static let identifier = "Settings"
@@ -95,6 +74,27 @@ struct Storyboards {
         }
     }
 
+    struct PIN: Storyboard {
+
+        static let identifier = "PIN"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> PINViewController {
+            return self.storyboard.instantiateInitialViewController() as! PINViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
     struct CreateWallet: Storyboard {
 
         static let identifier = "CreateWallet"
@@ -105,6 +105,27 @@ struct Storyboards {
 
         static func instantiateInitialViewController() -> CreateWalletViewController {
             return self.storyboard.instantiateInitialViewController() as! CreateWalletViewController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
+    struct Delegated: Storyboard {
+
+        static let identifier = "Delegated"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> DelegatedViewController {
+            return self.storyboard.instantiateInitialViewController() as! DelegatedViewController
         }
 
         static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
@@ -325,27 +346,6 @@ struct Storyboards {
         }
     }
 
-    struct Delegated: Storyboard {
-
-        static let identifier = "Delegated"
-
-        static var storyboard: UIStoryboard {
-            return UIStoryboard(name: self.identifier, bundle: nil)
-        }
-
-        static func instantiateInitialViewController() -> DelegatedViewController {
-            return self.storyboard.instantiateInitialViewController() as! DelegatedViewController
-        }
-
-        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: identifier)
-        }
-
-        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
-            return self.storyboard.instantiateViewController(ofType: type)
-        }
-    }
-
     struct LaunchScreen: Storyboard {
 
         static let identifier = "LaunchScreen"
@@ -377,6 +377,27 @@ struct Storyboards {
 
         static func instantiateInitialViewController() -> TabBarController {
             return self.storyboard.instantiateInitialViewController() as! TabBarController
+        }
+
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
+            return self.storyboard.instantiateViewController(ofType: type)
+        }
+    }
+
+    struct RawTransaction: Storyboard {
+
+        static let identifier = "RawTransaction"
+
+        static var storyboard: UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
+        }
+
+        static func instantiateInitialViewController() -> UINavigationController {
+            return self.storyboard.instantiateInitialViewController() as! UINavigationController
         }
 
         static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
@@ -545,8 +566,6 @@ extension UITableView {
     }
 }
 
-// MARK: - PINViewController
-
 // MARK: - SettingsViewController
 extension UIStoryboardSegue {
     func selection() -> SettingsViewController.Segue? {
@@ -559,12 +578,12 @@ extension UIStoryboardSegue {
 extension SettingsViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
-        case showAddress = "showAddress"
-        case showUsername = "showUsername"
-        case showMobile = "showMobile"
-        case showEmail = "showEmail"
-        case showPassword = "showPassword"
-        case showPIN = "showPIN"
+        case showAddress
+        case showUsername
+        case showMobile
+        case showEmail
+        case showPassword
+        case showPIN
 
         var kind: SegueKind? {
             switch self {
@@ -657,7 +676,40 @@ extension IdentifiableProtocol where Self: SentPopupViewController {
     static var storyboardIdentifier: String? { return "SentPopupViewController" }
 }
 
+// MARK: - PINViewController
+
 // MARK: - CreateWalletViewController
+
+// MARK: - DelegatedViewController
+extension DelegatedViewController {
+
+    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
+        case DelegatedTableViewCell_ = "DelegatedTableViewCell"
+        case TwoTitleTableViewCell_ = "TwoTitleTableViewCell"
+
+        var kind: ReusableKind? {
+            switch self {
+            case .DelegatedTableViewCell_:
+                return ReusableKind(rawValue: "tableViewCell")
+            case .TwoTitleTableViewCell_:
+                return ReusableKind(rawValue: "tableViewCell")
+            }
+        }
+
+        var viewType: UIView.Type? {
+            switch self {
+            case .DelegatedTableViewCell_:
+                return DelegatedTableViewCell.self
+            case .TwoTitleTableViewCell_:
+                return TwoTitleTableViewCell.self
+            }
+        }
+
+        var storyboardIdentifier: String? { return self.description }
+        var description: String { return self.rawValue }
+    }
+
+}
 
 // MARK: - CoinsViewController
 extension UIStoryboardSegue {
@@ -679,8 +731,8 @@ extension IdentifiableProtocol where Self: CoinsViewController {
 extension CoinsViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
-        case showTransactions = "showTransactions"
-        case showConvert = "showConvert"
+        case showTransactions
+        case showConvert
 
         var kind: SegueKind? {
             switch self {
@@ -750,7 +802,7 @@ extension UIStoryboardSegue {
 extension AddressViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
-        case showBalance = "showBalance"
+        case showBalance
 
         var kind: SegueKind? {
             switch self {
@@ -809,7 +861,7 @@ extension UIStoryboardSegue {
 extension AdvancedModeViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
-        case showGenerate = "showGenerate"
+        case showGenerate
 
         var kind: SegueKind? {
             switch self {
@@ -857,7 +909,7 @@ extension IdentifiableProtocol where Self: HomeViewController {
 extension HomeViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
-        case showAdvanced = "showAdvanced"
+        case showAdvanced
 
         var kind: SegueKind? {
             switch self {
@@ -904,36 +956,7 @@ extension IdentifiableProtocol where Self: GetCoinsViewController {
     static var storyboardIdentifier: String? { return "GetCoinsViewController" }
 }
 
-// MARK: - DelegatedViewController
-extension DelegatedViewController {
-
-    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
-        case DelegatedTableViewCell_ = "DelegatedTableViewCell"
-        case TwoTitleTableViewCell_ = "TwoTitleTableViewCell"
-
-        var kind: ReusableKind? {
-            switch self {
-            case .DelegatedTableViewCell_:
-                return ReusableKind(rawValue: "tableViewCell")
-            case .TwoTitleTableViewCell_:
-                return ReusableKind(rawValue: "tableViewCell")
-            }
-        }
-
-        var viewType: UIView.Type? {
-            switch self {
-            case .DelegatedTableViewCell_:
-                return DelegatedTableViewCell.self
-            case .TwoTitleTableViewCell_:
-                return TwoTitleTableViewCell.self
-            }
-        }
-
-        var storyboardIdentifier: String? { return self.description }
-        var description: String { return self.rawValue }
-    }
-
-}
-
 // MARK: - TabBarController
+
+// MARK: - RawTransactionViewController
 

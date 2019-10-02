@@ -40,5 +40,4 @@ struct BaseTableSectionItem : AnimatableSectionModelType, IdentifiableType, Equa
 		self = original
 		self.items = items
 	}
-
 }
