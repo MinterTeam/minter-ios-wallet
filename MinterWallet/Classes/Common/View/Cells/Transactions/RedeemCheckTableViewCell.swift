@@ -85,7 +85,7 @@ class RedeemCheckTableViewCell: BaseTransactionCell {
 				coinImage.image = image
 			}
 			amount.text = amountText(amount: transaction.amount)
-			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
+			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor.mainGreenColor() : .black
 			coinLabel.text = transaction.coin
 
 			fromAddressButton.setTitle(transaction.from, for: .normal)

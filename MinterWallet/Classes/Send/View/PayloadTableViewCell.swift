@@ -26,7 +26,7 @@ class PayloadTableViewCell: TextViewTableViewCell {
 			self.textViewScroll.isScrollEnabled = false
 			self.textViewScroll.textView.layer.cornerRadius = 8.0
 			self.textViewScroll.textView.layer.borderWidth = 2
-			self.textViewScroll.textView.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
+			self.textViewScroll.textView.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 
 			self.textViewScroll.textView.showsVerticalScrollIndicator = false
 			self.textViewScroll.textView.showsHorizontalScrollIndicator = false

@@ -26,8 +26,8 @@ class NewConvertViewController: ButtonBarPagerTabStripViewController {
 		settings.style.buttonBarItemBackgroundColor = .white
 		settings.style.buttonBarItemFont = UIFont.boldFont(of: 14.0)
 		settings.style.buttonBarItemsShouldFillAvailiableWidth = true
-		settings.style.buttonBarItemTitleColor = UIColor(hex: 0x502EC2)
-		settings.style.selectedBarBackgroundColor = UIColor(hex: 0x502EC2)!
+		settings.style.buttonBarItemTitleColor = UIColor.mainColor()
+		settings.style.selectedBarBackgroundColor = UIColor.mainColor()
 
 		changeCurrentIndexProgressive = { (oldCell: ButtonBarViewCell?,
 			newCell: ButtonBarViewCell?,
@@ -37,7 +37,7 @@ class NewConvertViewController: ButtonBarPagerTabStripViewController {
 			guard changeCurrentIndex == true else { return }
 
 			oldCell?.label.textColor = .black
-			newCell?.label.textColor = UIColor(hex: 0x502EC2)
+			newCell?.label.textColor = UIColor.mainColor()
 		}
 
 		super.viewDidLoad()

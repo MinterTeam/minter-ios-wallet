@@ -49,7 +49,7 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 			case .invalid(let error):
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 2
-				textField.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
+                textField.layer.borderColor = UIColor.mainRedColor().cgColor
 				textField.rightView = textField.rightViewInvalid
 				textField.rightViewMode = .always
 				if nil != error {
@@ -60,7 +60,7 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 			default:
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 2
-				textField.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
+                textField.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 				textField.rightView = UIView()
 				textField.rightViewMode = .never
 				errorTitle.text = ""
