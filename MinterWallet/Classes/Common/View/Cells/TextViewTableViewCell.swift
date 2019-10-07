@@ -144,7 +144,7 @@ extension TextViewTableViewCell: ValidatableCellProtocol {
 	func setInvalid(message: String?) {
 		self.textView.layer.cornerRadius = 8.0
 		self.textView.layer.borderWidth = 2
-		self.textView.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
+		self.textView.layer.borderColor = UIColor.mainRedColor().cgColor
 		
 		if nil != message {
 			self.errorTitle.text = message
@@ -155,7 +155,7 @@ extension TextViewTableViewCell: ValidatableCellProtocol {
 	func setDefault() {
 		self.textView.layer.cornerRadius = 8.0
 		self.textView.layer.borderWidth = 2
-		self.textView.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
+		self.textView.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 		self.errorTitle.text = ""
 	}
 }

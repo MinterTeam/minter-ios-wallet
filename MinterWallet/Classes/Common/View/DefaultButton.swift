@@ -38,8 +38,8 @@ class DefaultButton: UIButton {
 		if pattern == "blank" {
 			self.backgroundColor = .clear
 			self.layer.borderWidth = 2.0
-			self.layer.borderColor = UIColor(hex: 0x502EC2)?.cgColor
-			self.setTitleColor(UIColor(hex: 0x502EC2), for: .normal)
+			self.layer.borderColor = UIColor.mainColor().cgColor
+			self.setTitleColor(UIColor.mainColor(), for: .normal)
 		} else if pattern == "transparent" {
 			self.backgroundColor = .clear
 			self.layer.borderWidth = 2.0
@@ -55,7 +55,7 @@ class DefaultButton: UIButton {
 		} else {
 			self.layer.borderWidth = 0.0
 			self.backgroundColor = .white
-			self.setTitleColor(UIColor(hex: 0x502EC2), for: .normal)
+			self.setTitleColor(UIColor.mainColor(), for: .normal)
 			addShadow()
 		}
 
@@ -65,7 +65,7 @@ class DefaultButton: UIButton {
 	}
 
 	func addShadow() {
-		self.layer.shadowColor = UIColor(hex: 0x502EC2, alpha: 0.3)?.cgColor
+        self.layer.shadowColor = UIColor.mainColor(alpha: 0.3).cgColor
 		self.layer.shadowPath = UIBezierPath(roundedRect: bounds,
 																				 cornerRadius: layer.cornerRadius).cgPath
 		self.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)

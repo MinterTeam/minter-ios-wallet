@@ -210,7 +210,7 @@ open class LUAutocompleteView: UIView {
 			self.layer.sublayers?.remove(at: 1)
 		}
 
-		layer.applySketchShadow(color: UIColor(hex: 0x502EC2, alpha: 0.1)!, alpha: 1, x: 0, y: 4, blur: 8, spread: 0)
+        layer.applySketchShadow(color: UIColor.mainColor(alpha: 0.1), alpha: 1, x: 0, y: 4, blur: 8, spread: 0)
 		makeBorderWithCornerRadius(radius: 8, borderColor: UIColor(hex: 0xE1E1E1)!, borderWidth: 1.0)
 		
 	}

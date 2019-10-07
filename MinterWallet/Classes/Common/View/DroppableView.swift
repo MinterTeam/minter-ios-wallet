@@ -33,7 +33,7 @@ class DroppableView : CCMPlayNDropView {
 		shadowLayer.shadowOpacity = 1.0
 		shadowLayer.shadowRadius = 2.0
 		shadowLayer.masksToBounds = false
-		shadowLayer.shadowColor = UIColor(hex: 0x502EC2, alpha: 0.3)?.cgColor
+        shadowLayer.shadowColor = UIColor.mainColor(alpha: 0.3).cgColor
 		shadowLayer.shadowOffset = CGSize(width: 1.0, height: 2.0)
 		shadowLayer.opacity = 1.0
 		shadowLayer.shouldRasterize = true

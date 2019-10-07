@@ -98,7 +98,7 @@ class DelegateTransactionTableViewCell: BaseTransactionCell {
 				amount.text = amountText(amount: transaction.amount ?? 0)
 			}
 
-			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
+			amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor.mainGreenColor() : .black
 
 			expandedAmountLabel.text = CurrencyNumberFormatter
 				.formattedDecimal(with: (transaction.amount ?? 0),

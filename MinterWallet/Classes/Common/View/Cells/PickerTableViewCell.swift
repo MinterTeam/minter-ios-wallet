@@ -48,7 +48,7 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 			
 			selectField.layer.cornerRadius = 8.0
 			selectField.layer.borderWidth = 2
-			selectField.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
+			selectField.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 			selectField.rightView = rightView
 			selectField.rightViewMode = .always
 		}
