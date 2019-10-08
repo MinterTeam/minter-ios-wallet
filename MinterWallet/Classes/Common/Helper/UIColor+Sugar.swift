@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 extension UIColor {
 	func image(_ size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
 		return UIGraphicsImageRenderer(size: size).image { rendererContext in

@@ -86,6 +86,8 @@
 		FA17817B21F733D800FECDED /* TransactionManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817A21F733D800FECDED /* TransactionManager+Rx.swift */; };
 		FA17817D21F73E4200FECDED /* InfoManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817C21F73E4200FECDED /* InfoManager+Rx.swift */; };
 		FA18359F220B141C00310CAF /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA18359E220B141C00310CAF /* Validators.swift */; };
+		FA21E04C234C718800AE0353 /* UIColor+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA21E04B234C718800AE0353 /* UIColor+Default.swift */; };
+		FA21E04D234C718800AE0353 /* UIColor+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA21E04B234C718800AE0353 /* UIColor+Default.swift */; };
 		FA294E9A2294012D00382D82 /* ActivityRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA294E992294012D00382D82 /* ActivityRouter.swift */; };
 		FA294E9B2294012D00382D82 /* ActivityRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA294E992294012D00382D82 /* ActivityRouter.swift */; };
 		FA2F56B7210B31DE002C72DC /* AccordionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */; };
@@ -669,6 +671,7 @@
 		FA17817C21F73E4200FECDED /* InfoManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoManager+Rx.swift"; sourceTree = "<group>"; };
 		FA18359E220B141C00310CAF /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
 		FA1835A0220C7D8A00310CAF /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
+		FA21E04B234C718800AE0353 /* UIColor+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Default.swift"; sourceTree = "<group>"; };
 		FA294E992294012D00382D82 /* ActivityRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRouter.swift; sourceTree = "<group>"; };
 		FA2F56B9210B5FC8002C72DC /* AddressTextViewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTextViewTableViewCell.xib; sourceTree = "<group>"; };
 		FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AlamofireCache.swift"; sourceTree = "<group>"; };
@@ -1831,6 +1834,7 @@
 				FA01604020B4532000746B51 /* Managers */,
 				FAA2608720946924009FF3DE /* Formatters */,
 				FA669BA02072461700AD110A /* String+Localized.swift */,
+				FA21E04B234C718800AE0353 /* UIColor+Default.swift */,
 				FA669BD020724A1200AD110A /* UIFont+Default.swift */,
 				FA669BD22072601300AD110A /* UIColor+HEX.swift */,
 				FA669BD5207265D800AD110A /* Storyboards.swift */,
@@ -2957,6 +2961,7 @@
 				FA33304C224A4B3C003B4763 /* AdvancedModeViewController.swift in Sources */,
 				FA33304D224A4B3C003B4763 /* CoinAutocompleteCell.swift in Sources */,
 				FA33304E224A4B3C003B4763 /* AmountTextFieldTableViewCell.swift in Sources */,
+				FA21E04C234C718800AE0353 /* UIColor+Default.swift in Sources */,
 				FA5D7DDB230BFCEE00945A66 /* BaseTransactionCell.swift in Sources */,
 				FA33304F224A4B3C003B4763 /* AddressTableViewCell.swift in Sources */,
 				FA333050224A4B3C003B4763 /* AdvancedModeViewModel.swift in Sources */,
@@ -3172,6 +3177,7 @@
 				932D4DBEAAA04834E8868AAF /* AdvancedModeViewController.swift in Sources */,
 				FA11EA62214ABFB300C8DFB0 /* CoinAutocompleteCell.swift in Sources */,
 				FA4DF4B02108FA1500E64F1B /* AmountTextFieldTableViewCell.swift in Sources */,
+				FA21E04D234C718800AE0353 /* UIColor+Default.swift in Sources */,
 				FA5D7DDC230BFCEE00945A66 /* BaseTransactionCell.swift in Sources */,
 				FAA2606120923634009FF3DE /* AddressTableViewCell.swift in Sources */,
 				65174A2CD47A619B9407EE4A /* AdvancedModeViewModel.swift in Sources */,
