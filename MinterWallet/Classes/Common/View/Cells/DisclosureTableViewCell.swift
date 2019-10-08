@@ -45,7 +45,7 @@ class DisclosureTableViewCell: BaseCell {
 				value.textColor = .black
 			} else {
 				value.text = disclosureItem.placeholder ?? ""
-				value.textColor = UIColor(hex: 0x929292)
+				value.textColor = UIColor.mainGreyColor()
 			}
 
 			title.text = disclosureItem.title ?? ""

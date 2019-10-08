@@ -69,16 +69,16 @@ class ConvertCoinsViewController: BaseViewController {
 
 	func toggleTextFieldBorder(textField: UITextField?) {
 		if textField?.isEditing == true {
-			textField?.layer.borderColor = UIColor(hex: 0x502EC2)?.cgColor
+            textField?.layer.borderColor = UIColor.mainColor().cgColor
 		} else {
-			textField?.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
+			textField?.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 		}
 	}
 
 	func setAppearance(for textField: UITextField) {
 		textField.layer.cornerRadius = 8.0
 		textField.layer.borderWidth = 2
-		textField.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
+		textField.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 		textField.rx.controlEvent([.editingDidBegin, .editingDidEnd])
 			.asObservable()
 			.subscribe(onNext: { [weak self] state in

@@ -100,7 +100,7 @@ class ConvertTransactionTableViewCell: BaseTransactionCell {
 		} else {
 			amount.text = amountText(amount: transaction.toAmount ?? 0)
 		}
-		amount.textColor = ((transaction.toAmount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
+        amount.textColor = ((transaction.toAmount ?? 0) > 0) ? UIColor.mainGreenColor() : .black
 		expandedAmountLabel.text = CurrencyNumberFormatter
 			.formattedDecimal(with: (transaction.fromAmount ?? 0),
 												formatter: CurrencyNumberFormatter.coinFormatter)

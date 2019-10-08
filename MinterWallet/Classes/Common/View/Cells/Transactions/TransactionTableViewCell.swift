@@ -102,7 +102,7 @@ class TransactionTableViewCell: BaseTransactionCell {
 			coinImage.image = image
 		}
 		amount.text = amountText(amount: transaction.amount)
-		amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor(hex: 0x35B65C) : .black
+		amount.textColor = ((transaction.amount ?? 0) > 0) ? UIColor.mainGreenColor() : .black
 
 		fromAddressButton.setTitle(transaction.from, for: .normal)
 		toAddressButton.setTitle(transaction.to, for: .normal)

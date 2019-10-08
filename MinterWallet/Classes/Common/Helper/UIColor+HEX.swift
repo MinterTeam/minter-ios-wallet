@@ -26,4 +26,19 @@ extension UIColor {
 		self.init(red: red, green: green, blue: blue, alpha: alpha)
 	}
 
+    static func mainColor(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(hex: 0x502EC2, alpha: alpha)!
+    }
+
+    static func mainGreenColor(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(hex: 0x35B65C, alpha: alpha)!
+    }
+
+    static func mainRedColor(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(hex: 0xEC373C, alpha: alpha)!
+    }
+
+    static func mainGreyColor(alpha: CGFloat = 1) -> UIColor {
+        return UIColor(hex: 0x929292, alpha: alpha)!
+    }
 }

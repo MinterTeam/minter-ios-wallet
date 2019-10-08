@@ -73,7 +73,7 @@ class UsernameTableViewCell: TextViewTableViewCell {
 	override func setInvalid(message: String?) {
 		self.textView?.superview?.layer.cornerRadius = 8.0
 		self.textView?.superview?.layer.borderWidth = 2
-		self.textView?.superview?.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
+		self.textView?.superview?.layer.borderColor = UIColor.mainRedColor().cgColor
 		
 		if nil != message {
 			self.errorTitle.text = message
@@ -84,7 +84,7 @@ class UsernameTableViewCell: TextViewTableViewCell {
 	override func setDefault() {
 		self.textView?.superview?.layer.cornerRadius = 8.0
 		self.textView?.superview?.layer.borderWidth = 2
-		self.textView?.superview?.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
+		self.textView?.superview?.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 		self.errorTitle.text = ""
 	}
 }

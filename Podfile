@@ -43,3 +43,13 @@ target 'MinterWalletTests' do
 	pod 'CryptoSwift', '~> 1.0'
 	pod 'RxSwift', '4.3.1'
 end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if ['NotificationBannerSwift'].include? target.name
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '5'
+      end
+    end
+  end
+end

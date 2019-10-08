@@ -138,7 +138,7 @@ class ValidatableTextField: UITextField {
 	func setInvalid() {
 		self.layer.cornerRadius = 8.0
 		self.layer.borderWidth = 2
-		self.layer.borderColor = UIColor(hex: 0xEC373C)?.cgColor
+		self.layer.borderColor = UIColor.mainRedColor().cgColor
 		self.rightView = self.rightViewInvalid
 		self.rightViewMode = .always
 	}
@@ -146,7 +146,7 @@ class ValidatableTextField: UITextField {
 	func setDefault() {
 		self.layer.cornerRadius = 8.0
 		self.layer.borderWidth = 2
-		self.layer.borderColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
+		self.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 		self.rightView = UIView()
 		self.rightViewMode = .never
 	}

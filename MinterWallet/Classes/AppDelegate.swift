@@ -82,7 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func appearance() {
 
 		UINavigationBar.appearance().tintColor = .white
-		UINavigationBar.appearance().barTintColor = UIColor(hex: 0x502EC2)
+		UINavigationBar.appearance().barTintColor = UIColor.mainColor()
 		UINavigationBar.appearance().titleTextAttributes = [
 			NSAttributedStringKey.foregroundColor: UIColor.white,
 			NSAttributedStringKey.font: UIFont.boldFont(of: 18.0)
@@ -118,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
 		], for: .normal)
 		UITabBarItem.appearance().setTitleTextAttributes([
-			NSAttributedStringKey.foregroundColor : UIColor(hex: 0x502EC2)!,
+			NSAttributedStringKey.foregroundColor : UIColor.mainColor(),
 			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
 		], for: .selected)
 	}
