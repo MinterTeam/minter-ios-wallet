@@ -24,7 +24,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		var didRefresh: AnyObserver<Void>
 		var didTapBalance: AnyObserver<Void>
 	}
-
 	struct Output {
 		var totalDelegatedBalance: Observable<String?>
 		var balanceInUSD: Observable<String?>
@@ -298,7 +297,9 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		section1.identifier = "BaseTableSectionItem_2"
 
 		Session.shared.balances.value.keys.sorted(by: { (key1, key2) -> Bool in
-			return key1 < key2
+			return (key1 == Coin.baseCoin().symbol!) ? true
+				: (key2 == Coin.baseCoin().symbol!) ? false
+				: (key1 < key2)
 		}).forEach { (key) in
 			let bal = Session.shared.balances.value
 			let balanceKey = CurrencyNumberFormatter
@@ -315,7 +316,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 			coin.coin = key
 			coin.amount = bal[key]
 			coin.amountObservable = coinObservables[key]?.asObservable()
-
 			section1.items.append(coin)
 			section1.items.append(separator)
 		}
@@ -393,5 +393,4 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		}
 		return string
 	}
-
 }

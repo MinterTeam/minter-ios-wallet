@@ -23,7 +23,7 @@ class DashedView: UIView {
 		shapeLayer.bounds = bounds
 		shapeLayer.position = CGPoint(x: bounds.width/2, y: bounds.height/2)
 		shapeLayer.fillColor = nil
-		shapeLayer.strokeColor = UIColor(hex: 0x929292)?.cgColor
+		shapeLayer.strokeColor = UIColor(hex: 0x929292, alpha: 0.4)?.cgColor
 		shapeLayer.lineWidth = 2.0
 		shapeLayer.lineJoin = kCALineJoinRound
 		shapeLayer.lineDashPattern = [3, 3]

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="tau-9U-uAc">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="tau-9U-uAc">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -38,9 +36,14 @@
                             <constraint firstItem="Qe3-CG-9gR" firstAttribute="leading" secondItem="jXi-bZ-VS3" secondAttribute="leading" id="ht2-9o-QRl"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Send Coins" id="SdJ-9i-Q6W"/>
+                    <navigationItem key="navigationItem" title="Send Coins" id="SdJ-9i-Q6W">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="scanQRIcon" id="5he-Fe-YrG">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Qe3-CG-9gR" id="JSL-Zf-Coq"/>
+                        <outlet property="txScanButton" destination="5he-Fe-YrG" id="ljQ-Wi-YpN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3R6-Et-dSc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -57,7 +60,7 @@
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="WkR-Dp-Ufc">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -71,6 +74,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="scanQRIcon" width="18" height="18"/>
         <image name="tabbarSendIcon" width="30" height="26"/>
     </resources>
 </document>

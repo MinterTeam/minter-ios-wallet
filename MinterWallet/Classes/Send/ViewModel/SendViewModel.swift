@@ -30,6 +30,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	struct Input {
 		var payload: AnyObserver<String?>
+		var txScanButtonDidTap: AnyObserver<Void>
 	}
 
 	struct Output {
@@ -172,6 +173,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	private let clearPayloadSubject = BehaviorSubject<String?>(value: "")
 	private let errorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txErrorNotificationSubject = PublishSubject<NotifiableError?>()
+	private let txScanButtonDidTap = PublishSubject<Void>()
 
 	var showPopup = Variable<PopupViewController?>(nil)
 
@@ -210,7 +212,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	override init() {
 		super.init()
 
-		self.input = Input(payload: payloadSubject.asObserver())
+		self.input = Input(payload: payloadSubject.asObserver(),
+											 txScanButtonDidTap: txScanButtonDidTap.asObserver())
 		self.output = Output(errorNotification: errorNotificationSubject.asObservable(),
 												 txErrorNotification: txErrorNotificationSubject.asObservable())
 

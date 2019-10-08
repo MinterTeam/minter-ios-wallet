@@ -13,14 +13,15 @@ import SafariServices
 import SwiftValidator
 import AVFoundation
 
-class SendViewController: BaseViewController,
-ControllerType,
-UITableViewDelegate,
-UITableViewDataSource,
-SendPopupViewControllerDelegate,
-SentPopupViewControllerDelegate,
-TextViewTableViewCellDelegate,
-UsernameTableViewCellDelegate {
+class SendViewController:
+	BaseViewController,
+	ControllerType,
+	UITableViewDelegate,
+	UITableViewDataSource,
+	SendPopupViewControllerDelegate,
+	SentPopupViewControllerDelegate,
+	TextViewTableViewCellDelegate,
+	UsernameTableViewCellDelegate {
 
 	// MARK: - ControllerType
 
@@ -28,6 +29,7 @@ UsernameTableViewCellDelegate {
 
 	// MARK: - IBOutlet
 
+	@IBOutlet weak var txScanButton: UIBarButtonItem!
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
 			tableView.contentInset = UIEdgeInsets(top: 10.0,
@@ -134,6 +136,9 @@ UsernameTableViewCellDelegate {
 extension SendViewController {
 
 	func configure(with viewModel: SendViewModel) {
+		txScanButton.rx.tap.asDriver()
+			.drive(viewModel.input.txScanButtonDidTap).disposed(by: disposeBag)
+
 		viewModel.output.errorNotification
 			.asDriver(onErrorJustReturn: nil)
 			.filter({ (notification) -> Bool in
@@ -210,6 +215,23 @@ extension SendViewController {
 																										 right: 0.0)
 			}).disposed(by: disposeBag)
 		}
+
+		txScanButton.rx.tap.subscribe(onNext: { [weak self] (_) in
+			guard let readerVC = self?.readerVC else { return }
+			readerVC.delegate = self
+			readerVC.completionBlock = { (result: QRCodeReaderResult?) in
+				readerVC.dismiss(animated: true) {
+					if let result = result?.value {
+						if let vc = RawTransactionRouter.viewController(path: ["tx"],
+																														param: ["d": result]) {
+							self?.tabBarController?.present(vc, animated: true, completion: nil)
+						}
+					}
+				}
+			}
+			readerVC.modalPresentationStyle = .formSheet
+			self?.present(readerVC, animated: true, completion: nil)
+		}).disposed(by: disposeBag)
 	}
 }
 
@@ -228,7 +250,6 @@ extension SendViewController: PickerTableViewCellDelegate {
 }
 
 extension SendViewController: PickerTableViewCellDataSource {
-
 	func pickerItems(for cell: PickerTableViewCell) -> [PickerTableViewCellPickerItem] {
 		return viewModel.accountPickerItems()
 	}

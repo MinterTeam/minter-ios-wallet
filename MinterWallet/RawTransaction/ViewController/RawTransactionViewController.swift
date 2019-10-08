@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxDataSources
+import NotificationBannerSwift
 
 class RawTransactionViewController: BaseViewController, ControllerType {
 
@@ -55,6 +56,26 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 
 		viewModel.output.shouldClose.subscribe(onNext: { [weak self] (_) in
 			self?.dismiss(animated: true, completion: nil)
+		}).disposed(by: disposeBag)
+		
+		viewModel.output.errorNotification
+			.asDriver(onErrorJustReturn: nil)
+			.filter({ (notification) -> Bool in
+				return nil != notification
+		}).drive(onNext: { (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "",
+																			subtitle: notification?.text,
+																			style: .danger)
+			banner.show()
+		}).disposed(by: disposeBag)
+		
+		viewModel.output.successNotification.asObservable().filter({ (notification) -> Bool in
+			return nil != notification
+		}).subscribe(onNext: { (notification) in
+			let banner = NotificationBanner(title: notification?.title ?? "",
+																			subtitle: notification?.text,
+																			style: .success)
+			banner.show()
 		}).disposed(by: disposeBag)
 
 		self.title = "Confirm Transaction"

@@ -38,45 +38,29 @@ struct SpendCoinPickerItem {
 	}
 }
 
-class ConvertCoinsViewModel : BaseViewModel {
+class ConvertCoinsViewModel: BaseViewModel {
 
 	var accountManager = AccountManager()
-
 	let coinManager = ExplorerCoinManager.default
-
 	var selectedAddress: String?
-
 	var selectedCoin: String? {
 		didSet {
 			selectedCoin = selectedCoin?.uppercased()
 				.trimmingCharacters(in: .whitespacesAndNewlines)
 		}
 	}
-
 	var hasCoin = Variable<Bool>(false)
-
 	var coinIsLoading = Variable(false)
-
 	var getCoin = BehaviorSubject<String?>(value: "")
-
 	var shouldClearForm = Variable(false)
-
 	var amountError = Variable<String?>(nil)
-
 	var getCoinError = Variable<String?>(nil)
-
 	lazy var isLoading = BehaviorSubject<Bool>(value: false)
-
-	lazy  var errorNotification = PublishSubject<NotifiableError?>()
-
+	lazy var errorNotification = PublishSubject<NotifiableError?>()
 	lazy var successMessage = PublishSubject<NotifiableSuccess?>()
-	
 	let formatter = CurrencyNumberFormatter.coinFormatter
-
 	var currentGas = Session.shared.currentGasPrice
-
 	lazy var feeObservable = PublishSubject<String>()
-
 	var baseCoinCommission: Decimal {
 		return Decimal(currentGas.value) * RawTransactionType.buyCoin.commission() / TransactionCoinFactorDecimal
 	}

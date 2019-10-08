@@ -345,6 +345,8 @@
 		FA5D7DDC230BFCEE00945A66 /* BaseTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5D7DDA230BFCEE00945A66 /* BaseTransactionCell.swift */; };
 		FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF48209B037700A6FB62 /* AccountManager.swift */; };
 		FA6259E820F899CB003B8BEF /* Forms.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6259E720F899CB003B8BEF /* Forms.swift */; };
+		FA64E281234770EF00436BFE /* RawTransaction+RLPDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA64E280234770EF00436BFE /* RawTransaction+RLPDecodable.swift */; };
+		FA64E282234770EF00436BFE /* RawTransaction+RLPDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA64E280234770EF00436BFE /* RawTransaction+RLPDecodable.swift */; };
 		FA669B69207239F200AD110A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B68207239F200AD110A /* AppDelegate.swift */; };
 		FA669B70207239F200AD110A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B6E207239F200AD110A /* Main.storyboard */; };
 		FA669B75207239F200AD110A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B73207239F200AD110A /* LaunchScreen.storyboard */; };
@@ -695,6 +697,7 @@
 		FA61EF45209B003600A6FB62 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		FA61EF48209B037700A6FB62 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		FA6259E720F899CB003B8BEF /* Forms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forms.swift; sourceTree = "<group>"; };
+		FA64E280234770EF00436BFE /* RawTransaction+RLPDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RawTransaction+RLPDecodable.swift"; sourceTree = "<group>"; };
 		FA669B65207239F200AD110A /* MinterWalletTestnet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinterWalletTestnet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA669B68207239F200AD110A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Classes/AppDelegate.swift; sourceTree = "<group>"; };
 		FA669B6F207239F200AD110A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -1857,6 +1860,7 @@
 				FA7DB946230C8B2500C75A7A /* Session+.swift */,
 				FA672DEB230CFB9C0028FE29 /* UIView+Transition.swift */,
 				FAE7227C23424CE000895E07 /* RawTransactionType+Helper.swift */,
+				FA64E280234770EF00436BFE /* RawTransaction+RLPDecodable.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2756,6 +2760,7 @@
 				FA332FA5224A4B3C003B4763 /* BaseTableSectionItem.swift in Sources */,
 				FAB0D34D22C9E354002945E2 /* CBPinEntryViewDefaults.swift in Sources */,
 				FA332FA6224A4B3C003B4763 /* AddressTextViewTableViewCell.swift in Sources */,
+				FA64E281234770EF00436BFE /* RawTransaction+RLPDecodable.swift in Sources */,
 				FA7DB947230C8B2500C75A7A /* Session+.swift in Sources */,
 				FA332FA7224A4B3C003B4763 /* ReceiveRouter.swift in Sources */,
 				FA332FA8224A4B3C003B4763 /* String+RawTransactionAddress.swift in Sources */,
@@ -2970,6 +2975,7 @@
 				FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */,
 				FAB0D34E22C9E354002945E2 /* CBPinEntryViewDefaults.swift in Sources */,
 				FA670A3E20E63431000A5169 /* AddressTextViewTableViewCell.swift in Sources */,
+				FA64E282234770EF00436BFE /* RawTransaction+RLPDecodable.swift in Sources */,
 				FA7DB948230C8B2500C75A7A /* Session+.swift in Sources */,
 				FAE5548E2118472800D4872C /* ReceiveRouter.swift in Sources */,
 				FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */,
@@ -3423,7 +3429,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
@@ -3457,7 +3463,7 @@
 					"$(PROJECT_DIR)/MinterWallet/Third\\ Party",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
