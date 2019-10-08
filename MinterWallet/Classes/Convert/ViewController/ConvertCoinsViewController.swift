@@ -56,6 +56,9 @@ class ConvertCoinsViewController: BaseViewController {
 		super.viewDidLoad()
 
 		autocompleteView.textField = getCoinTextField
+		getCoinTextField.rx.text.subscribe(onNext: { (str) in
+			self.getCoinTextField.text = str?.uppercased()
+		}).disposed(by: disposableBag)
 
 		autocompleteView.dataSource = self
 		autocompleteView.delegate = self

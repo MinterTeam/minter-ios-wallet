@@ -21,7 +21,6 @@ struct Configuration {
 				return Environment.staging
 			}
 		}
-
 		return Environment.production
 	}()
 }
@@ -106,5 +105,4 @@ enum Environment: String {
 			return "https://itunes.apple.com/us/app/bip-wallet-testnet/id1436988091?ls=1&mt=8"
 		}
 	}
-
 }

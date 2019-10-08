@@ -250,31 +250,4 @@ UITextFieldDelegate {
 	func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
 		return IndicatorInfo(title: "SPEND".localized())
 	}
-
-	// MARK: - Validatable
-
-	func textField(_ textField: UITextField,
-								 shouldChangeCharactersIn range: NSRange,
-								 replacementString string: String) -> Bool {
-
-		var txtAfterUpdate = textField.text ?? ""
-		txtAfterUpdate = (txtAfterUpdate as NSString)
-			.replacingCharacters(in: range, with: string).uppercased()
-		textField.text = txtAfterUpdate
-
-		if textField == self.spendAmountTextField {
-			txtAfterUpdate = (txtAfterUpdate as String).replacingOccurrences(of: ",", with: ".")
-			textField.text = txtAfterUpdate
-		} else if textField == self.spendCoinTextField {
-			vm.spendCoin.onNext(txtAfterUpdate as String)
-		} else if textField == getCoinTextField {
-			autocompleteView.perform(#selector(LUAutocompleteView.textFieldEditingChanged))
-		}
-		textField.sendActions(for: .valueChanged)
-
-		//TODO: move to VM
-		vm.validateErrors()
-
-		return false
-	}
 }
