@@ -220,11 +220,18 @@ extension SendViewController {
 			guard let readerVC = self?.readerVC else { return }
 			readerVC.delegate = self
 			readerVC.completionBlock = { (result: QRCodeReaderResult?) in
-				readerVC.dismiss(animated: true) {
-					if let result = result?.value {
-						if let vc = RawTransactionRouter.viewController(path: ["tx"],
-																														param: ["d": result]) {
-							self?.tabBarController?.present(vc, animated: true, completion: nil)
+				DispatchQueue.main.async {
+					readerVC.dismiss(animated: true) {
+						if let result = result?.value {
+							if let vc = RawTransactionRouter.viewController(path: ["tx"],
+																															param: ["d": result]) {
+								self?.tabBarController?.present(vc, animated: true, completion: nil)
+							} else {
+								let banner = NotificationBanner(title: "Invalid transcation data".localized(),
+																								subtitle: nil,
+																								style: .danger)
+								banner.show()
+							}
 						}
 					}
 				}

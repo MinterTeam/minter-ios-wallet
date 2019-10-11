@@ -17,6 +17,9 @@ class RawTransactionRouter: BaseRouter {
 	}
 
 	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
+		guard Session.shared.isLoggedIn.value || Session.shared.accounts.value.count > 0 else {
+			return nil
+		}
 
 		if let tx = param["d"] as? String {
 			var nonce: BigUInt?
@@ -29,11 +32,12 @@ class RawTransactionRouter: BaseRouter {
 			var serviceData: Data?
 			var signatureType: Data?
 
-			guard let rlpItem = RLP.decode(tx) else {
-				return nil
-			}
+			guard
+				let rlpItem = RLP.decode(tx),
+				let content = rlpItem[0]?.content
+			else { return nil }
 
-			switch rlpItem[0]!.content {
+			switch content {
 			case .noItem:
 				break
 
@@ -41,18 +45,16 @@ class RawTransactionRouter: BaseRouter {
 				//Full tx version
 				if items.count == 9 || items.count == 10 {
 					guard
-						let nonceData = items[0].data,
-						let chainIdData = items[1].data,
-						let gasPriceData = items[2].data,
-						let gasCoinData = items[3].data,
-						let typeData = items[4].data,
-						let txDataData = RLP.decode(items[5].data!)?.data,
-						let payloadData = items[6].data,
-						let serviceDataData = items[7].data,
-						let signatureTypeData = items[8].data
-						else {
-							return nil
-					}
+						let nonceData = items[safe: 0]?.data,
+						let chainIdData = items[safe: 1]?.data,
+						let gasPriceData = items[safe: 2]?.data,
+						let gasCoinData = items[safe: 3]?.data,
+						let typeData = items[safe: 4]?.data,
+						let txDataData = RLP.decode(items[safe: 5]?.data ?? Data())?.data,
+						let payloadData = items[safe: 6]?.data,
+						let serviceDataData = items[safe: 7]?.data,
+						let signatureTypeData = items[safe: 8]?.data
+					else { return nil }
 
 					nonce = BigUInt(nonceData)
 					chainId = BigUInt(chainIdData)
@@ -70,22 +72,23 @@ class RawTransactionRouter: BaseRouter {
 					payload = String(data: payloadData, encoding: .utf8)
 					serviceData = serviceDataData
 					signatureType = signatureTypeData
-				} else if items.count == 6 {//shortened version
+				} else if items.count >= 3 {//shortened version
 					guard
-						let typeData = items[0].data,
-						let txDataData = RLP.decode(items[1].data ?? Data())?.data,
-						let nonceData = items[3].data,
-						let gasPriceData = items[4].data,
-						let gasCoinData = items[5].data,
-						let payloadData = items[2].data
-						else { return nil }
+						let typeData = items[safe: 0]?.data,
+						let txDataData = RLP.decode(items[safe: 1]?.data ?? Data())?.data,
+						let payloadData = items[safe: 2]?.data
+					else { return nil }
+
+					let nonceData = items[safe: 3]?.data ?? Data()
+					let gasPriceData = items[safe: 4]?.data ?? Data()
+					let gasCoinData = items[safe: 5]?.data ?? Data()
+
 					let nonceValue = BigUInt(nonceData)
 					nonce = nonceValue > 0 ? nonceValue : nil
 
 					let gasPriceValue = BigUInt(gasPriceData)
 					gasPrice = gasPriceValue > 0 ? gasPriceValue : nil
-					if let newGasCoin = String(data: gasCoinData, encoding: .utf8)?
-						.replacingOccurrences(of: "\0", with: "") {
+					if let newGasCoin = String(coinData: gasCoinData) {
 						gasCoin = (newGasCoin == "") ? Coin.baseCoin().symbol! : newGasCoin
 					}
 					let typeBigInt = BigUInt(typeData)
@@ -112,6 +115,7 @@ class RawTransactionRouter: BaseRouter {
 				signatureType: signatureType)
 
 			let viewController = Storyboards.RawTransaction.instantiateInitialViewController()
+			viewController.navigationBar.barStyle = .black
 			(viewController.viewControllers.first as? RawTransactionViewController)?.viewModel = viewModel
 			return viewController
 		}

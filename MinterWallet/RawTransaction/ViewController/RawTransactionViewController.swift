@@ -51,13 +51,14 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 																																	reloadAnimation: .automatic,
 																																	deleteAnimation: .automatic)
 
-		viewModel.output.sections
-			.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
+		viewModel.output.sections.asDriver(onErrorJustReturn: [])
+			.drive(tableView.rx.items(dataSource: rxDataSource!))
+			.disposed(by: disposeBag)
 
 		viewModel.output.shouldClose.subscribe(onNext: { [weak self] (_) in
 			self?.dismiss(animated: true, completion: nil)
 		}).disposed(by: disposeBag)
-		
+
 		viewModel.output.errorNotification
 			.asDriver(onErrorJustReturn: nil)
 			.filter({ (notification) -> Bool in
@@ -68,7 +69,7 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 																			style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
-		
+
 		viewModel.output.successNotification.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
 		}).subscribe(onNext: { (notification) in
@@ -76,6 +77,15 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 																			subtitle: notification?.text,
 																			style: .success)
 			banner.show()
+		}).disposed(by: disposeBag)
+		
+		viewModel.output
+			.successNotification
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { [weak self] (_) in
+				SoundHelper.playSoundIfAllowed(type: .bip)
+				self?.hardImpactFeedbackGenerator.prepare()
+				self?.hardImpactFeedbackGenerator.impactOccurred()
 		}).disposed(by: disposeBag)
 
 		self.title = "Confirm Transaction"

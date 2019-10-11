@@ -12,6 +12,7 @@ import Crashlytics
 import MinterCore
 import MinterExplorer
 import MinterMy
+import RxSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -68,19 +69,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
-	
-	func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-		
-		if let vc = Router.viewController(by: url) {
-			window?.rootViewController?.show(vc, sender: self)
-		}
+
+	var applicationOpenWithURL = PublishSubject<Void>()
+	func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+		applicationOpenWithURL.onNext(())
+		(window?.rootViewController as? RootViewController)?.viewModel.input.proceedURL.onNext(url)
 		return true
 	}
 
 	// MARK: -
 
 	func appearance() {
-
 		UINavigationBar.appearance().tintColor = .white
 		UINavigationBar.appearance().barTintColor = UIColor.mainColor()
 		UINavigationBar.appearance().titleTextAttributes = [

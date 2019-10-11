@@ -41,10 +41,24 @@ class RootViewController: UIViewController, ControllerType {
 		viewModel.output.shouldGoNextStep
 			.withLatestFrom(Observable.combineLatest(Session.shared.isLoggedIn.asObservable(),
 																							 Session.shared.accounts.asObservable()))
-			.asDriver(onErrorJustReturn: (false, [])).drive(onNext: { [weak self] (val) in
+			.asDriver(onErrorJustReturn: (false, []))
+			.drive(onNext: { [weak self] (val) in
 				self?.nextStep(accounts: val.1, isLoggedIn: val.0)
 		}).disposed(by: disposeBag)
 
+		viewModel
+			.output
+			.openURL.filter({ (url) -> Bool in
+				return url != nil
+			})
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { [weak self] (url) in
+				self?.viewModel.input.didOpenURL.onNext(url)
+				guard let url = url else { return }
+				if let vc = Router.viewController(by: url) {
+					self?.show(vc, sender: nil)
+				}
+		}).disposed(by: disposeBag)
 	}
 
 	// MARK: -
@@ -89,11 +103,9 @@ class RootViewController: UIViewController, ControllerType {
 		} catch {
 			print("could not start reachability notifier")
 		}
-
 	}
 
 	@objc func reachabilityChanged(_ note: Notification) {
-
 		let reachability = note.object as! Reachability
 
 		switch reachability.connection {
@@ -162,13 +174,11 @@ class RootViewController: UIViewController, ControllerType {
 				})
 			}
 		}
- 
 	}
 
 	func showViewControllerWith(_ newViewController: UIViewController,
 															usingAnimation animationType: AnimationType,
 															completion: (() -> ())?) {
-
 		if animationStart {
 			completion?()
 			return
@@ -226,7 +236,6 @@ class RootViewController: UIViewController, ControllerType {
 				currentViewController?.view.frame = nextFrame!
 			}
 		}, completion: { [weak self, currentViewController] (fihish: Bool) -> Void in
-
 			if currentViewController != nil {
 				currentViewController?.willMove(toParentViewController: self)
 				currentViewController?.view.removeFromSuperview()
@@ -260,7 +269,6 @@ class RootViewController: UIViewController, ControllerType {
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
-
 }
 
 extension RootViewController: PINViewControllerDelegate {
@@ -276,5 +284,4 @@ extension RootViewController: PINViewControllerDelegate {
 	}
 
 	func PINViewControllerDidSucceedWithBiometrics(controller: PINViewController) {}
-
 }

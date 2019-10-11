@@ -13,5 +13,9 @@ extension String {
 	func transformToCoinName() -> String {
 		return self.uppercased().trimmingCharacters(in: .whitespacesAndNewlines)
 	}
-
+	
+	init?(coinData: Data) {
+		self.init(data: coinData, encoding: .utf8)
+		self = self.replacingOccurrences(of: "\0", with: "")
+	}
 }

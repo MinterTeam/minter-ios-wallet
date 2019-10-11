@@ -33,6 +33,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
 		AnalyticsHelper.defaultAnalytics.track(event: .ConvertGetExchangeButton, params: nil)
+		//TODO: Move to input
 		vm.exchange()
 	}
 	@IBOutlet weak var getCoinActivityIndicator: UIActivityIndicatorView!

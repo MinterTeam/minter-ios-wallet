@@ -42,7 +42,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 	private var errorNotificationSubject = PublishSubject<NotifiableError?>()
 	private var successNotificationSubject = PublishSubject<NotifiableSuccess?>()
 	private var sendButtonDidTapSubject = PublishSubject<Void>()
-	private var sectionsSubject = PublishSubject<[BaseTableSectionItem]>()
+	private var sectionsSubject = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
 	private var sendingTxSubject = PublishSubject<Bool>()
 
 	// MARK: -
@@ -53,6 +53,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 	private var gasPrice: BigUInt?
 	private var gasCoin: String
 	private var data: Data?
+	
+	private var multisendAddressCount = 0
 
 	private let accountManager = AccountManager()
 	private var fields: [[String: String]] = []
@@ -97,15 +99,14 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 				switch type {
 				case .sendCoin:
 				if let coinData = items[0].data,
-					let coin = String(data: coinData, encoding: .utf8)?
-						.replacingOccurrences(of: "\0", with: ""),
+					let coin = String(coinData: coinData),
 					let addressData = items[1].data,
 					let valueData = items[2].data {
 						let address = addressData.toHexString()
 						let value = BigUInt(valueData)
 						let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
 						let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
-																																	formatter: decimalFormatter)
+																																				formatter: decimalFormatter)
 
 						let sendingValue = amountString + " " + coin
 						fields.append(["key": "YOU'RE sending".localized(), "value": sendingValue])
@@ -114,12 +115,10 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 				case .sellCoin:
 					fields.append(["key": "TYPE".localized(), "value": "SELL COIN"])
 					if let coinFromData = items[0].data,
-						let coinFrom = String(data: coinFromData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coinFrom = String(coinData: coinFromData),
 						let valueData = items[1].data,
 						let coinToData = items[2].data,
-						let coinTo = String(data: coinToData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coinTo = String(coinData: coinToData),
 						let minimumValueToBuyData = items[2].data {
 							let minimumValueToBuy = BigUInt(minimumValueToBuyData)
 							let value = BigUInt(valueData)
@@ -133,11 +132,9 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 				case .sellAllCoins:
 					fields.append(["key": "TYPE".localized(), "value": "SELL ALL"])
 					if let coinFromData = items[0].data,
-						let coinFrom = String(data: coinFromData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coinFrom = String(coinData: coinFromData),
 						let coinToData = items[1].data,
-						let coinTo = String(data: coinToData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coinTo = String(coinData: coinToData),
 						let minimumValueToBuyData = items[2].data {
 //							let minimumValueToBuy = BigUInt(minimumValueToBuyData)
 							fields.append(["key": "COIN FROM".localized(), "value": coinFrom])
@@ -147,12 +144,10 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 				case .buyCoin:
 					fields.append(["key": "TYPE".localized(), "value": "BUY COIN"])
 					if let coinFromData = items[0].data,
-						let coinFrom = String(data: coinFromData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coinFrom = String(coinData: coinFromData),
 						let valueData = items[1].data,
 						let coinToData = items[2].data,
-						let coinTo = String(data: coinToData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coinTo = String(coinData: coinToData),
 						let maximumValueToBuyData = items[2].data {
 							let maximumValueToBuy = BigUInt(maximumValueToBuyData)
 							let value = BigUInt(valueData)
@@ -168,8 +163,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 					if let coinNameData = items[0].data,
 						let coinName = String(data: coinNameData, encoding: .utf8),
 						let coinSymbolData = items[1].data,
-						let coinSymbol = String(data: coinSymbolData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coinSymbol = String(coinData: coinSymbolData),
 						let initialAmountData = items[2].data,
 						let initialReserveData = items[3].data,
 						let constantReserveRatioData = items[4].data {
@@ -196,13 +190,12 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 						let publicKeyData = items[1].data,
 						let commissionData = items[2].data,
 						let coinData = items[3].data,
-						let coin = String(data: coinData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coin = String(coinData: coinData),
 						let stakeData = items[4].data {
 							let commission = BigUInt(commissionData)
 							let commissionString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: commission) ?? 0),
 																																							formatter: noMantissaFormatter)
-						
+
 							let stake = BigUInt(stakeData)
 							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
 																																					formatter: decimalFormatter)
@@ -218,8 +211,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 					if
 						let publicKeyData = items[0].data,
 						let coinData = items[1].data,
-						let coin = String(data: coinData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coin = String(coinData: coinData),
 						let stakeData = items[2].data {
 							let stake = BigUInt(stakeData)
 							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
@@ -234,8 +226,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 					if
 						let publicKeyData = items[0].data,
 						let coinData = items[1].data,
-						let coin = String(data: coinData, encoding: .utf8)?
-							.replacingOccurrences(of: "\0", with: ""),
+						let coin = String(coinData: coinData),
 						let stakeData = items[2].data {
 							let stake = BigUInt(stakeData)
 							let amountString = CurrencyNumberFormatter.formattedDecimal(with: (Decimal(bigInt: stake) ?? 0).PIPToDecimal(),
@@ -271,19 +262,19 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 				case .multisend:
 					if let arrayData = items[0].data,
 						let array = RLP.decode(arrayData) {
+						multisendAddressCount = array.count ?? 0
 						for i in 0..<(array.count ?? 0) {
 							if let addressDictData = array[i]?.data,
 							let addressDict = RLP.decode(addressDictData),
 								let coinData = addressDict[0]?.data,
-									let coin = String(data: coinData, encoding: .utf8)?
-										.replacingOccurrences(of: "\0", with: ""),
+									let coin = String(coinData: coinData),
 									let addressData = addressDict[1]?.data,
 									let valueData = addressDict[2]?.data {
 										let address = addressData.toHexString()
 										let value = BigUInt(valueData)
 										let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
 										let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
-																																					formatter: decimalFormatter)
+																																								formatter: decimalFormatter)
 										let sendingValue = amountString + " " + coin
 										fields.append(["key": "YOU'RE sending".localized(), "value": sendingValue])
 										fields.append(["key": "TO".localized(), "value": "Mx" + address])
@@ -324,9 +315,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 			self?.sendTx()
 		}).disposed(by: disposeBag)
 
-		DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-			self.sectionsSubject.onNext(self.createSections())
-		}
+		self.sectionsSubject.onNext(self.createSections())
 	}
 
 	private func sendTx() {
@@ -421,14 +410,19 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 			.drive(cancelButtonDidTapSubject.asObserver())
 			.disposed(by: disposeBag)
 
+		let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+																				identifier: cellIdentifierPrefix.blank.rawValue + "_2")
+		let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
+																				identifier: cellIdentifierPrefix.blank.rawValue + "_3")
+
 		var section = BaseTableSectionItem(header: "")
-		section.items = items + [fee, separator, blank, button, cancelButton]
+		section.items = items + [fee, separator, blank, blank2, blank3, button, cancelButton]
 		return [section]
 	}
 
 	private func comissionText(for gas: Int, payloadData: Data? = nil) -> String {
 		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
-		let commission = (self.type.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
+		let commission = (self.type.commission(multisendNumber: self.multisendAddressCount) + payloadCom).PIPToDecimal() * Decimal(gas)
 		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: commission,
 																																 formatter: coinFormatter)
 		return balanceString + " " + (Coin.baseCoin().symbol ?? "")

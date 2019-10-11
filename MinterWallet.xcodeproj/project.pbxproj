@@ -324,6 +324,8 @@
 		FA33308C224A4B3C003B4763 /* AdvancedMode.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62D86D306D7FE9C5ECAB1914 /* AdvancedMode.storyboard */; };
 		FA33308D224A4B3C003B4763 /* Convert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EB9FDE7FE8682F706D3A2E4 /* Convert.storyboard */; };
 		FA333096224A4F1D003B4763 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA333095224A4F1D003B4763 /* Configuration.swift */; };
+		FA39488123507BB2002AD8DE /* UIApplication+AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */; };
+		FA39488223507BB2002AD8DE /* UIApplication+AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */; };
 		FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */; };
 		FA4542782106103500DB6634 /* CoinsTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */; };
 		FA45427A2106106200DB6634 /* CoinsTableViewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4542792106106200DB6634 /* CoinsTableViewHeaderView.xib */; };
@@ -681,6 +683,7 @@
 		FA333093224A4B3C003B4763 /* MinterWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinterWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA333094224A4B3C003B4763 /* MinterWalletTestnet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MinterWalletTestnet-Info.plist"; path = "/Users/alex/Documents/minter-ios-wallet/MinterWallet/MinterWalletTestnet-Info.plist"; sourceTree = "<absolute>"; };
 		FA333095224A4F1D003B4763 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+AppDelegate.swift"; sourceTree = "<group>"; };
 		FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RawTransactionAddress.swift"; sourceTree = "<group>"; };
 		FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsTableViewHeaderView.swift; sourceTree = "<group>"; };
 		FA4542792106106200DB6634 /* CoinsTableViewHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoinsTableViewHeaderView.xib; sourceTree = "<group>"; };
@@ -1865,6 +1868,7 @@
 				FA672DEB230CFB9C0028FE29 /* UIView+Transition.swift */,
 				FAE7227C23424CE000895E07 /* RawTransactionType+Helper.swift */,
 				FA64E280234770EF00436BFE /* RawTransaction+RLPDecodable.swift */,
+				FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2955,6 +2959,7 @@
 				FAC6DDF4233A143A00A7E650 /* RawTransactionViewController.swift in Sources */,
 				FA333048224A4B3C003B4763 /* UsernameEditViewModel.swift in Sources */,
 				FA333049224A4B3C003B4763 /* ReachabilityService.swift in Sources */,
+				FA39488123507BB2002AD8DE /* UIApplication+AppDelegate.swift in Sources */,
 				FA33304A224A4B3C003B4763 /* CurrencyNumberFormatter.swift in Sources */,
 				FA33304B224A4B3C003B4763 /* Session.swift in Sources */,
 				FAFBF2162298231B00D053C7 /* RedeemCheckTableViewCell.swift in Sources */,
@@ -3171,6 +3176,7 @@
 				FAC6DDF5233A143A00A7E650 /* RawTransactionViewController.swift in Sources */,
 				FAA2606620930C68009FF3DE /* UsernameEditViewModel.swift in Sources */,
 				FAA3DD09211358BF0054D27E /* ReachabilityService.swift in Sources */,
+				FA39488223507BB2002AD8DE /* UIApplication+AppDelegate.swift in Sources */,
 				FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */,
 				FA8AE85820AAD3E900F26E11 /* Session.swift in Sources */,
 				FAFBF2172298231B00D053C7 /* RedeemCheckTableViewCell.swift in Sources */,
@@ -3249,7 +3255,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 198;
+				CURRENT_PROJECT_VERSION = 202;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3263,7 +3269,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/MinterWallet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.18;
+				MARKETING_VERSION = 1.0.19;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3283,7 +3289,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 198;
+				CURRENT_PROJECT_VERSION = 202;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3297,7 +3303,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/MinterWallet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.18;
+				MARKETING_VERSION = 1.0.19;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3423,7 +3429,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 197;
+				CURRENT_PROJECT_VERSION = 202;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3437,7 +3443,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.18;
+				MARKETING_VERSION = 1.0.19;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3457,7 +3463,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 197;
+				CURRENT_PROJECT_VERSION = 202;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3471,7 +3477,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.18;
+				MARKETING_VERSION = 1.0.19;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

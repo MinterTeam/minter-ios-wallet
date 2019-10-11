@@ -54,7 +54,6 @@ class Session {
 	var delegatedBalance = BehaviorSubject<Decimal>(value: 0.0)
 	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
 	var accessToken = Variable<String?>(nil)
-
 	var isPINRequired = BehaviorSubject<Bool>(value: PINManager.shared.isPINset)
 
 	private var refreshToken = Variable<String?>(nil)
@@ -97,17 +96,19 @@ class Session {
 			self?.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
 
-		UIApplication.shared.rx.applicationDidBecomeActive
-			.subscribe(onNext: { [weak self] (state) in
-			if let backgroundDate = self?.lastBackgroundDate, PINManager.shared.isPINset {
-				if backgroundDate.timeIntervalSinceNow < -PINRequiredMinimumSeconds {
-					self?.isPINRequired.onNext(true)
+		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive,
+														 UIApplication.realAppDelegate()!.applicationOpenWithURL.asObservable())
+			.subscribe(onNext: { [weak self] (_) in
+//				let state = val.0
+				if let backgroundDate = self?.lastBackgroundDate, PINManager.shared.isPINset {
+					if backgroundDate.timeIntervalSinceNow < -PINRequiredMinimumSeconds {
+						self?.isPINRequired.onNext(true)
+					}
 				}
-			}
-			self?.lastBackgroundDate = nil
-			self?.loadTransactions()
-			self?.loadBalances()
-			self?.loadDelegatedBalance()
+				self?.lastBackgroundDate = nil
+				self?.loadTransactions()
+				self?.loadBalances()
+				self?.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
 
 		UIApplication.shared.rx.applicationDidEnterBackground

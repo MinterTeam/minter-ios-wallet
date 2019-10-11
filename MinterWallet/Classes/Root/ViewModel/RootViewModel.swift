@@ -19,13 +19,14 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 	struct Input {
 		var pin: AnyObserver<String>
 		var biometricsSucceed: AnyObserver<Bool>
+		var proceedURL: AnyObserver<URL?>
+		var didOpenURL: AnyObserver<URL?>
 	}
-
 	struct Output {
 		var shouldPresentPIN: Observable<Bool>
 		var shouldGoNextStep: Observable<Bool>
+		var openURL: Observable<URL?>
 	}
-
 	var input: RootViewModel.Input!
 	var output: RootViewModel.Output!
 
@@ -34,21 +35,21 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 	private var pinCodeSubject: PublishSubject<String> = PublishSubject()
 	private var goNextStepSubject: PublishSubject<Bool> = PublishSubject()
 	private var biometricsSucceedSubject: PublishSubject<Bool> = PublishSubject()
+	private var proceedURLSubject: PublishSubject<URL?> = PublishSubject()
+	private var urlToProceedObservable: Observable<URL?> {
+		return Observable.combineLatest(shouldPresent.asObservable(),
+																		proceedURLSubject.asObservable()).filter({ (val) -> Bool in
+																			return !val.0
+																		}).map { (val) -> URL? in
+																			return val.1
+		}
+	}
+	private var didOpenURLSubject = PublishSubject<URL?>()
 
 	// MARK: -
 
-	private let session = Session.shared
-
-	var title: String {
-		get {
-			return "Root".localized()
-		}
-	}
-
 	var channel: String?
-
 	var client: CentrifugeClient?
-
 	var isConnected: Bool = false {
 		didSet {
 			if self.isConnected == true && !oldValue {
@@ -67,9 +68,13 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 		super.init()
 
 		input = Input(pin: pinCodeSubject.asObserver(),
-									biometricsSucceed: biometricsSucceedSubject.asObserver())
+									biometricsSucceed: biometricsSucceedSubject.asObserver(),
+									proceedURL: proceedURLSubject.asObserver(),
+									didOpenURL: didOpenURLSubject.asObserver()
+		)
 		output = Output(shouldPresentPIN: shouldPresent,
-										shouldGoNextStep: goNextStepSubject.asObservable())
+										shouldGoNextStep: goNextStepSubject.asObservable(),
+										openURL: urlToProceedObservable.asObservable())
 
 		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in
 			return isLoggedIn
@@ -108,20 +113,19 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 
 			guard addresses.count > 0 else {
 				if self?.isConnected == true {
-					try? self?.client?.disconnect()
+					self?.client?.disconnect()
 				}
-				self?.unsubscribeAccountBalanceChange(completed: {
-
-				})
+				self?.unsubscribeAccountBalanceChange(completed: {})
 				return
 			}
-
 			self?.channel = addresses.first
-
-			self?.connect(completion: {
-
-			})
+			self?.connect(completion: {})
 		}).disposed(by: disposeBag)
+		
+		didOpenURLSubject.subscribe(onNext: { [weak self] (url) in
+			self?.proceedURLSubject.onNext(nil)
+		}).disposed(by: disposeBag)
+		
 	}
 
 	func didLoad() {
@@ -130,12 +134,11 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 
 	func connect(completion: (() -> ())?) {
 		if nil == client {
-			var config = CentrifugeClientConfig()
+			let config = CentrifugeClientConfig()
 			client = CentrifugeClient(url: MinterExplorerWebSocketURL!.absoluteURL.absoluteString + "?format=protobuf",
 																config: config,
 																delegate: self)
 		}
-
 		self.client?.connect()
 	}
 
@@ -154,8 +157,7 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	private func unsubscribeAccountBalanceChange(completed: (() -> ())?) {
-
-		guard let cnl = self.channel else {
+		guard self.channel != nil else {
 			completed?()
 			return
 		}
@@ -167,7 +169,6 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 		Session.shared.loadBalances()
 		Session.shared.loadTransactions()
 	}
-
 }
 
 extension RootViewModel: CentrifugeClientDelegate, CentrifugeSubscriptionDelegate {
