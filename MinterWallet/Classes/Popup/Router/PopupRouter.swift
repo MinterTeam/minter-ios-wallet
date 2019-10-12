@@ -8,23 +8,27 @@
 
 import Foundation
 
+class PopupRouter: BaseRouter {
 
-class PopupRouter : BaseRouter {
-	
-	//MARK: - BaseRouter
-	
+	// MARK: - BaseRouter
+
 	static var patterns: [String] = []
-	
+
 	static func viewController(path: [String], param: [String : Any]) -> UIViewController? {
 		return nil
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	class func sentPopupViewCointroller(viewModel: SentPopupViewModel) -> SentPopupViewController? {
 		let viewController = Storyboards.Popup.instantiateSentPopupViewController()
 		viewController.viewModel = viewModel
 		return viewController
 	}
-	
+
+	class func confirmPopupViewController(viewModel: ConfirmPopupViewModel) -> ConfirmPopupViewController? {
+		let viewController = Storyboards.Popup.instantiateConfirmPopupViewController()
+		viewController.viewModel = viewModel
+		return viewController
+	}
 }

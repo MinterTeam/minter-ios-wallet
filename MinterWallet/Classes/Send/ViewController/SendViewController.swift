@@ -44,9 +44,7 @@ class SendViewController:
 	// MARK: -
 
 	var popupViewController: PopupViewController?
-
 	var viewModel = SendViewModel()
-
 	private var disposeBag = DisposeBag()
 
 	lazy var readerVC: QRCodeReaderViewController = {
@@ -306,49 +304,6 @@ extension SendViewController: ButtonTableViewCellDelegate {
 }
 
 extension SendViewController {
-
-	func showPopup(viewController: PopupViewController,
-								 inPopupViewController: PopupViewController? = nil) {
-
-		if nil != inPopupViewController {
-			guard let currentViewController = (inPopupViewController?
-				.childViewControllers.last as? PopupViewController) ?? inPopupViewController else {
-				return
-			}
-			currentViewController.addChildViewController(viewController)
-			viewController.willMove(toParentViewController: currentViewController)
-			currentViewController.didMove(toParentViewController: viewController)
-			currentViewController.view.addSubview(viewController.view)
-			viewController.view.alpha = 0.0
-			viewController.blurView.effect = nil
-
-			guard let popupView = viewController.popupView else {
-				return
-			}
-			popupView.frame = CGRect(x: currentViewController.view.frame.width,
-															 y: popupView.frame.origin.y,
-															 width: popupView.frame.width,
-															 height: popupView.frame.height)
-			popupView.center = CGPoint(x: popupView.center.x,
-																 y: currentViewController.view.center.y)
-			UIView.animate(withDuration: 0.4,
-										 delay: 0,
-										 options: .curveEaseInOut,
-										 animations: {
-				currentViewController.popupView.frame = CGRect(x: -currentViewController.popupView.frame.width,
-																											 y: currentViewController.popupView.frame.origin.y,
-																											 width: currentViewController.popupView.frame.width,
-																											 height: currentViewController.popupView.frame.height)
-				popupView.center = currentViewController.view.center
-				viewController.view.alpha = 1.0
-				currentViewController.popupView.alpha = 0.0
-			})
-			return
-		}
-		viewController.modalPresentationStyle = .overFullScreen
-		viewController.modalTransitionStyle = .crossDissolve
-		self.tabBarController?.present(viewController, animated: true, completion: nil)
-	}
 
 	// MARK: - SendPopupViewControllerDelegate
 

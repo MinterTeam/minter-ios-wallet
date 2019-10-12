@@ -9,17 +9,12 @@
 import UIKit
 
 class SentPopupViewModel: PopupViewModel {
-
+	var desc: String?
 	var coin: String?
-
 	var avatarImage: UIImage?
-
 	var avatarImageURL: URL?
-
+	var noAvatar: Bool = false
 	var username: String?
-
 	var actionButtonTitle: String?
-
 	var secondButtonTitle: String?
-
 }

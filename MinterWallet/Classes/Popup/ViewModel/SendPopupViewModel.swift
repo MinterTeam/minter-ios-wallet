@@ -40,5 +40,4 @@ class SendPopupViewModel: PopupViewModel {
 	var buttonTitle: String?
 
 	var cancelTitle: String?
-
 }

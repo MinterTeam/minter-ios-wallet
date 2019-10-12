@@ -13,7 +13,9 @@ import NotificationBannerSwift
 
 class RawTransactionViewController: BaseViewController, ControllerType {
 
-	// MARK: -
+	var popupViewController: PopupViewController?
+
+	// MARK: - IBOutlet
 
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
@@ -37,7 +39,7 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 
 	func configure(with viewModel: RawTransactionViewModel) {
 		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
-			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
+			configureCell: { dataSource, tableView, indexPath, sm in
 				guard let item = try? dataSource.model(at: indexPath) as! BaseCellItem,
 					let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
 					assert(true)
@@ -55,8 +57,11 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 			.drive(tableView.rx.items(dataSource: rxDataSource!))
 			.disposed(by: disposeBag)
 
-		viewModel.output.shouldClose.subscribe(onNext: { [weak self] (_) in
-			self?.dismiss(animated: true, completion: nil)
+		viewModel
+			.output
+			.shouldClose
+			.subscribe(onNext: { [weak self] (_) in
+				self?.dismiss(animated: true, completion: nil)
 		}).disposed(by: disposeBag)
 
 		viewModel.output.errorNotification
@@ -70,28 +75,62 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 			banner.show()
 		}).disposed(by: disposeBag)
 
-		viewModel.output.successNotification.asObservable().filter({ (notification) -> Bool in
-			return nil != notification
-		}).subscribe(onNext: { (notification) in
-			let banner = NotificationBanner(title: notification?.title ?? "",
-																			subtitle: notification?.text,
-																			style: .success)
-			banner.show()
-		}).disposed(by: disposeBag)
-		
-		viewModel.output
+		viewModel
+			.output
 			.successNotification
-			.asDriver(onErrorJustReturn: nil)
-			.drive(onNext: { [weak self] (_) in
+			.asObservable()
+			.filter({ (notification) -> Bool in
+				return nil != notification
+			}).subscribe(onNext: { (notification) in
+				let banner = NotificationBanner(title: notification?.title ?? "",
+																				subtitle: notification?.text,
+																				style: .success)
+				banner.show()
+			}).disposed(by: disposeBag)
+
+		viewModel
+			.output
+			.vibrate
+			.asDriver(onErrorJustReturn: ())
+			.drive(onNext: { [weak self] _ in
 				SoundHelper.playSoundIfAllowed(type: .bip)
 				self?.hardImpactFeedbackGenerator.prepare()
 				self?.hardImpactFeedbackGenerator.impactOccurred()
 		}).disposed(by: disposeBag)
 
-		self.title = "Confirm Transaction"
+		viewModel
+			.output
+			.popup
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { [weak self] (popup) in
+				if popup == nil {
+					self?.popupViewController?.dismiss(animated: true, completion: nil)
+					self?.popupViewController = nil
+					return
+				}
+
+				if let popupVC = popup as? SentPopupViewController {
+					popupVC.delegate = self
+				}
+				if let popupVC = popup as? ConfirmPopupViewController {
+					self?.popupViewController = nil
+					popupVC.delegate = self
+				}
+
+				if self?.popupViewController == nil {
+					self?.showPopup(viewController: popup!, inTabbar: false)
+					self?.popupViewController = popup
+				} else {
+					self?.showPopup(viewController: popup!,
+													inPopupViewController: self!.popupViewController,
+													inTabbar: false)
+				}
+		}).disposed(by: disposeBag)
+
+		self.title = "Confirm Transaction".localized()
 	}
 
-	// MARK: -
+	// MARK: - ViewController
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -116,5 +155,67 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 											 forCellReuseIdentifier: "BlankTableViewCell")
 		tableView.register(UINib(nibName: "RawTransactionFieldTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "RawTransactionFieldTableViewCell")
+	}
+}
+
+extension RawTransactionViewController: SentPopupViewControllerDelegate, ConfirmPopupViewControllerDelegate {
+	
+	// MARK: - ConfirmPopupViewController Delegate
+
+	func didTapActionButton(viewController: ConfirmPopupViewController) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
+		AnalyticsHelper.defaultAnalytics.track(event: .RawTransactionPopupViewTransactionButton)
+	}
+
+	func didTapSecondButton(viewController: ConfirmPopupViewController) {
+		SoundHelper.playSoundIfAllowed(type: .cancel)
+		lightImpactFeedbackGenerator.prepare()
+		AnalyticsHelper.defaultAnalytics.track(event: .RawTransactionPopupCloseButton)
+		viewController.dismiss(animated: true, completion: nil)
+	}
+
+	// MARK: - SentPopupViewControllerDelegate
+
+	func didTapActionButton(viewController: SentPopupViewController) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+		hardImpactFeedbackGenerator.prepare()
+		hardImpactFeedbackGenerator.impactOccurred()
+		AnalyticsHelper.defaultAnalytics.track(event: .RawTransactionPopupViewTransactionButton)
+		let presentingVC = self.presentingViewController
+		viewController.dismiss(animated: true) { [weak self] in
+			self?.dismiss(animated: true) {
+				if let url = self?.viewModel.lastTransactionExplorerURL() {
+					let vc = BaseSafariViewController(url: url)
+					presentingVC?.present(vc, animated: true) {}
+				}
+			}
+		}
+	}
+
+	func didTapSecondActionButton(viewController: SentPopupViewController) {
+		SoundHelper.playSoundIfAllowed(type: .click)
+		lightImpactFeedbackGenerator.prepare()
+		lightImpactFeedbackGenerator.impactOccurred()
+		AnalyticsHelper.defaultAnalytics.track(event: .RawTransactionPopupShareTransactionButton)
+		let presentingVC = self.presentingViewController
+		viewController.dismiss(animated: true) { [weak self] in
+			self?.dismiss(animated: true) {
+				if let url = self?.viewModel.output.lastTransactionExplorerURL() {
+					let vc = ActivityRouter.activityViewController(activities: [url], sourceView: self!.view)
+					presentingVC?.present(vc, animated: true, completion: nil)
+				}
+			}
+		}
+	}
+
+	func didTapSecondButton(viewController: SentPopupViewController) {
+		SoundHelper.playSoundIfAllowed(type: .cancel)
+		lightImpactFeedbackGenerator.prepare()
+		AnalyticsHelper.defaultAnalytics.track(event: .RawTransactionPopupCloseButton)
+		viewController.dismiss(animated: true) { [weak self] in
+			self?.dismiss(animated: true) {}
+		}
 	}
 }

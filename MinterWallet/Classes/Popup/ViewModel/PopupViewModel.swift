@@ -13,7 +13,6 @@ class PopupViewModel: BaseViewModel {
 	// MARK: -
 
 	var popupTitle: String?
-
 	var title: String?
 
 	// MARK: -

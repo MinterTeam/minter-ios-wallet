@@ -8,6 +8,7 @@
 
 import Foundation
 import MinterCore
+import MinterExplorer
 import BigInt
 import RxSwift
 
@@ -31,6 +32,9 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 		var shouldClose: Observable<Void>
 		var errorNotification: Observable<NotifiableError?>
 		var successNotification: Observable<NotifiableSuccess?>
+		var vibrate: Observable<Void>
+		var popup: Observable<PopupViewController?>
+		var lastTransactionExplorerURL: () -> (URL?)
 	}
 
 	var input: RawTransactionViewModel.Input!
@@ -41,9 +45,12 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 	private var cancelButtonDidTapSubject = PublishSubject<Void>()
 	private var errorNotificationSubject = PublishSubject<NotifiableError?>()
 	private var successNotificationSubject = PublishSubject<NotifiableSuccess?>()
+	private var proceedButtonDidTapSubject = PublishSubject<Void>()
 	private var sendButtonDidTapSubject = PublishSubject<Void>()
 	private var sectionsSubject = ReplaySubject<[BaseTableSectionItem]>.create(bufferSize: 1)
 	private var sendingTxSubject = PublishSubject<Bool>()
+	private var popupSubject = PublishSubject<PopupViewController?>()
+	private var vibrateSubject = PublishSubject<Void>()
 
 	// MARK: -
 
@@ -53,8 +60,9 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 	private var gasPrice: BigUInt?
 	private var gasCoin: String
 	private var data: Data?
-	
+
 	private var multisendAddressCount = 0
+	private var createCoinSymbolCount = 0
 
 	private let accountManager = AccountManager()
 	private var fields: [[String: String]] = []
@@ -63,7 +71,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 		return currentGas.asObservable()
 			.map({ [weak self] (obj) -> String in
 				let payloadData = self?.payload?.data(using: .utf8)
-				return self?.comissionText(for: obj, payloadData: payloadData) ?? ""
+				return self?.commissionText(for: obj, payloadData: payloadData) ?? ""
 		})
 	}
 	private let coinFormatter = CurrencyNumberFormatter.coinFormatter
@@ -109,7 +117,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 																																				formatter: decimalFormatter)
 
 						let sendingValue = amountString + " " + coin
-						fields.append(["key": "YOU'RE sending".localized(), "value": sendingValue])
+						fields.append(["key": "YOU'RE SENDING".localized(), "value": sendingValue])
 						fields.append(["key": "TO".localized(), "value": "Mx" + address])
 				}
 				case .sellCoin:
@@ -167,6 +175,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 						let initialAmountData = items[2].data,
 						let initialReserveData = items[3].data,
 						let constantReserveRatioData = items[4].data {
+							self.createCoinSymbolCount = coinSymbol.count
 							let initialAmount = BigUInt(initialAmountData)
 							let initialReserve = BigUInt(initialReserveData)
 							let crr = BigUInt(constantReserveRatioData)
@@ -276,7 +285,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 										let amountString = CurrencyNumberFormatter.formattedDecimal(with: amount,
 																																								formatter: decimalFormatter)
 										let sendingValue = amountString + " " + coin
-										fields.append(["key": "YOU'RE sending".localized(), "value": sendingValue])
+										fields.append(["key": "YOU'RE SENDING".localized(), "value": sendingValue])
 										fields.append(["key": "TO".localized(), "value": "Mx" + address])
 								}
 						}
@@ -309,12 +318,46 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 		self.output = Output(sections: sectionsSubject.asObservable(),
 												 shouldClose: cancelButtonDidTapSubject.asObservable(),
 												 errorNotification: errorNotificationSubject.asObservable(),
-												 successNotification: successNotificationSubject.asObservable())
+												 successNotification: successNotificationSubject.asObservable(),
+												 vibrate: vibrateSubject.asObservable(),
+												 popup: popupSubject.asObservable(),
+												 lastTransactionExplorerURL: self.lastTransactionExplorerURL)
 
 		sendButtonDidTapSubject.subscribe(onNext: { [weak self] (_) in
 			self?.sendTx()
 		}).disposed(by: disposeBag)
 
+		proceedButtonDidTapSubject.subscribe(onNext: { [weak self] (_) in
+			self?.vibrateSubject.onNext(())
+			let viewModel = ConfirmPopupViewModel(desc: "Please confirm transaction sending".localized(),
+																						buttonTitle: "CONFIRM AND SEND".localized())
+			viewModel.buttonTitle = "CONFIRM AND SEND".localized()
+			viewModel.cancelTitle = "CANCEL".localized()
+			viewModel.desc = "Press confirm sending transaction".localized()
+			viewModel
+				.output
+				.didTapActionButton
+				.asDriver(onErrorJustReturn: ())
+				.drive(self!.sendButtonDidTapSubject.asObserver())
+				.disposed(by: self!.disposeBag)
+
+			viewModel
+				.output
+				.didTapCancel
+				.asDriver(onErrorJustReturn: ())
+				.drive(onNext: { _ in
+					self?.popupSubject.onNext(nil)
+				})
+				.disposed(by: self!.disposeBag)
+
+			self?.sendingTxSubject
+				.asDriver(onErrorJustReturn: false)
+				.drive(viewModel.input.activityIndicator)
+				.disposed(by: self!.disposeBag)
+
+			let popup = PopupRouter.confirmPopupViewController(viewModel: viewModel)
+			self?.popupSubject.onNext(popup)
+		}).disposed(by: disposeBag)
 		self.sectionsSubject.onNext(self.createSections())
 	}
 
@@ -354,8 +397,12 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: privateKey)
 				return GateManager.shared.send(rawTx: signedTx)
 			}).subscribe(onNext: { [weak self] (result) in
-				self?.successNotificationSubject.onNext(NotifiableSuccess(title: "Tx has been sent \(result ?? "")"))
-				self?.cancelButtonDidTapSubject.onNext(())
+				self?.lastSentTransactionHash = result
+				if let sentViewModel = self?.sentViewModel() {
+					let sentViewController = PopupRouter.sentPopupViewCointroller(viewModel: sentViewModel)
+					self?.popupSubject.onNext(sentViewController)
+				}
+
 				Session.shared.loadTransactions()
 				Session.shared.loadBalances()
 				Session.shared.loadDelegatedBalance()
@@ -382,7 +429,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 																				identifier: cellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
 		let payloadData = payload?.data(using: .utf8)
-		fee.subtitle = self.comissionText(for: 1, payloadData: payloadData)
+		fee.subtitle = self.commissionText(for: 1, payloadData: payloadData)
 		fee.subtitleObservable = self.gasObservable
 
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
@@ -393,13 +440,12 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
 																				 identifier: cellIdentifierPrefix.button.rawValue)
-		button.title = "CONFIRM AND SEND".localized()
+		button.title = "PROCEED".localized()
 		button.buttonPattern = "purple"
 		button.output?.didTapButton
 			.asDriver(onErrorJustReturn: ())
-			.drive(sendButtonDidTapSubject.asObserver())
+			.drive(proceedButtonDidTapSubject.asObserver())
 			.disposed(by: disposeBag)
-		button.isLoadingObserver = sendingTxSubject.asObservable()
 
 		let cancelButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
 																							 identifier: cellIdentifierPrefix.cancelButton.rawValue)
@@ -420,9 +466,22 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 		return [section]
 	}
 
-	private func comissionText(for gas: Int, payloadData: Data? = nil) -> String {
+	func sentViewModel() -> SentPopupViewModel {
+		let vm = SentPopupViewModel()
+		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
+		vm.secondButtonTitle = "CLOSE".localized()
+		vm.title = "Success!".localized()
+		vm.noAvatar = true
+		vm.desc = "Transaction sent!"
+		return vm
+	}
+
+	private func commissionText(for gas: Int, payloadData: Data? = nil) -> String {
 		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
-		let commission = (self.type.commission(multisendNumber: self.multisendAddressCount) + payloadCom).PIPToDecimal() * Decimal(gas)
+		let commission = (self.type
+			.commission(options: [.multisendCount: self.multisendAddressCount,
+														.coinSymbolLettersCount: self.createCoinSymbolCount]) + payloadCom)
+			.PIPToDecimal() * Decimal(gas)
 		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: commission,
 																																 formatter: coinFormatter)
 		return balanceString + " " + (Coin.baseCoin().symbol ?? "")
@@ -443,5 +502,13 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 																		 text: "Unable to send transaction".localized())
 		}
 		self.errorNotificationSubject.onNext(notification)
+	}
+
+	var lastSentTransactionHash: String?
+	func lastTransactionExplorerURL() -> URL? {
+		guard nil != lastSentTransactionHash else {
+			return nil
+		}
+		return URL(string: MinterExplorerBaseURL! + "/transactions/" + (lastSentTransactionHash ?? ""))
 	}
 }

@@ -72,6 +72,10 @@ struct Storyboards {
         static func instantiateSentPopupViewController() -> SentPopupViewController {
             return self.storyboard.instantiateViewController(withIdentifier: "SentPopupViewController") as! SentPopupViewController
         }
+
+        static func instantiateConfirmPopupViewController() -> ConfirmPopupViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "ConfirmPopupViewController") as! ConfirmPopupViewController
+        }
     }
 
     struct PIN: Storyboard {
@@ -674,6 +678,16 @@ extension SentPopupViewController: SentPopupViewControllerIdentifiableProtocol {
 extension IdentifiableProtocol where Self: SentPopupViewController {
     var storyboardIdentifier: String? { return "SentPopupViewController" }
     static var storyboardIdentifier: String? { return "SentPopupViewController" }
+}
+
+// MARK: - ConfirmPopupViewController
+protocol ConfirmPopupViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension ConfirmPopupViewController: ConfirmPopupViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: ConfirmPopupViewController {
+    var storyboardIdentifier: String? { return "ConfirmPopupViewController" }
+    static var storyboardIdentifier: String? { return "ConfirmPopupViewController" }
 }
 
 // MARK: - PINViewController

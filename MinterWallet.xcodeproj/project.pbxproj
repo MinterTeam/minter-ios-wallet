@@ -326,6 +326,10 @@
 		FA333096224A4F1D003B4763 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA333095224A4F1D003B4763 /* Configuration.swift */; };
 		FA39488123507BB2002AD8DE /* UIApplication+AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */; };
 		FA39488223507BB2002AD8DE /* UIApplication+AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */; };
+		FA39488423509124002AD8DE /* ConfirmPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39488323509124002AD8DE /* ConfirmPopupViewController.swift */; };
+		FA39488523509124002AD8DE /* ConfirmPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39488323509124002AD8DE /* ConfirmPopupViewController.swift */; };
+		FA3948872350924B002AD8DE /* ConfirmPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3948862350924B002AD8DE /* ConfirmPopupViewModel.swift */; };
+		FA3948882350924B002AD8DE /* ConfirmPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3948862350924B002AD8DE /* ConfirmPopupViewModel.swift */; };
 		FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */; };
 		FA4542782106103500DB6634 /* CoinsTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */; };
 		FA45427A2106106200DB6634 /* CoinsTableViewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4542792106106200DB6634 /* CoinsTableViewHeaderView.xib */; };
@@ -684,6 +688,8 @@
 		FA333094224A4B3C003B4763 /* MinterWalletTestnet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MinterWalletTestnet-Info.plist"; path = "/Users/alex/Documents/minter-ios-wallet/MinterWallet/MinterWalletTestnet-Info.plist"; sourceTree = "<absolute>"; };
 		FA333095224A4F1D003B4763 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+AppDelegate.swift"; sourceTree = "<group>"; };
+		FA39488323509124002AD8DE /* ConfirmPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPopupViewController.swift; sourceTree = "<group>"; };
+		FA3948862350924B002AD8DE /* ConfirmPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPopupViewModel.swift; sourceTree = "<group>"; };
 		FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RawTransactionAddress.swift"; sourceTree = "<group>"; };
 		FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsTableViewHeaderView.swift; sourceTree = "<group>"; };
 		FA4542792106106200DB6634 /* CoinsTableViewHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoinsTableViewHeaderView.xib; sourceTree = "<group>"; };
@@ -1375,6 +1381,7 @@
 				3BA1EA41241735BB83566B6A /* PopupViewController.swift */,
 				FAA234EC20872BD000F999DE /* SendPopupViewController.swift */,
 				FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */,
+				FA39488323509124002AD8DE /* ConfirmPopupViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1392,6 +1399,7 @@
 				B3A840EEC1F5676CEE8EB564 /* PopupViewModel.swift */,
 				FAA234EE20872BF800F999DE /* SendPopupViewModel.swift */,
 				FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */,
+				FA3948862350924B002AD8DE /* ConfirmPopupViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2760,6 +2768,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA3948872350924B002AD8DE /* ConfirmPopupViewModel.swift in Sources */,
 				FA332FA0224A4B3C003B4763 /* CoinsRouter.swift in Sources */,
 				FA332FA1224A4B3C003B4763 /* Storyboards.swift in Sources */,
 				FA332FA2224A4B3C003B4763 /* UsernameEditViewController.swift in Sources */,
@@ -2950,6 +2959,7 @@
 				FA333042224A4B3C003B4763 /* AddressViewController.swift in Sources */,
 				FA333043224A4B3C003B4763 /* AddressViewModel.swift in Sources */,
 				FAA2AAE42296C7F100581D47 /* String+Subscript.swift in Sources */,
+				FA39488423509124002AD8DE /* ConfirmPopupViewController.swift in Sources */,
 				FA333044224A4B3C003B4763 /* LoadingTableViewCell.swift in Sources */,
 				FAB0D35522CCA5A9002945E2 /* PINManager.swift in Sources */,
 				FAA2AAEF2297DB4C00581D47 /* Tabbar.swift in Sources */,
@@ -2977,6 +2987,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA3948882350924B002AD8DE /* ConfirmPopupViewModel.swift in Sources */,
 				FAE5548C2118442800D4872C /* CoinsRouter.swift in Sources */,
 				FA669BD6207265D800AD110A /* Storyboards.swift in Sources */,
 				FAA2606420930B8A009FF3DE /* UsernameEditViewController.swift in Sources */,
@@ -3167,6 +3178,7 @@
 				550C26104C6471B011F52123 /* AddressViewController.swift in Sources */,
 				1DDADA96B430326B123B6F3C /* AddressViewModel.swift in Sources */,
 				FAA2AAE52296C7F100581D47 /* String+Subscript.swift in Sources */,
+				FA39488523509124002AD8DE /* ConfirmPopupViewController.swift in Sources */,
 				FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */,
 				FAB0D35622CCA5A9002945E2 /* PINManager.swift in Sources */,
 				FAA2AAF02297DB4C00581D47 /* Tabbar.swift in Sources */,
@@ -3255,7 +3267,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202;
+				CURRENT_PROJECT_VERSION = 203;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3289,7 +3301,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202;
+				CURRENT_PROJECT_VERSION = 203;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3429,7 +3441,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202;
+				CURRENT_PROJECT_VERSION = 203;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3463,7 +3475,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202;
+				CURRENT_PROJECT_VERSION = 203;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (

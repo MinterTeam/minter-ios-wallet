@@ -21,6 +21,8 @@ class SentPopupViewController: PopupViewController {
 
 	// MARK: -
 
+	@IBOutlet weak var avatarImageViewHeightConstraint: NSLayoutConstraint!
+	@IBOutlet weak var descTitle: UILabel!
 	@IBOutlet weak var receiverLabel: UILabel!
 	@IBOutlet weak var avatarImageView: UIImageView! {
 		didSet {
@@ -30,7 +32,6 @@ class SentPopupViewController: PopupViewController {
 																									borderWidth: 4)
 		}
 	}
-
 	@IBOutlet weak var actionButton: DefaultButton!
 	@IBOutlet weak var seconActionButton: DefaultButton!
 	@IBOutlet weak var secondButton: DefaultButton!
@@ -76,7 +77,6 @@ class SentPopupViewController: PopupViewController {
 	// MARK: -
 
 	private func updateUI() {
-
 		guard let vm = viewModel as? SentPopupViewModel else {
 			return
 		}
@@ -87,6 +87,14 @@ class SentPopupViewController: PopupViewController {
 			self.avatarImageView.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 25.0))
 		} else if let img = vm.avatarImage {
 			self.avatarImageView.image = img
+		}
+		if vm.noAvatar == true {
+			self.avatarImageViewHeightConstraint.constant = 0.0
+			self.avatarImageView.isHidden = true
+			self.avatarWrapper.isHidden = true
+		}
+		if let desc = vm.desc {
+			descTitle.text = desc
 		}
 		self.actionButton.setTitle(vm.actionButtonTitle, for: .normal)
 		self.secondButton.setTitle(vm.secondButtonTitle, for: .normal)
@@ -113,5 +121,4 @@ class SentPopupViewController: PopupViewController {
 		super.viewDidLayoutSubviews()
 //		dropShadow()
 	}
-
 }
