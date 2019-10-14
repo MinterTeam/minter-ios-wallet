@@ -55,6 +55,7 @@ class SendViewController:
 		}
 		return QRCodeReaderViewController(builder: builder)
 	}()
+	var txQRReaderVC: QRCodeReaderViewController?
 
 	// MARK: - Life cycle
 
@@ -215,27 +216,31 @@ extension SendViewController {
 		}
 
 		txScanButton.rx.tap.subscribe(onNext: { [weak self] (_) in
-			guard let readerVC = self?.readerVC else { return }
-			readerVC.delegate = self
-			readerVC.completionBlock = { (result: QRCodeReaderResult?) in
-				DispatchQueue.main.async {
-					readerVC.dismiss(animated: true) {
-						if let result = result?.value {
-							if let vc = RawTransactionRouter.viewController(path: ["tx"],
-																															param: ["d": result]) {
-								self?.tabBarController?.present(vc, animated: true, completion: nil)
-							} else {
-								let banner = NotificationBanner(title: "Invalid transcation data".localized(),
-																								subtitle: nil,
-																								style: .danger)
+			guard let _self = self else { return }
+			_self.txQRReaderVC = _self.readerVC
+			guard let txQRReaderVC = _self.txQRReaderVC else { return }
+			txQRReaderVC.delegate = self
+			txQRReaderVC.completionBlock = { (result: QRCodeReaderResult?) in
+				txQRReaderVC.dismiss(animated: true) {
+					if let result = result?.value {
+						if let vc = RawTransactionRouter.viewController(path: ["tx"],
+																														param: ["d": result]) {
+							DispatchQueue.main.async {
+								_self.tabBarController?.present(vc, animated: true, completion: nil)
+							}
+						} else {
+							let banner = NotificationBanner(title: "Invalid transcation data".localized(),
+																							subtitle: nil,
+																							style: .danger)
+							DispatchQueue.main.async {
 								banner.show()
 							}
 						}
 					}
 				}
 			}
-			readerVC.modalPresentationStyle = .formSheet
-			self?.present(readerVC, animated: true, completion: nil)
+			txQRReaderVC.modalPresentationStyle = .formSheet
+			_self.present(txQRReaderVC, animated: true, completion: nil)
 		}).disposed(by: disposeBag)
 	}
 }
