@@ -227,14 +227,26 @@ extension SendViewController {
 		}
 
 		txScanButton.rx.tap.subscribe(onNext: { [weak self] (_) in
-			guard let _self = self else { return }
-			let reader = _self.readerVC
-			reader.delegate = self
-			reader.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
-				reader.stopScanning()
-				reader.dismiss(animated: true) {
-					if let res = result?.value {
-						self?.viewModel.input.didScanQR.onNext(res)
+			guard let _self = self else { return } // swiftlint:disable:this identifier_name
+			_self.txQRReaderVC = _self.readerVC
+			guard let txQRReaderVC = _self.txQRReaderVC else { return }
+			txQRReaderVC.delegate = self
+			txQRReaderVC.completionBlock = { (result: QRCodeReaderResult?) in
+				txQRReaderVC.dismiss(animated: true) {
+					if let result = result?.value {
+						if let vc = RawTransactionRouter.viewController(path: ["tx"],
+																														param: ["d": result]) {
+							DispatchQueue.main.async {
+								_self.tabBarController?.present(vc, animated: true, completion: nil)
+							}
+						} else {
+							let banner = NotificationBanner(title: "Invalid transcation data".localized(),
+																							subtitle: nil,
+																							style: .danger)
+							DispatchQueue.main.async {
+								banner.show()
+							}
+						}
 					}
 				}
 			}

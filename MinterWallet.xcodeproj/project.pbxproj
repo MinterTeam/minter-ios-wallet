@@ -2184,6 +2184,7 @@
 				FA333053224A4B3C003B4763 /* Resources */,
 				FA33308E224A4B3C003B4763 /* ShellScript */,
 				FA33308F224A4B3C003B4763 /* [CP] Embed Pods Frameworks */,
+				FAA815B723547EED00DC2BCD /* ShellScript */,
 			);
 			buildRules = (
 			);

@@ -24,9 +24,7 @@ class AddressTableViewCell: BaseCell {
 		SoundHelper.playSoundIfAllowed(type: .click)
 		AnalyticsHelper.defaultAnalytics.track(event: .addressesCopyButton)
 		UIPasteboard.general.string = addressLabel.text
-		let banner = NotificationBanner(title: "Copied".localized(),
-																		subtitle: nil,
-																		style: .info)
+		let banner = NotificationBanner(title: "Copied".localized(), subtitle: nil, style: .info)
 		banner.show()
 	}
 
