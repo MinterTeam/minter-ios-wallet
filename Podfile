@@ -29,6 +29,7 @@ def shared_pods
 	pod 'GoldenKeystore', :git => 'https://github.com/sidorov-panda/GoldenKeystore'
 	pod 'GrowingTextView'
 	pod 'CryptoSwift', '~> 1.0'
+	pod 'SwiftLint'
 end
 
 target 'MinterWallet' do

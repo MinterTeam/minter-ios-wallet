@@ -13,8 +13,8 @@ extension CALayer {
 	func applySketchShadow(
 		color: UIColor = .black,
 		alpha: Float = 0.5,
-		x: CGFloat = 0,
-		y: CGFloat = 2,
+		x: CGFloat = 0, // swiftlint:disable:this identifier_name
+		y: CGFloat = 2, // swiftlint:disable:this identifier_name
 		blur: CGFloat = 4,
 		spread: CGFloat = 0)
 	{

@@ -97,7 +97,7 @@ class TransactionsViewController: BaseTableViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionsScreen)
+		AnalyticsHelper.defaultAnalytics.track(event: .transactionsScreen)
 	}
 
 	func registerViews() {
@@ -204,7 +204,7 @@ extension TransactionsViewController: ExpandedTransactionTableViewCellDelegate {
 	func didTapExplorerButton(cell: ExpandableCell) {
 		performLightImpact()
 
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .transactionExplorerButton)
 		if let indexPath = tableView.indexPath(for: cell),
 			let url = viewModel.explorerURL(section: indexPath.section,
 																			row: indexPath.row) {

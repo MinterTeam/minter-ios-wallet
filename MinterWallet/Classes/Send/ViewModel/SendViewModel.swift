@@ -21,18 +21,16 @@ struct AccountPickerItem {
 	var coin: String?
 }
 
-class SendViewModel: BaseViewModel, ViewModelProtocol {
+class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:this type_body_length
 
 	// MARK: - ViewModelProtocol
 
 	var input: SendViewModel.Input!
 	var output: SendViewModel.Output!
-
 	struct Input {
 		var payload: AnyObserver<String?>
 		var txScanButtonDidTap: AnyObserver<Void>
 	}
-
 	struct Output {
 		var errorNotification: Observable<NotifiableError?>
 		var txErrorNotification: Observable<NotifiableError?>
@@ -40,7 +38,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	// MARK: -
 
-	enum cellIdentifierPrefix: String {
+	enum CellIdentifierPrefix: String {
 		case address = "UsernameTableViewCell_Address"
 		case coin = "PickerTableViewCell_Coin"
 		case amount = "AmountTextFieldTableViewCell_Amount"
@@ -54,9 +52,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	// MARK: -
 
 	var title: String {
-		get {
-			return "Send".localized()
-		}
+		return "Send".localized()
 	}
 
 	private var toField: String? {
@@ -174,7 +170,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	private let errorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txErrorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txScanButtonDidTap = PublishSubject<Void>()
-
 	var showPopup = Variable<PopupViewController?>(nil)
 
 	var isPrepearingObservable: Observable<Bool> {
@@ -262,7 +257,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	func createSections() -> [BaseTableSectionItem] {
 		let username = UsernameTableViewCellItem(reuseIdentifier: "UsernameTableViewCell",
-																						 identifier: cellIdentifierPrefix.address.rawValue)
+																						 identifier: CellIdentifierPrefix.address.rawValue)
 		username.title = "TO (MX ADDRESS OR PUBLIC KEY)".localized()
 		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy,
 			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate,
@@ -275,7 +270,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		username.keybordType = .emailAddress
 
 		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell",
-																			 identifier: cellIdentifierPrefix.coin.rawValue + (selectedBalanceText ?? ""))
+																			 identifier: CellIdentifierPrefix.coin.rawValue + (selectedBalanceText ?? ""))
 		coin.title = "COIN".localized()
 		if nil != self.selectedAddress && nil != self.selectedCoin.value {
 			let item = accountPickerItems().filter { (item) -> Bool in
@@ -296,7 +291,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		}
 
 		let amount = AmountTextFieldTableViewCellItem(reuseIdentifier: "AmountTextFieldTableViewCell",
-																									identifier: cellIdentifierPrefix.amount.rawValue)
+																									identifier: CellIdentifierPrefix.amount.rawValue)
 		amount.title = "AMOUNT".localized()
 		amount.rules = [FloatRule(message: "INCORRECT AMOUNT".localized())]
 		amount.value = self.amountField ?? ""
@@ -311,20 +306,20 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		payload.titleObservable = clearPayloadSubject.asObservable()
 
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell",
-																				identifier: cellIdentifierPrefix.fee.rawValue)
+																				identifier: CellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
 		let payloadData = (try? clearPayloadSubject.value() ?? "")?.data(using: .utf8)
 		fee.subtitle = self.comissionText(for: 1, payloadData: payloadData)
 		fee.subtitleObservable = self.gasObservable
 
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-																							 identifier: cellIdentifierPrefix.separator.rawValue)
+																							 identifier: CellIdentifierPrefix.separator.rawValue)
 
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-																			 identifier: cellIdentifierPrefix.blank.rawValue)
+																			 identifier: CellIdentifierPrefix.blank.rawValue)
 
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-																				 identifier: cellIdentifierPrefix.button.rawValue)
+																				 identifier: CellIdentifierPrefix.button.rawValue)
 		button.title = "SEND".localized()
 		button.buttonPattern = "purple"
 		button.isButtonEnabled = validate().count == 0
@@ -346,11 +341,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 				|| (self.toAddress.value?.isValidPublicKey() ?? false)
 			) {
 		} else {
-			errs[cellIdentifierPrefix.address.rawValue] = "ADDRESS OR USERNAME IS INCORRECT".localized()
+			errs[CellIdentifierPrefix.address.rawValue] = "ADDRESS OR USERNAME IS INCORRECT".localized()
 		}
 
 		if nil == self.amount.value {
-			errs[cellIdentifierPrefix.address.rawValue] = "AMOUNT IS INCORRECT".localized()
+			errs[CellIdentifierPrefix.address.rawValue] = "AMOUNT IS INCORRECT".localized()
 		}
 		return errs
 	}
@@ -361,10 +356,10 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			self._sections.value = self.createSections()
 		}
 
-		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
+		if item.identifier.hasPrefix(CellIdentifierPrefix.amount.rawValue) {
 			self.amountField = value.replacingOccurrences(of: ",", with: ".")
 			return isAmountValid(amount: Decimal(string: value) ?? 0)
-		} else if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) && value.count >= 5 {
+		} else if item.identifier.hasPrefix(CellIdentifierPrefix.address.rawValue) && value.count >= 5 {
 			self.toField = value
 			return isToValid(to: value)
 		}
@@ -373,7 +368,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
 	func submitField(item: BaseCellItem, value: String) {
-		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
+		if item.identifier.hasPrefix(CellIdentifierPrefix.amount.rawValue) {
 			self.amountField = value.replacingOccurrences(of: ",", with: ".")
 
 			if isAmountValid(amount: self.amount.value ?? 0) || self.amountField == "" {
@@ -381,7 +376,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			} else {
 				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
 			}
-		} else if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) {
+		} else if item.identifier.hasPrefix(CellIdentifierPrefix.address.rawValue) {
 			self.toField = value
 		}
 		self._sections.value = self.createSections()

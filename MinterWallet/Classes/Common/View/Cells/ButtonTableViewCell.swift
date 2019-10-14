@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 
 protocol ButtonTableViewCellDelegate: class {
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell)
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell)
 }
 
 class ButtonTableViewCellItem: BaseCellItem {
@@ -57,7 +57,7 @@ class ButtonTableViewCell: BaseCell {
 	// MARK: - IBActions
 
 	@IBAction func buttonDidTap(_ sender: Any) {
-		delegate?.ButtonTableViewCellDidTap(self)
+		delegate?.buttonTableViewCellDidTap(self)
 	}
 
 	// MARK: -

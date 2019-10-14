@@ -24,7 +24,7 @@ class RealmDatabaseStorage: DatabaseStorage {
 
 	// MARK: -
 
-	private let realm = try! Realm()
+	private let realm = try! Realm()// swiftlint:disable:this force_try
 
 	// MARK: -
 
@@ -34,7 +34,7 @@ class RealmDatabaseStorage: DatabaseStorage {
 			return
 		}
 
-		try! realm.write {
+		try! realm.write {// swiftlint:disable:this force_try
 			realm.add(obj)
 		}
 	}
@@ -56,7 +56,7 @@ class RealmDatabaseStorage: DatabaseStorage {
 	// MARK: -
 
 	func update(updates: (() -> ())) {
-		try! realm.write {
+		try! realm.write {// swiftlint:disable:this force_try
 			updates()
 		}
 	}
@@ -64,7 +64,7 @@ class RealmDatabaseStorage: DatabaseStorage {
 	// MARK: -
 
 	func removeAll() {
-		try! realm.write {
+		try! realm.write {// swiftlint:disable:this force_try
 			realm.deleteAll()
 		}
 	}

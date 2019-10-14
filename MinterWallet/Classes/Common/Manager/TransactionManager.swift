@@ -50,7 +50,7 @@ class WalletTransactionManager {
 				return hasAddress ? to : from
 			}).filter({ (user) -> Bool in
 				return user != nil
-			}) as! [String])))
+			}) as! [String]))) // swiftlint:disable:this force_cast
 
 			users.append(contentsOf: ads ?? [])
 

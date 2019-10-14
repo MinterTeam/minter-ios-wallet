@@ -15,15 +15,15 @@ PODS:
   - GrowingTextView (0.7.1)
   - KeychainSwift (12.0.0)
   - MarqueeLabel/Swift (3.2.0)
-  - MinterCore (0.1.24):
+  - MinterCore (0.1.26):
     - Alamofire (= 4.7.3)
     - BigInt (~> 3.0)
     - CryptoSwift (~> 1.0)
     - ObjectMapper (~> 3.1)
     - secp256k1.swift (~> 0.1)
-  - MinterExplorer (0.1.13):
+  - MinterExplorer (0.1.15):
     - MinterCore
-  - MinterMy (0.1.6):
+  - MinterMy (0.1.7):
     - MinterCore
   - NotificationBannerSwift (1.8.0):
     - MarqueeLabel/Swift (~> 3.2.0)
@@ -55,6 +55,7 @@ PODS:
   - SwiftCentrifuge (0.0.2):
     - Starscream
     - SwiftProtobuf
+  - SwiftLint (0.35.0)
   - SwiftProtobuf (1.3.1)
   - SwiftValidator (4.0.0)
   - TPKeyboardAvoiding (1.3.2)
@@ -72,9 +73,9 @@ DEPENDENCIES:
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - GrowingTextView
   - KeychainSwift (= 12.0.0)
-  - MinterCore (from `../minter-ios-core/`)
-  - MinterExplorer (from `../minter-ios-explorer/`)
-  - MinterMy (from `../minter-ios-my/`)
+  - MinterCore (from `../minter-ios-core`)
+  - MinterExplorer (from `../minter-ios-explorer`)
+  - MinterMy (from `../minter-ios-my`)
   - NotificationBannerSwift (= 1.8.0)
   - ObjectMapper (~> 3.3)
   - ReachabilitySwift (~> 4.3)
@@ -84,6 +85,7 @@ DEPENDENCIES:
   - RxGesture
   - RxSwift (= 4.3.1)
   - SwiftCentrifuge
+  - SwiftLint
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, branch `master`)
   - TPKeyboardAvoiding (~> 1.3)
   - XLPagerTabStrip (~> 8.0)
@@ -116,6 +118,7 @@ SPEC REPOS:
     - SnapKit
     - Starscream
     - SwiftCentrifuge
+    - SwiftLint
     - SwiftProtobuf
     - TPKeyboardAvoiding
     - TrezorCrypto
@@ -126,11 +129,11 @@ EXTERNAL SOURCES:
   GoldenKeystore:
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterCore:
-    :path: "../minter-ios-core/"
+    :path: "../minter-ios-core"
   MinterExplorer:
-    :path: "../minter-ios-explorer/"
+    :path: "../minter-ios-explorer"
   MinterMy:
-    :path: "../minter-ios-my/"
+    :path: "../minter-ios-my"
   RealmSwift:
     :branch: master
     :git: https://github.com/realm/realm-cocoa.git
@@ -164,9 +167,9 @@ SPEC CHECKSUMS:
   GrowingTextView: 6dff7eedf2fc93f8378d20d456782afd0267b0cc
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
-  MinterCore: deca65951d0dc095052ac0d95bcbcad5c4ab29e0
-  MinterExplorer: 70eaab08988fd2c7cc37f8cedffa1f9d639ba4f9
-  MinterMy: 259b8c09fdf6bb8c6abd80aa4f6632f8d6b6a41c
+  MinterCore: 524460f52445065280ee8b4d365216b3772670f9
+  MinterExplorer: 27c5ba3bef42457fab572b8102b71c582f3f3c6a
+  MinterMy: 4198c68f2dbdcced3cb6cbe86a6d300b81433288
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
   ObjectMapper: 0d4402610f4e468903ae64629eec4784531e5c51
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
@@ -182,6 +185,7 @@ SPEC CHECKSUMS:
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SwiftCentrifuge: fa745a1fad5ace1c592eb8ceb21e06d28a080ae6
+  SwiftLint: 5553187048b900c91aa03552807681bb6b027846
   SwiftProtobuf: 84cd6b8f4fd2fc3d9fbd80a0aaf2e957d52824ec
   SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
@@ -189,6 +193,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 92167d45ba692a35999e86a4cf67275bd41fd87d
+PODFILE CHECKSUM: 95e00b39f30f448567e5c0a4979db02b8f06230a
 
 COCOAPODS: 1.7.5
