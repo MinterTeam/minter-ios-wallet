@@ -17,65 +17,65 @@ class Analytics {
 
 	enum Event: String {
 		//Screens
-		case CoinsScreen
-		case SendScreen
-		case SendCoinPopupScreen
-		case SentCoinPopupScreen
-		case ReceiveScreen
-		case SettingsScreen
-		case TransactionsScreen
-		case ConvertSpendScreen
-		case ConvertGetScreen
-		case AddressesScreen
-		case UsernameEditScreen
-		case EmailEditScreen
-		case PasswordEditScreen
-		case RawTransactionScreen
+		case coinsScreen
+		case sendScreen
+		case sendCoinPopupScreen
+		case sentCoinPopupScreen
+		case receiveScreen
+		case settingsScreen
+		case transactionsScreen
+		case convertSpendScreen
+		case convertGetScreen
+		case addressesScreen
+		case usernameEditScreen
+		case emailEditScreen
+		case passwordEditScreen
+		case rawTransactionScreen
 
 		//Coins
-		case CoinsUsernameButton
+		case coinsUsernameButton
 
 		//Events
 		//Transaction list
-		case TransactionDetailsButton
-		case TransactionExplorerButton
+		case transactionDetailsButton
+		case transactionExplorerButton
 
 		//Send Coin
-		case SendCoinsChooseCoinButton
-		case SendCoinsUseMaxButton
-		case SendCoinsSendButton
-		case SendCoinsQRButton
+		case sendCoinsChooseCoinButton
+		case sendCoinsUseMaxButton
+		case sendCoinsSendButton
+		case sendCoinsQRButton
 
 		//SendCoinPopup
-		case SendCoinPopupSendButton
-		case SendCoinPopupCancelButton
+		case sendCoinPopupSendButton
+		case sendCoinPopupCancelButton
 
 		//SentCoinPopupScreen
-		case SentCoinPopupViewTransactionButton
-		case SentCoinPopupShareTransactionButton
-		case SentCoinPopupCloseButton
+		case sentCoinPopupViewTransactionButton
+		case sentCoinPopupShareTransactionButton
+		case sentCoinPopupCloseButton
 
 		//ReceiveScreen
-		case ReceiveShareButton
+		case receiveShareButton
 
 		//Settings
-		case SettingsChangeUserpicButton
-		case SettingsLogoutButton
+		case settingsChangeUserpicButton
+		case settingsLogoutButton
 
 		//Addresses
-		case AddressesCopyButton
+		case addressesCopyButton
 
 		//ConvertSpend
-		case ConvertSpendUseMaxButton
-		case ConvertSpendExchangeButton
+		case convertSpendUseMaxButton
+		case convertSpendExchangeButton
 
 		//ConvertGet
-		case ConvertGetExchangeButton
+		case convertGetExchangeButton
 
 		//RawTransactionScreen
-		case RawTransactionPopupViewTransactionButton
-		case RawTransactionPopupShareTransactionButton
-		case RawTransactionPopupCloseButton
+		case rawTransactionPopupViewTransactionButton
+		case rawTransactionPopupShareTransactionButton
+		case rawTransactionPopupCloseButton
 	}
 
 	// MARK: -

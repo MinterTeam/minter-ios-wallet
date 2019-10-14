@@ -13,10 +13,10 @@ import MinterMy
 import MinterExplorer
 import RxAppState
 
-fileprivate let SessionAccessTokenKey = "AccessToken"
-fileprivate let SessionRefreshTokenKey = "RefreshToken"
-fileprivate let SessionUserKey = "User"
-fileprivate let SessionPINAttemptNumberKey = "SessionPINAttemptNumberKey"
+fileprivate let sessionAccessTokenKey = "AccessToken"
+fileprivate let sessionRefreshTokenKey = "RefreshToken"
+fileprivate let sessionUserKey = "User"
+fileprivate let sessionPINAttemptNumberKey = "SessionPINAttemptNumberKey"
 
 class Session {
 
@@ -82,15 +82,15 @@ class Session {
 
 		Observable.combineLatest(self.accessToken.asObservable(),
 														 self.refreshToken.asObservable())
-		.distinctUntilChanged({ (a, b) -> Bool in
-			return (a.0 ?? "" == b.0 ?? "") && (a.1 ?? "" == b.1 ?? "")
-		}).subscribe(onNext: { [weak self] (at, rt) in
-			self?.isLoggedIn.value = at != nil && rt != nil
+		.distinctUntilChanged({ (accToken, refreshToken) -> Bool in
+			return (accToken.0 ?? "" == refreshToken.0 ?? "") && (accToken.1 ?? "" == refreshToken.1 ?? "")
+		}).subscribe(onNext: { [weak self] (accToken, refreshToken) in
+			self?.isLoggedIn.value = accToken != nil && refreshToken != nil
 		}).disposed(by: disposeBag)
 
 		accounts.asObservable().distinctUntilChanged().filter({ (accs) -> Bool in
 			return accs.count > 0
-		}).subscribe(onNext: { [weak self] (accounts) in
+		}).subscribe(onNext: { [weak self] (_) in
 			self?.loadTransactions()
 			self?.loadBalances()
 			self?.loadDelegatedBalance()
@@ -119,22 +119,22 @@ class Session {
 	}
 
 	func setAccessToken(_ token: String) {
-		secureStorage.set(token as NSString, forKey: SessionAccessTokenKey)
+		secureStorage.set(token as NSString, forKey: sessionAccessTokenKey)
 		self.accessToken.value = token
 	}
 
 	func setRefreshToken(_ token: String) {
-		secureStorage.set(token as NSString, forKey: SessionRefreshTokenKey)
+		secureStorage.set(token as NSString, forKey: sessionRefreshTokenKey)
 		self.refreshToken.value = token
 	}
 
 	func setPINAttempts(attempts: Int) {
 		secureStorage.set(String(attempts).data(using: .utf8) ?? Data(),
-											forKey: SessionPINAttemptNumberKey)
+											forKey: sessionPINAttemptNumberKey)
 	}
 
 	func getPINAttempts() -> Int {
-		let attempts = secureStorage.object(forKey: SessionPINAttemptNumberKey) as? Data
+		let attempts = secureStorage.object(forKey: sessionPINAttemptNumberKey) as? Data
 		let str = String(data: attempts ?? Data(), encoding: .utf8) ?? ""
 		return Int(str) ?? 0
 	}
@@ -161,11 +161,11 @@ class Session {
 	}
 
 	func restore() {
-		if let accessToken = secureStorage.object(forKey: SessionAccessTokenKey) as? String {
+		if let accessToken = secureStorage.object(forKey: sessionAccessTokenKey) as? String {
 			self.accessToken.value = accessToken
 		}
 
-		if let refreshToken = secureStorage.object(forKey: SessionRefreshTokenKey) as? String {
+		if let refreshToken = secureStorage.object(forKey: sessionRefreshTokenKey) as? String {
 			self.refreshToken.value = refreshToken
 		}
 
@@ -179,18 +179,15 @@ class Session {
 	}
 
 	func logout() {
-
 		accessToken.value = nil
 		refreshToken.value = nil
 
 		secureStorage.removeAll()
 		localStorage.removeAll()
 		dataBaseStorage.removeAll()
-		
 		delegatedBalance.onNext(0.0)
 		totalMainCoinBalance.onNext(0.0)
 		totalUSDBalance.onNext(0.0)
-
 		baseCoinBalances.value = [:]
 		accounts.value = []
 		transactions.value = []
@@ -198,7 +195,6 @@ class Session {
 		balances.value = [:]
 		mainCoinBalance.value = 0.0
 		user.value = nil
-
 		isPINRequired.onNext(false)
 	}
 
@@ -226,7 +222,6 @@ class Session {
 	var isLoadingTransaction = false
 
 	func loadTransactions() {
-
 		if isLoadingTransaction {
 			return
 		}

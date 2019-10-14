@@ -101,7 +101,7 @@ class AddressViewController: BaseViewController, UITableViewDelegate {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .AddressesScreen)
+		AnalyticsHelper.defaultAnalytics.track(event: .addressesScreen)
 	}
 
 	// MARK: -
@@ -232,7 +232,7 @@ extension AddressViewController : SwitchTableViewCellDelegate {
 
 extension AddressViewController: AdvancedModeViewControllerDelegate {
 
-	func AdvancedModeViewControllerDidAddAccount() {
+	func advancedModeViewControllerDidAddAccount() {
 		self.navigationController?.popToViewController(self, animated: true)
 	}
 

@@ -27,7 +27,7 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
 
-		AnalyticsHelper.defaultAnalytics.track(event: .ReceiveShareButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .receiveShareButton)
 
 		if let activities = viewModel.activities() {
 			let vc = ReceiveRouter.activityViewController(activities: activities,
@@ -91,7 +91,7 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .ReceiveScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .receiveScreen, params: nil)
 	}
 
 	// MARK: - TableView

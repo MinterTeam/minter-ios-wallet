@@ -81,8 +81,9 @@ class ConfirmPopupViewController: PopupViewController, ControllerType {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		configure(with: viewModel as! ConfirmPopupViewModel)
+		if let confirmViewModel = viewModel as? ConfirmPopupViewModel {
+			configure(with: confirmViewModel)
+		}
 
 		updateUI()
 	}

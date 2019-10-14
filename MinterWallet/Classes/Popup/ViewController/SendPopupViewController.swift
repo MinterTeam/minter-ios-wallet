@@ -74,7 +74,7 @@ class SendPopupViewController: PopupViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinPopupScreen, params: nil)
 	}
 
 	override func loadView() {

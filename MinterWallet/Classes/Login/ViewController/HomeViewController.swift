@@ -111,16 +111,12 @@ class HomeViewController: BaseViewController {
 }
 
 
-extension HomeViewController : AdvancedModeViewControllerDelegate {
-	
-	func AdvancedModeViewControllerDidAddAccount() {
-		
+extension HomeViewController: AdvancedModeViewControllerDelegate {
+
+	func advancedModeViewControllerDidAddAccount() {
 		if let rootVC = UIViewController.stars_topMostController() as? RootViewController {
 			let vc = Storyboards.Main.instantiateInitialViewController()
-			rootVC.showViewControllerWith(vc, usingAnimation: .up) {
-				
-			}
+			rootVC.showViewControllerWith(vc, usingAnimation: .up) {}
 		}
 	}
-	
 }

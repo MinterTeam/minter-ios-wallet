@@ -74,7 +74,7 @@ class SendViewController:
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		viewModel.viewDidAppear()
-		AnalyticsHelper.defaultAnalytics.track(event: .SendScreen)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendScreen)
 	}
 
 	// MARK: -
@@ -166,29 +166,8 @@ extension SendViewController {
 		}).disposed(by: disposeBag)
 
 		viewModel
-			.output
-			.showViewController
-			.asDriver(onErrorJustReturn: nil)
-			.drive(onNext: { [weak self] (viewController) in
-				guard let viewController = viewController else { return }
-				self?.tabBarController?.present(viewController, animated: true, completion: nil)
-			}).disposed(by: disposeBag)
-
-		viewModel
-			.output
-			.setAddressField
-			.asDriver(onErrorJustReturn: nil)
-			.drive(onNext: { (val) in
-				let indexPath = IndexPath(row: 1, section: 0)
-				if
-					let cell = self.tableView.cellForRow(at: indexPath) as? UsernameTableViewCell,
-					let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-					cell.textView.text = val
-					_ = self.viewModel.validateField(item: item, value: val ?? "")
-				}
-			}).disposed(by: disposeBag)
-
-		viewModel.showPopup.asObservable()
+			.showPopup
+			.asObservable()
 			.subscribe(onNext: { [weak self] (popup) in
 				if popup == nil {
 					self?.popupViewController?.dismiss(animated: true, completion: nil)
@@ -211,19 +190,22 @@ extension SendViewController {
 					self?.showPopup(viewController: popup!,
 													inPopupViewController: self!.popupViewController)
 				}
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
-		viewModel.sections.asObservable().subscribe(onNext: { [weak self] (_) in
-			self?.tableView.reloadData()
-			guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
-				return
-			}
-			//Move to cell
-			if let balanceCell = self?.tableView
-				.cellForRow(at: IndexPath(item: 0, section: 0)) as? PickerTableViewCell {
-				balanceCell.selectField.text = selectedPickerItem.title
-			}
-		}).disposed(by: disposeBag)
+		viewModel
+			.sections
+			.asObservable()
+			.subscribe(onNext: { [weak self] (_) in
+				self?.tableView.reloadData()
+				guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
+					return
+				}
+				//Move to cell
+				if let balanceCell = self?.tableView
+					.cellForRow(at: IndexPath(item: 0, section: 0)) as? PickerTableViewCell {
+					balanceCell.selectField.text = selectedPickerItem.title
+				}
+			}).disposed(by: disposeBag)
 
 		if #available(iOS 11.0, *) {
 			self.tableView.contentInset = UIEdgeInsets(top: self.shouldShowTestnetToolbar ? 70.0 : 10.0,
@@ -269,7 +251,7 @@ extension SendViewController: PickerTableViewCellDelegate {
 
 	func willShowPicker() {
 		tableView.endEditing(true)
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsChooseCoinButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsChooseCoinButton)
 	}
 }
 
@@ -281,11 +263,11 @@ extension SendViewController: PickerTableViewCellDataSource {
 
 extension SendViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		SoundHelper.playSoundIfAllowed(type: .bip)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsSendButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsSendButton)
 		tableView.endEditing(true)
 		viewModel.sendButtonTaped()
 	}
@@ -330,13 +312,13 @@ extension SendViewController {
 		SoundHelper.playSoundIfAllowed(type: .bip)
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupSendButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinPopupSendButton)
 		viewModel.submitSendButtonTaped()
 	}
 
 	func didCancel(viewController: SendPopupViewController) {
 		SoundHelper.playSoundIfAllowed(type: .cancel)
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupCancelButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinPopupCancelButton)
 		viewController.dismiss(animated: true, completion: nil)
 		viewModel.sendCancelButtonTapped()
 	}
@@ -347,7 +329,7 @@ extension SendViewController {
 		SoundHelper.playSoundIfAllowed(type: .click)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupViewTransactionButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupViewTransactionButton)
 		viewController.dismiss(animated: true) { [weak self] in
 			if let url = self?.viewModel.lastTransactionExplorerURL() {
 				let vc = BaseSafariViewController(url: url)
@@ -360,7 +342,7 @@ extension SendViewController {
 		SoundHelper.playSoundIfAllowed(type: .click)
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupShareTransactionButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupShareTransactionButton)
 		viewController.dismiss(animated: true) { [weak self] in
 			if let url = self?.viewModel.lastTransactionExplorerURL() {
 				let vc = ActivityRouter.activityViewController(activities: [url], sourceView: self!.view)
@@ -372,7 +354,7 @@ extension SendViewController {
 	func didTapSecondButton(viewController: SentPopupViewController) {
 		SoundHelper.playSoundIfAllowed(type: .cancel)
 		lightImpactFeedbackGenerator.prepare()
-		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupCloseButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupCloseButton)
 		viewController.dismiss(animated: true, completion: nil)
 	}
 
@@ -407,9 +389,8 @@ extension SendViewController {
 	func heightWillChange(cell: TextViewTableViewCell) {}
 
 	func didTapScanButton(cell: UsernameTableViewCell?) {
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsQRButton)
-		let reader = readerVC
-		reader.delegate = self
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsQRButton)
+		readerVC.delegate = self
 		cell?.textView.becomeFirstResponder()
 		reader.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
 			reader.dismiss(animated: true) {
@@ -469,7 +450,7 @@ extension SendViewController: AmountTextFieldTableViewCellDelegate {
 
 	func didTapUseMax() {
 		self.view.endEditing(true)
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsUseMaxButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsUseMaxButton)
 		let indexPath = IndexPath(row: 2, section: 0)
 		guard let amountCell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell else {
 				return

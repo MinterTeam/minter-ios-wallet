@@ -175,15 +175,15 @@ extension RootViewModel: CentrifugeClientDelegate, CentrifugeSubscriptionDelegat
 
 	// MARK: -
 
-	func onConnect(_ client: CentrifugeClient, _ e: CentrifugeConnectEvent) {
+	func onConnect(_ client: CentrifugeClient, _ event: CentrifugeConnectEvent) {
 		self.isConnected = true
 	}
 
-	func onDisconnect(_ client: CentrifugeClient, _ e: CentrifugeDisconnectEvent) {
+	func onDisconnect(_ client: CentrifugeClient, _ event: CentrifugeDisconnectEvent) {
 		self.isConnected = false
 	}
 
-	func onPublish(_ s: CentrifugeSubscription, _ e: CentrifugePublishEvent) {
+	func onPublish(_ subscription: CentrifugeSubscription, _ event: CentrifugePublishEvent) {
 		self.reloadData()
 	}
 }

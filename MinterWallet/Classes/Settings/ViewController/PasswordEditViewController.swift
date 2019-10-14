@@ -61,7 +61,7 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 
 		showKeyboard()
 
-		AnalyticsHelper.defaultAnalytics.track(event: .PasswordEditScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .passwordEditScreen, params: nil)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -87,7 +87,8 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
+		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row),
+			let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
 			return UITableViewCell()
 		}
 		
@@ -119,7 +120,8 @@ extension PasswordEditViewController: ButtonTableViewCellDelegate, ValidatableCe
 	// MARK: -
 
 	func didValidateField(field: ValidatableCellProtocol?) {
-		if let ip = tableView.indexPath(for: field as! UITableViewCell) {
+		if let cellField = field as? UITableViewCell,
+			let ip = tableView.indexPath(for: cellField) {
 			if ip.row == 0 {
 				viewModel.password.value = field?.validationText
 			}
@@ -130,7 +132,8 @@ extension PasswordEditViewController: ButtonTableViewCellDelegate, ValidatableCe
 	}
 
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
-		if let ip = tableView.indexPath(for: field as! UITableViewCell) {
+		if let fieldCell = field as? UITableViewCell,
+			let ip = tableView.indexPath(for: fieldCell) {
 			if ip.row == 0 {
 				viewModel.password.value = field?.validationText
 			}
@@ -151,7 +154,7 @@ extension PasswordEditViewController: ButtonTableViewCellDelegate, ValidatableCe
 
 	// MARK: -
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 
 		SoundHelper.playSoundIfAllowed(type: .click)
 

@@ -14,7 +14,7 @@ import NotificationBannerSwift
 
 class UsernameEditViewModel : BaseViewModel {
 
-	enum usernameFormError : Error {
+	enum UsernameFormError: Error {
 		case usernameTooShort
 		case incorrectUsername
 		case usernameTaken
@@ -63,9 +63,7 @@ class UsernameEditViewModel : BaseViewModel {
 	var successMessage = Variable<NotifiableSuccess?>(nil)
 
 	var title: String {
-		get {
 			return "Username".localized()
-		}
 	}
 
 	private var isLoading = Variable(false)
@@ -136,7 +134,7 @@ class UsernameEditViewModel : BaseViewModel {
 			&& username != (Session.shared.user.value?.username ?? "") else {
 			return
 		}
-		
+
 		guard let client = APIClient.withAuthentication(),
 			let user = Session.shared.user.value else {
 				self.errorNotification.value = NotifiableError(title: "Something went wrong".localized(), text: nil)
@@ -185,13 +183,13 @@ class UsernameEditViewModel : BaseViewModel {
 					}
 
 					if isTaken == true {
-						observer.onError(usernameFormError.usernameTaken)
+						observer.onError(UsernameFormError.usernameTaken)
 					} else {
 						observer.onCompleted()
 					}
 				}
 			} else {
-				observer.onError(usernameFormError.incorrectUsername)
+				observer.onError(UsernameFormError.incorrectUsername)
 			}
 			return Disposables.create()
 		}

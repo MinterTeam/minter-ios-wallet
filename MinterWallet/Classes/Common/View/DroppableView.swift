@@ -29,7 +29,11 @@ class DroppableView : CCMPlayNDropView {
 	private func dropShadow() {
 		shadowLayer.removeFromSuperlayer()
 		shadowLayer.frame = self.bounds
-		shadowLayer.path = UIBezierPath(roundedRect: CGRect(x: self.bounds.minX + 10, y: self.bounds.minY + 10, width: self.bounds.width - 20.0, height: self.bounds.height - 20.0), cornerRadius: 16.0).cgPath
+		shadowLayer.path = UIBezierPath(roundedRect: CGRect(x: self.bounds.minX + 10,
+																												y: self.bounds.minY + 10,
+																												width: self.bounds.width - 20.0,
+																												height: self.bounds.height - 20.0),
+																		cornerRadius: 16.0).cgPath
 		shadowLayer.shadowOpacity = 1.0
 		shadowLayer.shadowRadius = 2.0
 		shadowLayer.masksToBounds = false

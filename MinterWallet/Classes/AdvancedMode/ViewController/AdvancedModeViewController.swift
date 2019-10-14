@@ -9,7 +9,7 @@
 import UIKit
 
 protocol AdvancedModeViewControllerDelegate: class {
-	func AdvancedModeViewControllerDidAddAccount()
+	func advancedModeViewControllerDidAddAccount()
 }
 
 class AdvancedModeViewController: BaseViewController {
@@ -45,7 +45,7 @@ class AdvancedModeViewController: BaseViewController {
 
 		viewModel.saveAccount(id: -1, mnemonic: mnemonicText.joined(separator: " "))
 
-		delegate?.AdvancedModeViewControllerDidAddAccount()
+		delegate?.advancedModeViewControllerDidAddAccount()
 	}
 
 	// MARK: -
@@ -79,8 +79,8 @@ class AdvancedModeViewController: BaseViewController {
 }
 
 extension AdvancedModeViewController: GenerateAddressViewControllerDelegate {
-	func GenerateAddressViewControllerDelegateDidAddAccount() {
-		self.delegate?.AdvancedModeViewControllerDidAddAccount()
+	func generateAddressViewControllerDelegateDidAddAccount() {
+		self.delegate?.advancedModeViewControllerDidAddAccount()
 	}
 }
 

@@ -292,7 +292,7 @@ ControllerType {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen)
+		AnalyticsHelper.defaultAnalytics.track(event: .coinsScreen)
 	}
 
 	// MARK: -
@@ -322,7 +322,7 @@ ControllerType {
 
 	@objc func didTapUsernameView() {
 		self.tabBarController?.selectedIndex = 3
-		AnalyticsHelper.defaultAnalytics.track(event: .CoinsUsernameButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .coinsUsernameButton)
 	}
 
 	// MARK: -
@@ -393,11 +393,11 @@ ControllerType {
 
 		//Move to router?
 		switch cellIdentifier {
-		case vm.cellIdentifierPrefix.convert.rawValue:
+		case vm.CellIdentifierPrefix.convert.rawValue:
 			perform(segue: CoinsViewController.Segue.showConvert)
 			break
 
-		case vm.cellIdentifierPrefix.transactions.rawValue:
+		case vm.CellIdentifierPrefix.transactions.rawValue:
 			perform(segue: CoinsViewController.Segue.showTransactions)
 			break
 
@@ -413,7 +413,7 @@ ControllerType {
 
 extension CoinsViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		guard let indexPath = tableView.indexPath(for: cell),
 			let item = viewModel.cellItem(section: indexPath.section,
 																		row: indexPath.row) else { return }
@@ -427,7 +427,7 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 	func didTapExplorerButton(cell: ExpandableCell) {
 		performLightImpact()
 
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .transactionExplorerButton)
 
 		if let indexPath = tableView.indexPath(for: cell),
 			let url = viewModel.explorerURL(section: indexPath.section,

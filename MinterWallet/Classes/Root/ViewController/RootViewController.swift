@@ -20,10 +20,13 @@ class RootViewController: UIViewController, ControllerType {
 
 	func configure(with viewModel: RootViewController.ViewModelType) {
 
-		viewModel.output.shouldPresentPIN.asDriver(onErrorJustReturn: false)
+		viewModel
+			.output
+			.shouldPresentPIN
+			.asDriver(onErrorJustReturn: false)
 			.drive(onNext: { [weak self] (present) in
-			self?.shouldPresentPIN = present
-		}).disposed(by: disposeBag)
+				self?.shouldPresentPIN = present
+			}).disposed(by: disposeBag)
 
 		Observable.combineLatest(Session.shared.accounts.asObservable(),
 														 Session.shared.isLoggedIn.asObservable(),
@@ -38,13 +41,15 @@ class RootViewController: UIViewController, ControllerType {
 				}
 			}).disposed(by: disposeBag)
 
-		viewModel.output.shouldGoNextStep
+		viewModel
+			.output
+			.shouldGoNextStep
 			.withLatestFrom(Observable.combineLatest(Session.shared.isLoggedIn.asObservable(),
 																							 Session.shared.accounts.asObservable()))
 			.asDriver(onErrorJustReturn: (false, []))
 			.drive(onNext: { [weak self] (val) in
 				self?.nextStep(accounts: val.1, isLoggedIn: val.0)
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		viewModel
 			.output
@@ -64,7 +69,7 @@ class RootViewController: UIViewController, ControllerType {
 						self?.show(vc, sender: self)
 					}
 				}
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 	}
 
 	// MARK: -
@@ -112,7 +117,9 @@ class RootViewController: UIViewController, ControllerType {
 	}
 
 	@objc func reachabilityChanged(_ note: Notification) {
-		let reachability = note.object as! Reachability
+		guard let reachability = note.object as? Reachability else {
+			return
+		}
 
 		switch reachability.connection {
 		case .wifi:

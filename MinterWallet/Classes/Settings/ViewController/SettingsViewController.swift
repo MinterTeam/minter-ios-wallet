@@ -122,9 +122,10 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate,
 			appDele.isTestnet {
 
-			let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-			let build = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
-			infoLabel.text = "Version: \(version) (\(build))"
+			if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
+				let build = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String {
+				infoLabel.text = "Version: \(version) (\(build))"
+			}
 		}
 
 		if self.shouldShowTestnetToolbar {
@@ -141,7 +142,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		super.viewWillAppear(animated)
 
 		viewModel.viewWillAppear()
-		AnalyticsHelper.defaultAnalytics.track(event: .SettingsScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .settingsScreen)
 	}
 
 	private func registerCells() {
@@ -276,7 +277,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 extension SettingsViewController: SettingsAvatarTableViewCellDelegate {
 
 	func didTapChangeAvatar(cell: SettingsAvatarTableViewCell) {
-		AnalyticsHelper.defaultAnalytics.track(event: .SettingsChangeUserpicButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .settingsChangeUserpicButton)
 		showImagePicker(sender: cell)
 	}
 }
@@ -312,7 +313,7 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
 
 extension SettingsViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
@@ -324,7 +325,7 @@ extension SettingsViewController: ButtonTableViewCellDelegate {
 			return
 		}
 
-		AnalyticsHelper.defaultAnalytics.track(event: .SettingsLogoutButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .settingsLogoutButton)
 
 		SoundHelper.playSoundIfAllowed(type: .cancel)
 		viewModel.rightButtonTapped()

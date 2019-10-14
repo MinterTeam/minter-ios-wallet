@@ -11,7 +11,7 @@ import Foundation
 class CurrencyNumberFormatter: NumberFormatter {
 
 	class func formattedDecimal(with number: Decimal, formatter: NumberFormatter) -> String {
-		let newNF = formatter.copy() as! NumberFormatter
+		let newNF = formatter.copy() as! NumberFormatter // swiftlint:disable:this force_cast
 		let amount = number
 		for _ in 0...18 {
 

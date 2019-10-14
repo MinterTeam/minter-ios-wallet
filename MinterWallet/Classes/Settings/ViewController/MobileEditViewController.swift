@@ -81,7 +81,8 @@ class MobileEditViewController: BaseViewController, UITableViewDelegate, UITable
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
+		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row),
+			let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
 			return UITableViewCell()
 		}
 		
@@ -106,9 +107,9 @@ class MobileEditViewController: BaseViewController, UITableViewDelegate, UITable
 	
 }
 
-extension MobileEditViewController : ButtonTableViewCellDelegate {
+extension MobileEditViewController: ButtonTableViewCellDelegate {
 	
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		
 		SoundHelper.playSoundIfAllowed(type: .click)
 		
