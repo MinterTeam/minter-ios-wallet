@@ -82,7 +82,11 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 											 selectedAddress: selectedAddress,
 											 selectedCoin: selectedCoin
 		)
-
+		subscribe()
+		Session.shared.loadBalances()
+	}
+	
+	private func subscribe() {
 		self.coinObservable.distinctUntilChanged().do(onNext: { [weak self] (term) in
 			if nil != term && term != "" {
 				self?.hasCoin.value = false
@@ -96,7 +100,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 			return CoinValidator.isValid(coin: term)
 		}).subscribe(onNext: { [weak self] (term) in
 
-			guard let _self = self else { return }
+			guard let _self = self else { return } //swiftlint:disable:this identifier_name
 
 			self?.coinManager.coin(by: term).do(onNext: { (coin) in
 				self?.coinIsLoading.value = true
@@ -150,7 +154,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 			.filter({ [weak self] (coin) -> Bool in
 				return coin != nil && self?.selectedBalance != nil && self?.selectedAddress != nil
 			}).subscribe(onNext: { [weak self] (coin) in
-				guard let _self = self else { return }
+				guard let _self = self else { return } //swiftlint:disable:this identifier_name
 				let item = SpendCoinPickerItem(coin: coin!,
 																			 balance: _self.selectedBalance!,
 																			 address: _self.selectedAddress!,
@@ -191,7 +195,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 		}).disposed(by: disposeBag)
 
 		useMaxDidTap.subscribe(onNext: { [weak self] (_) in
-			guard let _self = self else { return }
+			guard let _self = self else { return } //swiftlint:disable:this identifier_name
 			let selectedAmount = CurrencyNumberFormatter.formattedDecimal(with: _self.selectedBalance ?? 0.0,
 																																		formatter: _self.decimalFormatter)
 			self?.spendAmount.onNext(selectedAmount)
@@ -200,8 +204,6 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
 			self?.shouldClearForm.value = true
 		}).disposed(by: disposeBag)
-
-		Session.shared.loadBalances()
 	}
 
 	// MARK: -
@@ -297,7 +299,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 			}
 		}).subscribe(onNext: { [weak self] (res) in
 
-			guard let _self = self else { return }
+			guard let _self = self else { return } //swiftlint:disable:this identifier_name
 
 			let ammnt = res.0
 			let val = ammnt.PIPToDecimal()
@@ -415,7 +417,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 											 minimumBuyValue: Decimal) -> Observable<String?> {
 		return Observable<String?>.create { [weak self] observer -> Disposable in
 
-			guard let _self = self else { return Disposables.create() }
+			guard let _self = self else { return Disposables.create() } //swiftlint:disable:this identifier_name
 
 			guard let amnt = Decimal(string: amount),
 				let minimumBuyVal = BigUInt(decimal: minimumBuyValue),

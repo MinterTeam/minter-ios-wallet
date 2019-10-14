@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import MinterCore
 
-var MinterGateBaseURLString = "https://gate.minter.network"
+var MinterGateBaseURLString = "https://gate.minter.network"// swiftlint:disable:this identifier_name
 
 enum GateManagerError : Error {
 	case wrongResponse

@@ -68,7 +68,7 @@ ValidatableCellDelegate {
 
 		showKeyboard()
 
-		AnalyticsHelper.defaultAnalytics.track(event: .UsernameEditScreen)
+		AnalyticsHelper.defaultAnalytics.track(event: .usernameEditScreen)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -147,7 +147,7 @@ ValidatableCellDelegate {
 
 extension UsernameEditViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 
 		SoundHelper.playSoundIfAllowed(type: .click)
 

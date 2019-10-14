@@ -22,7 +22,7 @@ UITextFieldDelegate {
 	// MARK: -
 
 	var vm: SpendCoinsViewModel {
-		return viewModel as! SpendCoinsViewModel
+		return viewModel as! SpendCoinsViewModel // swiftlint:disable:this force_cast
 	}
 
 	private var formatter = CurrencyNumberFormatter.coinFormatter
@@ -56,14 +56,14 @@ UITextFieldDelegate {
 		SoundHelper.playSoundIfAllowed(type: .bip)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendExchangeButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .convertSpendExchangeButton)
 	}
 
 	@IBOutlet weak var amountErrorLabel: UILabel!
 	@IBOutlet weak var getCoinErrorLabel: UILabel!
 
 	@IBAction func didTapUseMax(_ sender: Any) {
-		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendUseMaxButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .convertSpendUseMaxButton)
 	}
 
 	// MARK: -
@@ -187,7 +187,7 @@ UITextFieldDelegate {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendScreen)
+		AnalyticsHelper.defaultAnalytics.track(event: .convertSpendScreen)
 	}
 
 	override func didReceiveMemoryWarning() {

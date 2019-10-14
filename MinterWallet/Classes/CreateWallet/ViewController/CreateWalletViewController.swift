@@ -117,8 +117,9 @@ class CreateWalletViewController: BaseViewController, ControllerType, UITableVie
 	func initializeTableView() {
 		registerCells()
 
-		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(configureCell: { [weak self] (dataSource, tableView, IndexPath, itm) -> UITableViewCell in
-			guard let item = self?.viewModel.cellItem(section: IndexPath.section, row: IndexPath.row),
+		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(configureCell:
+			{ [weak self] (dataSource, tableView, indexPath, itm) -> UITableViewCell in
+			guard let item = self?.viewModel.cellItem(section: indexPath.section, row: indexPath.row),
 				let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
 				return UITableViewCell()
 			}

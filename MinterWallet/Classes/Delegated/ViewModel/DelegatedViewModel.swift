@@ -160,11 +160,11 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 
 	public func publicKey(for section: Int) -> String? {
 		var ii = 0
-		for i in source.sorted(by: { (del1, del2) -> Bool in
+		for index in source.sorted(by: { (del1, del2) -> Bool in
 			return del1 > del2
 		}) {
 			if section == ii {
-				return i
+				return index
 			}
 			ii += 1
 		}

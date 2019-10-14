@@ -11,7 +11,7 @@ import RxSwift
 import AlamofireImage
 
 protocol DelegatedTableViewCellDelegate: class {
-	func DelegatedTableViewCellDidTapCopy(cell: DelegatedTableViewCell)
+	func delegatedTableViewCellDidTapCopy(cell: DelegatedTableViewCell)
 }
 
 class DelegatedTableViewCellItem: BaseCellItem {
@@ -63,7 +63,7 @@ class DelegatedTableViewCell: BaseCell {
 		}
 
 		copyButton.rx.tap.subscribe(onNext: { [weak self] (_) in
-			self?.delegate?.DelegatedTableViewCellDidTapCopy(cell: self!)
+			self?.delegate?.delegatedTableViewCellDidTapCopy(cell: self!)
 		}).disposed(by: disposeBag)
 	}
 

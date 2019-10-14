@@ -12,7 +12,7 @@ import MinterExplorer
 import BigInt
 import RxSwift
 
-class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
+class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this type_body_length cyclomatic_complexity
 
 	// MARK: -
 	
@@ -20,7 +20,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 		case noPrivateKey
 	}
 
-	enum cellIdentifierPrefix: String {
+	enum CellIdentifierPrefix: String {
 		case fee = "TwoTitleTableViewCell_TransactionFee"
 		case separator = "SeparatorTableViewCell"
 		case blank = "BlankTableViewCell"
@@ -84,7 +84,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 
 	// MARK: -
 
-	init(
+	init(// swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
 		nonce: BigUInt?,
 		gasPrice: BigUInt?,
 		gasCoin: String?,
@@ -276,8 +276,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 					if let arrayData = items[0].data,
 						let array = RLP.decode(arrayData) {
 						multisendAddressCount = array.count ?? 0
-						for i in 0..<(array.count ?? 0) {
-							if let addressDictData = array[i]?.data,
+						for idx in 0..<(array.count ?? 0) {
+							if let addressDictData = array[idx]?.data,
 							let addressDict = RLP.decode(addressDictData),
 								let coinData = addressDict[0]?.data,
 									let coin = String(coinData: coinData),
@@ -430,20 +430,20 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 		}
 
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell",
-																				identifier: cellIdentifierPrefix.fee.rawValue)
+																				identifier: CellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
 		let payloadData = payload?.data(using: .utf8)
 		fee.subtitle = self.commissionText(for: 1, payloadData: payloadData)
 		fee.subtitleObservable = self.gasObservable
 
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-																							 identifier: cellIdentifierPrefix.separator.rawValue)
+																							 identifier: CellIdentifierPrefix.separator.rawValue)
 
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-																			 identifier: cellIdentifierPrefix.blank.rawValue)
+																			 identifier: CellIdentifierPrefix.blank.rawValue)
 
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-																				 identifier: cellIdentifierPrefix.button.rawValue)
+																				 identifier: CellIdentifierPrefix.button.rawValue)
 		button.title = "PROCEED".localized()
 		button.buttonPattern = "purple"
 		button.output?.didTapButton
@@ -452,7 +452,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 			.disposed(by: disposeBag)
 
 		let cancelButton = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-																							 identifier: cellIdentifierPrefix.cancelButton.rawValue)
+																							 identifier: CellIdentifierPrefix.cancelButton.rawValue)
 		cancelButton.title = "CANCEL".localized()
 		cancelButton.buttonPattern = "blank"
 		cancelButton.output?.didTapButton
@@ -461,9 +461,9 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 			.disposed(by: disposeBag)
 
 		let blank2 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-																				identifier: cellIdentifierPrefix.blank.rawValue + "_2")
+																				identifier: CellIdentifierPrefix.blank.rawValue + "_2")
 		let blank3 = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-																				identifier: cellIdentifierPrefix.blank.rawValue + "_3")
+																				identifier: CellIdentifierPrefix.blank.rawValue + "_3")
 
 		var section = BaseTableSectionItem(header: "")
 		section.items = items + [fee, separator, blank, blank2, blank3, button, cancelButton]

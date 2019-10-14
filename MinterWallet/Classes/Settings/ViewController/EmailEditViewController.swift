@@ -73,7 +73,7 @@ UITableViewDataSource {
 		super.viewDidAppear(animated)
 		
 		showKeyboard()
-		AnalyticsHelper.defaultAnalytics.track(event: .EmailEditScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .emailEditScreen, params: nil)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -98,8 +98,8 @@ UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
+		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row),
+			let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
 			return UITableViewCell()
 		}
 
@@ -130,7 +130,7 @@ UITableViewDataSource {
 
 extension EmailEditViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 
 		SoundHelper.playSoundIfAllowed(type: .click)
 

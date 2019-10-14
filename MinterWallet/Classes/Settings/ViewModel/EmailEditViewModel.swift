@@ -11,7 +11,6 @@ import MinterCore
 import MinterMy
 import RxSwift
 
-
 class EmailEditViewModel: BaseViewModel {
 	
 	//MARK: - Input
@@ -62,7 +61,7 @@ class EmailEditViewModel: BaseViewModel {
 		createSection()
 		
 		emailSubject.asObservable().distinctUntilChanged().subscribe { [weak self] el in
-			if let emailString = el.element, emailString.count > 0 {
+			if let emailString = el.element, !emailString.isEmpty {
 				self?.emailErrors.onNext(self?.validate(email: emailString)?.first)
 			}
 			else {

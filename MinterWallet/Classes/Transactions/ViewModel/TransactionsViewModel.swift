@@ -154,7 +154,7 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 		}) {
 			let loadingSection = self.sections.value[safe: loadingIndex]
 			self.sections.value.remove(at: loadingIndex)
-			self.sections.value = self.sections.value + sctns
+			self.sections.value += sctns
 			if nil != loadingSection {
 				self.sections.value.append(loadingSection!)
 			}
@@ -228,8 +228,8 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 		var itemsCountFromPrevSections = 0
 		let endSection = indexPath.section - 1
 		if endSection >= 0 {
-			for i in 0...endSection {
-				itemsCountFromPrevSections = itemsCountFromPrevSections + rowsCount(for: i)
+			for index in 0...endSection {
+				itemsCountFromPrevSections += rowsCount(for: index)
 			}
 		}
 		let cellTotalIndex = (indexPath.row + 1) + itemsCountFromPrevSections

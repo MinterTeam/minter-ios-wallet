@@ -40,7 +40,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 
 	// MARK: -
 
-	enum cellIdentifierPrefix: String {
+	enum CellIdentifierPrefix: String {
 	 case transactions = "ButtonTableViewCell_Transactions"
 	 case convert = "ButtonTableViewCell_Convert"
 	}
