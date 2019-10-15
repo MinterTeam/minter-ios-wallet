@@ -34,6 +34,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	struct Output {
 		var errorNotification: Observable<NotifiableError?>
 		var txErrorNotification: Observable<NotifiableError?>
+		var popup: Observable<PopupViewController?>
 	}
 
 	// MARK: -
@@ -157,7 +158,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	private let errorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txErrorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txScanButtonDidTap = PublishSubject<Void>()
-	var showPopup = Variable<PopupViewController?>(nil)
+	private let popupSubject = PublishSubject<PopupViewController?>()
 
 	var isPrepearingObservable: Observable<Bool> {
 		return isLoadingNonce.asObservable()
@@ -197,7 +198,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 		self.input = Input(payload: payloadSubject.asObserver(),
 											 txScanButtonDidTap: txScanButtonDidTap.asObserver())
 		self.output = Output(errorNotification: errorNotificationSubject.asObservable(),
-												 txErrorNotification: txErrorNotificationSubject.asObservable())
+												 txErrorNotification: txErrorNotificationSubject.asObservable(),
+												 popup: popupSubject.asObservable())
 
 		payloadSubject.asObservable().subscribe(onNext: { (payld) in
 			self.forceUpdateFee.onNext(())
@@ -577,7 +579,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 																					amount: amount)
 				let vc = Storyboards.Popup.instantiateInitialViewController()
 				vc.viewModel = vm
-				self?.showPopup.value = vc
+				self?.popupSubject.onNext(vc)
 		}, onError: { [weak self] (error) in
 			self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't get nonce"))
 			self?.isLoadingNonce.value = false
@@ -650,7 +652,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 						let needs = self?.formatter.string(from: amountWithCommission as NSNumber) ?? ""
 						self?.errorNotificationSubject.onNext(NotifiableError(title: "Not enough coins.",
 																																	text: "Needs " + needs))
-						self?.showPopup.value = nil
+						self?.popupSubject.onNext(nil)
 						return
 					}
 
@@ -688,7 +690,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 
 						DispatchQueue.main.async {
 							self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't check tx".localized()))
-							self?.showPopup.value = nil
+							self?.popupSubject.onNext(nil)
 						}
 						return
 					}
@@ -707,7 +709,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 							let needs = self?.formatter.string(from: (amount + normalizedCommission) as NSNumber) ?? ""
 							self?.errorNotificationSubject.onNext(NotifiableError(title: "Not enough coins.".localized(),
 																																		text: "Needs ".localized() + needs))
-							self?.showPopup.value = nil
+							self?.popupSubject.onNext(nil)
 							return
 						}
 
@@ -763,10 +765,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 			self?.clear()
 			self?.sections.value = self?.createSections() ?? []
 
-			DispatchQueue.main.async {
-				if let sentViewModel = self?.sentViewModel(to: toFld ?? to, address: to) {
-					self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: sentViewModel)
-				}
+			if let sentViewModel = self?.sentViewModel(to: toFld ?? to, address: to) {
+				let popup = PopupRouter.sentPopupViewCointroller(viewModel: sentViewModel)
+				self?.popupSubject.onNext(popup)
 			}
 
 			DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(2), execute: {
@@ -913,33 +914,33 @@ extension SendViewModel {
 	// MARK: - ViewModels
 
 	func sendPopupViewModel(to: String, address: String, amount: Decimal) -> SendPopupViewModel {
-		let vm = SendPopupViewModel()
-		vm.amount = amount
-		vm.coin = selectedCoin.value
-		vm.username = to
+		let viewModel = SendPopupViewModel()
+		viewModel.amount = amount
+		viewModel.coin = selectedCoin.value
+		viewModel.username = to
 		if to.isValidPublicKey() {
-			vm.avatarImage = UIImage(named: "delegateImage")
+			viewModel.avatarImage = UIImage(named: "delegateImage")
 		} else {
-			vm.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
+			viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
 		}
-		vm.popupTitle = "You're Sending"
-		vm.buttonTitle = "SEND".localized()
-		vm.cancelTitle = "CANCEL".localized()
-		return vm
+		viewModel.popupTitle = "You're Sending"
+		viewModel.buttonTitle = "SEND".localized()
+		viewModel.cancelTitle = "CANCEL".localized()
+		return viewModel
 	}
 
 	func sentViewModel(to: String, address: String) -> SentPopupViewModel {
-		let vm = SentPopupViewModel()
-		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
+		let viewModel = SentPopupViewModel()
+		viewModel.actionButtonTitle = "VIEW TRANSACTION".localized()
 		if to.isValidPublicKey() {
-			vm.avatarImage = UIImage(named: "delegateImage")
+			viewModel.avatarImage = UIImage(named: "delegateImage")
 		} else {
-			vm.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
+			viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
 		}
-		vm.secondButtonTitle = "CLOSE".localized()
-		vm.username = to
-		vm.title = "Success!".localized()
-		return vm
+		viewModel.secondButtonTitle = "CLOSE".localized()
+		viewModel.username = to
+		viewModel.title = "Success!".localized()
+		return viewModel
 	}
 }
 
