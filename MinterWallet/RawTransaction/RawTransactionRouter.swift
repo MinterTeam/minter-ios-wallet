@@ -39,7 +39,7 @@ class RawTransactionRouter: BaseRouter {
 
 			switch content {
 			case .noItem:
-				break
+				return nil
 
 			case .list(let items, let count, let data):
 				//Full tx version
@@ -101,7 +101,7 @@ class RawTransactionRouter: BaseRouter {
 				}
 				break
 			case .data(let data):
-				break
+				return nil
 			}
 
 			let viewModel = RawTransactionViewModel(

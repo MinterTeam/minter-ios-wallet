@@ -56,7 +56,13 @@ class RootViewController: UIViewController, ControllerType {
 				self?.viewModel.input.didOpenURL.onNext(url)
 				guard let url = url else { return }
 				if let vc = Router.viewController(by: url) {
-					self?.show(vc, sender: nil)
+					if let oldVC = self?.presentedViewController {
+						oldVC.dismiss(animated: true) {
+							self?.show(vc, sender: self)
+						}
+					} else {
+						self?.show(vc, sender: self)
+					}
 				}
 		}).disposed(by: disposeBag)
 	}

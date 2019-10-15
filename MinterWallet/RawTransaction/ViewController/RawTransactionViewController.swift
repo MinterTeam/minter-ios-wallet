@@ -136,25 +136,7 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 		super.viewDidLoad()
 
 		configure(with: viewModel)
-
 		registerCells()
-	}
-
-	// MARK: -
-
-	private func registerCells() {
-		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "TextFieldTableViewCell")
-		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "TwoTitleTableViewCell")
-		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "SeparatorTableViewCell")
-		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "ButtonTableViewCell")
-		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "BlankTableViewCell")
-		tableView.register(UINib(nibName: "RawTransactionFieldTableViewCell", bundle: nil),
-											 forCellReuseIdentifier: "RawTransactionFieldTableViewCell")
 	}
 }
 
@@ -217,5 +199,22 @@ extension RawTransactionViewController: SentPopupViewControllerDelegate, Confirm
 		viewController.dismiss(animated: true) { [weak self] in
 			self?.dismiss(animated: true) {}
 		}
+	}
+}
+
+extension RawTransactionViewController {
+	private func registerCells() {
+		tableView.register(UINib(nibName: "TextFieldTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "TextFieldTableViewCell")
+		tableView.register(UINib(nibName: "TwoTitleTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "TwoTitleTableViewCell")
+		tableView.register(UINib(nibName: "SeparatorTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "SeparatorTableViewCell")
+		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "ButtonTableViewCell")
+		tableView.register(UINib(nibName: "BlankTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "BlankTableViewCell")
+		tableView.register(UINib(nibName: "RawTransactionFieldTableViewCell", bundle: nil),
+											 forCellReuseIdentifier: "RawTransactionFieldTableViewCell")
 	}
 }
