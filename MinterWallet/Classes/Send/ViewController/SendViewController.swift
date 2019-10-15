@@ -166,9 +166,10 @@ extension SendViewController {
 		}).disposed(by: disposeBag)
 
 		viewModel
-			.showPopup
-			.asObservable()
-			.subscribe(onNext: { [weak self] (popup) in
+			.output
+			.popup
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { [weak self] (popup) in
 				if popup == nil {
 					self?.popupViewController?.dismiss(animated: true, completion: nil)
 					return
