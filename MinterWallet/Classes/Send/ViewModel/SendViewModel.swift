@@ -41,19 +41,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 
 	// MARK: -
 
-	enum CellIdentifierPrefix: String {
-		case address = "UsernameTableViewCell_Address"
-		case coin = "PickerTableViewCell_Coin"
-		case amount = "AmountTextFieldTableViewCell_Amount"
-		case fee = "TwoTitleTableViewCell_TransactionFee"
-		case separator = "SeparatorTableViewCell"
-		case blank = "BlankTableViewCell"
-		case swtch = "SwitchTableViewCell"
-		case button = "ButtonTableViewCell"
-	}
-
-	// MARK: -
-
 	var title: String {
 		return "Send".localized()
 	}
@@ -991,5 +978,18 @@ extension SendViewModel {
 		vm.username = to
 		vm.title = "Success!".localized()
 		return vm
+	}
+}
+
+extension SendViewModel {
+	enum CellIdentifierPrefix: String {
+		case address = "UsernameTableViewCell_Address"
+		case coin = "PickerTableViewCell_Coin"
+		case amount = "AmountTextFieldTableViewCell_Amount"
+		case fee = "TwoTitleTableViewCell_TransactionFee"
+		case separator = "SeparatorTableViewCell"
+		case blank = "BlankTableViewCell"
+		case swtch = "SwitchTableViewCell"
+		case button = "ButtonTableViewCell"
 	}
 }
