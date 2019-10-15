@@ -104,7 +104,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>To set avatar</string>
+	<string>To be able to scan QR-codes</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>To enter to the wallet</string>
 	<key>NSPhotoLibraryUsageDescription</key>

@@ -9,9 +9,15 @@
 import UIKit
 import RxSwift
 
+protocol PopupViewControllerDelegate: class {
+	func didDismissPopup(viewController: PopupViewController?)
+}
+
 class PopupViewController: BaseViewController, CCMPlayNDropViewDelegate {
 
 	var disposeBag = DisposeBag()
+	
+	weak var popupViewControllerDelegate: PopupViewControllerDelegate?
 
 	// MARK: - IBOutlets
 
@@ -53,6 +59,10 @@ class PopupViewController: BaseViewController, CCMPlayNDropViewDelegate {
 	}
 
 	func ccmPlayNDropViewWillStartDismissAnimation(withDynamics view: CCMPlayNDropView!) {
-		self.dismiss(animated: true, completion: nil)
+		if let deleg = popupViewControllerDelegate {
+			deleg.didDismissPopup(viewController: self)
+		} else {
+			self.dismiss(animated: true, completion: nil)
+		}
 	}
 }

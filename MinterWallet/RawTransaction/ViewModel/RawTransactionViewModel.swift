@@ -15,6 +15,10 @@ import RxSwift
 class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 
 	// MARK: -
+	
+	enum RawTransactionViewModelError: Error {
+		case noPrivateKey
+	}
 
 	enum cellIdentifierPrefix: String {
 		case fee = "TwoTitleTableViewCell_TransactionFee"
@@ -381,7 +385,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 					let seed = self?.accountManager.seed(mnemonic: mnemonic),
 					let privateKey = try self?.accountManager.privateKey(from: seed).raw.toHexString()
 					else {
-						return Observable.empty()
+						return Observable.error(RawTransactionViewModelError.noPrivateKey)
 				}
 
 				let gasPrice = (self?.gasPrice != nil) ? self!.gasPrice! : BigUInt(try self?.currentGas.value() ?? RawTransactionDefaultGasPrice)
@@ -402,7 +406,6 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 					let sentViewController = PopupRouter.sentPopupViewCointroller(viewModel: sentViewModel)
 					self?.popupSubject.onNext(sentViewController)
 				}
-
 				Session.shared.loadTransactions()
 				Session.shared.loadBalances()
 				Session.shared.loadDelegatedBalance()
@@ -410,6 +413,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 			}, onError: { [weak self] (error) in
 				self?.sendingTxSubject.onNext(false)
 				self?.handle(error: error)
+				self?.popupSubject.onNext(nil)
 			}).disposed(by: disposeBag)
 	}
 
@@ -497,6 +501,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {
 				notification = NotifiableError(title: "An Error Occurred".localized(),
 																			 text: "Unable to send transaction".localized())
 			}
+		} else if let error = error as? RawTransactionViewModelError, error == .noPrivateKey {
+			notification = NotifiableError(title: "No private key found".localized())
 		} else {
 			notification = NotifiableError(title: "An Error Occurred".localized(),
 																		 text: "Unable to send transaction".localized())

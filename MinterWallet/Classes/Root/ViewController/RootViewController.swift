@@ -57,9 +57,9 @@ class RootViewController: UIViewController, ControllerType {
 				guard let url = url else { return }
 				if let vc = Router.viewController(by: url) {
 					if let oldVC = self?.presentedViewController {
-						oldVC.dismiss(animated: true) {
+						UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: {
 							self?.show(vc, sender: self)
-						}
+						})
 					} else {
 						self?.show(vc, sender: self)
 					}

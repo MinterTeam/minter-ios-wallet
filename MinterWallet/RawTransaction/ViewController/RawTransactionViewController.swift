@@ -111,6 +111,7 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 
 				if let popupVC = popup as? SentPopupViewController {
 					popupVC.delegate = self
+					popup?.popupViewControllerDelegate = self
 				}
 				if let popupVC = popup as? ConfirmPopupViewController {
 					self?.popupViewController = nil
@@ -216,5 +217,17 @@ extension RawTransactionViewController {
 											 forCellReuseIdentifier: "BlankTableViewCell")
 		tableView.register(UINib(nibName: "RawTransactionFieldTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "RawTransactionFieldTableViewCell")
+	}
+}
+
+extension RawTransactionViewController: PopupViewControllerDelegate {
+	func didDismissPopup(viewController: PopupViewController?) {
+		if let viewController = viewController as? SentPopupViewController {
+			viewController.dismiss(animated: true) { [weak self] in
+				self?.dismiss(animated: true, completion: {
+					
+				})
+			}
+		}
 	}
 }

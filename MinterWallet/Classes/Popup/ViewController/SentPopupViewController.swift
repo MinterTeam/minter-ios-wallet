@@ -9,7 +9,7 @@
 import UIKit
 import AlamofireImage
 
-protocol SentPopupViewControllerDelegate : class {
+protocol SentPopupViewControllerDelegate: class {
 	func didTapActionButton(viewController: SentPopupViewController)
 	func didTapSecondActionButton(viewController: SentPopupViewController)
 	func didTapSecondButton(viewController: SentPopupViewController)
@@ -119,6 +119,5 @@ class SentPopupViewController: PopupViewController {
 
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-//		dropShadow()
 	}
 }
