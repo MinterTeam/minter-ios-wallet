@@ -9,6 +9,9 @@
 import UIKit
 import SwiftValidator
 import RxSwift
+import RxCocoa
+import RxRelay
+import RxBiBinding
 
 protocol TextViewTableViewCellDelegate: class {
 	func heightDidChange(cell: TextViewTableViewCell)
@@ -23,6 +26,8 @@ class TextViewTableViewCellItem: BaseCellItem {
 	var value: String?
 	var keybordType: UIKeyboardType?
 	var titleObservable: Observable<String?>?
+
+	var text = BehaviorRelay<String?>(value: nil)
 }
 
 class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
@@ -69,6 +74,8 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 		super.configure(item: item)
 
 		if let item = item as? TextViewTableViewCellItem {
+			(textView.rx.text <-> item.text).disposed(by: disposeBag)
+
 			self.title.text = item.title
 
 			if let val = item.value {

@@ -8,35 +8,31 @@
 
 import UIKit
 
-class AmountTextFieldTableViewCellItem : TextFieldTableViewCellItem {
-	
-}
+class AmountTextFieldTableViewCellItem: TextFieldTableViewCellItem {}
 
 protocol AmountTextFieldTableViewCellDelegate : class {
 	func didTapUseMax()
 }
 
+class AmountTextFieldTableViewCell: TextFieldTableViewCell {
 
-class AmountTextFieldTableViewCell : TextFieldTableViewCell {
-	
-	//MARK: - IBOutlets
-	
+	// MARK: - IBOutlets
+
 	@IBOutlet weak var useMaxButton: UIButton!
-	
 	@IBAction func didTapUseMax(_ sender: Any) {
 		amountDelegate?.didTapUseMax()
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	weak var amountDelegate: AmountTextFieldTableViewCellDelegate?
-	
-	//MARK: - States
-	
+
+	// MARK: - States
+
 	override var state: State {
 		didSet {
 			switch state {
-				
+
 			case .valid:
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 2
@@ -44,7 +40,7 @@ class AmountTextFieldTableViewCell : TextFieldTableViewCell {
 				textField.rightView = textField.rightViewValid
 				errorTitle.text = ""
 				break
-				
+
 			case .invalid(let error):
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 2
@@ -54,7 +50,7 @@ class AmountTextFieldTableViewCell : TextFieldTableViewCell {
 					self.errorTitle.text = error
 				}
 				break
-				
+
 			default:
 				textField.layer.cornerRadius = 8.0
 				textField.layer.borderWidth = 2
@@ -66,29 +62,25 @@ class AmountTextFieldTableViewCell : TextFieldTableViewCell {
 			}
 		}
 	}
-	
+
 	override func setInvalid(message: String?) {
-		
 		self.state = .invalid(error: message)
-		
+
 		if nil != message {
 			self.errorTitle.text = message
 		}
-		
 		self.textField.rightViewMode = .never
 	}
 
-	//MARK: - UITableViewCell
-	
+	// MARK: - UITableViewCell
+
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
+
 		self.textField.rightPadding = CGFloat(self.useMaxButton.bounds.width)
-		
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 	}
-
 }

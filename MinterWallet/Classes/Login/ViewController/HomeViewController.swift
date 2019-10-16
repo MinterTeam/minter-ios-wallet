@@ -10,7 +10,6 @@ import UIKit
 import SafariServices
 import RxAppState
 
-
 class HomeViewController: BaseViewController {
 
 	@IBOutlet weak var createWalletButton: DefaultButton!
@@ -24,17 +23,15 @@ class HomeViewController: BaseViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy {
-			if let appDele = delegateProxy.forwardToDelegate() as? AppDelegate {
-				if !(appDele.isTestnet) {
-					DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-						self.signInButton.alpha = 0.0
-						self.createWalletButton.alpha = 0.0
-						self.helpLeadingConstraint.isActive = false
-						self.helpFakeLeadingConstraint.isActive = true
-						self.view.setNeedsUpdateConstraints()
-						self.view.updateConstraintsIfNeeded()
-					}
+		if let appDele = UIApplication.realAppDelegate() {
+			if !(appDele.isTestnet) {
+				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+					self.signInButton.alpha = 0.0
+					self.createWalletButton.alpha = 0.0
+					self.helpLeadingConstraint.isActive = false
+					self.helpFakeLeadingConstraint.isActive = true
+					self.view.setNeedsUpdateConstraints()
+					self.view.updateConstraintsIfNeeded()
 				}
 			}
 		}

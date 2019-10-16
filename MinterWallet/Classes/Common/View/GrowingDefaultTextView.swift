@@ -9,14 +9,14 @@
 import UIKit
 import SwiftValidator
 
-class GrowingDefaultTextView: AutoGrowingTextView, Validatable {
+class GrowingDefaultTextView: AutoGrowingTextView {
 
 	//MARK: - IBOutlets
 	//MARK: -
 
-	public var validationText: String {
-		return self.text ?? ""
-	}
+//	public var validationText: String {
+//		return self.text ?? ""
+//	}
 
 	override func awakeFromNib() {
 		super.awakeFromNib()

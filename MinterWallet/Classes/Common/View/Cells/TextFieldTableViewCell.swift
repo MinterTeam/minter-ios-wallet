@@ -9,8 +9,10 @@
 import UIKit
 import SwiftValidator
 import RxSwift
+import RxCocoa
+import RxBiBinding
 
-class TextFieldTableViewCellItem : BaseCellItem {
+class TextFieldTableViewCellItem: BaseCellItem {
 	var title: String = ""
 	var isSecure: Bool = false
 	var rules: [Rule] = []
@@ -21,6 +23,8 @@ class TextFieldTableViewCellItem : BaseCellItem {
 	var keyboardType: UIKeyboardType?
 	var stateObservable: Observable<TextFieldTableViewCell.State>?
 	var isLoadingObservable: Observable<Bool>?
+
+	var text = BehaviorRelay<String?>(value: nil)
 }
 
 class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
@@ -96,6 +100,8 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 		super.configure(item: item)
 
 		if let item = item as? TextFieldTableViewCellItem {
+			(textField.rx.text <-> item.text).disposed(by: disposeBag)
+
 			title.text = item.title
 			textField.isSecureTextEntry = item.isSecure
 			textField.prefixText = item.prefix
@@ -132,19 +138,21 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 					if isLoading {
 						self?.activityIndicator.startAnimating()
 						self?.activityIndicator.isHidden = false
-					}
-					else {
+					} else {
 						self?.activityIndicator.stopAnimating()
 						self?.activityIndicator.isHidden = true
 					}
 			}).disposed(by: disposeBag)
 
-			textField?.rx.text.orEmpty.asObservable().distinctUntilChanged()
+			textField?
+				.rx
+				.text
+				.orEmpty
+				.asObservable()
+				.distinctUntilChanged()
 				.subscribe(onNext: { [weak self] (val) in
-					self?.validateDelegate?.validate(field: self, completion: {
-				})
-			}).disposed(by: disposeBag)
-
+					self?.validateDelegate?.validate(field: self, completion: {})
+				}).disposed(by: disposeBag)
 		}
 	}
 
@@ -152,15 +160,12 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-
 		state = .default
 	}
 
 	override func prepareForReuse() {
 		super.prepareForReuse()
-
 		state = .default
-
 		layoutIfNeeded()
 	}
 
@@ -198,17 +203,11 @@ class TextFieldTableViewCell: BaseCell, ValidatableCellProtocol {
 		self.state = .default
 		self.errorTitle.text = ""
 	}
-
 }
 
 extension TextFieldTableViewCell: UITextFieldDelegate {
-
 	func textFieldDidEndEditing(_ textField: UITextField) {
-
 		validateDelegate?.didValidateField(field: self)
-
 		self.layoutIfNeeded()
-
 	}
-
 }
