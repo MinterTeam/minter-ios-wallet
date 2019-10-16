@@ -118,10 +118,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		}).disposed(by: disposeBag)
 		tableView.tableFooterView = bottomView
 
-		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy,
-			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate,
-			appDele.isTestnet {
-
+		if let appDele = UIApplication.realAppDelegate(), appDele.isTestnet {
 			if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
 				let build = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String {
 				infoLabel.text = "Version: \(version) (\(build))"

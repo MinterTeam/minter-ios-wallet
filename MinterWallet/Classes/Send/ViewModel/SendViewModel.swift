@@ -13,6 +13,8 @@ import MinterMy
 import BigInt
 import SwiftValidator
 import RxAppState
+import RxBiBinding
+import RxRelay
 
 struct AccountPickerItem {
 	var title: String?
@@ -22,6 +24,11 @@ struct AccountPickerItem {
 }
 
 class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:this type_body_length
+	
+	enum SendViewModelError: Error {
+		case noPrivateKey
+	}
+	
 
 	// MARK: - ViewModelProtocol
 
@@ -54,11 +61,21 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	private var amountField: String? {
 		didSet {
 			self.amount.value = Decimal(string: amountField ?? "0.0")
-			
 			if isAmountValid(amount: self.amount.value ?? 0) {
-				amountStateObservable.value = .default
+				amountStateSubject.onNext(.default)
 			}
 		}
+	}
+
+	typealias FormChangedObservable = (String?, String?, String?, String?)
+	private let coinSubject = BehaviorRelay<String?>(value: "")
+	private let recipientSubject = BehaviorRelay<String?>(value: "")
+	private let amountSubject = BehaviorRelay<String?>(value: "")
+	private var formChangedObservable: Observable<FormChangedObservable> {
+		return Observable.combineLatest(coinSubject.asObservable(),
+																		recipientSubject.asObservable(),
+																		amountSubject.asObservable(),
+																		payloadSubject.asObservable())
 	}
 
 	let fakePK = Data(hex: "678b3252ce9b013cef922687152fb71d45361b32f8f9a57b0d11cc340881c999").toHexString()
@@ -78,9 +95,12 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	private var isLoadingAddress = Variable(false)
 	private var isLoadingNonce = Variable(false)
 
+	private var isLoadingAddressSubject = PublishSubject<Bool>()
+	private var isLoadingNonceSubject = PublishSubject<Bool>()
+
 	//State obervables
-	private var addressStateObservable = Variable(TextViewTableViewCell.State.default)
-	private var amountStateObservable = Variable(TextFieldTableViewCell.State.default)
+	private var addressStateSubject = PublishSubject<TextViewTableViewCell.State>()
+	private var amountStateSubject = PublishSubject<TextFieldTableViewCell.State>()
 	private var payloadStateObservable = PublishSubject<TextViewTableViewCell.State>()
 	private var selectedAddress: String?
 	private var selectedAddressBalance: Decimal? {
@@ -89,7 +109,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 		}
 		let balance = Session.shared.allBalances.value.filter { (val) -> Bool in
 			if selectedAddress != val.key { return false }
-			
 			return (nil != val.value[selectedCoin.value!])
 		}
 		return balance[selectedAddress!]?[selectedCoin.value!]
@@ -102,10 +121,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 
 	var baseCoinBalance: Decimal {
 		let balances = Session.shared.allBalances.value
-		if let ads = selectedAddress,
-			let cn = Coin.baseCoin().symbol,
+		if
+			let ads = selectedAddress,
+			let coin = Coin.baseCoin().symbol,
 			let smt = balances[ads],
-			let blnc = smt[cn] {
+			let blnc = smt[coin] {
 				return blnc
 		}
 		return 0
@@ -219,60 +239,46 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 				newVal?.removeLast()
 			}
 			return newVal
-		}).subscribe(onNext: { (val) in
-			self.clearPayloadSubject.onNext(val)
+		}).subscribe(onNext: { [weak self] (val) in
+			self?.clearPayloadSubject.onNext(val)
 		}).disposed(by: disposeBag)
 
-		Session.shared.allBalances.asObservable().distinctUntilChanged()
+		Session.shared
+			.allBalances
+			.asObservable()
+			.distinctUntilChanged()
 			.subscribe(onNext: { [weak self] (val) in
-			if let addr = self?.selectedAddress,
-				let selCoin = self?.selectedCoin.value,
-				nil == val[addr]?[selCoin] {
-					self?.selectedAddress = nil
-					self?.selectedCoin.value = nil
-			}
-			self?.sections.value = self?.createSections() ?? []
-		}).disposed(by: disposeBag)
-
-		sections.asObservable().subscribe(onNext: { [weak self] (items) in
-			self?._sections.value = items
-		}).disposed(by: disposeBag)
-
-		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
-			self?.clear()
-			self?.sections.value = self?.createSections() ?? []
-		}).disposed(by: disposeBag)
-
-		didScanQRSubject.asObservable().subscribe(onNext: { [weak self] (val) in
-			if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
-				self?.setAddressFieldSubject.onNext(val)
-			} else if
-				let url = URL(string: val ?? ""),
-				url.host == "tx" || url.path.contains("tx") {
-
-				if let rawViewController = RawTransactionRouter.viewController(path: [url.host ?? ""], param: url.params()) {
-					self?.showViewControllerSubject.onNext(rawViewController)
-				} else {
-					//show error
-					self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+				if
+					let addr = self?.selectedAddress,
+					let selCoin = self?.selectedCoin.value, nil == val[addr]?[selCoin] {
+						self?.selectedAddress = nil
+						self?.selectedCoin.value = nil
+						self?.coinSubject.accept(nil)
 				}
-			} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ["d": val ?? ""]) {
-					self?.showViewControllerSubject.onNext(rawViewController)
-			} else {
-				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
-			}
+				self?.sections.value = self?.createSections() ?? []
+			}).disposed(by: disposeBag)
+
+		sections
+			.asObservable()
+			.subscribe(onNext: { [weak self] (items) in
+				self?._sections.value = items
+			}).disposed(by: disposeBag)
+
+		Session
+			.shared
+			.accounts
+			.asDriver()
+			.drive(onNext: { [weak self] (val) in
+				self?.clear()
+				self?.sections.value = self?.createSections() ?? []
+			}).disposed(by: disposeBag)
+
+		formChangedObservable.subscribe(onNext: { (val) in
+			print(val)
 		}).disposed(by: disposeBag)
-		
-		NotificationCenter
-			.default
-			.rx
-			.notification(SendViewControllerAddressNotification)
-			.subscribe(onNext: { [weak self] (not) in
-				if let recipient = not.userInfo?["address"] as? String {
-					if recipient.isValidAddress() || recipient.isValidPublicKey() {
-						self?.setAddressFieldSubject.onNext(recipient)
-					}
-				}
+
+		recipientSubject.subscribe(onNext: { (val) in
+			print(val)
 			}).disposed(by: disposeBag)
 	}
 
@@ -282,15 +288,14 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 		let username = UsernameTableViewCellItem(reuseIdentifier: "UsernameTableViewCell",
 																						 identifier: CellIdentifierPrefix.address.rawValue)
 		username.title = "TO (MX ADDRESS OR PUBLIC KEY)".localized()
-		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy,
-			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate,
-			appDele.isTestnet {
+		if let appDele = UIApplication.realAppDelegate(), appDele.isTestnet {
 			username.title = "TO (@USERNAME, EMAIL, MX ADDRESS OR PUBLIC KEY)".localized()
 		}
 		username.isLoadingObservable = isLoadingAddress.asObservable()
-		username.stateObservable = addressStateObservable.asObservable()
+		username.stateObservable = addressStateSubject.asObservable()
 		username.value = toField ?? ""
 		username.keybordType = .emailAddress
+		(username.text <-> recipientSubject).disposed(by: disposeBag)
 
 		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell",
 																			 identifier: CellIdentifierPrefix.coin.rawValue + (selectedBalanceText ?? ""))
@@ -310,6 +315,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 			if let object = item.object as? AccountPickerItem {
 				selectedAddress = object.address
 				selectedCoin.value = object.coin
+				coinSubject.accept(object.coin)
 			}
 		}
 
@@ -318,8 +324,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 		amount.title = "AMOUNT".localized()
 		amount.rules = [FloatRule(message: "INCORRECT AMOUNT".localized())]
 		amount.value = self.amountField ?? ""
-		amount.stateObservable = amountStateObservable.asObservable()
+		amount.stateObservable = amountStateSubject.asObservable()
 		amount.keyboardType = .decimalPad
+		(amount.text <-> amountSubject).disposed(by: disposeBag)
 
 		let payload = TextViewTableViewCellItem(reuseIdentifier: "SendPayloadTableViewCell",
 																						identifier: "SendPayloadTableViewCell_Payload")
@@ -348,6 +355,13 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 		button.isButtonEnabled = validate().count == 0
 		button.isLoadingObserver = isPrepearingObservable
 		button.isButtonEnabledObservable = isSubmitButtonEnabledObservable.asObservable()
+		button
+			.output?
+			.didTapButton
+			.asDriver(onErrorJustReturn: ())
+			.drive(onNext: { [weak self] (_) in
+				self?.sendButtonTaped()
+			}).disposed(by: self.disposeBag)
 
 		var section = BaseTableSectionItem(header: "")
 		section.items = [coin, username, amount, payload, fee, separator, blank, button]
@@ -358,7 +372,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 
 	func validate() -> [String: String] {
 		var errs = [String: String]()
-
 		if let toFld = toField, toFld != "" &&
 			((self.toAddress.value?.isValidAddress() ?? false)
 				|| (self.toAddress.value?.isValidPublicKey() ?? false)
@@ -374,7 +387,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	}
 
 	func validateField(item: BaseCellItem, value: String) -> Bool {
-
 		defer {
 			self._sections.value = self.createSections()
 		}
@@ -393,11 +405,10 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	func submitField(item: BaseCellItem, value: String) {
 		if item.identifier.hasPrefix(CellIdentifierPrefix.amount.rawValue) {
 			self.amountField = value.replacingOccurrences(of: ",", with: ".")
-
 			if isAmountValid(amount: self.amount.value ?? 0) || self.amountField == "" {
-				amountStateObservable.value = .default
+				amountStateSubject.onNext(.default)
 			} else {
-				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
+				amountStateSubject.onNext(.invalid(error: "AMOUNT IS INCORRECT".localized()))
 			}
 		} else if item.identifier.hasPrefix(CellIdentifierPrefix.address.rawValue) {
 			self.toField = value
@@ -418,81 +429,42 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	}
 
 	func getAddress() {
+		checkRecipient()
+	}
 
-		self.toAddress.value = nil
-		let to = (toField ?? "")
-
-		guard isToValid(to: to) else {
-			if to.count > 66 {
-				self.addressStateObservable.value = .invalid(error: "TOO MANY SYMBOLS".localized())
-			} else if to == "" || to.count < 6 {
-				self.addressStateObservable.value = .default
-			} else {
-				self.addressStateObservable.value = .invalid(error: "INVALID VALUE".localized())
-			}
-			return
-		}
-
-		if to.isValidAddress() {
-			toAddress.value = toField
-			addressStateObservable.value = .default
-		} else if to.isValidEmail() {
-			//get by email
-
-			isLoadingAddress.value = true
-			infoManager.address(email: to) { [weak self] (address, user, error) in
-				self?.isLoadingAddress.value = false
-				self?.forceRefreshSubmitButtonState.value = true
-
-				guard nil == error, let address = address else {
-					//show field error
-					self?.addressStateObservable.value = .invalid(error: "EMAIL CAN NOT BE FOUND".localized())
-					return
-				}
-				if address.isValidAddress(),
-					let toFld = self?.toField?.lowercased(),
-					let usr = user?.email?.lowercased(),
-					toFld == usr {
-						self?.toAddress.value = address
-						self?.addressStateObservable.value = .default
+	func checkRecipient() {
+		recipientSubject.filter({ [weak self] (rec) -> Bool in
+			guard self?.isToValid(to: rec ?? "") ?? false else {
+				if (rec?.count ?? 0) > 66 {
+					self?.addressStateSubject.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
+				} else if rec == "" || (rec?.count ?? 0) < 6 {
+					self?.addressStateSubject.onNext(.default)
 				} else {
-					self?.addressStateObservable.value = .invalid(error: "EMAIL CAN NOT BE FOUND".localized())
+					self?.addressStateSubject.onNext(.invalid(error: "INVALID VALUE".localized()))
 				}
+				return false
 			}
-		} else if to.isValidPublicKey() {
-			self.addressStateObservable.value = .default
-			self.toAddress.value = to
-			self.forceRefreshSubmitButtonState.value = true
-		} else {
-			//get by username
-			var val = to
-			if val.hasPrefix("@") {
-				val.removeFirst()
+			return true
+		}).flatMapLatest { (rec) -> Observable<String> in
+			guard let rec = rec else {
+				return Observable<String>.empty()
 			}
-			isLoadingAddress.value = true
-			infoManager.address(username: val) { [weak self] (address, user, error) in
-				self?.isLoadingAddress.value = false
-				self?.forceRefreshSubmitButtonState.value = true
-
-				guard nil == error, let address = address else {
-					self?.addressStateObservable.value = .invalid(error: "USERNAME CAN NOT BE FOUND".localized())
-					return
-				}
-
-				var toFld = self?.toField?.lowercased()
-				if toFld?.hasPrefix("@") == true {
-					toFld?.removeFirst()
-				}
-
-				if address.isValidAddress(), let usr = user?.username?.lowercased(), toFld == usr {
+			return InfoManager.default.address(term: rec)
+			}.do(onNext: { [weak self] (address) in
+				if address.isValidAddress() {
 					self?.toAddress.value = address
-					self?.addressStateObservable.value = .default
+					self?.addressStateSubject.onNext(.default)
 				} else {
-					self?.addressStateObservable.value = .invalid(error: "USERNAME CAN NOT BE FOUND".localized())
+					self?.addressStateSubject.onNext(.invalid(error: "USERNAME CAN NOT BE FOUND".localized()))
 					//Show address error
 				}
-			}
-		}
+			}, onError: { [weak self] (error) in
+				self?.addressStateSubject.onNext(.invalid(error: "USERNAME CAN NOT BE FOUND".localized()))
+			}, onCompleted: { [weak self] in
+				self?.isLoadingNonceSubject.onNext(false)
+			}, onSubscribe: { [weak self] in
+				self?.isLoadingNonceSubject.onNext(true)
+			}).subscribe().disposed(by: disposeBag)
 	}
 
 	// MARK: - Rows
@@ -509,7 +481,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 
 	func accountPickerItems() -> [PickerTableViewCellPickerItem] {
 		var ret = [AccountPickerItem]()
-
 		let balances = Session.shared.allBalances.value
 		balances.keys.forEach { (address) in
 			var blns = balances[address]?.keys.filter({ (coin) -> Bool in
@@ -530,7 +501,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 				ret.append(item)
 			})
 		}
-
 		return ret.map({ (account) -> PickerTableViewCellPickerItem in
 			return PickerTableViewCellPickerItem(title: account.title, object: account)
 		})
@@ -541,12 +511,10 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 			let coin = selectedCoin.value else {
 				return nil
 		}
-
 		guard let balances = Session.shared.allBalances.value[adrs],
 			let balance = balances[coin] else {
 				return nil
 		}
-
 		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance,
 																																 formatter: coinFormatter)
 		let title = coin + " (" + balanceString + ")"
@@ -569,9 +537,41 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 		}
 		selectedAddress = balance?.key
 		selectedCoin.value = item.coin
+		coinSubject.accept(item.coin)
 	}
 
 	// MARK: -
+
+	func newSend() {
+		Observable
+			.combineLatest(
+				GateManager.shared.nonce(address: "Mx" + selectedAddress!),
+				GateManager.shared.minGas()
+			).do(onNext: { (val) in
+				print(val)
+			}, onError: { [weak self] (error) in
+				self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't get nonce"))
+			}, onCompleted: { [weak self] in
+				self?.isLoadingNonceSubject.onNext(false)
+			}, onSubscribe: { [weak self] in
+				self?.isLoadingNonceSubject.onNext(true)
+			}).map({ (val) -> (Int, Int) in
+				return (val.0+1, val.1)
+			}).flatMapLatest({ (val) -> Observable<((Int, Int), FormChangedObservable)> in
+				return Observable.combineLatest(
+					Observable.just(val),
+					self.formChangedObservable.asObservable())
+			}).subscribe(onNext: { (val) in
+				
+				
+				
+			}, onError: { [weak self] (error) in
+				self?.errorNotificationSubject.onNext(NotifiableError(title: "An error occured",
+																															text: error.localizedDescription))
+			}, onCompleted: { [weak self] in
+				self?.isLoadingNonceSubject.onNext(false)
+			}).disposed(by: disposeBag)
+	}
 
 	func clear() {
 		self.toField = nil
@@ -625,7 +625,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	}
 
 	func submitSendButtonTaped() {
-		sendTX()
+		newSend()
+
+//		sendTX()
 	}
 
 	func sendCancelButtonTapped() {
@@ -639,6 +641,32 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	}
 
 	// MARK: -
+
+	func prepareTx(
+		nonce: String,
+		amount: Decimal,
+		selectedCoinBalance: Decimal,
+		recipient: String,
+		coin: String,
+		payload: String) -> Observable<String?> {
+			return Observable.create { (observer) -> Disposable in
+				let isMax = (Decimal.PIPComparableBalance(from: amount)
+					== Decimal.PIPComparableBalance(from: selectedCoinBalance))
+				let isBaseCoin = coin == Coin.baseCoin().symbol!
+				let preparedAmount = amount.decimalFromPIP()
+
+				guard
+					let mnemonic = self.accountManager.mnemonic(for: self.selectedAddress!),
+					let seed = self.accountManager.seed(mnemonic: mnemonic) else {
+						observer.onError(SendViewModelError.noPrivateKey)
+						return
+				}
+				
+				
+
+				return Disposables.create()
+		}
+	}
 
 	func sendTX() {
 		let amount = self.amount.value ?? 0.0
@@ -852,22 +880,22 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 			completion?(false)
 			return
 		}
-
 		self.nonce.value = nil
-		GateManager.shared.send(rawTx: signedTx).do(onNext: { [weak self] (hash) in
-
-			guard let hash = hash else {
-				completion?(false)
-				return
-			}
-
-			self?.lastSentTransactionHash = hash
-			completion?(true)
-		}, onError: { [weak self] (error) in
-			self?.handle(error: error)
-		}).subscribe(onNext: { (val) in
+		GateManager
+			.shared
+			.send(rawTx: signedTx)
+			.do(onNext: { [weak self] (hash) in
+				guard let hash = hash else {
+					completion?(false)
+					return
+				}
+				self?.lastSentTransactionHash = hash
+				completion?(true)
+				}, onError: { [weak self] (error) in
+					self?.handle(error: error)
+			}).subscribe(onNext: { (val) in
 //			completion?(true)
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 	}
 
 	private func comissionText(for gas: Int, payloadData: Data? = nil) -> String {
@@ -989,4 +1017,4 @@ extension SendViewModel {
 		case swtch = "SwitchTableViewCell"
 		case button = "ButtonTableViewCell"
 	}
-}
+} // swiftlint:disable:this file_length

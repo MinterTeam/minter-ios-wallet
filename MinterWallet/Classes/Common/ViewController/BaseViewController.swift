@@ -144,10 +144,8 @@ protocol TestnetToolbarProtocol where Self: UIViewController {
 extension UIViewController: TestnetToolbarProtocol {
 
 	var shouldShowTestnetToolbar: Bool {
-		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy {
-			if let appDele = delegateProxy.forwardToDelegate() as? AppDelegate {
-				return appDele.isTestnet
-			}
+		if let appDele = UIApplication.realAppDelegate() {
+			return appDele.isTestnet
 		}
 		return false
 	}
