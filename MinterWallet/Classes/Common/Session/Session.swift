@@ -96,10 +96,9 @@ class Session {
 			self?.loadDelegatedBalance()
 		}).disposed(by: disposeBag)
 
-		Observable.combineLatest(UIApplication.shared.rx.applicationDidBecomeActive,
-														 UIApplication.realAppDelegate()!.applicationOpenWithURL.asObservable())
+		Observable.of(UIApplication.shared.rx.applicationDidBecomeActive.map {$0 as AnyObject},
+									UIApplication.realAppDelegate()!.applicationOpenWithURL.asObservable().map {$0 as AnyObject }).merge()
 			.subscribe(onNext: { [weak self] (_) in
-//				let state = val.0
 				if let backgroundDate = self?.lastBackgroundDate, PINManager.shared.isPINset {
 					if backgroundDate.timeIntervalSinceNow < -PINRequiredMinimumSeconds {
 						self?.isPINRequired.onNext(true)
