@@ -242,12 +242,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 
 			if self?.recipientSubject.value == nil || self?.recipientSubject.value == "" {
 				self?.addressStateSubject.onNext(.default)
-			} else {
-				if self?.isToValid(to: recipient ?? "") ?? false {
-					self?.addressStateSubject.onNext(.default)
-				} else {
-					self?.addressStateSubject.onNext(.invalid(error: "ADDRESS OR USERNAME IS INCORRECT".localized()))
-				}
 			}
 
 			if amount == nil || amount == "" {
@@ -279,7 +273,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 				if !(self?.isToValid(to: rec ?? "") ?? false) {
 					if (rec?.count ?? 0) > 66 {
 						self?.addressStateSubject.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
-					} else if rec == "" || (rec?.count ?? 0) < 6 {
+					} else if !(self?.shouldShowRecipientError(for: rec ?? "") ?? false) {
 						self?.addressStateSubject.onNext(.default)
 					} else {
 						self?.addressStateSubject.onNext(.invalid(error: "INVALID VALUE".localized()))
@@ -427,6 +421,10 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 		}
 		//username and address
 		return to.isValidUsername() || self.isValidMinterRecipient(recipient: to)
+	}
+
+	func shouldShowRecipientError(for recipient: String) -> Bool {
+		return !recipient.isEmpty && recipient.count >= 6
 	}
 
 	func isValidMinterRecipient(recipient: String) -> Bool {
