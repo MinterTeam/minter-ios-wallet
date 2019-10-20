@@ -7,10 +7,34 @@
 //
 
 import UIKit
+import RxSwift
 
-class AmountTextFieldTableViewCellItem: TextFieldTableViewCellItem {}
+class AmountTextFieldTableViewCellItem: TextFieldTableViewCellItem {
 
-protocol AmountTextFieldTableViewCellDelegate : class {
+	// MARK: - I/O
+
+	struct Input {
+		var didTapUseMax: AnyObserver<Void>
+	}
+	struct Output {
+		var didTapUseMax: Observable<Void>
+	}
+	var input: Input?
+	var output: Output?
+
+	// MARK: - Subjects
+
+	private var didTapButtonSubject = PublishSubject<Void>()
+
+	override init(reuseIdentifier: String, identifier: String) {
+		super.init(reuseIdentifier: reuseIdentifier, identifier: identifier)
+
+		input = Input(didTapUseMax: didTapButtonSubject.asObserver())
+		output = Output(didTapUseMax: didTapButtonSubject.asObservable())
+	}
+}
+
+protocol AmountTextFieldTableViewCellDelegate: class {
 	func didTapUseMax()
 }
 
@@ -82,5 +106,23 @@ class AmountTextFieldTableViewCell: TextFieldTableViewCell {
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
+	}
+
+	// MARK: -
+
+	override func configure(item: BaseCellItem) {
+		super.configure(item: item)
+
+		if let item = item as? AmountTextFieldTableViewCellItem {
+			if let didTapUseMax = item.input?.didTapUseMax {
+				useMaxButton
+					.rx
+					.tap
+					.asDriver(onErrorJustReturn: ())
+					.drive(didTapUseMax)
+					.disposed(by: disposeBag)
+			}
+
+		}
 	}
 }

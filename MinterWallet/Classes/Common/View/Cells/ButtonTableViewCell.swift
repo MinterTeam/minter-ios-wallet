@@ -86,7 +86,9 @@ class ButtonTableViewCell: BaseCell {
 			activityIndicator?.isHidden = true
 
 			buttonItem.isButtonEnabledObservable?
-				.bind(to: button.rx.isEnabled).disposed(by: disposeBag)
+				.asDriver(onErrorJustReturn: true)
+				.drive(button.rx.isEnabled)
+				.disposed(by: disposeBag)
 
 			buttonItem.isLoadingObserver?.bind(onNext: { [weak self] (val) in
 				let defaultState = buttonItem.isButtonEnabled

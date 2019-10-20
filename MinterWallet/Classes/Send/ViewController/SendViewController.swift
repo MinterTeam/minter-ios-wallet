@@ -126,8 +126,6 @@ class SendViewController:
 		if let switchCell = cell as? SwitchTableViewCell {
 			switchCell.delegate = self
 		}
-		var validatableCell = cell as? ValidatableCellProtocol
-		validatableCell?.validateDelegate = self
 		return cell
 	}
 }
@@ -135,8 +133,12 @@ class SendViewController:
 extension SendViewController {
 
 	func configure(with viewModel: SendViewModel) {
-		txScanButton.rx.tap.asDriver()
-			.drive(viewModel.input.txScanButtonDidTap).disposed(by: disposeBag)
+		txScanButton
+			.rx
+			.tap
+			.asDriver()
+			.drive(viewModel.input.txScanButtonDidTap)
+			.disposed(by: disposeBag)
 
 		viewModel.output.errorNotification
 			.asDriver(onErrorJustReturn: nil)
@@ -213,7 +215,7 @@ extension SendViewController {
 		} else {
 			NotificationCenter.default.rx
 				.notification(NSNotification.Name.UIKeyboardWillHide)
-				.subscribe(onNext: { (not) in
+				.subscribe(onNext: { (_) in
 					self.tableView.contentInset = UIEdgeInsets(top: self.shouldShowTestnetToolbar ? 70.0 : 10.0,
 																										 left: 0.0,
 																										 bottom: 50.0,
@@ -279,38 +281,38 @@ extension SendViewController: ButtonTableViewCellDelegate {
 		hardImpactFeedbackGenerator.impactOccurred()
 		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsSendButton)
 		tableView.endEditing(true)
-		viewModel.sendButtonTaped()
+//		viewModel.sendButtonTaped()
 	}
 
 	// MARK: - Validation
 
 	func validate(cell: ValidatableCellProtocol) {
-		//HACK: Some trouble with protocol?
-
-		var validator: Validator?
-		if let fieldCell = cell as? TextFieldTableViewCell {
-			validator = fieldCell.validator
-			validator?.validate { [fieldCell] (result) in
-				guard result.count == 0 else {
-					result.forEach({ (validation) in
-						fieldCell.setInvalid(message: validation.1.errorMessage)
-					})
-					return
-				}
-				fieldCell.setDefault()
-			}
-		} else if let viewCell = cell as? TextViewTableViewCell {
-			validator = viewCell.validator
-			validator?.validate { [viewCell] (result) in
-				guard result.count == 0 else {
-					result.forEach({ (validation) in
-						viewCell.setInvalid(message: validation.1.errorMessage)
-					})
-					return
-				}
-				viewCell.setDefault()
-			}
-		}
+//		//HACK: Some trouble with protocol?
+//
+//		var validator: Validator?
+//		if let fieldCell = cell as? TextFieldTableViewCell {
+//			validator = fieldCell.validator
+//			validator?.validate { [fieldCell] (result) in
+//				guard result.count == 0 else {
+//					result.forEach({ (validation) in
+//						fieldCell.setInvalid(message: validation.1.errorMessage)
+//					})
+//					return
+//				}
+//				fieldCell.setDefault()
+//			}
+//		} else if let viewCell = cell as? TextViewTableViewCell {
+//			validator = viewCell.validator
+//			validator?.validate { [viewCell] (result) in
+//				guard result.count == 0 else {
+//					result.forEach({ (validation) in
+//						viewCell.setInvalid(message: validation.1.errorMessage)
+//					})
+//					return
+//				}
+//				viewCell.setDefault()
+//			}
+//		}
 	}
 }
 
@@ -330,7 +332,6 @@ extension SendViewController {
 		SoundHelper.playSoundIfAllowed(type: .cancel)
 		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinPopupCancelButton)
 		viewController.dismiss(animated: true, completion: nil)
-		viewModel.sendCancelButtonTapped()
 	}
 
 	// MARK: - SentPopupViewControllerDelegate
@@ -406,7 +407,6 @@ extension SendViewController {
 			if let indexPath = self.tableView.indexPath(for: cell!),
 				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 				cell?.textView.text = result?.value
-				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
 			}
 		}
 		// Presents the readerVC as modal form sheet
@@ -421,19 +421,9 @@ extension SendViewController: SwitchTableViewCellDelegate {
 
 extension SendViewController: ValidatableCellDelegate {
 
-	func didValidateField(field: ValidatableCellProtocol?) {
-		if let indexPath = tableView.indexPath(for: field as UITableViewCell!),
-			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-			viewModel.submitField(item: item, value: field?.validationText ?? "")
-		}
-	}
+	func didValidateField(field: ValidatableCellProtocol?) {}
 
-	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
-		if let indexPath = tableView.indexPath(for: field as UITableViewCell!),
-			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-			if viewModel.validateField(item: item, value: field?.validationText ?? "") {}
-		}
-	}
+	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {}
 }
 
 extension SendViewController: QRCodeReaderViewControllerDelegate {
@@ -459,14 +449,6 @@ extension SendViewController: AmountTextFieldTableViewCellDelegate {
 	func didTapUseMax() {
 		self.view.endEditing(true)
 		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsUseMaxButton)
-		let indexPath = IndexPath(row: 2, section: 0)
-		guard let amountCell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell else {
-				return
-		}
-		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-			amountCell.textField.text = viewModel.selectedBalanceText
-			_ = viewModel.validateField(item: item, value: amountCell.textField.text ?? "")
-		}
 	}
 }
 

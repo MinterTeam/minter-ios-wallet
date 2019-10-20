@@ -133,8 +133,7 @@ extension GateManager {
 					observer.onNext(hash)
 					observer.onCompleted()
 				})
-			}
-			else {
+			} else {
 				observer.onError(GateManagerErrorRx.noTransaction)
 			}
 			return Disposables.create()
