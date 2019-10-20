@@ -22,7 +22,7 @@ extension String {
 	}
 
 	func isValidUsername() -> Bool {
-		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^[@]?[a-zA-Z0-9_]{5,16}")
+		let usernameTest = NSPredicate(format: "SELF MATCHES %@", "^[@]?[a-zA-Z0-9_]{5,16}")
 		return usernameTest.evaluate(with: self)
 	}
 	
