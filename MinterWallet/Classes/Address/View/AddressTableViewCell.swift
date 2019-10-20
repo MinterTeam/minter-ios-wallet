@@ -22,7 +22,7 @@ class AddressTableViewCell: BaseCell {
 	@IBOutlet weak var actionButton: UIButton!
 	@IBAction func didTapActionButton(_ sender: Any) {
 		SoundHelper.playSoundIfAllowed(type: .click)
-		AnalyticsHelper.defaultAnalytics.track(event: .addressesCopyButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .addressesCopyButton, params: nil)
 		UIPasteboard.general.string = addressLabel.text
 		let banner = NotificationBanner(title: "Copied".localized(),
 																		subtitle: nil,
