@@ -43,6 +43,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 		var errorNotification: Observable<NotifiableError?>
 		var txErrorNotification: Observable<NotifiableError?>
 		var popup: Observable<PopupViewController?>
+		var showViewController: Observable<UIViewController?>
 	}
 
 	// MARK: -
@@ -67,6 +68,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	let fakePK = Data(hex: "678b3252ce9b013cef922687152fb71d45361b32f8f9a57b0d11cc340881c999").toHexString()
 
 	// MARK: -
+	
+	private var showViewControllerSubject = PublishSubject<UIViewController?>()
 
 	var sections = Variable([BaseTableSectionItem]())
 	private var _sections = Variable([BaseTableSectionItem]())
@@ -82,6 +85,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	private var isLoadingNonceSubject = PublishSubject<Bool>()
 
 	//State obervables
+	private var didScanQRSubject = PublishSubject<String?>()
 	private var addressStateSubject = PublishSubject<TextViewTableViewCell.State>()
 	private var amountStateSubject = PublishSubject<TextFieldTableViewCell.State>()
 	private var payloadStateObservable = PublishSubject<TextViewTableViewCell.State>()
@@ -176,7 +180,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 
 	// MARK: -
 
-	override init() { // swiftlint:disable:this function_body_length
+	override init() { // swiftlint:disable:this function_body_length cyclomatic_complexity
 		super.init()
 
 		self.input = Input(payload: payloadSubject.asObserver(),
@@ -184,7 +188,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 											 didScanQR: didScanQRSubject.asObserver())
 		self.output = Output(errorNotification: errorNotificationSubject.asObservable(),
 												 txErrorNotification: txErrorNotificationSubject.asObservable(),
-												 popup: popupSubject.asObservable())
+												 popup: popupSubject.asObservable(),
+												 showViewController: showViewControllerSubject.asObservable())
 
 		payloadSubject.asObservable().subscribe(onNext: { (payld) in
 			self.forceUpdateFee.onNext(())
@@ -234,6 +239,41 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 			.drive(onNext: { [weak self] (val) in
 				self?.clear()
 				self?.sections.value = self?.createSections() ?? []
+			}).disposed(by: disposeBag)
+
+		didScanQRSubject
+			.asObservable()
+			.subscribe(onNext: { [weak self] (val) in
+				if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
+					self?.recipientSubject.accept(val)
+				} else if
+					let url = URL(string: val ?? ""),
+					url.host == "tx" || url.path.contains("tx") {
+
+					if let rawViewController = RawTransactionRouter.viewController(path: [url.host ?? ""], param: url.params()) {
+						self?.showViewControllerSubject.onNext(rawViewController)
+					} else {
+						//show error
+						self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+					}
+				} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ["d": val ?? ""]) {
+						self?.showViewControllerSubject.onNext(rawViewController)
+				} else {
+					self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+				}
+		}).disposed(by: disposeBag)
+
+		NotificationCenter
+			.default
+			.rx
+			.notification(sendViewControllerAddressNotification)
+			.debounce(.seconds(1), scheduler: MainScheduler.instance)
+			.subscribe(onNext: { [weak self] (not) in
+				if let recipient = not.userInfo?["address"] as? String {
+					if recipient.isValidAddress() || recipient.isValidPublicKey() {
+						self?.recipientSubject.accept(recipient)
+					}
+				}
 			}).disposed(by: disposeBag)
 
 		formChangedObservable.subscribe(onNext: { [weak self] (val) in

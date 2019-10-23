@@ -299,8 +299,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 							throw RawTransactionViewModelError.incorrectTxData
 					}
 					multisendAddressCount = array.count ?? 0
-					for i in 0..<(array.count ?? 0) {
-						if let addressDictData = array[i]?.data,
+					for idx in 0..<(array.count ?? 0) {
+						if let addressDictData = array[idx]?.data,
 						let addressDict = RLP.decode(addressDictData),
 							let coinData = addressDict[0]?.data,
 								let coin = String(coinData: coinData),

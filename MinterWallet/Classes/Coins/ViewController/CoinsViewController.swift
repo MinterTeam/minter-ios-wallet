@@ -60,7 +60,8 @@ ControllerType {
 		// Output
 		viewModel.output
 			.totalDelegatedBalance
-			.asDriver(onErrorJustReturn: "").drive(onNext: { [weak self] (val) in
+			.asDriver(onErrorJustReturn: "")
+			.drive(onNext: { [weak self] (val) in
 				let defaultTopConstraint = CGFloat(63.0)
 
 				var shouldLayout = false
@@ -102,7 +103,7 @@ ControllerType {
 						self?.view.layoutIfNeeded()
 					}
 				})
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		viewModel.output.balanceText.subscribe(onNext: { [weak self] (balanceItem) in
 			if balanceItem.animated {
@@ -296,11 +297,6 @@ ControllerType {
 	}
 
 	// MARK: -
-
-	func updateUsernameView() {
-		usernameView.set(username: viewModel.rightButtonTitle,
-										 imageURL: viewModel.rightButtonImage)
-	}
 
 	func hidePlaceholderView() {
 		self.tableView.backgroundColor = .white

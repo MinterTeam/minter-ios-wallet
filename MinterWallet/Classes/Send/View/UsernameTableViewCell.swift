@@ -38,6 +38,7 @@ class UsernameTableViewCell: TextViewTableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 
+		setDefault()
 		activityIndicator?.backgroundColor = .clear
 		textView.font = UIFont.mediumFont(of: 16.0)
 	}

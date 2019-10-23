@@ -13,7 +13,7 @@ import SafariServices
 import SwiftValidator
 import AVFoundation
 
-let SendViewControllerAddressNotification = NSNotification.Name(rawValue: "SendViewControllerAddressNotification")
+let sendViewControllerAddressNotification = NSNotification.Name(rawValue: "SendViewControllerAddressNotification")
 
 class SendViewController:
 	BaseViewController,
@@ -147,14 +147,16 @@ extension SendViewController {
 			.asDriver(onErrorJustReturn: nil)
 			.filter({ (notification) -> Bool in
 				return nil != notification
-		}).drive(onNext: { (notification) in
-			let banner = NotificationBanner(title: notification?.title ?? "",
-																			subtitle: notification?.text,
-																			style: .danger)
-			banner.show()
-		}).disposed(by: disposeBag)
+			}).drive(onNext: { (notification) in
+				let banner = NotificationBanner(title: notification?.title ?? "",
+																				subtitle: notification?.text,
+																				style: .danger)
+				banner.show()
+			}).disposed(by: disposeBag)
 
-		viewModel.output.txErrorNotification
+		viewModel
+			.output
+			.txErrorNotification
 			.asDriver(onErrorJustReturn: nil)
 			.drive(onNext: { [weak self] (notification) in
 				guard nil != notification else {
@@ -165,7 +167,7 @@ extension SendViewController {
 																				subtitle: notification?.text,
 																				style: .danger)
 				banner.show()
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		viewModel
 			.output
@@ -225,34 +227,38 @@ extension SendViewController {
 																										 right: 0.0)
 			}).disposed(by: disposeBag)
 		}
+		
+		viewModel
+			.output
+			.showViewController
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { [weak self] (viewController) in
+				guard let viewController = viewController else { return }
+				self?.tabBarController?.present(viewController, animated: true, completion: nil)
+			}).disposed(by: disposeBag)
 
-		txScanButton.rx.tap.subscribe(onNext: { [weak self] (_) in
-			guard let _self = self else { return } // swiftlint:disable:this identifier_name
-			_self.txQRReaderVC = _self.readerVC
-			guard let txQRReaderVC = _self.txQRReaderVC else { return }
-			txQRReaderVC.delegate = self
-			txQRReaderVC.completionBlock = { (result: QRCodeReaderResult?) in
-				txQRReaderVC.dismiss(animated: true) {
-					if let result = result?.value {
-						if let vc = RawTransactionRouter.viewController(path: ["tx"],
-																														param: ["d": result]) {
-							DispatchQueue.main.async {
-								_self.tabBarController?.present(vc, animated: true, completion: nil)
-							}
-						} else {
-							let banner = NotificationBanner(title: "Invalid transcation data".localized(),
-																							subtitle: nil,
-																							style: .danger)
-							DispatchQueue.main.async {
-								banner.show()
-							}
-						}
-					}
+		txScanButton
+			.rx
+			.tap
+			.asDriver()
+			.drive(viewModel.input.txScanButtonDidTap)
+			.disposed(by: disposeBag)
+
+		txScanButton
+			.rx
+			.tap
+			.subscribe({ [weak self] (_) in
+				self?.present(self!.readerVC, animated: true, completion: nil)
+			}).disposed(by: disposeBag)
+
+		readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
+			self?.readerVC.stopScanning()
+			self?.readerVC.dismiss(animated: true) {
+				if let res = result?.value {
+					self?.viewModel.input.didScanQR.onNext(res)
 				}
 			}
-			_self.readerVC.modalPresentationStyle = .formSheet
-			_self.present(_self.readerVC, animated: true, completion: nil)
-		}).disposed(by: disposeBag)
+		}
 	}
 }
 
@@ -402,23 +408,7 @@ extension SendViewController {
 
 	func heightWillChange(cell: TextViewTableViewCell) {}
 
-	func didTapScanButton(cell: UsernameTableViewCell?) {
-		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsQRButton)
-		readerVC.delegate = self
-		cell?.textView.becomeFirstResponder()
-		reader.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
-			reader.dismiss(animated: true) {
-				self?.viewModel.input.didScanQR.onNext(result?.value)
-			}
-//			if let indexPath = self.tableView.indexPath(for: cell!),
-//				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-//				cell?.textView.text = result?.value
-//				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
-//			}
-		}
-		reader.modalPresentationStyle = .formSheet
-		present(reader, animated: true, completion: nil)
-	}
+	func didTapScanButton(cell: UsernameTableViewCell?) {}
 }
 
 extension SendViewController: SwitchTableViewCellDelegate {
