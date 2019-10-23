@@ -16,5 +16,11 @@ class BannerHelper {
 		banner.duration = 0.3
 		banner.show()
 	}
-
+	
+	class func performErrorNotification(title: String = "", subtitle: String? = nil) {
+		let banner = NotificationBanner(title: title,
+																		subtitle: subtitle,
+																		style: .danger)
+		banner.show()
+	}
 }

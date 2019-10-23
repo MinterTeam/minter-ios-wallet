@@ -42,6 +42,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="scanQRButton" destination="5he-Fe-YrG" id="nzj-sY-mx3"/>
                         <outlet property="tableView" destination="Qe3-CG-9gR" id="JSL-Zf-Coq"/>
                         <outlet property="txScanButton" destination="5he-Fe-YrG" id="ljQ-Wi-YpN"/>
                     </connections>

@@ -13,6 +13,8 @@ import SafariServices
 import SwiftValidator
 import AVFoundation
 
+let SendViewControllerAddressNotification = NSNotification.Name(rawValue: "SendViewControllerAddressNotification")
+
 class SendViewController:
 	BaseViewController,
 	ControllerType,
@@ -25,6 +27,8 @@ class SendViewController:
 
 	// MARK: - ControllerType
 
+	@IBOutlet weak var scanQRButton: UIBarButtonItem!
+	
 	typealias ViewModelType = SendViewModel
 
 	// MARK: - IBOutlet
@@ -55,7 +59,6 @@ class SendViewController:
 		}
 		return QRCodeReaderViewController(builder: builder)
 	}()
-	var txQRReaderVC: QRCodeReaderViewController?
 
 	// MARK: - Life cycle
 
@@ -162,6 +165,29 @@ extension SendViewController {
 				banner.show()
 		}).disposed(by: disposeBag)
 
+		viewModel
+			.output
+			.showViewController
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { [weak self] (viewController) in
+				guard let viewController = viewController else { return }
+				self?.tabBarController?.present(viewController, animated: true, completion: nil)
+			}).disposed(by: disposeBag)
+
+		viewModel
+			.output
+			.setAddressField
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { (val) in
+				let indexPath = IndexPath(row: 1, section: 0)
+				if
+					let cell = self.tableView.cellForRow(at: indexPath) as? UsernameTableViewCell,
+					let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+					cell.textView.text = val
+					_ = self.viewModel.validateField(item: item, value: val ?? "")
+				}
+			}).disposed(by: disposeBag)
+
 		viewModel.showPopup.asObservable()
 			.subscribe(onNext: { [weak self] (popup) in
 				if popup == nil {
@@ -217,30 +243,18 @@ extension SendViewController {
 
 		txScanButton.rx.tap.subscribe(onNext: { [weak self] (_) in
 			guard let _self = self else { return }
-			_self.txQRReaderVC = _self.readerVC
-			guard let txQRReaderVC = _self.txQRReaderVC else { return }
-			txQRReaderVC.delegate = self
-			txQRReaderVC.completionBlock = { (result: QRCodeReaderResult?) in
-				txQRReaderVC.dismiss(animated: true) {
-					if let result = result?.value {
-						if let vc = RawTransactionRouter.viewController(path: ["tx"],
-																														param: ["d": result]) {
-							DispatchQueue.main.async {
-								_self.tabBarController?.present(vc, animated: true, completion: nil)
-							}
-						} else {
-							let banner = NotificationBanner(title: "Invalid transcation data".localized(),
-																							subtitle: nil,
-																							style: .danger)
-							DispatchQueue.main.async {
-								banner.show()
-							}
-						}
+			let reader = _self.readerVC
+			reader.delegate = self
+			reader.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
+				reader.stopScanning()
+				reader.dismiss(animated: true) {
+					if let res = result?.value {
+						self?.viewModel.input.didScanQR.onNext(res)
 					}
 				}
 			}
-			txQRReaderVC.modalPresentationStyle = .formSheet
-			_self.present(txQRReaderVC, animated: true, completion: nil)
+			_self.readerVC.modalPresentationStyle = .formSheet
+			_self.present(_self.readerVC, animated: true, completion: nil)
 		}).disposed(by: disposeBag)
 	}
 }
@@ -394,18 +408,21 @@ extension SendViewController {
 
 	func didTapScanButton(cell: UsernameTableViewCell?) {
 		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsQRButton)
-		readerVC.delegate = self
+		let reader = readerVC
+		reader.delegate = self
 		cell?.textView.becomeFirstResponder()
-		readerVC.completionBlock = { (result: QRCodeReaderResult?) in
-			if let indexPath = self.tableView.indexPath(for: cell!),
-				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-				cell?.textView.text = result?.value
-				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
+		reader.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
+			reader.dismiss(animated: true) {
+				self?.viewModel.input.didScanQR.onNext(result?.value)
 			}
+//			if let indexPath = self.tableView.indexPath(for: cell!),
+//				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+//				cell?.textView.text = result?.value
+//				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
+//			}
 		}
-		// Presents the readerVC as modal form sheet
-		readerVC.modalPresentationStyle = .formSheet
-		present(readerVC, animated: true, completion: nil)
+		reader.modalPresentationStyle = .formSheet
+		present(reader, animated: true, completion: nil)
 	}
 }
 
@@ -435,8 +452,8 @@ extension SendViewController: QRCodeReaderViewControllerDelegate {
 	// MARK: - QRCodeReaderViewController Delegate Methods
 
 	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
-		reader.stopScanning()
-		dismiss(animated: true, completion: nil)
+//		reader.stopScanning()
+//		dismiss(animated: true, completion: nil)
 	}
 
 	func reader(_ reader: QRCodeReaderViewController, didSwitchCamera newCaptureDevice: AVCaptureDeviceInput) {}

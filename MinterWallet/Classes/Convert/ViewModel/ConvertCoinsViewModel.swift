@@ -198,7 +198,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 		self.hasCoin.value = false
 		let coin = try? self.getCoin.value()?.trimmingCharacters(in: .whitespacesAndNewlines).uppercased() ?? ""
 		//TODO: Add isValidCoin
-		if (coin?.count ?? 0) >= 3 {
+		if coin?.isValidCoin() ?? false {
 			
 		} else {
 			//Show error

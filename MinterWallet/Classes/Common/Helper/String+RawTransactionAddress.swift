@@ -11,13 +11,13 @@ import Foundation
 extension String {
 	
 	func isValidAddress() -> Bool {
-		let addressTest = NSPredicate(format:"SELF MATCHES %@", "^Mx[a-zA-Z0-9]{40}$")
-		return addressTest.evaluate(with: self)
+		let addressTest = NSPredicate(format:"SELF MATCHES %@", "^[a-fA-F0-9]{40}$")
+		return addressTest.evaluate(with: self.stripMinterHexPrefix())
 	}
 	
 	func isValidPublicKey() -> Bool {
-		let publicKeyTest = NSPredicate(format:"SELF MATCHES %@", "^Mp[a-fA-F0-9]{64}$")
-		return publicKeyTest.evaluate(with: self)
+		let publicKeyTest = NSPredicate(format:"SELF MATCHES %@", "^[a-fA-F0-9]{64}$")
+		return publicKeyTest.evaluate(with: self.stripMinterHexPrefix())
 	}
 
 }

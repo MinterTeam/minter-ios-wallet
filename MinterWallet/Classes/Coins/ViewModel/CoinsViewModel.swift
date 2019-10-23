@@ -19,15 +19,19 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 
 	var input: CoinsViewModel.Input!
 	var output: CoinsViewModel.Output!
-
 	struct Input {
 		var didRefresh: AnyObserver<Void>
 		var didTapBalance: AnyObserver<Void>
+		var txScanButtonDidTap: AnyObserver<Void>
+		var didScanQR: AnyObserver<String?>
 	}
 	struct Output {
 		var totalDelegatedBalance: Observable<String?>
 		var balanceInUSD: Observable<String?>
 		var balanceText: Observable<BalanceHeaderItem>
+		var showViewController: Observable<UIViewController?>
+		var showSendTab: Observable<Void>
+		var error: Observable<NotifiableError?>
 	}
 
 	// MARK: - I/O Subjects
@@ -37,6 +41,11 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 	private var balanceTextSubject = ReplaySubject<BalanceHeaderItem>.create(bufferSize: 1)
 	private var didRefreshSubject = PublishSubject<Void>()
 	private var didTapBalanceSubject = PublishSubject<Void>()
+	private var didScanQRSubject = PublishSubject<String?>()
+	private var showViewControllerSubject = PublishSubject<UIViewController?>()
+	private var errorNotificationSubject = PublishSubject<NotifiableError?>()
+	private let txScanButtonDidTap = PublishSubject<Void>()
+	private let showSendTabSubject = PublishSubject<Void>()
 
 	// MARK: -
 
@@ -107,11 +116,15 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		super.init()
 
 		self.input = Input(didRefresh: didRefreshSubject.asObserver(),
-											 didTapBalance: didTapBalanceSubject.asObserver())
-
+											 didTapBalance: didTapBalanceSubject.asObserver(),
+											 txScanButtonDidTap: txScanButtonDidTap.asObserver(),
+											 didScanQR: didScanQRSubject.asObserver())
 		self.output = Output(totalDelegatedBalance: totalDelegatedBalanceSubject.asObservable(),
 												 balanceInUSD: balanceInUSDSubject.asObservable(),
-												 balanceText: balanceTextSubject.asObservable())
+												 balanceText: balanceTextSubject.asObservable(),
+												 showViewController: showViewControllerSubject.asObservable(),
+												 showSendTab: showSendTabSubject.asObservable(),
+												 error: errorNotificationSubject.asObservable())
 
 		Observable.combineLatest(Session.shared.transactions.asObservable(),
 														 Session.shared.balances.asObservable(),
@@ -119,7 +132,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 														 Session.shared.isLoggedIn.asObservable().distinctUntilChanged())
 		.subscribe(onNext: { [weak self] (transactions) in
 			self?.createSection()
-
 			let bal = Session.shared.balances.value
 			bal.keys.sorted(by: { (key1, key2) -> Bool in
 				return key1 < key2
@@ -131,14 +143,17 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 			}
 		}).disposed(by: disposeBag)
 
-		Session.shared.delegatedBalance.subscribe(onNext: { [weak self] (val) in
-			if val > 0 {
-				let str = self?.coinFormatter.string(from: val as NSNumber) ?? ""
-				self?.totalDelegatedBalanceSubject.onNext(str + " " + (Coin.baseCoin().symbol ?? ""))
-			} else {
-				self?.totalDelegatedBalanceSubject.onNext(nil)
-			}
-		}).disposed(by: disposeBag)
+		Session
+			.shared
+			.delegatedBalance
+			.subscribe(onNext: { [weak self] (val) in
+				if val > 0 {
+					let str = self?.coinFormatter.string(from: val as NSNumber) ?? ""
+					self?.totalDelegatedBalanceSubject.onNext(str + " " + (Coin.baseCoin().symbol ?? ""))
+				} else {
+					self?.totalDelegatedBalanceSubject.onNext(nil)
+				}
+			}).disposed(by: disposeBag)
 
 		didRefreshSubject.subscribe(onNext: { (_) in
 			Session.shared.loadBalances()
@@ -181,12 +196,11 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 																					 isUSD: newBalanceType == .totalBalanceUSD) {
 					self?.balanceTextSubject.onNext(headerItem)
 				}
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		Observable.combineLatest(Session.shared.mainCoinBalance.asObservable(),
 														 Session.shared.totalUSDBalance.asObservable(),
-														 Session.shared.totalMainCoinBalance
-														 )
+														 Session.shared.totalMainCoinBalance)
 			.subscribe(onNext: { [weak self] (val) in
 				let (balance, usdBalance, totalBalance) = val
 				let balanceType = BalanceType(rawValue: AppSettingsManager.shared.balanceType ?? "") ?? .balanceBIP
@@ -207,13 +221,33 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 																										isUSD: balanceType == .totalBalanceUSD) {
 					self?.balanceTextSubject.onNext(headerItem)
 				}
+			}).disposed(by: disposeBag)
+
+		didScanQRSubject.asObservable().subscribe(onNext: { [weak self] (val) in
+			if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
+				self?.showSendTabSubject.onNext(())
+				NotificationCenter.default.post(name: SendViewControllerAddressNotification, object: nil, userInfo: ["address": val])
+			} else if
+				let url = URL(string: val ?? ""),
+				url.host == "tx" || url.path.contains("tx") {
+
+				if let rawViewController = RawTransactionRouter.viewController(path: [url.host ?? ""], param: url.params()) {
+					self?.showViewControllerSubject.onNext(rawViewController)
+				} else {
+					//show error
+					self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+				}
+			} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ["d": val ?? ""]) {
+				self?.showViewControllerSubject.onNext(rawViewController)
+			} else {
+				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+			}
 		}).disposed(by: disposeBag)
 	}
 
 	private func balanceHeaderItem(balanceType: BalanceType,
 																 balance: Decimal,
 																 isUSD: Bool) -> BalanceHeaderItem {
-
 		var text: NSAttributedString?
 		var title: String?
 

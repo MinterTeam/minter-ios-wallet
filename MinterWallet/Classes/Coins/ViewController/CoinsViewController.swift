@@ -14,9 +14,20 @@ import SafariServices
 import AlamofireImage
 import NotificationBannerSwift
 
-class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, ControllerType {
+class CoinsViewController: BaseTableViewController,
+ScreenHeaderProtocol,
+ControllerType {
 
 	private var disposeBag = DisposeBag()
+
+	lazy var readerVC: QRCodeReaderViewController = {
+		let builder = QRCodeReaderViewControllerBuilder {
+			$0.reader = QRCodeReader(metadataObjectTypes: [.qr],
+															 captureDevicePosition: .back)
+			$0.showSwitchCameraButton = false
+		}
+		return QRCodeReaderViewController(builder: builder)
+	}()
 
 	// MARK: - ControllerType
 
@@ -27,6 +38,24 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 		// Input
 		refreshControl.rx.controlEvent([.valueChanged])
 			.subscribe(viewModel.input.didRefresh).disposed(by: disposeBag)
+
+		txScanButton.rx.tap.asDriver()
+			.drive(viewModel.input.txScanButtonDidTap).disposed(by: disposeBag)
+
+		txScanButton.rx.tap.subscribe({ [weak self] (_) in
+//			self?.readerVC.delegate = self
+			self?.present(self!.readerVC, animated: true, completion: nil)
+			}).disposed(by: disposeBag)
+
+		readerVC.delegate = self
+		readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
+			self?.readerVC.stopScanning()
+			self?.readerVC.dismiss(animated: true) {
+				if let res = result?.value {
+					self?.viewModel.input.didScanQR.onNext(res)
+				}
+			}
+		}
 
 		// Output
 		viewModel.output
@@ -83,6 +112,36 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 			self?.headerViewBalanceLabel.attributedText = balanceItem.text
 		}).disposed(by: disposeBag)
 
+		viewModel
+			.output
+			.showViewController
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { [weak self] (viewController) in
+				guard let viewController = viewController else { return }
+				self?.tabBarController?.present(viewController, animated: true, completion: nil)
+			}).disposed(by: disposeBag)
+
+		viewModel
+			.output
+			.showSendTab
+			.asDriver(onErrorJustReturn: ())
+			.drive(onNext: { [weak self] (_) in
+				self?.tabBarController?.selectedIndex = 1
+			}).disposed(by: disposeBag)
+
+		viewModel
+			.output
+			.error
+			.asDriver(onErrorJustReturn: nil)
+			.filter({ (notification) -> Bool in
+				return nil != notification
+			}).drive(onNext: { (notification) in
+				let banner = NotificationBanner(title: notification?.title ?? "",
+																				subtitle: notification?.text,
+																				style: .danger)
+				banner.show()
+			}).disposed(by: disposeBag)
+
 		self.headerViewBalanceLabel.rx.tapGesture().map({ (_) -> () in
 			return ()
 		}).subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
@@ -127,6 +186,10 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 	@IBOutlet weak var delegatedHeaderTopConstraint: NSLayoutConstraint!
 	@IBOutlet weak var delegatedBalanceLabel: UILabel!
 	@IBOutlet var tableHeaderTopConstraint: NSLayoutConstraint?
+	@IBOutlet weak var txScanButton: UIBarButtonItem!
+
+	var qrCodeReader: QRCodeReaderViewController?
+	func processQR(result: String) {}
 
 	// MARK: -
 
@@ -206,25 +269,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 			.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
 
 		hidesBottomBarWhenPushed = false
-
-		let username = UIBarButtonItem(customView: usernameView)
-		username.width = 250
-
-		self.navigationItem.rightBarButtonItems = [username]
-
-		let usernameViewTapGesture = UITapGestureRecognizer(target: self,
-																												action: #selector(didTapUsernameView))
-		usernameView?.addGestureRecognizer(usernameViewTapGesture)
-
-		//Move to viewModel
-		Session.shared.isLoggedIn.asObservable().map({ (val) -> Bool in
-			return !val
-		}).bind(to: usernameView.rx.isHidden).disposed(by: disposeBag)
-
-		viewModel.usernameViewObservable.asObservable()
-			.subscribe(onNext: { [weak self] (user) in
-				self?.updateUsernameView()
-		}).disposed(by: disposeBag)
 
 		viewModel.errorObservable.distinctUntilChanged()
 			.subscribe(onNext: { [weak self] (val) in
@@ -365,7 +409,6 @@ class CoinsViewController: BaseTableViewController, ScreenHeaderProtocol, Contro
 	func presentExplorerController(with url: URL) {
 		self.present(CoinsRouter.explorerViewController(url: url), animated: true) {}
 	}
-
 }
 
 extension CoinsViewController: ButtonTableViewCellDelegate {
@@ -416,7 +459,6 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 				BannerHelper.performCopiedNotification()
 		}
 	}
-
 }
 
 extension CoinsViewController {
@@ -445,5 +487,15 @@ extension CoinsViewController {
 		tableView.register(UINib(nibName: "SystemTransactionTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "SystemTransactionTableViewCell")
 	}
+}
 
+extension CoinsViewController: QRCodeReaderViewControllerDelegate {
+
+	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
+		
+	}
+
+	func readerDidCancel(_ reader: QRCodeReaderViewController) {
+		
+	}
 }

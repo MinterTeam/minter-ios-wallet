@@ -9,6 +9,7 @@
 import UIKit
 import SafariServices
 import RxSwift
+import RxCocoa
 import NotificationBannerSwift
 import Reachability
 import YandexMobileMetrica

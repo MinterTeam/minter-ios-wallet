@@ -31,11 +31,14 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	struct Input {
 		var payload: AnyObserver<String?>
 		var txScanButtonDidTap: AnyObserver<Void>
+		var didScanQR: AnyObserver<String?>
 	}
 
 	struct Output {
 		var errorNotification: Observable<NotifiableError?>
 		var txErrorNotification: Observable<NotifiableError?>
+		var showViewController: Observable<UIViewController?>
+		var setAddressField: Observable<String?>
 	}
 
 	// MARK: -
@@ -174,6 +177,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	private let errorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txErrorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txScanButtonDidTap = PublishSubject<Void>()
+	private var didScanQRSubject = PublishSubject<String?>()
+	private var showViewControllerSubject = PublishSubject<UIViewController?>()
+	private var setAddressFieldSubject = PublishSubject<String?>()
 
 	var showPopup = Variable<PopupViewController?>(nil)
 
@@ -213,9 +219,12 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		super.init()
 
 		self.input = Input(payload: payloadSubject.asObserver(),
-											 txScanButtonDidTap: txScanButtonDidTap.asObserver())
+											 txScanButtonDidTap: txScanButtonDidTap.asObserver(),
+											 didScanQR: didScanQRSubject.asObserver())
 		self.output = Output(errorNotification: errorNotificationSubject.asObservable(),
-												 txErrorNotification: txErrorNotificationSubject.asObservable())
+												 txErrorNotification: txErrorNotificationSubject.asObservable(),
+												 showViewController: showViewControllerSubject.asObservable(),
+												 setAddressField: setAddressFieldSubject.asObservable())
 
 		payloadSubject.asObservable().subscribe(onNext: { (payld) in
 			self.forceUpdateFee.onNext(())
@@ -256,6 +265,38 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			self?.clear()
 			self?.sections.value = self?.createSections() ?? []
 		}).disposed(by: disposeBag)
+
+		didScanQRSubject.asObservable().subscribe(onNext: { [weak self] (val) in
+			if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
+				self?.setAddressFieldSubject.onNext(val)
+			} else if
+				let url = URL(string: val ?? ""),
+				url.host == "tx" || url.path.contains("tx") {
+
+				if let rawViewController = RawTransactionRouter.viewController(path: [url.host ?? ""], param: url.params()) {
+					self?.showViewControllerSubject.onNext(rawViewController)
+				} else {
+					//show error
+					self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+				}
+			} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ["d": val ?? ""]) {
+					self?.showViewControllerSubject.onNext(rawViewController)
+			} else {
+				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+			}
+		}).disposed(by: disposeBag)
+		
+		NotificationCenter
+			.default
+			.rx
+			.notification(SendViewControllerAddressNotification)
+			.subscribe(onNext: { [weak self] (not) in
+				if let recipient = not.userInfo?["address"] as? String {
+					if recipient.isValidAddress() || recipient.isValidPublicKey() {
+						self?.setAddressFieldSubject.onNext(recipient)
+					}
+				}
+			}).disposed(by: disposeBag)
 	}
 
 	// MARK: - Sections

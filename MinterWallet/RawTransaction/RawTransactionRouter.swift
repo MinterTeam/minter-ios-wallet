@@ -59,8 +59,10 @@ class RawTransactionRouter: BaseRouter {
 					nonce = BigUInt(nonceData)
 					chainId = BigUInt(chainIdData)
 					gasPrice = BigUInt(gasPriceData)
-					if let newGasCoin = String(data: gasCoinData, encoding: .utf8)?
-						.replacingOccurrences(of: "\0", with: "") {
+					if let newGasCoin = String(coinData: gasCoinData) {
+						guard newGasCoin.isValidCoin() else {
+							return nil
+						}
 						gasCoin = newGasCoin
 					}
 					let typeBigInt = BigUInt(typeData)
@@ -90,6 +92,9 @@ class RawTransactionRouter: BaseRouter {
 					gasPrice = gasPriceValue > 0 ? gasPriceValue : nil
 					if let newGasCoin = String(coinData: gasCoinData) {
 						gasCoin = (newGasCoin == "") ? Coin.baseCoin().symbol! : newGasCoin
+						guard newGasCoin.isValidCoin() else {
+							return nil
+						}
 					}
 					let typeBigInt = BigUInt(typeData)
 					guard let txType = RawTransactionType.type(with: typeBigInt) else {
@@ -104,15 +109,20 @@ class RawTransactionRouter: BaseRouter {
 				return nil
 			}
 
-			let viewModel = RawTransactionViewModel(
-				nonce: nonce,
-				gasPrice: gasPrice,
-				gasCoin: gasCoin,
-				type: type,
-				data: txData,
-				payload: payload,
-				serviceData: serviceData,
-				signatureType: signatureType)
+			let viewModel: RawTransactionViewModel
+			do {
+				viewModel = try RawTransactionViewModel(
+					nonce: nonce,
+					gasPrice: gasPrice,
+					gasCoin: gasCoin,
+					type: type,
+					data: txData,
+					payload: payload,
+					serviceData: serviceData,
+					signatureType: signatureType)
+			} catch {
+				return nil
+			}
 
 			let viewController = Storyboards.RawTransaction.instantiateInitialViewController()
 			viewController.navigationBar.barStyle = .black

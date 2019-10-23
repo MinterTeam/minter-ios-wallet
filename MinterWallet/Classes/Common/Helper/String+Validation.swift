@@ -25,5 +25,8 @@ extension String {
 		let usernameTest = NSPredicate(format:"SELF MATCHES %@", "^[@]?[a-zA-Z0-9_]{5,16}")
 		return usernameTest.evaluate(with: self)
 	}
-
+	
+	func isValidCoin() -> Bool {
+		return self.count >= 3
+	}
 }

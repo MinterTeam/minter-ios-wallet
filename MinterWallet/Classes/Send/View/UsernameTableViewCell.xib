@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,7 +41,7 @@
                         <rect key="frame" x="10" y="24" width="864" height="259"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YPg-BO-AmF" customClass="AddressTextView" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="10" y="6" width="804" height="246"/>
+                                <rect key="frame" x="10" y="6" width="843" height="246"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -50,10 +50,10 @@
                             <constraint firstAttribute="bottom" secondItem="YPg-BO-AmF" secondAttribute="bottom" constant="7" id="Bb5-1g-wYv"/>
                             <constraint firstItem="YPg-BO-AmF" firstAttribute="top" secondItem="mbc-jw-Kgv" secondAttribute="top" constant="6" id="G3h-TG-kvv"/>
                             <constraint firstItem="YPg-BO-AmF" firstAttribute="leading" secondItem="mbc-jw-Kgv" secondAttribute="leading" constant="10" id="WAj-la-Ngc"/>
-                            <constraint firstAttribute="trailing" secondItem="YPg-BO-AmF" secondAttribute="trailing" constant="50" id="uyM-hx-wfz"/>
+                            <constraint firstAttribute="trailing" secondItem="YPg-BO-AmF" secondAttribute="trailing" constant="11" id="uyM-hx-wfz"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpw-Yv-9Ny">
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpw-Yv-9Ny">
                         <rect key="frame" x="834" y="31" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="LIZ-mP-alu"/>
