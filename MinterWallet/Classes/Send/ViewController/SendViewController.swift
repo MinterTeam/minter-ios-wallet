@@ -408,7 +408,20 @@ extension SendViewController {
 
 	func heightWillChange(cell: TextViewTableViewCell) {}
 
-	func didTapScanButton(cell: UsernameTableViewCell?) {}
+	func didTapScanButton(cell: UsernameTableViewCell?) {
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsQRButton)
+		readerVC.delegate = self
+		cell?.textView.becomeFirstResponder()
+		readerVC.completionBlock = { (result: QRCodeReaderResult?) in
+			if let indexPath = self.tableView.indexPath(for: cell!),
+				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+				cell?.textView.text = result?.value
+			}
+		}
+		// Presents the readerVC as modal form sheet
+		readerVC.modalPresentationStyle = .formSheet
+		present(readerVC, animated: true, completion: nil)
+	}
 }
 
 extension SendViewController: SwitchTableViewCellDelegate {
