@@ -36,8 +36,10 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 	struct Output {
 		var sections: Observable<[BaseTableSectionItem]>
 	}
+	struct Dependency {}
 	var input: DelegatedViewModel.Input!
 	var output: DelegatedViewModel.Output!
+	var dependency: DelegatedViewModel.Dependency!
 
 	// MARK: -
 
@@ -55,6 +57,7 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 		self.input = Input(viewDidLoad: viewDidLoad.asObserver(),
 											 willDisplayCell: willDisplayCell.asObserver())
 		self.output = Output(sections: sections.asObservable())
+		self.dependency = Dependency()
 
 		viewDidLoad.subscribe(onNext: { [weak self] (_) in
 			self?.createSections()

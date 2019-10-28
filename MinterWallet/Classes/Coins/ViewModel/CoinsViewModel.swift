@@ -19,20 +19,24 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 
 	var input: CoinsViewModel.Input!
 	var output: CoinsViewModel.Output!
+	var dependency: CoinsViewModel.Dependency!
 	struct Input {
 		var didRefresh: AnyObserver<Void>
 		var didTapBalance: AnyObserver<Void>
 		var txScanButtonDidTap: AnyObserver<Void>
 		var didScanQR: AnyObserver<String?>
+		var didTapTransaction: AnyObserver<Void>
+		var didTapConvert: AnyObserver<Void>
 	}
 	struct Output {
 		var totalDelegatedBalance: Observable<String?>
 		var balanceInUSD: Observable<String?>
 		var balanceText: Observable<BalanceHeaderItem>
-		var showViewController: Observable<UIViewController?>
+		var showViewController: Observable<(controller: UIViewController?, isModal: Bool)>
 		var showSendTab: Observable<Void>
 		var error: Observable<NotifiableError?>
 	}
+	struct Dependency {}
 
 	// MARK: - I/O Subjects
 
@@ -42,10 +46,12 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 	private var didRefreshSubject = PublishSubject<Void>()
 	private var didTapBalanceSubject = PublishSubject<Void>()
 	private var didScanQRSubject = PublishSubject<String?>()
-	private var showViewControllerSubject = PublishSubject<UIViewController?>()
+	private var showViewControllerSubject = PublishSubject<(controller: UIViewController?, isModal: Bool)>()
 	private var errorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txScanButtonDidTap = PublishSubject<Void>()
 	private let showSendTabSubject = PublishSubject<Void>()
+	private let didTapTransactionSubject = PublishSubject<Void>()
+	private let didTapConvertSubject = PublishSubject<Void>()
 
 	// MARK: -
 
@@ -83,7 +89,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 			return false//!(items.count > 0)
 		})
 	}
-//	let formatter = CurrencyNumberFormatter.decimalFormatter
 	let coinFormatter = CurrencyNumberFormatter.coinFormatter
 
 	private var coinObservables = [String: PublishSubject<Decimal?>]()
@@ -96,7 +101,9 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		self.input = Input(didRefresh: didRefreshSubject.asObserver(),
 											 didTapBalance: didTapBalanceSubject.asObserver(),
 											 txScanButtonDidTap: txScanButtonDidTap.asObserver(),
-											 didScanQR: didScanQRSubject.asObserver())
+											 didScanQR: didScanQRSubject.asObserver(),
+											 didTapTransaction: didTapTransactionSubject.asObserver(),
+											 didTapConvert: didTapConvertSubject.asObserver())
 		self.output = Output(totalDelegatedBalance: totalDelegatedBalanceSubject.asObservable(),
 												 balanceInUSD: balanceInUSDSubject.asObservable(),
 												 balanceText: balanceTextSubject.asObservable(),
@@ -206,19 +213,36 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 			.subscribe(onNext: { [weak self] (val) in
 				if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
 					self?.showSendTabSubject.onNext(())
-					NotificationCenter.default.post(name: sendViewControllerAddressNotification, object: nil, userInfo: ["address": val])
+					NotificationCenter.default.post(name: sendViewControllerAddressNotification,
+																					object: nil,
+																					userInfo: ["address": val ?? ""])
 					return
 				} else if
 					let url = URL(string: val ?? ""),
 					let rawViewController = RawTransactionRouter.viewController(path: [url.host ?? ""], param: url.params()),
 					url.host == "tx" || url.path.contains("tx") {
-						self?.showViewControllerSubject.onNext(rawViewController)
+						self?.showViewControllerSubject.onNext((controller: rawViewController, isModal: true))
 					return
 				} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ["d": val ?? ""]) {
-					self?.showViewControllerSubject.onNext(rawViewController)
+					self?.showViewControllerSubject.onNext((controller: rawViewController, isModal: true))
 					return
 				}
 				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+			}).disposed(by: disposeBag)
+
+		didTapTransactionSubject
+			.asObservable()
+			.subscribe(onNext: { [weak self] (_) in
+				let viewModel = TransactionsViewModel()
+				let transactionsVC = TransactionsRouter.transactionsViewController(viewModel: viewModel)
+				self?.showViewControllerSubject.onNext((controller: transactionsVC, isModal: false))
+			}).disposed(by: disposeBag)
+		
+		didTapConvertSubject
+			.asObservable()
+			.subscribe(onNext: { [weak self] (_) in
+				let convertVC = ConvertRouter.convertViewController()
+				self?.showViewControllerSubject.onNext((controller: convertVC, isModal: false))
 			}).disposed(by: disposeBag)
 	}
 
@@ -314,10 +338,8 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 				: (key1 < key2)
 		}).forEach { (key) in
 			let bal = Session.shared.balances.value
-
 			let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
 																								 identifier: "SeparatorTableViewCell_\(key)")
-
 			let coin = CoinTableViewCellItem(reuseIdentifier: "CoinTableViewCell",
 																			 identifier: "CoinTableViewCell_\(key)")
 			coin.title = key

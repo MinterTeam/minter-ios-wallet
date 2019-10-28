@@ -30,10 +30,6 @@ class PopupViewController: BaseViewController, CCMPlayNDropViewDelegate {
 	@IBOutlet weak var popupView: DroppableView!
 	@IBOutlet weak var blurView: UIVisualEffectView!
 
-	// MARK: -
-
-	var viewModel: PopupViewModel?
-
 	// MARK: Life cycle
 
 	override func viewDidLoad() {

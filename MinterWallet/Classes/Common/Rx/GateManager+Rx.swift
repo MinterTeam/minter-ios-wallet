@@ -13,23 +13,6 @@ enum GateManagerRxError : Error {
 	case noGas
 }
 
-extension GateManager {
-
-	func minGasPrice() -> Observable<Int> {
-		return Observable.create { (observer) -> Disposable in
-			self.minGasPrice(completion: { (gas, error) in
-				guard error == nil && gas != nil else {
-					observer.onError(error ?? GateManagerRxError.noGas)
-					return
-				}
-				observer.onNext(gas!)
-				observer.onCompleted()
-			})
-			return Disposables.create()
-		}
-	}
-}
-
 enum GateManagerErrorRx: Error {
 	case noCount
 	case noCommission
@@ -139,5 +122,4 @@ extension GateManager {
 			return Disposables.create()
 		}
 	}
-
 }

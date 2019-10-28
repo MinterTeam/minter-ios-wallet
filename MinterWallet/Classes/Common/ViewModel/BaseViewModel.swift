@@ -15,9 +15,11 @@ import RxSwift
 protocol ViewModelProtocol {
 	associatedtype Input
 	associatedtype Output
+	associatedtype Dependency
 
 	var input: Input! { get }
 	var output: Output! { get }
+//	var dependency: Dependency! { get }
 }
 
 class BaseViewModel {

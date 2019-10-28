@@ -21,8 +21,10 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 		var isButtonEnabled: Observable<Bool>
 		var isUsernameLoading: Observable<Bool>
 	}
+	struct Dependency {}
 	var input: CreateWalletViewModel.Input!
 	var output: CreateWalletViewModel.Output!
+	var dependency: CreateWalletViewModel.Dependency!
 
 	// MARK: -
 
@@ -87,12 +89,11 @@ class CreateWalletViewModel: AccountantBaseViewModel, ViewModelProtocol {
 		super.init()
 
 		self.input = Input(createButtonDidTap: createWalletDidTap.asObserver())
-
 		self.output = Output(
 			isButtonEnabled: isButtonEnabled.asObservable(),
 			isUsernameLoading: isUsernameLoading.asObservable()
 		)
-
+		self.dependency = Dependency()
 		createWalletDidTap.subscribe(onNext: { [weak self] _ in
 			self?.register()
 		}).disposed(by: disposeBag)

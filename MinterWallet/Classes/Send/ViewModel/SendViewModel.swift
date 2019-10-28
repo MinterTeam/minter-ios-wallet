@@ -23,7 +23,13 @@ struct AccountPickerItem {
 	var coin: String?
 }
 
-class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:this type_body_length
+protocol GateProtocol: class {
+	func minGas() -> Observable<Int>
+	func nonce(address: String) -> Observable<Int>
+	func send(rawTx: String?) -> Observable<String?>
+}
+
+class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this type_body_length
 
 	enum SendViewModelError: Error {
 		case noPrivateKey
@@ -34,6 +40,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 
 	var input: SendViewModel.Input!
 	var output: SendViewModel.Output!
+	var dependency: SendViewModel.Dependency!
 	struct Input {
 		var payload: AnyObserver<String?>
 		var txScanButtonDidTap: AnyObserver<Void>
@@ -44,6 +51,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 		var txErrorNotification: Observable<NotifiableError?>
 		var popup: Observable<PopupViewController?>
 		var showViewController: Observable<UIViewController?>
+	}
+	struct Dependency {
+		
 	}
 
 	// MARK: -
@@ -180,9 +190,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 
 	// MARK: -
 
-	override init() { // swiftlint:disable:this function_body_length cyclomatic_complexity
-		super.init()
-
+	init(dependency: Dependency) { // swiftlint:disable:this function_body_length cyclomatic_complexity
 		self.input = Input(payload: payloadSubject.asObserver(),
 											 txScanButtonDidTap: txScanButtonDidTap.asObserver(),
 											 didScanQR: didScanQRSubject.asObserver())
@@ -190,6 +198,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 												 txErrorNotification: txErrorNotificationSubject.asObservable(),
 												 popup: popupSubject.asObservable(),
 												 showViewController: showViewControllerSubject.asObservable())
+		self.dependency = dependency
+
+		super.init()
 
 		payloadSubject.asObservable().subscribe(onNext: { (payld) in
 			self.forceUpdateFee.onNext(())
@@ -634,7 +645,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol { // swiftlint:disable:thi
 	func viewDidAppear() {
 		GateManager
 			.shared
-			.minGasPrice()
+			.minGas()
 			.subscribe(onNext: { [weak self] (gas) in
 				self?.currentGas.onNext(gas)
 		}).disposed(by: disposeBag)

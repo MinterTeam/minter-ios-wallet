@@ -45,9 +45,9 @@ class UsernameEditViewModel : BaseViewModel {
 				return
 			}
 
-			self?.checkUsername().subscribe(onNext: { (val) in
+			self?.checkUsername().subscribe(onNext: { (_) in
 
-			}, onError: { (err) in
+			}, onError: { (_) in
 				self?.isTaken.value = true
 			}, onCompleted: {
 				self?.isTaken.value = false
@@ -150,7 +150,7 @@ class UsernameEditViewModel : BaseViewModel {
 		user.username = username
 
 		profileManager?.updateProfile(user: user,
-																	completion: { [weak self] (updated, error) in
+																	completion: { [weak self] (_, error) in
 
 			self?.isLoading.value = false
 

@@ -15,7 +15,15 @@ protocol SentPopupViewControllerDelegate: class {
 	func didTapSecondButton(viewController: SentPopupViewController)
 }
 
-class SentPopupViewController: PopupViewController {
+class SentPopupViewController: PopupViewController, ControllerType {
+
+	// MARK: -
+
+	typealias ViewModelType = SentPopupViewModel
+	var viewModel: SentPopupViewModel!
+	func configure(with viewModel: SentPopupViewModel) {
+		
+	}
 
 	weak var delegate: SentPopupViewControllerDelegate?
 

@@ -53,25 +53,11 @@
                             <constraint firstAttribute="trailing" secondItem="YPg-BO-AmF" secondAttribute="trailing" constant="11" id="uyM-hx-wfz"/>
                         </constraints>
                     </view>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jpw-Yv-9Ny">
-                        <rect key="frame" x="834" y="31" width="32" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="32" id="LIZ-mP-alu"/>
-                            <constraint firstAttribute="width" constant="32" id="fBh-RB-ilI"/>
-                        </constraints>
-                        <color key="tintColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="deviceRGB"/>
-                        <state key="normal" image="scanQRIcon"/>
-                        <connections>
-                            <action selector="scanButtonDidTap:" destination="Hq9-AV-cbI" eventType="touchUpInside" id="BW1-b0-7w7"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="mbc-jw-Kgv" firstAttribute="top" secondItem="Yt2-Ox-ZWa" secondAttribute="bottom" constant="8" id="6X7-fl-ob2"/>
                     <constraint firstItem="4sV-v6-h8c" firstAttribute="trailing" secondItem="mbc-jw-Kgv" secondAttribute="trailing" id="Ovi-gd-cbd"/>
                     <constraint firstItem="Yt2-Ox-ZWa" firstAttribute="leading" secondItem="mbc-jw-Kgv" secondAttribute="leading" constant="10" id="cLo-QV-ENq"/>
-                    <constraint firstAttribute="trailing" secondItem="jpw-Yv-9Ny" secondAttribute="trailing" constant="18" id="e9s-VR-ykD"/>
-                    <constraint firstItem="jpw-Yv-9Ny" firstAttribute="top" secondItem="mbc-jw-Kgv" secondAttribute="top" constant="7" id="h2S-mi-kVb"/>
                     <constraint firstAttribute="bottom" secondItem="mbc-jw-Kgv" secondAttribute="bottom" priority="999" constant="10" id="h63-lf-Jfa"/>
                     <constraint firstItem="mbc-jw-Kgv" firstAttribute="leading" secondItem="BhE-KY-3Si" secondAttribute="leading" constant="10" id="lDk-Sz-kMJ"/>
                     <constraint firstItem="4sV-v6-h8c" firstAttribute="leading" secondItem="Yt2-Ox-ZWa" secondAttribute="trailing" constant="10" id="uAF-cg-Nk4"/>
@@ -83,14 +69,10 @@
             <viewLayoutGuide key="safeArea" id="FOl-ef-VpS"/>
             <connections>
                 <outlet property="errorTitle" destination="4sV-v6-h8c" id="iX3-kh-7uK"/>
-                <outlet property="scanButton" destination="jpw-Yv-9Ny" id="qWM-4J-eNW"/>
                 <outlet property="textView" destination="YPg-BO-AmF" id="o19-9o-jop"/>
                 <outlet property="title" destination="Yt2-Ox-ZWa" id="bVe-rW-R7X"/>
             </connections>
             <point key="canvasLocation" x="282.60869565217394" y="-154.35267857142856"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="scanQRIcon" width="18" height="18"/>
-    </resources>
 </document>

@@ -8,7 +8,18 @@
 
 import UIKit
 
-class SentPopupViewModel: PopupViewModel {
+class SentPopupViewModel: PopupViewModel, ViewModelProtocol {
+
+	// MARK: - ViewModelProtocol
+
+	struct Input {}
+	struct Output {}
+	struct Dependency {}
+	var input: SentPopupViewModel.Input! = Input()
+	var output: SentPopupViewModel.Output! = Output()
+
+	// MARK: -
+
 	var desc: String?
 	var coin: String?
 	var avatarImage: UIImage?

@@ -25,7 +25,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 
 	var input: SpendCoinsViewModel.Input!
 	var output: SpendCoinsViewModel.Output!
-
+	var dependency: SpendCoinsViewModel.Dependency!
 	struct Input {
 		var spendAmount: AnyObserver<String?>
 		var getCoin: AnyObserver<String?>
@@ -35,7 +35,6 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 		var selectedAddress: String?
 		var selectedCoin: String?
 	}
-
 	struct Output {
 		var approximately: Observable<String?>
 		var spendCoin: Observable<String?>
@@ -49,6 +48,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 		var amountError: Observable<String?>
 		var getCoinError: Observable<String?>
 	}
+	struct Dependency {}
 
 	// MARK: -
 
@@ -71,17 +71,15 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 												 errorNotification: errorNotification.asObservable(),
 												 shouldClearForm: shouldClearForm.asObservable(),
 												 amountError: amountError.asObservable(),
-												 getCoinError: getCoinError.asObservable()
-		)
-
+												 getCoinError: getCoinError.asObservable())
 		self.input = Input(spendAmount: spendAmount.asObserver(),
 											 getCoin: getCoin.asObserver(),
 											 spendCoin: spendCoinField.asObserver(),
 											 useMaxDidTap: useMaxDidTap.asObserver(),
 											 exchangeDidTap: exchangeDidTap.asObserver(),
 											 selectedAddress: selectedAddress,
-											 selectedCoin: selectedCoin
-		)
+											 selectedCoin: selectedCoin)
+		self.dependency = Dependency()
 		subscribe()
 		Session.shared.loadBalances()
 	}
@@ -441,7 +439,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 				}
 
 				Observable.zip(GateManager.shared.nonce(address: selectedAddress),
-											 GateManager.shared.minGasPrice()).flatMap({ (val) -> Observable<String?> in
+											 GateManager.shared.minGas()).flatMap({ (val) -> Observable<String?> in
 					let nonce = Decimal(val.0 + 1)
 
 					var tx: RawTransaction!

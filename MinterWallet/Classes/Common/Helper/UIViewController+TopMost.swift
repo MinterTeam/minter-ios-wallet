@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIViewController {
-	
+
 	static public func stars_topMostController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
 		if let nav = base as? UINavigationController {
 			return topMostController(base: nav.visibleViewController)
@@ -26,17 +26,12 @@ extension UIViewController {
 				return topMostController(base: vc)
 			}
 		}
-		
-//		if let rootVC = base as? RootViewController, let childVC = rootVC.childViewControllers.first {
-//			return topMostController(base: childVC)
-//		}
-		
+
 		if let presented = base?.presentedViewController {
 			return topMostController(base: presented)
 		}
 		return base
 	}
-	
 }
 
 extension UIViewController {
@@ -54,7 +49,7 @@ extension UIViewController {
 		}
 		return base
 	}
-	
+
 	@objc public func showAlertErrorFromApi(_ error: String) {
 		let alertView = UIAlertView(title: "Ошибка сервера", message: error, delegate: nil, cancelButtonTitle: "Ok")
 		alertView.show()

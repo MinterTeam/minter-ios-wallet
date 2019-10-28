@@ -40,9 +40,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 																	 websocketURLString: conf.environment.explorerWebsocketURL)
 		}
 		MinterMySDK.initialize(network: isTestnet ? .testnet : .mainnet)
-
 		Fabric.with([Crashlytics.self])
+		
+		// this line is important
+		self.window = UIWindow(frame: UIScreen.main.bounds)
 
+		// In project directory storyboard looks like Main.storyboard,
+		// you should use only part before ".storyboard" as it's name,
+		// so in this example name is "Main".
+		let rootVC = Storyboards.Root.instantiateInitialViewController()
+		rootVC.viewModel = RootViewModel()
+		self.window?.rootViewController = rootVC
+		self.window?.makeKeyAndVisible()
 		appearance()
 
 		return true

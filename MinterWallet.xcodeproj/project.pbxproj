@@ -106,7 +106,6 @@
 		FA332FAC224A4B3C003B4763 /* SoundHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD8F2021930B2300463F66 /* SoundHelper.swift */; };
 		FA332FAD224A4B3C003B4763 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8136207BAE1300DC97E5 /* TransactionTableViewCell.swift */; };
 		FA332FAF224A4B3C003B4763 /* Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C82074CEC90083333F /* Sugar.swift */; };
-		FA332FB0224A4B3C003B4763 /* MobileEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606920931370009FF3DE /* MobileEditViewModel.swift */; };
 		FA332FB1224A4B3C003B4763 /* CoinsTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */; };
 		FA332FB2224A4B3C003B4763 /* DisclosureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE7944F2088C38F0006CB0B /* DisclosureTableViewCell.swift */; };
 		FA332FB3224A4B3C003B4763 /* ConvertTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB7AA1520F600230003D0DE /* ConvertTransactionTableViewCell.swift */; };
@@ -170,7 +169,6 @@
 		FA332FF1224A4B3C003B4763 /* PasswordEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2607120931D41009FF3DE /* PasswordEditViewModel.swift */; };
 		FA332FF2224A4B3C003B4763 /* TransactionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB85B4D20DD33E300782AFB /* TransactionManager.swift */; };
 		FA332FF3224A4B3C003B4763 /* BaseCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C62074C4A20083333F /* BaseCellItem.swift */; };
-		FA332FF4224A4B3C003B4763 /* MobileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA26067209311C2009FF3DE /* MobileEditViewController.swift */; };
 		FA332FF5224A4B3C003B4763 /* URL+Params.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669BDA2072687C00AD110A /* URL+Params.swift */; };
 		FA332FF6224A4B3C003B4763 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234DC20848EC900F999DE /* SwitchTableViewCell.swift */; };
 		FA332FF7224A4B3C003B4763 /* QRCodeReaderResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F295F21B1740800E10F5E /* QRCodeReaderResult.swift */; };
@@ -233,7 +231,7 @@
 		FA333031224A4B3C003B4763 /* SendPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA234EE20872BF800F999DE /* SendPopupViewModel.swift */; };
 		FA333032224A4B3C003B4763 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA1EA41241735BB83566B6A /* PopupViewController.swift */; };
 		FA333033224A4B3C003B4763 /* APIClient+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC4BA0F20D9445F005A1B90 /* APIClient+Auth.swift */; };
-		FA333034224A4B3C003B4763 /* NewConvertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */; };
+		FA333034224A4B3C003B4763 /* RootConvertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD0F6C120FCAFB2009A5936 /* RootConvertViewController.swift */; };
 		FA333035224A4B3C003B4763 /* PopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A840EEC1F5676CEE8EB564 /* PopupViewModel.swift */; };
 		FA333036224A4B3C003B4763 /* McPickerPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F297421B179BB00E10F5E /* McPickerPopoverViewController.swift */; };
 		FA333037224A4B3C003B4763 /* GenerateAddressLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2607D20935C36009FF3DE /* GenerateAddressLabelTableViewCell.swift */; };
@@ -344,6 +342,16 @@
 		FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */; };
 		FA5D7DDB230BFCEE00945A66 /* BaseTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5D7DDA230BFCEE00945A66 /* BaseTransactionCell.swift */; };
 		FA5D7DDC230BFCEE00945A66 /* BaseTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5D7DDA230BFCEE00945A66 /* BaseTransactionCell.swift */; };
+		FA5DB809236198C7008A8E47 /* ImpactProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB808236198C7008A8E47 /* ImpactProtocol.swift */; };
+		FA5DB80A236198C8008A8E47 /* ImpactProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB808236198C7008A8E47 /* ImpactProtocol.swift */; };
+		FA5DB80C2361D017008A8E47 /* SendRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB80B2361D017008A8E47 /* SendRouter.swift */; };
+		FA5DB80D2361D017008A8E47 /* SendRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB80B2361D017008A8E47 /* SendRouter.swift */; };
+		FA5DB80F2361D6CB008A8E47 /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB80E2361D6CB008A8E47 /* SettingsRouter.swift */; };
+		FA5DB8102361D6CB008A8E47 /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB80E2361D6CB008A8E47 /* SettingsRouter.swift */; };
+		FA5DB8122361EA9F008A8E47 /* TransactionsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB8112361EA9F008A8E47 /* TransactionsRouter.swift */; };
+		FA5DB8132361EA9F008A8E47 /* TransactionsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB8112361EA9F008A8E47 /* TransactionsRouter.swift */; };
+		FA5DB8152366EF1D008A8E47 /* ConvertRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB8142366EF1D008A8E47 /* ConvertRouter.swift */; };
+		FA5DB8162366EF1D008A8E47 /* ConvertRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5DB8142366EF1D008A8E47 /* ConvertRouter.swift */; };
 		FA61EF49209B037700A6FB62 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA61EF48209B037700A6FB62 /* AccountManager.swift */; };
 		FA6259E820F899CB003B8BEF /* Forms.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6259E720F899CB003B8BEF /* Forms.swift */; };
 		FA64E281234770EF00436BFE /* RawTransaction+RLPDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA64E280234770EF00436BFE /* RawTransaction+RLPDecodable.swift */; };
@@ -448,8 +456,6 @@
 		FAA2606220923634009FF3DE /* AddressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA2606020923634009FF3DE /* AddressTableViewCell.xib */; };
 		FAA2606420930B8A009FF3DE /* UsernameEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606320930B8A009FF3DE /* UsernameEditViewController.swift */; };
 		FAA2606620930C68009FF3DE /* UsernameEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606520930C68009FF3DE /* UsernameEditViewModel.swift */; };
-		FAA26068209311C2009FF3DE /* MobileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA26067209311C2009FF3DE /* MobileEditViewController.swift */; };
-		FAA2606A20931370009FF3DE /* MobileEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606920931370009FF3DE /* MobileEditViewModel.swift */; };
 		FAA2606C20931A56009FF3DE /* EmailEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606B20931A56009FF3DE /* EmailEditViewController.swift */; };
 		FAA2606E20931A89009FF3DE /* EmailEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606D20931A89009FF3DE /* EmailEditViewModel.swift */; };
 		FAA2607020931D2F009FF3DE /* PasswordEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606F20931D2F009FF3DE /* PasswordEditViewController.swift */; };
@@ -514,7 +520,7 @@
 		FAC6DDF8233A146000A7E650 /* RawTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC6DDF6233A146000A7E650 /* RawTransactionViewModel.swift */; };
 		FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA694520D7C717006F173F /* MnemonicTests.swift */; };
 		FACC4A6FFE58CCF99D9B2115 /* Pods_MinterWalletTestnet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA2C0C098C0F10B9E332BD33 /* Pods_MinterWalletTestnet.framework */; };
-		FAD0F6C220FCAFB2009A5936 /* NewConvertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */; };
+		FAD0F6C220FCAFB2009A5936 /* RootConvertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD0F6C120FCAFB2009A5936 /* RootConvertViewController.swift */; };
 		FADB3E3C20A9C30000EB6CD7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB3E3B20A9C30000EB6CD7 /* Storage.swift */; };
 		FADD8F1F219309A300463F66 /* pop_down.wav in Resources */ = {isa = PBXBuildFile; fileRef = FADD8F1E219309A300463F66 /* pop_down.wav */; };
 		FADD8F2121930B2300463F66 /* SoundHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD8F2021930B2300463F66 /* SoundHelper.swift */; };
@@ -695,6 +701,11 @@
 		FA5B9CC82073B67F00DC06F0 /* TextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldTableViewCell.xib; sourceTree = "<group>"; };
 		FA5CE1F620C7FAB400437195 /* AutoGrowingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoGrowingTextView.swift; sourceTree = "<group>"; };
 		FA5D7DDA230BFCEE00945A66 /* BaseTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTransactionCell.swift; sourceTree = "<group>"; };
+		FA5DB808236198C7008A8E47 /* ImpactProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpactProtocol.swift; sourceTree = "<group>"; };
+		FA5DB80B2361D017008A8E47 /* SendRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SendRouter.swift; path = MinterWallet/Classes/Common/Helper/SendRouter.swift; sourceTree = SOURCE_ROOT; };
+		FA5DB80E2361D6CB008A8E47 /* SettingsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsRouter.swift; path = MinterWallet/Classes/Common/Helper/SettingsRouter.swift; sourceTree = SOURCE_ROOT; };
+		FA5DB8112361EA9F008A8E47 /* TransactionsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionsRouter.swift; path = MinterWallet/Classes/Common/Helper/TransactionsRouter.swift; sourceTree = SOURCE_ROOT; };
+		FA5DB8142366EF1D008A8E47 /* ConvertRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConvertRouter.swift; path = MinterWallet/Classes/Common/Helper/ConvertRouter.swift; sourceTree = SOURCE_ROOT; };
 		FA61EF45209B003600A6FB62 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		FA61EF48209B037700A6FB62 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		FA6259E720F899CB003B8BEF /* Forms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forms.swift; sourceTree = "<group>"; };
@@ -796,8 +807,6 @@
 		FAA2606020923634009FF3DE /* AddressTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressTableViewCell.xib; sourceTree = "<group>"; };
 		FAA2606320930B8A009FF3DE /* UsernameEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameEditViewController.swift; sourceTree = "<group>"; };
 		FAA2606520930C68009FF3DE /* UsernameEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameEditViewModel.swift; sourceTree = "<group>"; };
-		FAA26067209311C2009FF3DE /* MobileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileEditViewController.swift; sourceTree = "<group>"; };
-		FAA2606920931370009FF3DE /* MobileEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileEditViewModel.swift; sourceTree = "<group>"; };
 		FAA2606B20931A56009FF3DE /* EmailEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailEditViewController.swift; sourceTree = "<group>"; };
 		FAA2606D20931A89009FF3DE /* EmailEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailEditViewModel.swift; sourceTree = "<group>"; };
 		FAA2606F20931D2F009FF3DE /* PasswordEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordEditViewController.swift; sourceTree = "<group>"; };
@@ -848,7 +857,7 @@
 		FAC6DDF3233A143900A7E650 /* RawTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionViewController.swift; sourceTree = "<group>"; };
 		FAC6DDF6233A146000A7E650 /* RawTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionViewModel.swift; sourceTree = "<group>"; };
 		FACA694520D7C717006F173F /* MnemonicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTests.swift; sourceTree = "<group>"; };
-		FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConvertViewController.swift; sourceTree = "<group>"; };
+		FAD0F6C120FCAFB2009A5936 /* RootConvertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootConvertViewController.swift; sourceTree = "<group>"; };
 		FADB3E3B20A9C30000EB6CD7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		FADD8F1E219309A300463F66 /* pop_down.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pop_down.wav; sourceTree = "<group>"; };
 		FADD8F2021930B2300463F66 /* SoundHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundHelper.swift; sourceTree = "<group>"; };
@@ -925,6 +934,7 @@
 		01C49776B22ADB28D72385A2 /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				FA5DB8142366EF1D008A8E47 /* ConvertRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -996,6 +1006,7 @@
 		2305D3ECBAE8C223A172592D /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				FA5DB80B2361D017008A8E47 /* SendRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1003,6 +1014,7 @@
 		24FB70D7293268F16E89DD05 /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				FA5DB80E2361D6CB008A8E47 /* SettingsRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1011,7 +1023,7 @@
 			isa = PBXGroup;
 			children = (
 				FA16100B221401DD009F9255 /* ConvertCoinsViewController.swift */,
-				FAD0F6C120FCAFB2009A5936 /* NewConvertViewController.swift */,
+				FAD0F6C120FCAFB2009A5936 /* RootConvertViewController.swift */,
 				FA04028A20FDD5CA00F1689F /* SpendCoinsViewController.swift */,
 				FA04028C20FDD5DF00F1689F /* GetCoinsViewController.swift */,
 			);
@@ -1057,7 +1069,6 @@
 			children = (
 				990C3B74651449146698C1EC /* SettingsViewController.swift */,
 				FAA2606320930B8A009FF3DE /* UsernameEditViewController.swift */,
-				FAA26067209311C2009FF3DE /* MobileEditViewController.swift */,
 				FAA2606B20931A56009FF3DE /* EmailEditViewController.swift */,
 				FAA2606F20931D2F009FF3DE /* PasswordEditViewController.swift */,
 			);
@@ -1094,7 +1105,6 @@
 			children = (
 				62C5BA76C2EA3B06D9F7D6F7 /* SettingsViewModel.swift */,
 				FAA2606520930C68009FF3DE /* UsernameEditViewModel.swift */,
-				FAA2606920931370009FF3DE /* MobileEditViewModel.swift */,
 				FAA2606D20931A89009FF3DE /* EmailEditViewModel.swift */,
 				FAA2607120931D41009FF3DE /* PasswordEditViewModel.swift */,
 			);
@@ -1117,6 +1127,7 @@
 		4A6A26FC444FD574816BCA8B /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				FA5DB8112361EA9F008A8E47 /* TransactionsRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1861,6 +1872,7 @@
 				FAE7227C23424CE000895E07 /* RawTransactionType+Helper.swift */,
 				FA64E280234770EF00436BFE /* RawTransaction+RLPDecodable.swift */,
 				FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */,
+				FA5DB808236198C7008A8E47 /* ImpactProtocol.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -2795,7 +2807,6 @@
 				FA332FAD224A4B3C003B4763 /* TransactionTableViewCell.swift in Sources */,
 				FAB0D35222CB6978002945E2 /* PINRouter.swift in Sources */,
 				FA332FAF224A4B3C003B4763 /* Sugar.swift in Sources */,
-				FA332FB0224A4B3C003B4763 /* MobileEditViewModel.swift in Sources */,
 				FA332FB1224A4B3C003B4763 /* CoinsTableViewHeaderView.swift in Sources */,
 				FA332FB2224A4B3C003B4763 /* DisclosureTableViewCell.swift in Sources */,
 				FA332FB3224A4B3C003B4763 /* ConvertTransactionTableViewCell.swift in Sources */,
@@ -2823,6 +2834,7 @@
 				FA332FC9224A4B3C003B4763 /* ReceiveAddressTableViewCell.swift in Sources */,
 				FA332FCA224A4B3C003B4763 /* UIImage+AlamofireCache.swift in Sources */,
 				FA332FCB224A4B3C003B4763 /* UIFont+Default.swift in Sources */,
+				FA5DB8152366EF1D008A8E47 /* ConvertRouter.swift in Sources */,
 				FA332FCC224A4B3C003B4763 /* BaseRouter.swift in Sources */,
 				FA332FCD224A4B3C003B4763 /* LUAutocompleteViewDataSource.swift in Sources */,
 				FA332FCE224A4B3C003B4763 /* TabBarController.swift in Sources */,
@@ -2863,13 +2875,13 @@
 				FA7DB94A230C8EBF00C75A7A /* BipDevManager.swift in Sources */,
 				FA332FEE224A4B3C003B4763 /* ReaderOverlayView.swift in Sources */,
 				FA332FEF224A4B3C003B4763 /* String+Email.swift in Sources */,
+				FA5DB8122361EA9F008A8E47 /* TransactionsRouter.swift in Sources */,
 				FA332FF0224A4B3C003B4763 /* QRCode.swift in Sources */,
 				FAF9C50D22AA69E4000BF80A /* DelegatedViewModel.swift in Sources */,
 				FA332FF1224A4B3C003B4763 /* PasswordEditViewModel.swift in Sources */,
 				FA333096224A4F1D003B4763 /* Configuration.swift in Sources */,
 				FA332FF2224A4B3C003B4763 /* TransactionManager.swift in Sources */,
 				FA332FF3224A4B3C003B4763 /* BaseCellItem.swift in Sources */,
-				FA332FF4224A4B3C003B4763 /* MobileEditViewController.swift in Sources */,
 				FA332FF5224A4B3C003B4763 /* URL+Params.swift in Sources */,
 				FA332FF6224A4B3C003B4763 /* SwitchTableViewCell.swift in Sources */,
 				FAE7228723448B8100895E07 /* DashedView.swift in Sources */,
@@ -2885,6 +2897,7 @@
 				FA332FFF224A4B3C003B4763 /* PopupRouter.swift in Sources */,
 				FA333000224A4B3C003B4763 /* BaseViewModel.swift in Sources */,
 				FA333001224A4B3C003B4763 /* CoinsViewController.swift in Sources */,
+				FA5DB809236198C7008A8E47 /* ImpactProtocol.swift in Sources */,
 				FA333002224A4B3C003B4763 /* TransactionDateFormatter.swift in Sources */,
 				FA333003224A4B3C003B4763 /* UIViewController+HideKeyboard.swift in Sources */,
 				FA333004224A4B3C003B4763 /* PasswordEditViewController.swift in Sources */,
@@ -2942,7 +2955,7 @@
 				FA333031224A4B3C003B4763 /* SendPopupViewModel.swift in Sources */,
 				FA333032224A4B3C003B4763 /* PopupViewController.swift in Sources */,
 				FA333033224A4B3C003B4763 /* APIClient+Auth.swift in Sources */,
-				FA333034224A4B3C003B4763 /* NewConvertViewController.swift in Sources */,
+				FA333034224A4B3C003B4763 /* RootConvertViewController.swift in Sources */,
 				FA333035224A4B3C003B4763 /* PopupViewModel.swift in Sources */,
 				FAC5394422C37C8A0077E181 /* PINViewModel.swift in Sources */,
 				FA333036224A4B3C003B4763 /* McPickerPopoverViewController.swift in Sources */,
@@ -2953,6 +2966,7 @@
 				FA9BBCC822A9512B0030E92E /* AddressManager+Rx.swift in Sources */,
 				FA33303B224A4B3C003B4763 /* TextViewTableViewCell.swift in Sources */,
 				FA33303C224A4B3C003B4763 /* ToggleTorchButton.swift in Sources */,
+				FA5DB80C2361D017008A8E47 /* SendRouter.swift in Sources */,
 				FA33303D224A4B3C003B4763 /* SettingsViewController.swift in Sources */,
 				FA33303E224A4B3C003B4763 /* GetCoinsViewController.swift in Sources */,
 				FA33303F224A4B3C003B4763 /* SettingsViewModel.swift in Sources */,
@@ -2971,6 +2985,7 @@
 				FAC6DDF4233A143A00A7E650 /* RawTransactionViewController.swift in Sources */,
 				FA333048224A4B3C003B4763 /* UsernameEditViewModel.swift in Sources */,
 				FA333049224A4B3C003B4763 /* ReachabilityService.swift in Sources */,
+				FA5DB80F2361D6CB008A8E47 /* SettingsRouter.swift in Sources */,
 				FA39488123507BB2002AD8DE /* UIApplication+AppDelegate.swift in Sources */,
 				FA33304A224A4B3C003B4763 /* CurrencyNumberFormatter.swift in Sources */,
 				FA33304B224A4B3C003B4763 /* Session.swift in Sources */,
@@ -3012,7 +3027,6 @@
 				FA6A8138207BAE1300DC97E5 /* TransactionTableViewCell.swift in Sources */,
 				FAB0D35322CB6978002945E2 /* PINRouter.swift in Sources */,
 				FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */,
-				FAA2606A20931370009FF3DE /* MobileEditViewModel.swift in Sources */,
 				FA4542782106103500DB6634 /* CoinsTableViewHeaderView.swift in Sources */,
 				FAE794502088C38F0006CB0B /* DisclosureTableViewCell.swift in Sources */,
 				FAB7AA1720F600230003D0DE /* ConvertTransactionTableViewCell.swift in Sources */,
@@ -3040,6 +3054,7 @@
 				FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */,
 				FA670A3920E27352000A5169 /* ReceiveAddressTableViewCell.swift in Sources */,
 				FA3114BF2146899800A17907 /* UIImage+AlamofireCache.swift in Sources */,
+				FA5DB8162366EF1D008A8E47 /* ConvertRouter.swift in Sources */,
 				FA669BD120724A1200AD110A /* UIFont+Default.swift in Sources */,
 				FA669BD9207267DA00AD110A /* BaseRouter.swift in Sources */,
 				FAF5FDB2214949CB00911619 /* LUAutocompleteViewDataSource.swift in Sources */,
@@ -3080,13 +3095,13 @@
 				FA7DB94B230C8EBF00C75A7A /* BipDevManager.swift in Sources */,
 				FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */,
 				FA0F296121B1740800E10F5E /* ReaderOverlayView.swift in Sources */,
+				FA5DB8132361EA9F008A8E47 /* TransactionsRouter.swift in Sources */,
 				FA79F60720D06D3D007876ED /* String+Email.swift in Sources */,
 				FAF9C50E22AA69E4000BF80A /* DelegatedViewModel.swift in Sources */,
 				FA0AF8E821B534EF000B571B /* QRCode.swift in Sources */,
 				FAA2607220931D41009FF3DE /* PasswordEditViewModel.swift in Sources */,
 				FAB85B4E20DD33E300782AFB /* TransactionManager.swift in Sources */,
 				FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */,
-				FAA26068209311C2009FF3DE /* MobileEditViewController.swift in Sources */,
 				FA669BDB2072687C00AD110A /* URL+Params.swift in Sources */,
 				FAA234DE20848EC900F999DE /* SwitchTableViewCell.swift in Sources */,
 				FAE7228823448B8100895E07 /* DashedView.swift in Sources */,
@@ -3102,6 +3117,7 @@
 				FAB865F320C57007002568A4 /* PopupRouter.swift in Sources */,
 				FA669B9C207244E300AD110A /* BaseViewModel.swift in Sources */,
 				332EB812C95C0592C6924E65 /* CoinsViewController.swift in Sources */,
+				FA5DB80A236198C8008A8E47 /* ImpactProtocol.swift in Sources */,
 				FA3154AA20B5ABD1005D9F21 /* TransactionDateFormatter.swift in Sources */,
 				FAA2608620946456009FF3DE /* UIViewController+HideKeyboard.swift in Sources */,
 				FAA2607020931D2F009FF3DE /* PasswordEditViewController.swift in Sources */,
@@ -3159,7 +3175,7 @@
 				FAA234EF20872BF800F999DE /* SendPopupViewModel.swift in Sources */,
 				886A872ED336AA40162E4C11 /* PopupViewController.swift in Sources */,
 				FAC4BA1020D9445F005A1B90 /* APIClient+Auth.swift in Sources */,
-				FAD0F6C220FCAFB2009A5936 /* NewConvertViewController.swift in Sources */,
+				FAD0F6C220FCAFB2009A5936 /* RootConvertViewController.swift in Sources */,
 				4CAD2C40F3ECF43BAE855D20 /* PopupViewModel.swift in Sources */,
 				FAC5394522C37C8A0077E181 /* PINViewModel.swift in Sources */,
 				FA0F297B21B179BB00E10F5E /* McPickerPopoverViewController.swift in Sources */,
@@ -3170,6 +3186,7 @@
 				FA9BBCC922A9512B0030E92E /* AddressManager+Rx.swift in Sources */,
 				FAB865FF20C7D0B3002568A4 /* TextViewTableViewCell.swift in Sources */,
 				FA0F296221B1740800E10F5E /* ToggleTorchButton.swift in Sources */,
+				FA5DB80D2361D017008A8E47 /* SendRouter.swift in Sources */,
 				AF44D30C07B56ACF70021D25 /* SettingsViewController.swift in Sources */,
 				FA04028D20FDD5DF00F1689F /* GetCoinsViewController.swift in Sources */,
 				DF1E9909F9D644AEBBBED0DF /* SettingsViewModel.swift in Sources */,
@@ -3188,6 +3205,7 @@
 				FAC6DDF5233A143A00A7E650 /* RawTransactionViewController.swift in Sources */,
 				FAA2606620930C68009FF3DE /* UsernameEditViewModel.swift in Sources */,
 				FAA3DD09211358BF0054D27E /* ReachabilityService.swift in Sources */,
+				FA5DB8102361D6CB008A8E47 /* SettingsRouter.swift in Sources */,
 				FA39488223507BB2002AD8DE /* UIApplication+AppDelegate.swift in Sources */,
 				FAA2608920946943009FF3DE /* CurrencyNumberFormatter.swift in Sources */,
 				FA8AE85820AAD3E900F26E11 /* Session.swift in Sources */,

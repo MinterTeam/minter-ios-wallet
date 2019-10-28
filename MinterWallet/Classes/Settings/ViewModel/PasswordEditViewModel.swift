@@ -64,17 +64,17 @@ class PasswordEditViewModel: BaseViewModel {
 	func createSection() {
 
 		var section = BaseTableSectionItem(header: "")
-		
+
 		let password = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell",
 																							identifier: "TextFieldTableViewCell_Password")
 		password.title = "NEW PASSWORD".localized()
 		password.isSecure = true
-		
+
 		let confirmPassword = TextFieldTableViewCellItem(reuseIdentifier: "TextFieldTableViewCell",
 																										 identifier: "TextFieldTableViewCell_PasswordConfirm")
 		confirmPassword.title = "REPEAT NEW PASSWORD".localized()
 		confirmPassword.isSecure = true
-		
+
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
 																				 identifier: "ButtonTableViewCell")
 		button.title = "SAVE".localized()
@@ -82,9 +82,9 @@ class PasswordEditViewModel: BaseViewModel {
 		button.isLoadingObserver = self.isLoading.asObservable()
 		button.isButtonEnabled = false
 		button.isButtonEnabledObservable = self.isButtonEnabledObserver
-		
+
 		section.items = [password, confirmPassword, button]
-		
+
 		sections.append(section)
 	}
 
@@ -105,18 +105,17 @@ class PasswordEditViewModel: BaseViewModel {
 	}
 
 	// MARK: -
-	
+
 	private func isPasswordValid(password: String) -> Bool {
 		return password.count >= 6
 	}
 
 	func validate(item: BaseCellItem) -> [String]? {
-
 		var errors: [String]? = []
 		if item.identifier == "TextFieldTableViewCell_Password" {
 			if !isPasswordValid(password: self.password.value ?? "") {
 				if self.password.value == "" {
-					
+
 				} else {
 					errors?.append("PASSWORD IS TOO SHORT".localized())
 				}
@@ -124,7 +123,7 @@ class PasswordEditViewModel: BaseViewModel {
 		} else if item.identifier == "TextFieldTableViewCell_PasswordConfirm" {
 			if (self.password.value ?? "") != (self.confirmPassword.value ?? "") {
 				if self.confirmPassword.value == "" {
-					
+
 				} else {
 					errors?.append("PASSWORDS ARE NOT EQUAL".localized())
 				}
@@ -132,11 +131,11 @@ class PasswordEditViewModel: BaseViewModel {
 		}
 		return errors
 	}
-	
+
 	func changePassword() {
-		
+
 		self.isLoading.value = true
-		
+
 		DispatchQueue.global(qos: .default).async {
 			DispatchQueue.main.async {
 				do {
@@ -156,7 +155,6 @@ class PasswordEditViewModel: BaseViewModel {
 			pwd == cpwd && isPasswordValid(password: pwd) else {
 				return nil
 		}
-
 		return pwd
 	}
 
@@ -167,7 +165,6 @@ class PasswordEditViewModel: BaseViewModel {
 
 	//Send to server
 	private func start() throws {
-
 		accountManager = AccountManager(secureStorage: rescueStorage)
 
 		guard let pwd = newPassword() else {
@@ -192,21 +189,17 @@ class PasswordEditViewModel: BaseViewModel {
 		}
 
 		let newPwd = pwd
-		
 		var mnemonics: [(id: Int, mnemonic: String)] = []
-		
 		var oldMnemonics: [(id: Int, mnemonic: String)] = []
-		
 		try? accounts.forEach { (account) in
-			
 			guard let mnemonic = oldAccountManager.mnemonic(for: account.address) else {
 				throw PasswordChangeError.canNotGetMnemonic
 			}
-			
+
 			if let oldEncryptedMnemonic = oldAccountManager.encryptedMnemonic(for: account.address) {
 				oldMnemonics.append((id: account.id, mnemonic: oldEncryptedMnemonic.toHexString()))
 			}
-			
+
 			guard let encryptedMnemonic = try self.accountManager?
 				.encryptedMnemonic(mnemonic: mnemonic,
 													 password: newEncryptionKey)?.toHexString() else {
@@ -217,15 +210,13 @@ class PasswordEditViewModel: BaseViewModel {
 																		password: newEncryptionKey)
 
 			mnemonics.append((id: account.id, mnemonic: encryptedMnemonic))
-
 		}
-		
+
 		guard let client = APIClient.withAuthentication() else {
 			return
 		}
-		
-		self.authManager = AuthManager(httpClient: client)
 
+		self.authManager = AuthManager(httpClient: client)
 		do {
 			try self.authManager?.changePassword(oldEncryptedMnemoics: oldMnemonics,
 																					 encryptionKey: oldEncryptionKey,
@@ -233,21 +224,17 @@ class PasswordEditViewModel: BaseViewModel {
 																					 completion: { (succeed, error) in
 
 						self.isLoading.value = false
-			
+
 						if succeed == true {
-			
 							self.successMessage.value = NotifiableSuccess(title: "Password has been changed".localized(),
 																														text: nil)
-			
 							do {
 								try self.finish()
-							}
-							catch {
+							} catch {
 								//logout if can't finish PKs recovery
 								Session.shared.logout()
 							}
-						}
-						else {
+						} else {
 							self.errorNotification.value = NotifiableError(title: "Password can't be changed. Please try again later".localized(),
 																														 text: nil)
 							try? self.cleanUp()
@@ -269,15 +256,12 @@ class PasswordEditViewModel: BaseViewModel {
 		}
 
 		self.oldAccountManager.save(encryptionKey: newEncryptionKey)
-
 		try? accounts.forEach { (account) in
-
 			guard let mnemonic = accountManager?.mnemonic(for: account.address) else {
 				throw PasswordChangeError.canNotGetMnemonic
 			}
 
 			try self.oldAccountManager.save(mnemonic: mnemonic, password: newEncryptionKey)
-
 			try? self.cleanUp()
 		}
 	}
@@ -285,5 +269,4 @@ class PasswordEditViewModel: BaseViewModel {
 	func cleanUp() throws {
 		accountManager?.deleteEncryptionKey()
 	}
-
 }

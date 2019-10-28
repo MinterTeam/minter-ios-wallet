@@ -24,8 +24,10 @@ class ConfirmPopupViewModel: PopupViewModel, ViewModelProtocol {
 		var didTapActionButton: Observable<Void>
 		var didTapCancel: Observable<Void>
 	}
+	struct Dependency{}
 	var input: ConfirmPopupViewModel.Input!
 	var output: ConfirmPopupViewModel.Output!
+	var dependency: ConfirmPopupViewModel.Dependency!
 
 	// MARK: -
 
@@ -49,6 +51,6 @@ class ConfirmPopupViewModel: PopupViewModel, ViewModelProtocol {
 										description: desc,
 										didTapActionButton: didTapActionSubject.asObservable(),
 										didTapCancel: didTapCancelSubject.asObservable())
-		
+		dependency = Dependency()
 	}
 }

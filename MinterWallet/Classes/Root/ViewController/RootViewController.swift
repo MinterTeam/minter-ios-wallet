@@ -16,6 +16,12 @@ class RootViewController: UIViewController, ControllerType {
 
 	// MARK: - ControllerType
 
+	var viewModel: RootViewModel! {
+		didSet {
+			tabbarVC.setViewControllers(viewModel.output.viewControllers(), animated: false)
+		}
+	}
+
 	typealias ViewModelType = RootViewModel
 
 	func configure(with viewModel: RootViewController.ViewModelType) {
@@ -32,7 +38,8 @@ class RootViewController: UIViewController, ControllerType {
 														 Session.shared.isLoggedIn.asObservable(),
 														 viewModel.output.shouldPresentPIN.asObservable()
 			).skip(1)
-			.asDriver(onErrorJustReturn: ([], false, false)).drive(onNext: { [weak self] (val) in
+			.asDriver(onErrorJustReturn: ([], false, false))
+			.drive(onNext: { [weak self] (val) in
 				self?.shouldPresentPIN = val.2
 				if val.0.count == 0 {
 					self?.nextStep(isLoggedIn: val.1)
@@ -88,8 +95,6 @@ class RootViewController: UIViewController, ControllerType {
 
 	var shouldPresentPIN = false
 
-	var viewModel = RootViewModel()
-
 	let reachability = Reachability()!
 
 	private let disposeBag = DisposeBag()
@@ -134,7 +139,7 @@ class RootViewController: UIViewController, ControllerType {
 		}
 	}
 
-	private let tabbarVC = Storyboards.Main.instantiateInitialViewController()
+	private var tabbarVC = Storyboards.Main.instantiateInitialViewController()
 
 	func nextStep(accounts: [Account] = [], isLoggedIn: Bool) {
 

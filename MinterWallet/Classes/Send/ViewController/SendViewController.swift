@@ -22,17 +22,16 @@ class SendViewController:
 	UITableViewDataSource,
 	SendPopupViewControllerDelegate,
 	SentPopupViewControllerDelegate,
-	TextViewTableViewCellDelegate,
-	UsernameTableViewCellDelegate {
+	TextViewTableViewCellDelegate {
 
 	// MARK: - ControllerType
 
-	@IBOutlet weak var scanQRButton: UIBarButtonItem!
-	
+	var viewModel: SendViewModel!
 	typealias ViewModelType = SendViewModel
 
 	// MARK: - IBOutlet
 
+	@IBOutlet weak var scanQRButton: UIBarButtonItem!
 	@IBOutlet weak var txScanButton: UIBarButtonItem!
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
@@ -48,7 +47,7 @@ class SendViewController:
 	// MARK: -
 
 	var popupViewController: PopupViewController?
-	var viewModel = SendViewModel()
+
 	private var disposeBag = DisposeBag()
 
 	lazy var readerVC: QRCodeReaderViewController = {
@@ -120,10 +119,6 @@ class SendViewController:
 
 		if let textField = cell as? AmountTextFieldTableViewCell {
 			textField.amountDelegate = self
-		}
-
-		if let addressCell = cell as? UsernameTableViewCell {
-			addressCell.addressDelegate = self
 		}
 
 		if let switchCell = cell as? SwitchTableViewCell {

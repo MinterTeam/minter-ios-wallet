@@ -24,6 +24,7 @@ class DelegatedViewController: BaseViewController, ControllerType {
 
 	// MARK: - ControllerType
 
+	var viewModel: DelegatedViewModel!
 	typealias ViewModelType = DelegatedViewModel
 
 	func configure(with viewModel: DelegatedViewModel) {
@@ -33,7 +34,6 @@ class DelegatedViewController: BaseViewController, ControllerType {
 
 	// MARK: -
 
-	var viewModel = DelegatedViewModel()
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 	var disposeBag = DisposeBag()
 

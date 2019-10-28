@@ -14,9 +14,10 @@ import SafariServices
 import AlamofireImage
 import NotificationBannerSwift
 
-class CoinsViewController: BaseTableViewController,
-ScreenHeaderProtocol,
-ControllerType {
+class CoinsViewController:
+	BaseTableViewController,
+	ScreenHeaderProtocol,
+	ControllerType {
 
 	private var disposeBag = DisposeBag()
 
@@ -31,10 +32,10 @@ ControllerType {
 
 	// MARK: - ControllerType
 
+	var viewModel: CoinsViewModel!
 	typealias ViewModelType = CoinsViewModel
 
 	func configure(with viewModel: CoinsViewModel) {
-
 		// Input
 		refreshControl.rx.controlEvent([.valueChanged])
 			.subscribe(viewModel.input.didRefresh).disposed(by: disposeBag)
@@ -43,7 +44,6 @@ ControllerType {
 			.drive(viewModel.input.txScanButtonDidTap).disposed(by: disposeBag)
 
 		txScanButton.rx.tap.subscribe({ [weak self] (_) in
-//			self?.readerVC.delegate = self
 			self?.present(self!.readerVC, animated: true, completion: nil)
 			}).disposed(by: disposeBag)
 
@@ -87,13 +87,13 @@ ControllerType {
 				if val == nil {
 					let top = 60 + additionalTop
 					if self?.tableView.contentInset.top != top {
-						self?.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0)
+						self?.tableView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
 						shouldLayout = true
 					}
 				} else {
 					let top = 100 + additionalTop
 					if self?.tableView.contentInset.top != top {
-						self?.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0)
+						self?.tableView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
 						shouldLayout = true
 					}
 				}
@@ -116,10 +116,14 @@ ControllerType {
 		viewModel
 			.output
 			.showViewController
-			.asDriver(onErrorJustReturn: nil)
-			.drive(onNext: { [weak self] (viewController) in
-				guard let viewController = viewController else { return }
-				self?.tabBarController?.present(viewController, animated: true, completion: nil)
+			.asDriver(onErrorJustReturn: (controller: nil, isModal: false))
+			.drive(onNext: { [weak self] (val) in
+				guard let viewController = val.0 else { return }
+				if val.1 {
+					self?.tabBarController?.present(viewController, animated: true, completion: nil)
+				} else {
+					self?.navigationController?.pushViewController(viewController, animated: true)
+				}
 			}).disposed(by: disposeBag)
 
 		viewModel
@@ -143,9 +147,13 @@ ControllerType {
 				banner.show()
 			}).disposed(by: disposeBag)
 
-		self.headerViewBalanceLabel.rx.tapGesture().map({ (_) -> () in
-			return ()
-		}).subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
+		self.headerViewBalanceLabel
+			.rx
+			.tapGesture()
+			.map({ (_) -> Void in
+				return ()
+			}).subscribe(viewModel.input.didTapBalance)
+			.disposed(by: disposeBag)
 	}
 
 	// MARK: -
@@ -176,7 +184,7 @@ ControllerType {
 	@IBOutlet weak var headerViewTitleLabel: UILabel!
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
-			tableView.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
+			tableView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
 			tableView.estimatedRowHeight = 50.0
 		}
 	}
@@ -189,9 +197,6 @@ ControllerType {
 	@IBOutlet var tableHeaderTopConstraint: NSLayoutConstraint?
 	@IBOutlet weak var txScanButton: UIBarButtonItem!
 
-	var qrCodeReader: QRCodeReaderViewController?
-	func processQR(result: String) {}
-
 	// MARK: -
 
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
@@ -202,10 +207,6 @@ ControllerType {
 		}
 		return -72
 	}
-
-	// MARK: -
-
-	var viewModel = CoinsViewModel()
 
 	// MARK: Life cycle
 
@@ -271,16 +272,18 @@ ControllerType {
 
 		hidesBottomBarWhenPushed = false
 
-		viewModel.errorObservable.distinctUntilChanged()
+		viewModel
+			.errorObservable
+			.distinctUntilChanged()
 			.subscribe(onNext: { [weak self] (val) in
-				UIView.animate(withDuration: 0.25,animations: {
+				UIView.animate(withDuration: 0.25, animations: {
 					if val {
 						self?.showPlaceholderView()
 					} else {
 						self?.hidePlaceholderView()
 					}
 				})
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		if self.shouldShowTestnetToolbar {
 			headerViewHeightConstraint.constant = 73.0 + 56.0
@@ -345,7 +348,7 @@ ControllerType {
 		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
 			return
 		}
-		performSegue(for: item.identifier)
+		didTap(identifier: item.identifier)
 	}
 
 	func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
@@ -361,7 +364,6 @@ ControllerType {
 																				row: indexPath.row) else {
 			return 0.1
 		}
-
 		if item.reuseIdentifier == "BlankTableViewCell" {
 			return 8.0
 		} else if item.reuseIdentifier == "SeparatorTableViewCell" {
@@ -382,26 +384,6 @@ ControllerType {
 		headerView?.updateHeaderViewFromScrollEvent(scrollView)
 	}
 
-	// MARK: - Segues
-
-	func performSegue(for cellIdentifier: String) {
-		let vm = type(of: self.viewModel)
-
-		//Move to router?
-		switch cellIdentifier {
-		case vm.CellIdentifierPrefix.convert.rawValue:
-			perform(segue: CoinsViewController.Segue.showConvert)
-			break
-
-		case vm.CellIdentifierPrefix.transactions.rawValue:
-			perform(segue: CoinsViewController.Segue.showTransactions)
-			break
-
-		default:
-			break
-		}
-	}
-
 	func presentExplorerController(with url: URL) {
 		self.present(CoinsRouter.explorerViewController(url: url), animated: true) {}
 	}
@@ -413,8 +395,20 @@ extension CoinsViewController: ButtonTableViewCellDelegate {
 		guard let indexPath = tableView.indexPath(for: cell),
 			let item = viewModel.cellItem(section: indexPath.section,
 																		row: indexPath.row) else { return }
+		didTap(identifier: item.identifier)
+	}
 
-		self.performSegue(for: item.identifier)
+	func didTap(identifier: String) {
+		switch identifier {
+		case CoinsViewModel.CellIdentifierPrefix.convert.rawValue:
+			viewModel.input.didTapConvert.onNext(())
+
+		case CoinsViewModel.CellIdentifierPrefix.transactions.rawValue:
+			viewModel.input.didTapTransaction.onNext(())
+
+		default:
+			break
+		}
 	}
 }
 
@@ -486,12 +480,6 @@ extension CoinsViewController {
 }
 
 extension CoinsViewController: QRCodeReaderViewControllerDelegate {
-
-	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
-		
-	}
-
-	func readerDidCancel(_ reader: QRCodeReaderViewController) {
-		
-	}
+	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {}
+	func readerDidCancel(_ reader: QRCodeReaderViewController) {}
 }

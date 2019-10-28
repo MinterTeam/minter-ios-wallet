@@ -12,42 +12,16 @@ import RxSwift
 import RxCocoa
 import NotificationBannerSwift
 import Reachability
-import YandexMobileMetrica
 import RxAppState
 
 protocol ControllerType: class {
+	var viewModel: ViewModelType! { get set }
+
 	associatedtype ViewModelType: ViewModelProtocol
 	/// Configurates controller with specified ViewModelProtocol subclass
 	///
 	/// - Parameter viewModel: CPViewModel subclass instance to configure with
 	func configure(with viewModel: ViewModelType)
-	/// Factory function for view controller instatiation
-	///
-	/// - Parameter viewModel: View model object
-	/// - Returns: View controller of concrete type
-//	static func create(with viewModel: ViewModelType) -> UIViewController
-}
-
-protocol UIImpactFeedbackProtocol {
-
-	var hardImpactFeedbackGenerator: UIImpactFeedbackGenerator { get }
-	var lightImpactFeedbackGenerator: UIImpactFeedbackGenerator { get }
-
-	func performLightImpact()
-	func performHardImpact()
-}
-
-extension UIImpactFeedbackProtocol {
-
-	func performLightImpact() {
-		self.lightImpactFeedbackGenerator.prepare()
-		self.lightImpactFeedbackGenerator.impactOccurred()
-	}
-
-	func performHardImpact() {
-		self.hardImpactFeedbackGenerator.prepare()
-		self.hardImpactFeedbackGenerator.impactOccurred()
-	}
 }
 
 class BaseViewController: UIViewController, UIImpactFeedbackProtocol {

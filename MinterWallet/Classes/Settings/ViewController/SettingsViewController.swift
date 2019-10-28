@@ -30,13 +30,13 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 
 	// MARK: - ControllerType
 
-	var viewModel = SettingsViewModel()
-
 	private var disposeBag = DisposeBag()
 
 	private var shouldPresentSetPIN = false
 
 	// MARK: -
+
+	var viewModel: SettingsViewModel!
 
 	typealias ViewModelType = SettingsViewModel
 
@@ -69,7 +69,6 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 					return nil != vc as? PINViewController
 				}) as? PINViewController)?.shakeError()
 		}).disposed(by: disposeBag)
-
 	}
 
 	// MARK: Life cycle
@@ -228,8 +227,6 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showAddress.rawValue, sender: self)
 		} else if item.identifier == "DisclosureTableViewCell_Username" {
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showUsername.rawValue, sender: self)
-		} else if item.identifier == "DisclosureTableViewCell_Mobile" {
-			self.performSegue(withIdentifier: SettingsViewController.Segue.showMobile.rawValue, sender: self)
 		} else if item.identifier == "DisclosureTableViewCell_Email" {
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showEmail.rawValue, sender: self)
 		} else if item.identifier == "DisclosureTableViewCell_Password" {
@@ -285,17 +282,13 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
 		let mediaType = info["UIImagePickerControllerMediaType"] as? String ?? ""
 		switch mediaType {
 		case "public.movie":
-			// TODO: Load video
 			picker.dismiss(animated: true, completion: nil)
-			break
 
 		case "public.image":
 			if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
 				self.viewModel.updateAvatar(image)
 			}
-
 			picker.dismiss(animated: true, completion: nil)
-			break
 
 		default:
 			picker.dismiss(animated: true, completion: nil)
@@ -355,15 +348,13 @@ extension SettingsViewController {
 		super.prepare(for: segue, sender: sender)
 
 		if let pinVC = segue.destination as? PINViewController {
+			pinVC.viewModel = viewModel.pinViewModel()
 			pinVC.delegate = self
 		}
 
 		if segue.identifier == SettingsViewController.Segue.showPIN.identifier,
 			let pinVC = segue.destination as? PINViewController {
-			let vm = PINViewModel()
-			vm.title = viewModel.isCheckingPIN ? "Current PIN-code".localized() : "Set PIN-code".localized()
-			vm.desc = "Please enter a 4-digit PIN".localized()
-			pinVC.viewModel = vm
+			pinVC.viewModel = viewModel.pinViewModel()
 			pinVC.delegate = self
 		}
 	}

@@ -14,7 +14,15 @@ protocol SendPopupViewControllerDelegate: class {
 	func didCancel(viewController: SendPopupViewController)
 }
 
-class SendPopupViewController: PopupViewController {
+class SendPopupViewController: PopupViewController, ControllerType {
+
+	// MARK: -
+
+	typealias ViewModelType = SendPopupViewModel
+	var viewModel: SendPopupViewModel!
+	func configure(with viewModel: SendPopupViewModel) {
+		
+	}
 
 	// MARK: -
 
@@ -28,33 +36,24 @@ class SendPopupViewController: PopupViewController {
 			avatarWrapper?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
 		}
 	}
-
 	@IBOutlet weak var amountTitle: UILabel!
-
 	@IBOutlet weak var avatarImage: UIImageView! {
 		didSet {
 			avatarImage.backgroundColor = .white
 			avatarImage.makeBorderWithCornerRadius(radius: 25, borderColor: .clear, borderWidth: 4)		
 		}
 	}
-
 	@IBOutlet weak var userLabel: UILabel!
-
 	@IBOutlet weak var actionButton: DefaultButton!
-
 	@IBOutlet weak var cancelButton: DefaultButton!
-
 	@IBOutlet weak var acitionButtonActivityIndicator: UIActivityIndicatorView!
-
 	@IBAction func secondButtonDidTap(_ sender: UIButton) {
 		self.delegate?.didCancel(viewController: self)
 	}
-
 	@IBAction func didTapActionButton(_ sender: UIButton) {
 		acitionButtonActivityIndicator?.startAnimating()
 		acitionButtonActivityIndicator?.alpha = 1.0
 		sender.isEnabled = false
-
 		self.delegate?.didFinish(viewController: self)
 	}
 
@@ -89,25 +88,21 @@ class SendPopupViewController: PopupViewController {
 	// MARK: -
 
 	private func updateUI() {
+		popupTitle.text = viewModel?.popupTitle
 
-		let sendViewModel = viewModel as? SendPopupViewModel
-
-		popupTitle.text = sendViewModel?.popupTitle
-
-		amountTitle.text = String((sendViewModel?.amountString ?? "") + " " + (sendViewModel?.coin ?? "")).uppercased()
+		amountTitle.text = String((viewModel?.amountString ?? "") + " " + (viewModel?.coin ?? "")).uppercased()
 		avatarImage.image = UIImage(named: "AvatarPlaceholderImage")
-		if let img = sendViewModel?.avatarImage {
+		if let img = viewModel?.avatarImage {
 			avatarImage.image = img
-		} else if let avatarURL = sendViewModel?.avatarImageURL {
+		} else if let avatarURL = viewModel?.avatarImageURL {
 			avatarImage.af_setImage(withURL: avatarURL, filter: RoundedCornersFilter(radius: 25.0))
 		}
-		userLabel.text = sendViewModel?.username
-		actionButton.setTitle(sendViewModel?.buttonTitle ?? "", for: .normal)
-		cancelButton.setTitle(sendViewModel?.cancelTitle ?? "", for: .normal)
+		userLabel.text = viewModel?.username
+		actionButton.setTitle(viewModel?.buttonTitle ?? "", for: .normal)
+		cancelButton.setTitle(viewModel?.cancelTitle ?? "", for: .normal)
 	}
 
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 	}
-
 }

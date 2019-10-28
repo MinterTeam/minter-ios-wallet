@@ -69,7 +69,11 @@ class SettingsAvatarTableViewCell: BaseCell {
 				let filter = RoundedCornersFilter(radius: 25.0)
 				let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
 				self.avatarImageView.af_setImage(withURLRequest: request,
-																				 placeholderImage: UIImage(named: "AvatarPlaceholderImage"), filter: filter, progress: nil, progressQueue: DispatchQueue.main, imageTransition: .crossDissolve(0.3),
+																				 placeholderImage: UIImage(named: "AvatarPlaceholderImage"),
+																				 filter: filter,
+																				 progress: nil,
+																				 progressQueue: DispatchQueue.main,
+																				 imageTransition: .crossDissolve(0.3),
 																				 runImageTransitionIfCached: false) { (response) in
 
 					if let data = response.value {

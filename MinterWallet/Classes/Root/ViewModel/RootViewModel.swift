@@ -26,9 +26,12 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 		var shouldPresentPIN: Observable<Bool>
 		var shouldGoNextStep: Observable<Bool>
 		var openURL: Observable<URL?>
+		var viewControllers: () -> ([UIViewController])
 	}
+	struct Dependency {}
 	var input: RootViewModel.Input!
 	var output: RootViewModel.Output!
+	var dependency: RootViewModel.Dependency!
 
 	// MARK: -
 
@@ -37,12 +40,14 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 	private var biometricsSucceedSubject: PublishSubject<Bool> = PublishSubject()
 	private var proceedURLSubject: PublishSubject<URL?> = PublishSubject()
 	private var urlToProceedObservable: Observable<URL?> {
-		return Observable.combineLatest(shouldPresent.asObservable(),
-																		proceedURLSubject.asObservable()).filter({ (val) -> Bool in
-																			return !val.0
-																		}).map { (val) -> URL? in
-																			return val.1
-		}
+		return Observable
+			.combineLatest(shouldPresent.asObservable(),
+										 proceedURLSubject.asObservable())
+			.filter({ (val) -> Bool in
+				return !val.0
+			}).map { (val) -> URL? in
+				return val.1
+			}
 	}
 	private var didOpenURLSubject = PublishSubject<URL?>()
 
@@ -70,11 +75,13 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 		input = Input(pin: pinCodeSubject.asObserver(),
 									biometricsSucceed: biometricsSucceedSubject.asObserver(),
 									proceedURL: proceedURLSubject.asObserver(),
-									didOpenURL: didOpenURLSubject.asObserver()
-		)
+									didOpenURL: didOpenURLSubject.asObserver())
 		output = Output(shouldPresentPIN: shouldPresent,
 										shouldGoNextStep: goNextStepSubject.asObservable(),
-										openURL: urlToProceedObservable.asObservable())
+										openURL: urlToProceedObservable.asObservable(),
+										viewControllers: {
+											self.tabbarViewControllers()
+										})
 
 		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in
 			return isLoggedIn
@@ -125,7 +132,6 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 		didOpenURLSubject.subscribe(onNext: { [weak self] (url) in
 			self?.proceedURLSubject.onNext(nil)
 		}).disposed(by: disposeBag)
-		
 	}
 
 	func didLoad() {
@@ -168,6 +174,27 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 	func reloadData() {
 		Session.shared.loadBalances()
 		Session.shared.loadTransactions()
+	}
+
+	func tabbarViewControllers() -> [UIViewController] {
+		var vcs = [UIViewController]()
+		let coinVM = CoinsViewModel()
+		if let coinVC = CoinsRouter.coinsViewController(viewModel: coinVM) {
+			vcs.append(coinVC)
+		}
+		let sendVM = SendViewModel(dependency: SendViewModel.Dependency())
+		if let sendVC = SendRouter.sendViewController(viewModel: sendVM) {
+			vcs.append(sendVC)
+		}
+		let receiveVM = ReceiveViewModel()
+		if let receiveVC = ReceiveRouter.receiveViewController(viewModel: receiveVM) {
+			vcs.append(receiveVC)
+		}
+		let settingsVM = SettingsViewModel()
+		if let settingsVC = SettingsRouter.settingsViewController(viewModel: settingsVM) {
+			vcs.append(settingsVC)
+		}
+		return vcs
 	}
 }
 

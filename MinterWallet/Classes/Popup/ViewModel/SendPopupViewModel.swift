@@ -8,7 +8,14 @@
 
 import UIKit
 
-class SendPopupViewModel: PopupViewModel {
+class SendPopupViewModel: PopupViewModel, ViewModelProtocol {
+	var input: SendPopupViewModel.Input!
+	var output: SendPopupViewModel.Output!
+	var dependency: SendPopupViewModel.Dependency!
+
+	struct Input {}
+	struct Output {}
+	struct Dependency {}
 
 	// MARK: -
 
@@ -24,20 +31,13 @@ class SendPopupViewModel: PopupViewModel {
 	// MARK: -
 
 	var amount: Decimal?
-
 	var coin: String?
-
 	var amountString: String? {
 		return formatter.string(from: (amount ?? 0) as NSNumber)
 	}
-
 	var avatarImageURL: URL?
-	
 	var avatarImage: UIImage?
-
 	var username: String?
-
 	var buttonTitle: String?
-
 	var cancelTitle: String?
 }
