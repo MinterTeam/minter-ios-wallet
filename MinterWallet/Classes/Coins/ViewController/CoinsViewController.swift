@@ -35,13 +35,20 @@ class CoinsViewController:
 	var viewModel: CoinsViewModel!
 	typealias ViewModelType = CoinsViewModel
 
-	func configure(with viewModel: CoinsViewModel) {
+	func configure(with viewModel: CoinsViewModel) { // swiftlint:disable:this function_body_length
 		// Input
-		refreshControl.rx.controlEvent([.valueChanged])
-			.subscribe(viewModel.input.didRefresh).disposed(by: disposeBag)
+		refreshControl
+			.rx
+			.controlEvent([.valueChanged])
+			.subscribe(viewModel.input.didRefresh)
+			.disposed(by: disposeBag)
 
-		txScanButton.rx.tap.asDriver()
-			.drive(viewModel.input.txScanButtonDidTap).disposed(by: disposeBag)
+		txScanButton
+			.rx
+			.tap
+			.asDriver()
+			.drive(viewModel.input.txScanButtonDidTap)
+			.disposed(by: disposeBag)
 
 		txScanButton.rx.tap.subscribe({ [weak self] (_) in
 			self?.present(self!.readerVC, animated: true, completion: nil)
@@ -58,7 +65,8 @@ class CoinsViewController:
 		}
 
 		// Output
-		viewModel.output
+		viewModel
+			.output
 			.totalDelegatedBalance
 			.asDriver(onErrorJustReturn: "")
 			.drive(onNext: { [weak self] (val) in
@@ -105,13 +113,16 @@ class CoinsViewController:
 				})
 			}).disposed(by: disposeBag)
 
-		viewModel.output.balanceText.subscribe(onNext: { [weak self] (balanceItem) in
-			if balanceItem.animated {
-				self?.headerViewTitleLabel.pushTransition(0.55)
-			}
-			self?.headerViewTitleLabel.text = balanceItem.title
-			self?.headerViewBalanceLabel.attributedText = balanceItem.text
-		}).disposed(by: disposeBag)
+		viewModel
+			.output
+			.balanceText
+			.subscribe(onNext: { [weak self] (balanceItem) in
+				if balanceItem.animated {
+					self?.headerViewTitleLabel.pushTransition(0.55)
+				}
+				self?.headerViewTitleLabel.text = balanceItem.title
+				self?.headerViewBalanceLabel.attributedText = balanceItem.text
+			}).disposed(by: disposeBag)
 
 		viewModel
 			.output
@@ -416,7 +427,6 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 
 	func didTapExplorerButton(cell: ExpandableCell) {
 		performLightImpact()
-
 		AnalyticsHelper.defaultAnalytics.track(event: .transactionExplorerButton)
 
 		if let indexPath = tableView.indexPath(for: cell),
@@ -447,6 +457,18 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 			let to = cellItem.to {
 				UIPasteboard.general.string = to
 				BannerHelper.performCopiedNotification()
+		}
+	}
+}
+
+extension CoinsViewController {
+
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		super.prepare(for: segue, sender: sender)
+
+		if segue.identifier == Segue.showDelegated.identifier,
+			let delegatedVC = segue.destination as? DelegatedViewController {
+			delegatedVC.viewModel = viewModel.output.delegatedViewModel()
 		}
 	}
 }

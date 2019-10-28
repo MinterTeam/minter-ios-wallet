@@ -35,6 +35,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		var showViewController: Observable<(controller: UIViewController?, isModal: Bool)>
 		var showSendTab: Observable<Void>
 		var error: Observable<NotifiableError?>
+		var delegatedViewModel: () -> (DelegatedViewModel)
 	}
 	struct Dependency {}
 
@@ -109,13 +110,14 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 												 balanceText: balanceTextSubject.asObservable(),
 												 showViewController: showViewControllerSubject.asObservable(),
 												 showSendTab: showSendTabSubject.asObservable(),
-												 error: errorNotificationSubject.asObservable())
+												 error: errorNotificationSubject.asObservable(),
+												 delegatedViewModel: { return DelegatedViewModel() })
 
 		Observable.combineLatest(Session.shared.transactions.asObservable(),
 														 Session.shared.balances.asObservable(),
 														 Session.shared.allBalances.asObservable(),
 														 Session.shared.isLoggedIn.asObservable().distinctUntilChanged())
-		.subscribe(onNext: { [weak self] (transactions) in
+		.subscribe(onNext: { [weak self] (_) in
 			self?.createSection()
 			let bal = Session.shared.balances.value
 			bal.keys.sorted(by: { (key1, key2) -> Bool in

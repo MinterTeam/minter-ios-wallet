@@ -278,7 +278,7 @@ extension SettingsViewController: SettingsAvatarTableViewCellDelegate {
 
 extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
 		let mediaType = info["UIImagePickerControllerMediaType"] as? String ?? ""
 		switch mediaType {
 		case "public.movie":
@@ -304,16 +304,8 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
 extension SettingsViewController: ButtonTableViewCellDelegate {
 
 	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-
-		if let indexPath = tableView.indexPath(for: cell),
-			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row),
-			item.identifier == "ButtonTableViewCell_Get100" {
-			SoundHelper.playSoundIfAllowed(type: .bip)
-			return
-		}
 
 		AnalyticsHelper.defaultAnalytics.track(event: .settingsLogoutButton)
 
@@ -335,7 +327,7 @@ extension SettingsViewController: SwitchTableViewCellDelegate {
 			} else if item.identifier == "SwitchTableViewCell_Pin" {
 				shouldPresentSetPIN = isOn
 				performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: nil)
-			} else/* if item.identifier == "SwitchTableViewCell_Sound"*/ {
+			} else {
 				viewModel.didSwitchSound(isOn: isOn)
 			}
 		}
@@ -371,12 +363,11 @@ extension SettingsViewController: PINViewControllerDelegate {
 	// MARK: -
 
 	func PINViewController(title: String, desc: String) -> PINViewController? {
-		let vm = PINViewModel()
-		vm.title = title//viewModel.isCheckingPIN ? "Current PIN-code".localized() : "Set PIN-code".localized()
-		vm.desc = desc//
-		let pinVC = PINRouter.PINViewController(with: vm)
+		let viewModel = PINViewModel()
+		viewModel.title = title
+		viewModel.desc = desc
+		let pinVC = PINRouter.PINViewController(with: viewModel)
 		pinVC?.delegate = self
 		return pinVC
 	}
-
 }

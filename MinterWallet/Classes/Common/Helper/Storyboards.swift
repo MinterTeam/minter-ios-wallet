@@ -101,6 +101,10 @@ struct Storyboards {
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
         }
+
+        static func instantiatePINViewController() -> PINViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "PINViewController") as! PINViewController
+        }
     }
 
     struct CreateWallet: Storyboard {
@@ -142,6 +146,10 @@ struct Storyboards {
 
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
+        }
+
+        static func instantiateDelegatedViewController() -> DelegatedViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "DelegatedViewController") as! DelegatedViewController
         }
     }
 
@@ -710,10 +718,26 @@ extension IdentifiableProtocol where Self: ConfirmPopupViewController {
 }
 
 // MARK: - PINViewController
+protocol PINViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension PINViewController: PINViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: PINViewController {
+    var storyboardIdentifier: String? { return "PINViewController" }
+    static var storyboardIdentifier: String? { return "PINViewController" }
+}
 
 // MARK: - CreateWalletViewController
 
 // MARK: - DelegatedViewController
+protocol DelegatedViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension DelegatedViewController: DelegatedViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: DelegatedViewController {
+    var storyboardIdentifier: String? { return "DelegatedViewController" }
+    static var storyboardIdentifier: String? { return "DelegatedViewController" }
+}
 extension DelegatedViewController {
 
     enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
@@ -764,11 +788,14 @@ extension IdentifiableProtocol where Self: CoinsViewController {
 extension CoinsViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
+        case showDelegated
         case showTransactions
         case showConvert
 
         var kind: SegueKind? {
             switch self {
+            case .showDelegated:
+                return SegueKind(rawValue: "show")
             case .showTransactions:
                 return SegueKind(rawValue: "show")
             case .showConvert:

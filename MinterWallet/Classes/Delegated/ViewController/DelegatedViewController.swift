@@ -14,8 +14,6 @@ class DelegatedViewController: BaseViewController, ControllerType {
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
-
-		configure(with: viewModel)
 	}
 
 	// MARK: -
@@ -40,6 +38,8 @@ class DelegatedViewController: BaseViewController, ControllerType {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		configure(with: viewModel)
+
 		registerCells()
 
 		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
@@ -56,7 +56,7 @@ class DelegatedViewController: BaseViewController, ControllerType {
 					delegatedCell.delegate = self
 				}
 				return cell
-		})
+			})
 
 		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
 																																	reloadAnimation: .automatic,
@@ -65,6 +65,8 @@ class DelegatedViewController: BaseViewController, ControllerType {
 		viewModel.output.sections.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)
 		tableView.rx.willDisplayCell.subscribe(viewModel.input.willDisplayCell).disposed(by: disposeBag)
+
+		viewModel.input.viewDidLoad.onNext(())
 	}
 
 	func registerCells() {
@@ -95,5 +97,4 @@ extension DelegatedViewController: DelegatedTableViewCellDelegate, UITableViewDe
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 		return 0.1
 	}
-
 }

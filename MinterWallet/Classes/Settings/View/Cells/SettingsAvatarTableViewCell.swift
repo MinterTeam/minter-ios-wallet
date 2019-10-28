@@ -13,10 +13,8 @@ protocol SettingsAvatarTableViewCellDelegate: class {
 	func didTapChangeAvatar(cell: SettingsAvatarTableViewCell)
 }
 
-class SettingsAvatarTableViewCellItem : BaseCellItem {
-
+class SettingsAvatarTableViewCellItem: BaseCellItem {
 	var avatar: UIImage?
-
 	var avatarURL: URL?
 }
 
@@ -31,9 +29,7 @@ class SettingsAvatarTableViewCell: BaseCell {
 	@IBAction func changeAvatarDidTap(_ sender: Any) {
 		delegate?.didTapChangeAvatar(cell: self)
 	}
-
 	@IBOutlet weak var changeAvatarButton: DefaultButton!
-
 	@IBOutlet weak var avatarImageView: UIImageView! {
 		didSet {
 			let color = UIColor(hex: 0x000000, alpha: 0.2)!
@@ -75,7 +71,6 @@ class SettingsAvatarTableViewCell: BaseCell {
 																				 progressQueue: DispatchQueue.main,
 																				 imageTransition: .crossDissolve(0.3),
 																				 runImageTransitionIfCached: false) { (response) in
-
 					if let data = response.value {
 						self.avatarImageView.image = data//UIImage(data: data)
 					}
