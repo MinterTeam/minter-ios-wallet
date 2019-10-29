@@ -45,7 +45,8 @@ class DelegatedViewController: BaseViewController, ControllerType {
 		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
 			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
 
-				guard let item = try! dataSource.model(at: indexPath) as? BaseCellItem, // swiftlint:disable:this force_try
+				guard
+					let item = try! dataSource.model(at: indexPath) as? BaseCellItem, // swiftlint:disable:this force_try
 					let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
 						return UITableViewCell()
 				}

@@ -23,10 +23,12 @@ struct AccountPickerItem {
 	var coin: String?
 }
 
-protocol GateProtocol: class {
+protocol SendViewModelProtocol: class {
 	func minGas() -> Observable<Int>
 	func nonce(address: String) -> Observable<Int>
-	func send(rawTx: String?) -> Observable<String?>
+	func send(rawTx: String) -> Observable<String?>
+	func estimateTXCommission(rawTx: String) -> Observable<Decimal>
+	func address(term: String) -> Observable<String>
 }
 
 class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this type_body_length
@@ -52,9 +54,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		var popup: Observable<PopupViewController?>
 		var showViewController: Observable<UIViewController?>
 	}
-	struct Dependency {
-		
-	}
+	struct Dependency {}
 
 	// MARK: -
 
@@ -561,7 +561,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 
 	// MARK: -
 
-	func newSend() {
+	func send() {
 		Observable
 			.combineLatest(
 				GateManager.shared.nonce(address: "Mx" + selectedAddress!),
@@ -637,7 +637,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 	}
 
 	func submitSendButtonTaped() {
-		newSend()
+		send()
 	}
 
 	func sendCancelButtonTapped() {}
