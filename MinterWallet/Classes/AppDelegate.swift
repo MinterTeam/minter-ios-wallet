@@ -97,14 +97,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		UIBarButtonItem.appearance().setTitleTextAttributes([
 				NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
 				NSAttributedStringKey.foregroundColor: UIColor.white,
-				NSAttributedStringKey.baselineOffset : 1
+				NSAttributedStringKey.baselineOffset: 1
 			], for: .normal
 		)
 
 		UIBarButtonItem.appearance().setTitleTextAttributes([
 			NSAttributedStringKey.font: UIFont.defaultFont(of: 14),
-			NSAttributedStringKey.foregroundColor : UIColor.white,
-			NSAttributedStringKey.baselineOffset : 1
+			NSAttributedStringKey.foregroundColor: UIColor.white,
+			NSAttributedStringKey.baselineOffset: 1
 			], for: .highlighted
 		)
 
@@ -117,7 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		UINavigationBar.appearance().isTranslucent = false
 
 		UITabBarItem.appearance().setTitleTextAttributes([
-			NSAttributedStringKey.foregroundColor : UIColor(hex: 0x8A8A8F)!,
+			NSAttributedStringKey.foregroundColor: UIColor(hex: 0x8A8A8F)!,
 			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
 		], for: .normal)
 		UITabBarItem.appearance().setTitleTextAttributes([

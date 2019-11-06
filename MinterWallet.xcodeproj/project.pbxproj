@@ -51,6 +51,7 @@
 		FA04029320FDD6E000F1689F /* GetCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */; };
 		FA0A0DD72371A70B00B83C29 /* UITextViewWorkaround.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A0DD62371A70B00B83C29 /* UITextViewWorkaround.swift */; };
 		FA0A0DD82371A70B00B83C29 /* UITextViewWorkaround.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A0DD62371A70B00B83C29 /* UITextViewWorkaround.swift */; };
+		FA0A0DDB23732D9D00B83C29 /* RawTransactionRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A0DDA23732D9D00B83C29 /* RawTransactionRouterTests.swift */; };
 		FA0AF8DC21B5297E000B571B /* NextGrowingInternalTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8DA21B5297D000B571B /* NextGrowingInternalTextView.swift */; };
 		FA0AF8DD21B5297E000B571B /* NextGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8DB21B5297D000B571B /* NextGrowingTextView.swift */; };
 		FA0AF8E521B534EF000B571B /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8DF21B534EF000B571B /* UIImageViewExtension.swift */; };
@@ -650,6 +651,7 @@
 		FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA0A0DD62371A70B00B83C29 /* UITextViewWorkaround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewWorkaround.swift; sourceTree = "<group>"; };
+		FA0A0DDA23732D9D00B83C29 /* RawTransactionRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionRouterTests.swift; sourceTree = "<group>"; };
 		FA0AF8DA21B5297D000B571B /* NextGrowingInternalTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingInternalTextView.swift; sourceTree = "<group>"; };
 		FA0AF8DB21B5297D000B571B /* NextGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingTextView.swift; sourceTree = "<group>"; };
 		FA0AF8DF21B534EF000B571B /* UIImageViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
@@ -1525,6 +1527,14 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		FA0A0DD923732AAA00B83C29 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				FA0A0DDA23732D9D00B83C29 /* RawTransactionRouterTests.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		FA0AF8D921B5291A000B571B /* NextGrowingTextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1794,6 +1804,7 @@
 		FA669B7E207239F200AD110A /* MinterWalletTests */ = {
 			isa = PBXGroup;
 			children = (
+				FA0A0DD923732AAA00B83C29 /* ViewModels */,
 				FA669B7F207239F200AD110A /* MinterWalletTests.swift */,
 				FA669B81207239F200AD110A /* Info.plist */,
 				FACA694520D7C717006F173F /* MnemonicTests.swift */,
@@ -3276,6 +3287,7 @@
 			files = (
 				FA669B80207239F200AD110A /* MinterWalletTests.swift in Sources */,
 				FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */,
+				FA0A0DDB23732D9D00B83C29 /* RawTransactionRouterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
