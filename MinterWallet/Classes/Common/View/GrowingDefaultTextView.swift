@@ -11,12 +11,7 @@ import SwiftValidator
 
 class GrowingDefaultTextView: AutoGrowingTextView {
 
-	//MARK: - IBOutlets
-	//MARK: -
-
-//	public var validationText: String {
-//		return self.text ?? ""
-//	}
+	// MARK: - IBOutlets
 
 	override func awakeFromNib() {
 		super.awakeFromNib()

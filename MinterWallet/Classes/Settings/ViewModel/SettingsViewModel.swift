@@ -155,8 +155,8 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 				let avatarURL = URL(string: avatarURLString) {
 				avatar.avatarURL = avatarURL
 			} else {
-				if let id = user?.id {
-					avatar.avatarURL = MinterMyAPIURL.avatarUserId(id: id).url()
+				if let ident = user?.id {
+					avatar.avatarURL = MinterMyAPIURL.avatarUserId(id: ident).url()
 				}
 			}
 
@@ -321,7 +321,7 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 			let base64 = data.base64EncodedString()
 
 			profileManager?.uploadAvatar(imageBase64: base64,
-																	 completion: { (succeed, url, error) in
+																	 completion: { (_, url, error) in
 
 				guard nil == error else {
 					return

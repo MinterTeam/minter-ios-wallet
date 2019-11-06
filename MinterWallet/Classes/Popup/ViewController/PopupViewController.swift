@@ -16,7 +16,7 @@ protocol PopupViewControllerDelegate: class {
 class PopupViewController: BaseViewController, CCMPlayNDropViewDelegate {
 
 	var disposeBag = DisposeBag()
-	
+
 	weak var popupViewControllerDelegate: PopupViewControllerDelegate?
 
 	// MARK: - IBOutlets

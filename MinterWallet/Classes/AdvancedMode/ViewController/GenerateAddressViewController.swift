@@ -113,7 +113,7 @@ SwitchTableViewCellDelegate {
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+		guard viewModel.cellItem(section: indexPath.section, row: indexPath.row) != nil else {
 			return
 		}
 	}

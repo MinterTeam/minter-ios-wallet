@@ -55,7 +55,7 @@ class AddressViewModel: BaseViewModel {
 	private func createSections() {
 
 		var addressNum = 0
-		var sctns = accounts.map { (account) -> BaseTableSectionItem in
+		let sctns = accounts.map { (account) -> BaseTableSectionItem in
 			addressNum += 1
 
 			let sectionId = account.address
@@ -125,22 +125,21 @@ class AddressViewModel: BaseViewModel {
 	// MARK: -
 
 	func setMainAccount(isMain: Bool, cellItem: BaseCellItem) {
-
 		guard isMain == true && cellItem.identifier.hasPrefix("SettingsSwitchTableViewCell_") else {
 			return
 		}
 
 		let accountAddress = cellItem.identifier.replacingOccurrences(of: "SettingsSwitchTableViewCell_", with: "")
 
-		Session.shared.accounts.value = Session.shared.accounts.value.map({ (account) -> Account in
+		let accounts = Session.shared.accounts.value.map({ (account) -> Account in
 			var acc = account
 			acc.isMain = false
-
 			if account.address == accountAddress {
 				accountManager.setMain(isMain: true, account: &acc)
 			}
 			return acc
 		})
+		Session.shared.accounts.accept(accounts)
 	}
 
 	// MARK: -

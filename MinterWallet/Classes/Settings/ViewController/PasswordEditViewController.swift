@@ -42,7 +42,7 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 			let banner = NotificationBanner(title: notification?.title ?? "", subtitle: notification?.text, style: .danger)
 			banner.show()
 		}).disposed(by: disposeBag)
-		
+
 		viewModel.successMessage.asObservable().filter({ (notification) -> Bool in
 			return nil != notification
 		}).subscribe(onNext: { (notification) in
@@ -76,39 +76,38 @@ class PasswordEditViewController: BaseViewController, UITableViewDelegate, UITab
 		tableView.register(UINib(nibName: "ButtonTableViewCell", bundle: nil),
 											 forCellReuseIdentifier: "ButtonTableViewCell")
 	}
-	
+
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
-	
+
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return viewModel.rowsCount(for: section)
 	}
-	
+
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
+
 		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row),
 			let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
 			return UITableViewCell()
 		}
-		
+
 		cell.configure(item: item)
 
 		if let buttonCell = (cell as? ButtonTableViewCell) {
 			buttonCell.delegate = self
 		}
 
-		if var textFieldCell = cell as? ValidatableCellProtocol {
+		if let textFieldCell = cell as? ValidatableCellProtocol {
 			textFieldCell.validateDelegate = self
 		}
 
 		return cell
 	}
-	
+
 	// MARK: -
 
 	func showKeyboard() {
-		
 		if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
 			cell.startEditing()
 		}
@@ -120,32 +119,29 @@ extension PasswordEditViewController: ButtonTableViewCellDelegate, ValidatableCe
 	// MARK: -
 
 	func didValidateField(field: ValidatableCellProtocol?) {
-		if let cellField = field as? UITableViewCell,
+		if let cellField = field,
 			let ip = tableView.indexPath(for: cellField) {
 			if ip.row == 0 {
 				viewModel.password.value = field?.validationText
-			}
-			else if ip.row == 1 {
+			} else if ip.row == 1 {
 				viewModel.confirmPassword.value = field?.validationText
 			}
 		}
 	}
 
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
-		if let fieldCell = field as? UITableViewCell,
-			let ip = tableView.indexPath(for: fieldCell) {
-			if ip.row == 0 {
+		if let fieldCell = field,
+			let indexPath = tableView.indexPath(for: fieldCell) {
+			if indexPath.row == 0 {
 				viewModel.password.value = field?.validationText
-			}
-			else if ip.row == 1 {
+			} else if indexPath.row == 1 {
 				viewModel.confirmPassword.value = field?.validationText
 			}
-			if let item = viewModel.cellItem(section: ip.section, row: ip.row) {
+			if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
 				let errors = viewModel.validate(item: item)
 				if let err = errors?.first {
 					(field as? TextFieldTableViewCell)?.setInvalid(message: err)
-				}
-				else {
+				} else {
 					(field as? TextFieldTableViewCell)?.setDefault()
 				}
 			}

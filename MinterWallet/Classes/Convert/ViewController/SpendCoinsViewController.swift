@@ -152,8 +152,10 @@ UITextFieldDelegate {
 			banner.show()
 		}).disposed(by: disposableBag)
 
-		viewModel.output.spendAmount.asDriver(onErrorJustReturn: nil)
-			.drive(spendAmountTextField.rx.text).disposed(by: disposableBag)
+		viewModel.output.spendAmount.asDriver(onErrorJustReturn: nil).map({ (str) -> String? in
+			str?.replacingOccurrences(of: ",", with: ".")
+		})
+		.drive(spendAmountTextField.rx.text).disposed(by: disposableBag)
 
 		self.viewModel = viewModel
 	}

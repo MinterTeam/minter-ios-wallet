@@ -75,6 +75,12 @@ class RootViewController: UIViewController, ControllerType {
 					} else {
 						self?.show(vc, sender: self)
 					}
+				} else {
+					if url.host == "tx" || url.path.contains("tx") {
+						BannerHelper.performErrorNotification(title: "Invalid transaction data".localized(), subtitle: nil)
+					} else {
+						BannerHelper.performErrorNotification(title: "Invalid deeplink".localized(), subtitle: nil)
+					}
 				}
 			}).disposed(by: disposeBag)
 	}
@@ -214,8 +220,8 @@ class RootViewController: UIViewController, ControllerType {
 		let width = self.view.frame.size.width
 		let height = self.view.frame.size.height
 
-		var previousFrame:CGRect?
-		var nextFrame:CGRect?
+		var previousFrame: CGRect?
+		var nextFrame: CGRect?
 		let initCurrentViewFrame = self.view.frame
 
 		switch animationType {

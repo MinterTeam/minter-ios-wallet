@@ -72,7 +72,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 
 		Session.shared.updateGas()
 
-		Session.shared.currentGasPrice.asObservable().map { (gas) -> String in
+		Session.shared.currentGasPrice.asObservable().map { (_) -> String in
 			return CurrencyNumberFormatter.formattedDecimal(with: self.baseCoinCommission,
 																											formatter: CurrencyNumberFormatter.decimalFormatter) + " " + (Coin.baseCoin().symbol ?? "")
 			}.subscribe(onNext: { [weak self] (val) in
@@ -82,16 +82,24 @@ class ConvertCoinsViewModel: BaseViewModel {
 
 	var selectedBalance: Decimal? {
 		let balances = Session.shared.allBalances.value
-		if let ads = selectedAddress, let cn = selectedCoin, let smt = balances[ads], let blnc = smt[cn] {
-			return blnc
+		if
+			let ads = selectedAddress,
+			let cn = selectedCoin,
+			let smt = balances[ads],
+			let blnc = smt[cn] {
+				return blnc
 		}
 		return nil
 	}
 
 	var baseCoinBalance: Decimal {
 		let balances = Session.shared.allBalances.value
-		if let ads = selectedAddress, let cn = Coin.baseCoin().symbol, let smt = balances[ads], let blnc = smt[cn] {
-			return blnc
+		if
+			let ads = selectedAddress,
+			let cn = Coin.baseCoin().symbol,
+			let smt = balances[ads],
+			let blnc = smt[cn] {
+				return blnc
 		}
 		return 0
 	}
@@ -152,7 +160,7 @@ class ConvertCoinsViewModel: BaseViewModel {
 		return ret
 	}
 
-	var spendCoinPickerSource: [String : [String : Decimal]] { return Session.shared.allBalances.value }
+	var spendCoinPickerSource: [String: [String: Decimal]] { return Session.shared.allBalances.value }
 
 	var spendCoinPickerItems: [SpendCoinPickerItem] {
 		let balances = spendCoinPickerSource
@@ -176,31 +184,27 @@ class ConvertCoinsViewModel: BaseViewModel {
 		return ret
 	}
 
-	func coinNames(by term: String, completion: (([String]) -> ())?) {
-		coinManager.coins(term: term) { (coins, error) in
-			let res = coins?.map({ (coin) -> String in
-				return coin.symbol ?? ""
-			}).filter({ (symbol) -> Bool in
-				symbol != ""
-			}) ?? [String]()
-
-			let resCoins = Array(res[safe: 0..<3] ?? [])
-			completion?(resCoins)
+	func coinNames(by term: String, completion: (([String]) -> Void)?) {
+		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
+			return (con.symbol ?? "").starts(with: term)
+		}.sorted(by: { (coin1, coin2) -> Bool in
+			return (coin1.reserveBalance ?? 0) > (coin2.reserveBalance ?? 0)
+		}).map { (coin) -> String in
+			return coin.symbol ?? ""
 		}
+		let resCoins = Array(coins[safe: 0..<3] ?? [])
+		completion?(resCoins)
 	}
 
 	// MARK: -
-	
+
 	func validateErrors() {}
 
 	func loadCoin() {
-
 		self.hasCoin.value = false
-		let coin = try? self.getCoin.value()?.trimmingCharacters(in: .whitespacesAndNewlines).uppercased() ?? ""
-		//TODO: Add isValidCoin
-		if coin?.isValidCoin() ?? false {
-			
-		} else {
+		let coin = try? self.getCoin.value()?
+			.trimmingCharacters(in: .whitespacesAndNewlines).uppercased() ?? ""
+		guard coin?.isValidCoin() ?? false else {
 			//Show error
 			return
 		}
@@ -210,27 +214,12 @@ class ConvertCoinsViewModel: BaseViewModel {
 			self.validateErrors()
 			return
 		}
-
-		self.coinIsLoading.value = true
-
-		ExplorerCoinManager.default.coins(term: coin!) { [weak self] (coins, error) in
-
-			defer {
-				self?.coinIsLoading.value = false
-				self?.validateErrors()
-			}
-
-			guard error == nil, (coins?.count ?? 0) > 0 else {
-				//Error?
-				return
-			}
-
-			if (coins?.filter({ (cn) -> Bool in
-				return (cn.symbol?.uppercased() ?? "") == (coin ?? "")
-			}).count ?? 0) > 0 {
-				self?.hasCoin.value = true
-			}
+		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
+			return (con.symbol ?? "") == coin!
 		}
+		if coins.count > 0 {
+			self.hasCoin.value = true
+		}
+		validateErrors()
 	}
-
 }

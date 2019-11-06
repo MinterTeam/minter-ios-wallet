@@ -31,6 +31,7 @@ class RawTransactionRouter: BaseRouter {
 			var payload: String?
 			var serviceData: Data?
 			var signatureType: Data?
+			var userData: [String: Any]? = [:]
 
 			guard
 				let rlpItem = RLP.decode(tx),
@@ -41,7 +42,7 @@ class RawTransactionRouter: BaseRouter {
 			case .noItem:
 				return nil
 
-			case .list(let items, let count, let data):
+			case .list(let items, _, _):
 				//Full tx version
 				if items.count == 9 || items.count == 10 {
 					guard
@@ -92,7 +93,7 @@ class RawTransactionRouter: BaseRouter {
 					gasPrice = gasPriceValue > 0 ? gasPriceValue : nil
 					if let newGasCoin = String(coinData: gasCoinData) {
 						gasCoin = (newGasCoin == "") ? Coin.baseCoin().symbol! : newGasCoin
-						guard newGasCoin.isValidCoin() else {
+						guard gasCoin.isValidCoin() else {
 							return nil
 						}
 					}
@@ -105,13 +106,20 @@ class RawTransactionRouter: BaseRouter {
 					payload = String(data: payloadData, encoding: .utf8)
 				}
 				break
-			case .data(let data):
+			case .data(let _):
 				return nil
+			}
+
+			if let password = param["p"] as? String {
+				userData?["p"] = password
 			}
 
 			let viewModel: RawTransactionViewModel
 			do {
+				let dependency = RawTransactionViewModel.Dependency(account: RawTransactionViewModelAccount(),
+																														gate: GateManager.shared)
 				viewModel = try RawTransactionViewModel(
+					dependency: dependency,
 					nonce: nonce,
 					gasPrice: gasPrice,
 					gasCoin: gasCoin,
@@ -119,7 +127,7 @@ class RawTransactionRouter: BaseRouter {
 					data: txData,
 					payload: payload,
 					serviceData: serviceData,
-					signatureType: signatureType)
+					signatureType: signatureType, userData: userData)
 			} catch {
 				return nil
 			}

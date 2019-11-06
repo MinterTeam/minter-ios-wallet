@@ -52,12 +52,6 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 
 	// MARK: -
 
-	let transactionManager = ExplorerTransactionManager.default
-
-	private var coinObservable: Observable<String?> {
-		return getCoin.asObservable()
-	}
-
 	override init() {
 		super.init()
 
@@ -83,9 +77,9 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 		subscribe()
 		Session.shared.loadBalances()
 	}
-	
+
 	private func subscribe() {
-		self.coinObservable.distinctUntilChanged().do(onNext: { [weak self] (term) in
+		self.getCoin.asObservable().distinctUntilChanged().do(onNext: { [weak self] (term) in
 			if nil != term && term != "" {
 				self?.hasCoin.value = false
 				self?.getCoinError.value = "COIN NOT FOUND".localized()
@@ -97,19 +91,12 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 		}).filter({ (term) -> Bool in
 			return CoinValidator.isValid(coin: term)
 		}).subscribe(onNext: { [weak self] (term) in
-
-			guard let _self = self else { return } //swiftlint:disable:this identifier_name
-
-			self?.coinManager.coin(by: term).do(onNext: { (coin) in
-				self?.coinIsLoading.value = true
-			}, onCompleted: {
-				self?.coinIsLoading.value = false
-			}).filter({ (coin) -> Bool in
-				return coin != nil
-			}).subscribe(onNext: { [weak self] (coin) in
-				self?.hasCoin.value = true
-				self?.getCoinError.value = ""
-			}).disposed(by: _self.disposeBag)
+			self?.coinNames(by: term, completion: { (coins) in
+				if coins.count > 0 {
+					self?.hasCoin.value = true
+					self?.getCoinError.value = ""
+				}
+			})
 		}).disposed(by: disposeBag)
 
 		Session.shared.allBalances.asObservable()
@@ -132,7 +119,8 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 			}
 		}).disposed(by: disposeBag)
 
-		self.spendCoinField.throttle(1.0, scheduler: MainScheduler.instance)
+		self.spendCoinField
+			.throttle(1.0, scheduler: MainScheduler.instance)
 			.distinctUntilChanged().map({ (val) -> SpendCoinPickerItem? in
 			let item = self.spendCoinPickerItems.filter({ (item) -> Bool in
 				return item.title == val
@@ -178,7 +166,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 			}
 		}).disposed(by: disposeBag)
 
-		approximatelyReady.asObservable().subscribe(onNext: { [weak self] (val) in
+		approximatelyReady.asObservable().subscribe(onNext: { [weak self] (_) in
 			self?.validateErrors()
 		}).disposed(by: disposeBag)
 
@@ -186,7 +174,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 			self?.exchange()
 		}).disposed(by: disposeBag)
 
-		shouldClearForm.asObservable().subscribe(onNext: { [weak self] (val) in
+		shouldClearForm.asObservable().subscribe(onNext: { [weak self] (_) in
 			self?.spendAmount.onNext(nil)
 			self?.getCoin.onNext("")
 			self?.validateErrors()
@@ -199,7 +187,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 			self?.spendAmount.onNext(selectedAmount)
 		}).disposed(by: disposeBag)
 
-		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
+		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (_) in
 			self?.shouldClearForm.value = true
 		}).disposed(by: disposeBag)
 	}
@@ -210,9 +198,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 	let exchangeDidTap = PublishSubject<Void>()
 	var spendCoin = BehaviorSubject<String?>(value: nil)
 	var spendCoinField = ReplaySubject<String?>.create(bufferSize: 2)
-
 	var spendAmount = BehaviorSubject<String?>(value: nil)
-
 	var hasMultipleCoinsObserver: Observable<Bool> {
 		return Session.shared.allBalances.asObservable().map({ (balances) -> Bool in
 			balances.keys.map {
@@ -222,9 +208,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 	}
 
 	private var approximately = PublishSubject<String?>()
-
 	var approximatelyReady = Variable<Bool>(false)
-
 	var minimumValueToBuy = Variable<Decimal?>(nil)
 
 	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
@@ -256,7 +240,6 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 				guard getCoin != (self.selectedCoin ?? "") else {
 					return false
 				}
-
 				return CoinValidator.isValid(coin: getCoin) && CoinValidator.isValid(coin: spendCoin)
 	})
 
@@ -270,9 +253,7 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 		}
 
 		var value = amount.decimalFromPIP()
-
 		let isMax = (value > 0 && value == maxComparableBalance)
-
 		if isMax {
 			value = (selectedBalance ?? Decimal(0.0)).decimalFromPIP()
 		}
@@ -284,19 +265,24 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 		GateManager.shared.estimateCoinSell(coinFrom: fromCoin,
 																				coinTo: getCoin.transformToCoinName(),
 																				value: value,
-																				isAll: isMax).do(onNext: { (res) in
+																				isAll: isMax)
+			.do(onError: { [weak self] (error) in
+				if
+					let err = error as? HTTPClientError,
+					let log = err.userData?["message"] as? String {
+					self?.approximately.onNext(log)
+					return
+				} else if
+					let err = error as? HTTPClientError,
+					let log = err.userData?["log"] as? String {
+					self?.approximately.onNext(log)
+					return
+				}
 
-		}, onError: { [weak self] (error) in
-			if let err = error as? HTTPClientError, let log = err.userData?["message"] as? String {
-				self?.approximately.onNext(log)
-				return
-			}
-
-			if self?.hasCoin.value == true {
-				self?.approximately.onNext("Estimate can't be calculated at the moment".localized())
-			}
+				if self?.hasCoin.value == true {
+					self?.approximately.onNext("Estimate can't be calculated at the moment".localized())
+				}
 		}).subscribe(onNext: { [weak self] (res) in
-
 			guard let _self = self else { return } //swiftlint:disable:this identifier_name
 
 			let ammnt = res.0
@@ -318,7 +304,8 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 	}
 
 	override func validateErrors() {
-		if let amountString = try? self.spendAmount.value() ?? "",
+		if
+			let amountString = try? self.spendAmount.value() ?? "",
 			amountString != "",
 			let amount = Decimal(string: amountString) {
 
@@ -352,45 +339,38 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 												 coinTo: coinTo,
 												 amount: amount,
 												 selectedAddress: selectedAddress,
-												 minimumBuyValue: minimumBuyValue).subscribe(onNext: { [weak self] (val) in
-			self?.shouldClearForm.value = true
-			self?.successMessage.onNext(NotifiableSuccess(title: "Coins have been successfully spent".localized(),
-																										text: nil))
-		}, onError: { [weak self] (error) in
-			self?.handleError(error)
-		}, onCompleted: {
-			Session.shared.loadBalances()
-			Session.shared.loadTransactions()
-			Session.shared.loadDelegatedBalance()
-		}).disposed(by: self.disposeBag)
+												 minimumBuyValue: minimumBuyValue)
+			.subscribe(onNext: { [weak self] (_) in
+				self?.shouldClearForm.value = true
+				self?.successMessage.onNext(NotifiableSuccess(title: "Coins have been successfully spent".localized(),
+																											text: nil))
+				}, onError: { [weak self] (error) in
+					self?.handleError(error)
+				}, onCompleted: {
+					Session.shared.loadBalances()
+					Session.shared.loadTransactions()
+					Session.shared.loadDelegatedBalance()
+			}).disposed(by: self.disposeBag)
 	}
 
 	private func handleError(_ err: Error?) {
-
 		var title = "Can't send Transaction"
-		var text = ""
-
+		let text = ""
 		if let mvError = err as? SpendCoindsViewModelError {
 			switch mvError {
 			case .canNotCreateTx:
 				title = "Can't create transaction".localized()
-				break
-
 			case .incorrectParams:
 				title = "Incorrect params".localized()
-				break
-
 			case .noPrivateKey:
 				title = "No private key found".localized()
-				break
-
 			case .canNotGetNonce:
 				title = "Can't get nonce".localized()
-				break
 			}
 		}
 
-		if let apiError = err as? HTTPClientError,
+		if
+			let apiError = err as? HTTPClientError,
 			let errorCode = apiError.userData?["code"] as? Int {
 			if errorCode == 107 {
 				title = "Not enough coins to spend".localized()
@@ -404,7 +384,6 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 				}
 			}
 		}
-
 		self.errorNotification.onNext(NotifiableError(title: title, text: text))
 	}
 
@@ -427,7 +406,6 @@ class SpendCoinsViewModel: ConvertCoinsViewModel, ViewModelProtocol {
 			}
 
 			//Getting comparable value, since we are comparing not exact numbers, but it's shortened representations
-
 			let maxComparableBalanceString = _self.decimalsNoMantissaFormatter.string(from: maxComparableSelectedBalance as NSNumber) ?? ""
 			let isMax = (convertVal > 0 && convertVal == (BigUInt(maxComparableBalanceString) ?? BigUInt(0)))
 

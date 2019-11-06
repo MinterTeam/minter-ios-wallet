@@ -39,3 +39,20 @@ extension String {
 		return String(data: data, encoding: .utf8)
 	}
 }
+
+extension String {
+
+	func getKeyVals() -> [String: String]? {
+		var results = [String: String]()
+		var keyValues = self.split(separator: "&")
+		if keyValues.count > 0 {
+			for pair in keyValues {
+				let kv = pair.split(separator: "=")
+				if kv.count > 1 {
+					results.updateValue(String(kv[1]), forKey: String(kv[0]))
+				}
+			}
+		}
+		return results
+	}
+}

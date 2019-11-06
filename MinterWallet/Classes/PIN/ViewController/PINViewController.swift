@@ -81,7 +81,7 @@ class PINViewController: BaseViewController, ControllerType {
 			if #available(iOS 11.0, *) {
 				pinView.textField.deleteBackward()
 			} else {
-				var txt = (pinView.textField.text ?? "")
+				let txt = (pinView.textField.text ?? "")
 				pinView.textField.text = String(txt.dropLast())
 				pinView.textField.sendActions(for: .editingChanged)
 			}

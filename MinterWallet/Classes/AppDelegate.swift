@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
+		UITextViewWorkaround.executeWorkaround()
+
 		let conf = Configuration()
 
 		if ProcessInfo.processInfo.arguments.contains("UITesting") {

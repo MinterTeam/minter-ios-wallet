@@ -83,13 +83,17 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 											self.tabbarViewControllers()
 										})
 
-		Session.shared.isLoggedIn.asObservable().filter({ (isLoggedIn) -> Bool in
-			return isLoggedIn
-		}).subscribe(onNext: { (isLoggedIn) in
+		Session
+			.shared
+			.isLoggedIn
+			.asObservable()
+			.filter({ (isLoggedIn) -> Bool in
+				return isLoggedIn
+			}).subscribe(onNext: { (isLoggedIn) in
 			//show wallet
-			SessionHelper.reloadAccounts()
-			Session.shared.loadUser()
-		}).disposed(by: disposeBag)
+				SessionHelper.reloadAccounts()
+				Session.shared.loadUser()
+			}).disposed(by: disposeBag)
 
 		Session.shared.updateGas()
 
@@ -128,7 +132,7 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 			self?.channel = addresses.first
 			self?.connect(completion: {})
 		}).disposed(by: disposeBag)
-		
+
 		didOpenURLSubject.subscribe(onNext: { [weak self] (url) in
 			self?.proceedURLSubject.onNext(nil)
 		}).disposed(by: disposeBag)

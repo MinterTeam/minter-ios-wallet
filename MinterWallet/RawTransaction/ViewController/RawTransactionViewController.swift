@@ -142,7 +142,7 @@ class RawTransactionViewController: BaseViewController, ControllerType {
 }
 
 extension RawTransactionViewController: SentPopupViewControllerDelegate, ConfirmPopupViewControllerDelegate {
-	
+
 	// MARK: - ConfirmPopupViewController Delegate
 
 	func didTapActionButton(viewController: ConfirmPopupViewController) {
@@ -225,7 +225,7 @@ extension RawTransactionViewController: PopupViewControllerDelegate {
 		if let viewController = viewController as? SentPopupViewController {
 			viewController.dismiss(animated: true) { [weak self] in
 				self?.dismiss(animated: true, completion: {
-					
+
 				})
 			}
 		}

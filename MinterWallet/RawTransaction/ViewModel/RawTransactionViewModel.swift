@@ -41,7 +41,10 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 		var popup: Observable<PopupViewController?>
 		var lastTransactionExplorerURL: () -> (URL?)
 	}
-	struct Dependency {}
+	struct Dependency {
+		var account: RawTransactionViewModelAccountProtocol
+		var gate: RawTransactionViewModelGateProtocol
+	}
 	var input: RawTransactionViewModel.Input!
 	var output: RawTransactionViewModel.Output!
 	var dependency: RawTransactionViewModel.Dependency!
@@ -66,11 +69,11 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 	private var gasPrice: BigUInt?
 	private var gasCoin: String
 	private var data: Data?
+	private var userData: [String: Any]?
 
 	private var multisendAddressCount = 0
 	private var createCoinSymbolCount = 0
 
-	private let accountManager = AccountManager()
 	private var fields: [[String: String]] = []
 	private var currentGas = BehaviorSubject<Int>(value: RawTransactionDefaultGasPrice)
 	private var gasObservable: Observable<String> {
@@ -87,6 +90,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 	// MARK: -
 
 	init(// swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
+		dependency: Dependency,
 		nonce: BigUInt?,
 		gasPrice: BigUInt?,
 		gasCoin: String?,
@@ -94,12 +98,16 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 		data: Data?,
 		payload: String?,
 		serviceData: Data?,
-		signatureType: Data?
+		signatureType: Data?,
+		userData: [String: Any]? = [:]
 	) throws {
+		self.dependency = dependency
+
 		self.type = type
 		self.gasPrice = gasPrice
 		self.gasCoin = gasCoin ?? Coin.baseCoin().symbol!
 		self.nonce = nonce
+		self.userData = userData
 
 		super.init()
 
@@ -116,7 +124,6 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 												 vibrate: vibrateSubject.asObservable(),
 												 popup: popupSubject.asObservable(),
 												 lastTransactionExplorerURL: self.lastTransactionExplorerURL)
-		self.dependency = Dependency()
 
 		sendButtonDidTapSubject.subscribe(onNext: { [weak self] (_) in
 			self?.sendTx()
@@ -161,20 +168,16 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 			return
 		}
 
-		Observable.combineLatest(GateManager.shared.nonce(address: "Mx" + address),
-														 GateManager.shared.minGas())
-			.do(onNext: { [weak self] (result) in
-				
-			}, onSubscribe: { [weak self] in
+		Observable.combineLatest(self.dependency.gate.nonce(address: "Mx" + address),
+														 self.dependency.gate.minGas())
+			.do(onSubscribe: { [weak self] in
 				self?.sendingTxSubject.onNext(true)
 			}).flatMap({ [weak self] (result) -> Observable<String?> in
 				let (nonce, _) = result
 				guard let nnnc = BigUInt(decimal: Decimal(nonce+1)),
 					let gasCoin = self?.gasCoin,
 					let type = self?.type,
-					let mnemonic = self?.accountManager.mnemonic(for: address),
-					let seed = self?.accountManager.seed(mnemonic: mnemonic),
-					let privateKey = try self?.accountManager.privateKey(from: seed).raw.toHexString()
+					let privateKey = try self?.dependency.account.privatekey()
 					else {
 						return Observable.error(RawTransactionViewModelError.noPrivateKey)
 				}
@@ -190,7 +193,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 																payload: self?.payload?.data(using: .utf8) ?? Data())
 
 				let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: privateKey)
-				return GateManager.shared.send(rawTx: signedTx)
+				return self?.dependency.gate.send(rawTx: signedTx) ?? Observable<String?>.empty()
 			}).subscribe(onNext: { [weak self] (result) in
 				self?.lastSentTransactionHash = result
 				if let sentViewModel = self?.sentViewModel() {
@@ -334,6 +337,7 @@ extension RawTransactionViewModel {
 						let sendingValue = amountString + " " + coin
 						fields.append(["key": "YOU'RE SENDING".localized(), "value": sendingValue])
 						fields.append(["key": "TO".localized(), "value": "Mx" + addressData.toHexString()])
+
 						case .sellCoin:
 							fields.append(["key": "TYPE".localized(), "value": "SELL COIN"])
 							guard
@@ -354,7 +358,7 @@ extension RawTransactionViewModel {
 							fields.append(["key": "COIN FROM".localized(), "value": coinFrom])
 							fields.append(["key": "AMOUNT".localized(), "value": amountString])
 							fields.append(["key": "COIN TO".localized(), "value": coinTo])
-							break
+
 						case .sellAllCoins:
 							fields.append(["key": "TYPE".localized(), "value": "SELL ALL"])
 							guard let coinFromData = items[0].data,
@@ -366,10 +370,9 @@ extension RawTransactionViewModel {
 								coinFrom.isValidCoin() else {
 									throw RawTransactionViewModelError.incorrectTxData
 							}
-		//					let minimumValueToBuy = BigUInt(minimumValueToBuyData)
 							fields.append(["key": "COIN FROM".localized(), "value": coinFrom])
 							fields.append(["key": "COIN TO".localized(), "value": coinTo])
-							break
+
 						case .buyCoin:
 							fields.append(["key": "TYPE".localized(), "value": "BUY COIN"])
 							guard let coinFromData = items[0].data,
@@ -389,7 +392,7 @@ extension RawTransactionViewModel {
 							fields.append(["key": "COIN FROM".localized(), "value": coinFrom])
 							fields.append(["key": "AMOUNT".localized(), "value": amountString])
 							fields.append(["key": "COIN TO".localized(), "value": coinTo])
-							break
+
 						case .createCoin:
 							fields.append(["key": "TYPE".localized(), "value": "CREATE COIN"])
 							guard let coinNameData = items[0].data,
@@ -417,7 +420,7 @@ extension RawTransactionViewModel {
 							fields.append(["key": "INITIAL AMOUNT".localized(), "value": initialAmountString])
 							fields.append(["key": "INITIAL RESERVE".localized(), "value": initialReserveString])
 							fields.append(["key": "CONSTANT RESERVE RATIO".localized(), "value": crrString])
-							break
+
 						case .declareCandidacy:
 							fields.append(["key": "TYPE".localized(), "value": "DECLARE CANDIDACY".localized()])
 							guard
@@ -441,7 +444,7 @@ extension RawTransactionViewModel {
 							fields.append(["key": "COMMISSION".localized(), "value": commissionString])
 							fields.append(["key": "COIN".localized(), "value": coin])
 							fields.append(["key": "STAKE".localized(), "value": amountString])
-							break
+
 						case .delegate:
 							fields.append(["key": "TYPE".localized(), "value": "DELEGATE".localized()])
 							guard
@@ -458,7 +461,7 @@ extension RawTransactionViewModel {
 							fields.append(["key": "PUBLIC KEY".localized(), "value": "Mp" + publicKeyData.toHexString()])
 							fields.append(["key": "COIN".localized(), "value": coin])
 							fields.append(["key": "AMOUNT".localized(), "value": amountString])
-							break
+
 						case .unbond:
 							fields.append(["key": "TYPE".localized(), "value": "UNBOND".localized()])
 							guard
@@ -474,31 +477,59 @@ extension RawTransactionViewModel {
 							fields.append(["key": "PUBLIC KEY".localized(), "value": "Mp" + publicKeyData.toHexString()])
 							fields.append(["key": "COIN".localized(), "value": coin])
 							fields.append(["key": "AMOUNT".localized(), "value": amountString])
-							break
+
 						case .redeemCheck:
 							fields.append(["key": "TYPE".localized(), "value": "REDEEM CHECK".localized()])
 							guard
-								let checkData = items[0].data,
-								let proofData = items[1].data else {
+								let checkData = items[0].data else {
 									throw RawTransactionViewModelError.incorrectTxData
 							}
+							if let checkPayload = RLP.decode(checkData)?[0]?.content {
+								switch checkPayload {
+								case .list(let checkPayloadItems, _, _):
+									if
+										let checkCoinData = checkPayloadItems[safe: 3]?.data,
+										let checkAmount = checkPayloadItems[safe: 4]?.data {
+										let value = BigUInt(checkAmount)
+										let amount = (Decimal(bigInt: value) ?? 0).PIPToDecimal()
+										let amountString = decimalFormatter.formattedDecimal(with: amount)
+										let checkValue = amountString + " " + (String(coinData: checkCoinData) ?? "")
+										fields.append(["key": "AMOUNT".localized(), "value": checkValue])
+									}
+								case .noItem:
+									break
+								case .data(_):
+									break
+								}
+							}
+
 							fields.append(["key": "CHECK".localized(), "value": "Mc" + checkData.toHexString()])
-							fields.append(["key": "PROOF".localized(), "value": proofData.toHexString()])
-							break
+							if let proofData = items[1].data, proofData.count > 0 {
+								fields.append(["key": "PROOF".localized(), "value": proofData.toHexString()])
+							} else if
+								let password = userData?["p"] as? String,
+								let address = Session.shared.accounts.value.first?.address,
+								let proof = RawTransactionSigner.proof(address: address, passphrase: password) {
+								self.data = MinterCore.RedeemCheckRawTransactionData(rawCheck: checkData, proof: proof).encode()
+								fields.append(["key": "PROOF".localized(), "value": proof.toHexString()])
+							} else {
+								throw RawTransactionViewModelError.incorrectTxData
+							}
+
 						case .setCandidateOnline:
 							fields.append(["key": "TYPE".localized(), "value": "SET CANDIDATE ON".localized()])
 							guard let publicKeyData = items[0].data else {
 								throw RawTransactionViewModelError.incorrectTxData
 							}
 							fields.append(["key": "PUBLIC KEY".localized(), "value": "Mp" + publicKeyData.toHexString()])
-							break
+
 						case .setCandidateOffline:
 							fields.append(["key": "TYPE".localized(), "value": "SET CANDIDATE OFF".localized()])
 							guard let publicKeyData = items[0].data else {
 								throw RawTransactionViewModelError.incorrectTxData
 							}
 							fields.append(["key": "PUBLIC KEY".localized(), "value": "Mp" + publicKeyData.toHexString()])
-							break
+
 						case .createMultisigAddress:
 							break
 						case .multisend:
@@ -509,8 +540,9 @@ extension RawTransactionViewModel {
 							}
 							multisendAddressCount = array.count ?? 0
 							for idx in 0..<(array.count ?? 0) {
-								if let addressDictData = array[idx]?.data,
-								let addressDict = RLP.decode(addressDictData),
+								if
+									let addressDictData = array[idx]?.data,
+									let addressDict = RLP.decode(addressDictData),
 									let coinData = addressDict[0]?.data,
 										let coin = String(coinData: coinData),
 										let addressData = addressDict[1]?.data,
@@ -525,7 +557,7 @@ extension RawTransactionViewModel {
 											fields.append(["key": "TO".localized(), "value": "Mx" + address])
 									}
 							}
-							break
+
 						case .editCandidate:
 							fields.append(["key": "TYPE".localized(), "value": "EDIT CANDIDATE".localized()])
 							guard let publicKeyData = items[0].data,
@@ -536,7 +568,6 @@ extension RawTransactionViewModel {
 							fields.append(["key": "PUBLIC KEY".localized(), "value": "Mp" + publicKeyData.toHexString()])
 							fields.append(["key": "REWARD ADDRESS".localized(), "value": "Mx" + rewardAddressData.toHexString()])
 							fields.append(["key": "OWNDER ADDRESS".localized(), "value": "Mx" + ownerAddressData.toHexString()])
-							break
 						}
 						break
 					case .noItem: break

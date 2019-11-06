@@ -56,8 +56,7 @@ UITableViewDataSource {
 			if let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
 				if err != nil {
 					cell.setInvalid(message: err)
-				}
-				else {
+				} else {
 					cell.setDefault()
 				}
 			}
@@ -71,7 +70,7 @@ UITableViewDataSource {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
+
 		showKeyboard()
 		AnalyticsHelper.defaultAnalytics.track(event: .emailEditScreen, params: nil)
 	}
@@ -105,14 +104,14 @@ UITableViewDataSource {
 
 		cell.configure(item: item)
 
-		var validationCell = cell as? ValidatableCellProtocol
+		let validationCell = cell as? ValidatableCellProtocol
 		validationCell?.validateDelegate = self
 
 		if let textFieldCell = cell as? TextFieldTableViewCell {
 			textFieldCell.textField.rx.text.orEmpty.bind(to: viewModel.email).disposed(by: disposeBag)
 		}
 
-		var buttonCell = cell as? ButtonTableViewCell
+		let buttonCell = cell as? ButtonTableViewCell
 		buttonCell?.delegate = self
 
 		buttonCell?.button.rx.tap.asObservable().subscribe(viewModel.saveInDidTap).disposed(by: disposeBag)
@@ -139,18 +138,16 @@ extension EmailEditViewController: ButtonTableViewCellDelegate {
 
 		tableView.endEditing(true)
 	}
-
 }
 
 extension EmailEditViewController: ValidatableCellDelegate {
 
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
-//		self.viewModel.email.value = field?.validationText
 		completion?()
 	}
 
 	func didValidateField(field: ValidatableCellProtocol?) {
-		
+
 	}
 
 }

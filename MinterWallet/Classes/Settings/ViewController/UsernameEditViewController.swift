@@ -102,7 +102,7 @@ ValidatableCellDelegate {
 
 		cell.configure(item: item)
 
-		var textFieldCell = cell as? TextFieldTableViewCell
+		let textFieldCell = cell as? TextFieldTableViewCell
 		textFieldCell?.validateDelegate = self
 
 		if let button = cell as? ButtonTableViewCell {

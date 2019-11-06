@@ -222,7 +222,7 @@ extension SendViewController {
 																										 right: 0.0)
 			}).disposed(by: disposeBag)
 		}
-		
+
 		viewModel
 			.output
 			.showViewController
@@ -285,39 +285,11 @@ extension SendViewController: ButtonTableViewCellDelegate {
 		hardImpactFeedbackGenerator.impactOccurred()
 		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsSendButton)
 		tableView.endEditing(true)
-//		viewModel.sendButtonTaped()
 	}
 
 	// MARK: - Validation
 
-	func validate(cell: ValidatableCellProtocol) {
-//		//HACK: Some trouble with protocol?
-//
-//		var validator: Validator?
-//		if let fieldCell = cell as? TextFieldTableViewCell {
-//			validator = fieldCell.validator
-//			validator?.validate { [fieldCell] (result) in
-//				guard result.count == 0 else {
-//					result.forEach({ (validation) in
-//						fieldCell.setInvalid(message: validation.1.errorMessage)
-//					})
-//					return
-//				}
-//				fieldCell.setDefault()
-//			}
-//		} else if let viewCell = cell as? TextViewTableViewCell {
-//			validator = viewCell.validator
-//			validator?.validate { [viewCell] (result) in
-//				guard result.count == 0 else {
-//					result.forEach({ (validation) in
-//						viewCell.setInvalid(message: validation.1.errorMessage)
-//					})
-//					return
-//				}
-//				viewCell.setDefault()
-//			}
-//		}
-	}
+	func validate(cell: ValidatableCellProtocol) {}
 }
 
 extension SendViewController {
@@ -434,10 +406,7 @@ extension SendViewController: QRCodeReaderViewControllerDelegate {
 
 	// MARK: - QRCodeReaderViewController Delegate Methods
 
-	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
-//		reader.stopScanning()
-//		dismiss(animated: true, completion: nil)
-	}
+	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {}
 
 	func reader(_ reader: QRCodeReaderViewController, didSwitchCamera newCaptureDevice: AVCaptureDeviceInput) {}
 

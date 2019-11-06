@@ -21,7 +21,7 @@ class SendPopupViewController: PopupViewController, ControllerType {
 	typealias ViewModelType = SendPopupViewModel
 	var viewModel: SendPopupViewModel!
 	func configure(with viewModel: SendPopupViewModel) {
-		
+
 	}
 
 	// MARK: -
@@ -33,7 +33,8 @@ class SendPopupViewController: PopupViewController, ControllerType {
 	@IBOutlet weak var avatarWrapper: UIView! {
 		didSet {
 			avatarWrapper.layer.cornerRadius = 25.0
-			avatarWrapper?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!, alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
+			avatarWrapper?.layer.applySketchShadow(color: UIColor(hex: 0x000000, alpha: 0.2)!,
+																						 alpha: 1, x: 0, y: 2, blur: 18, spread: 0)
 		}
 	}
 	@IBOutlet weak var amountTitle: UILabel!

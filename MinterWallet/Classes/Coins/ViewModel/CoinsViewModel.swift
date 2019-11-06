@@ -225,11 +225,11 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 					url.host == "tx" || url.path.contains("tx") {
 						self?.showViewControllerSubject.onNext((controller: rawViewController, isModal: true))
 					return
-				} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ["d": val ?? ""]) {
+				} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ("d=" + (val ?? "")).getKeyVals() ?? [:]) {
 					self?.showViewControllerSubject.onNext((controller: rawViewController, isModal: true))
 					return
 				}
-				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
 			}).disposed(by: disposeBag)
 
 		didTapTransactionSubject
@@ -239,10 +239,11 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 				let transactionsVC = TransactionsRouter.transactionsViewController(viewModel: viewModel)
 				self?.showViewControllerSubject.onNext((controller: transactionsVC, isModal: false))
 			}).disposed(by: disposeBag)
-		
+
 		didTapConvertSubject
 			.asObservable()
 			.subscribe(onNext: { [weak self] (_) in
+				Session.shared.loadCoins()
 				let convertVC = ConvertRouter.convertViewController()
 				self?.showViewControllerSubject.onNext((controller: convertVC, isModal: false))
 			}).disposed(by: disposeBag)

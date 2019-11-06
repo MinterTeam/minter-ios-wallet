@@ -23,14 +23,6 @@ struct AccountPickerItem {
 	var coin: String?
 }
 
-protocol SendViewModelProtocol: class {
-	func minGas() -> Observable<Int>
-	func nonce(address: String) -> Observable<Int>
-	func send(rawTx: String) -> Observable<String?>
-	func estimateTXCommission(rawTx: String) -> Observable<Decimal>
-	func address(term: String) -> Observable<String>
-}
-
 class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this type_body_length
 
 	enum SendViewModelError: Error {
@@ -54,7 +46,10 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		var popup: Observable<PopupViewController?>
 		var showViewController: Observable<UIViewController?>
 	}
-	struct Dependency {}
+	struct Dependency {
+//		var gate: SendViewModelGateProtocol
+//		var info: SendViewModelInfoProtocol
+	}
 
 	// MARK: -
 
@@ -71,14 +66,16 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 	private var formChangedObservable: Observable<FormChangedObservable> {
 		return Observable.combineLatest(coinSubject.asObservable(),
 																		addressSubject.asObservable(),
-																		amountSubject.asObservable(),
+																		amountSubject.map({ (str) -> String? in
+																			return str?.replacingOccurrences(of: ",", with: ".")
+																		}).asObservable(),
 																		payloadSubject.asObservable())
 	}
 
 	let fakePK = Data(hex: "678b3252ce9b013cef922687152fb71d45361b32f8f9a57b0d11cc340881c999").toHexString()
 
 	// MARK: -
-	
+
 	private var showViewControllerSubject = PublishSubject<UIViewController?>()
 
 	var sections = Variable([BaseTableSectionItem]())
@@ -86,8 +83,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 
 	//Formatters
 	private let formatter = CurrencyNumberFormatter.decimalFormatter
-	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
-	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 	private let coinFormatter = CurrencyNumberFormatter.coinFormatter
 
 	//Loading observables
@@ -112,8 +107,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 	}
 
 	var selectedBalanceText: String? {
-		return CurrencyNumberFormatter.formattedDecimal(with: selectedAddressBalance ?? 0,
-																										formatter: formatter)
+		return formatter.formattedDecimal(with: selectedAddressBalance ?? 0)
 	}
 
 	var baseCoinBalance: Decimal {
@@ -158,13 +152,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		return Decimal((try? clearPayloadSubject.value() ?? "")?.count ?? 0) * RawTransaction.payloadByteComissionPrice
 	}
 
-	private func payload() -> String {
-		return (try? clearPayloadSubject.value() ?? "") ?? ""
-	}
-
 	private var lastSentTransactionHash: String?
 	private var selectedCoin = Variable<String?>(nil)
-	private var forceUpdateFee = PublishSubject<Void>()
 	private let accountManager = AccountManager()
 	private let infoManager = InfoManager.default
 	private let payloadSubject = BehaviorSubject<String?>(value: "")
@@ -175,15 +164,15 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 	private let popupSubject = PublishSubject<PopupViewController?>()
 	private var currentGas = BehaviorSubject<Int>(value: RawTransactionDefaultGasPrice)
 	var gasObservable: Observable<String> {
-		return Observable.combineLatest(forceUpdateFee.asObservable(),
+		return Observable.combineLatest(
 																		currentGas.asObservable(),
 																		clearPayloadSubject.asObservable(),
 																		formChangedObservable)
 			.map({ [weak self] (obj) -> String in
-				let payloadData = obj.3.3?.data(using: .utf8)
-				let recipient = obj.3.1
+				let payloadData = obj.2.3?.data(using: .utf8)
+				let recipient = obj.2.1
 				return self?.comissionText(recipient: recipient ?? "",
-																	 for: obj.1,
+																	 for: obj.0,
 																	 payloadData: payloadData) ?? ""
 		})
 	}
@@ -203,7 +192,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		super.init()
 
 		payloadSubject.asObservable().subscribe(onNext: { (payld) in
-			self.forceUpdateFee.onNext(())
 			let data = (payld ?? "").data(using: .utf8) ?? Data()
 			if data.count > RawTransaction.maxPayloadSize {
 				self.payloadStateObservable.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
@@ -247,7 +235,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 			.shared
 			.accounts
 			.asDriver()
-			.drive(onNext: { [weak self] (val) in
+			.drive(onNext: { [weak self] (_) in
 				self?.clear()
 				self?.sections.value = self?.createSections() ?? []
 			}).disposed(by: disposeBag)
@@ -255,24 +243,26 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		didScanQRSubject
 			.asObservable()
 			.subscribe(onNext: { [weak self] (val) in
+				let url = URL(string: val ?? "")
 				if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
 					self?.recipientSubject.accept(val)
 				} else if
-					let url = URL(string: val ?? ""),
+					let url = url,
 					url.host == "tx" || url.path.contains("tx") {
 
 					if let rawViewController = RawTransactionRouter.viewController(path: [url.host ?? ""], param: url.params()) {
 						self?.showViewControllerSubject.onNext(rawViewController)
 					} else {
 						//show error
-						self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+						self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
 					}
-				} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ["d": val ?? ""]) {
-						self?.showViewControllerSubject.onNext(rawViewController)
+				} else if
+					let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ("d=" + (val ?? "")).getKeyVals() ?? [:]) {
+					self?.showViewControllerSubject.onNext(rawViewController)
 				} else {
-					self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+					self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
 				}
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		NotificationCenter
 			.default
@@ -288,7 +278,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 			}).disposed(by: disposeBag)
 
 		formChangedObservable.subscribe(onNext: { [weak self] (val) in
-			let recipient = val.1
 			let amount = val.2
 
 			if self?.recipientSubject.value == nil || self?.recipientSubject.value == "" {
@@ -311,6 +300,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 			.do(onNext: { [weak self] (rec) in
 				if self?.isValidMinterRecipient(recipient: rec ?? "") ?? false {
 					self?.addressSubject.accept(rec)
+					self?.addressStateSubject.onNext(.default)
 				} else {
 					self?.addressSubject.accept(nil)
 				}
@@ -321,14 +311,14 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 			.throttle(2.0, scheduler: MainScheduler.instance)
 			.distinctUntilChanged()
 			.do(onNext: { [weak self] (rec) in
-				if !(self?.isToValid(to: rec ?? "") ?? false) {
+				if !(self?.isToValid(to: rec ?? "") ?? false) && (rec ?? "").count >= 5 {
 					if (rec?.count ?? 0) > 66 {
 						self?.addressStateSubject.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
-					} else if !(self?.shouldShowRecipientError(for: rec ?? "") ?? false) {
-						self?.addressStateSubject.onNext(.default)
 					} else {
 						self?.addressStateSubject.onNext(.invalid(error: "INVALID VALUE".localized()))
 					}
+				} else {
+					self?.addressStateSubject.onNext(.default)
 				}
 				if self?.isValidMinterRecipient(recipient: rec ?? "") ?? false {
 					self?.addressSubject.accept(rec)
@@ -338,7 +328,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 				return self?.isToValid(to: rec ?? "") ?? false
 			})
 			.flatMap { (rec) -> Observable<Event<String>> in
-				return InfoManager.default.address(term: rec ?? "").materialize()
+				var term = (rec ?? "")
+				if term.isValidUsername() {
+					term = term.replacingOccurrences(of: "@", with: "")
+				}
+				return InfoManager.default.address(term: term).materialize()
 			}.do(onNext: { [weak self] (_) in
 				self?.isLoadingAddressSubject.onNext(false)
 			}, onError: { [weak self] (_) in
@@ -354,6 +348,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 				case .next(let addr):
 					if addr.isValidAddress() || addr.isValidPublicKey() {
 						self?.addressSubject.accept(addr)
+						self?.addressStateSubject.onNext(.default)
 					}
 					break
 				case .error(_):
@@ -411,8 +406,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 			.asDriver(onErrorJustReturn: ())
 			.drive(onNext: { [weak self] (_) in
 				guard let _self = self else { return } //swiftlint:disable:this identifier_name
-				let selectedAmount = CurrencyNumberFormatter.formattedDecimal(with: _self.selectedAddressBalance ?? 0.0,
-																																			formatter: _self.formatter)
+				let selectedAmount = _self.formatter.formattedDecimal(with: _self.selectedAddressBalance ?? 0.0)
 				self?.amountSubject.accept(selectedAmount)
 			}).disposed(by: disposeBag)
 
@@ -470,12 +464,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		if to.count > 66 {
 			return false
 		}
-		//username and address
-		return to.isValidUsername() || self.isValidMinterRecipient(recipient: to)
+		return to.isValidUsername() || self.isValidMinterRecipient(recipient: to) || to.isValidEmail()
 	}
 
 	func shouldShowRecipientError(for recipient: String) -> Bool {
-		return !recipient.isEmpty && recipient.count >= 6
+		return recipient.isEmpty || recipient.count < 6
 	}
 
 	func isValidMinterRecipient(recipient: String) -> Bool {
@@ -510,8 +503,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 			blns?.insert((Coin.baseCoin().symbol ?? ""), at: 0)
 			blns?.forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
-				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance,
-																																		 formatter: coinFormatter)
+				let balanceString = coinFormatter.formattedDecimal(with: balance)
 				let title = coin + " (" + balanceString + ")"
 				let item = AccountPickerItem(title: title,
 																		 address: address,
@@ -534,8 +526,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 			let balance = balances[coin] else {
 				return nil
 		}
-		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance,
-																																 formatter: coinFormatter)
+		let balanceString = coinFormatter.formattedDecimal(with: balance)
 		let title = coin + " (" + balanceString + ")"
 		let item = AccountPickerItem(title: title,
 																 address: adrs,
@@ -626,7 +617,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 
 	func sendButtonTaped() {
 		let recipient = recipientSubject.value ?? ""
-		let amount = Decimal(string: amountSubject.value ?? "") ?? 0
+		let amount = Decimal(string: amountSubject.value?.replacingOccurrences(of: ",", with: ".") ?? "") ?? 0
 		let address = addressSubject.value ?? ""
 		let sendVM = self.sendPopupViewModel(to: recipient,
 																				 address: address,
@@ -771,8 +762,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		if recipient.isValidPublicKey() {
 			commission = (RawTransactionType.delegate.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
 		}
-		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: commission,
-																																 formatter: self.coinFormatter)
+		let balanceString = coinFormatter.formattedDecimal(with: commission)
 		return balanceString + " " + (Coin.baseCoin().symbol ?? "")
 	}
 

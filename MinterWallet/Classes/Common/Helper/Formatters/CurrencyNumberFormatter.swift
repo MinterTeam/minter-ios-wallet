@@ -10,6 +10,10 @@ import Foundation
 
 class CurrencyNumberFormatter: NumberFormatter {
 
+	func formattedDecimal(with number: Decimal) -> String {
+		return CurrencyNumberFormatter.formattedDecimal(with: number, formatter: self)
+	}
+
 	class func formattedDecimal(with number: Decimal, formatter: NumberFormatter) -> String {
 		let newNF = formatter.copy() as! NumberFormatter // swiftlint:disable:this force_cast
 		let amount = number
@@ -54,8 +58,8 @@ class CurrencyNumberFormatter: NumberFormatter {
 		return Decimal(string: str)
 	}
 
-	class var transactionFormatter: NumberFormatter {
-		let formatter = NumberFormatter()
+	class var transactionFormatter: CurrencyNumberFormatter {
+		let formatter = CurrencyNumberFormatter()
 		formatter.numberStyle = .decimal
 		formatter.decimalSeparator = "."
 		formatter.groupingSeparator = " "
@@ -68,8 +72,8 @@ class CurrencyNumberFormatter: NumberFormatter {
 		return formatter
 	}
 
-	class var coinFormatter: NumberFormatter {
-		let formatter = NumberFormatter()
+	class var coinFormatter: CurrencyNumberFormatter {
+		let formatter = CurrencyNumberFormatter()
 		formatter.numberStyle = .decimal
 		formatter.decimalSeparator = "."
 		formatter.groupingSeparator = " "
@@ -82,8 +86,8 @@ class CurrencyNumberFormatter: NumberFormatter {
 		return formatter
 	}
 
-	class var decimalFormatter: NumberFormatter {
-		let formatter = NumberFormatter()
+	class var decimalFormatter: CurrencyNumberFormatter {
+		let formatter = CurrencyNumberFormatter()
 		formatter.generatesDecimalNumbers = true
 		formatter.decimalSeparator = "."
 		formatter.generatesDecimalNumbers = true
@@ -95,8 +99,8 @@ class CurrencyNumberFormatter: NumberFormatter {
 		return formatter
 	}
 
-	class var decimalShortFormatter: NumberFormatter {
-		let formatter = NumberFormatter()
+	class var decimalShortFormatter: CurrencyNumberFormatter {
+		let formatter = CurrencyNumberFormatter()
 		formatter.generatesDecimalNumbers = true
 		formatter.decimalSeparator = "."
 		formatter.generatesDecimalNumbers = true
@@ -108,8 +112,8 @@ class CurrencyNumberFormatter: NumberFormatter {
 		return formatter
 	}
 
-	class var decimalShortNoMantissaFormatter: NumberFormatter {
-		let formatter = NumberFormatter()
+	class var decimalShortNoMantissaFormatter: CurrencyNumberFormatter {
+		let formatter = CurrencyNumberFormatter()
 		formatter.generatesDecimalNumbers = true
 		formatter.decimalSeparator = "."
 		formatter.generatesDecimalNumbers = true
@@ -121,8 +125,8 @@ class CurrencyNumberFormatter: NumberFormatter {
 		return formatter
 	}
 
-	class var USDFormatter : NumberFormatter {
-		let formatter = NumberFormatter()
+	class var USDFormatter: CurrencyNumberFormatter {
+		let formatter = CurrencyNumberFormatter()
 		formatter.numberStyle = .decimal
 		formatter.decimalSeparator = "."
 		formatter.groupingSeparator = " "

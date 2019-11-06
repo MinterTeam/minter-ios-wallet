@@ -49,6 +49,8 @@
 		FA04028F20FDD6B900F1689F /* ConvertCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04028E20FDD6B900F1689F /* ConvertCoinsViewModel.swift */; };
 		FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */; };
 		FA04029320FDD6E000F1689F /* GetCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */; };
+		FA0A0DD72371A70B00B83C29 /* UITextViewWorkaround.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A0DD62371A70B00B83C29 /* UITextViewWorkaround.swift */; };
+		FA0A0DD82371A70B00B83C29 /* UITextViewWorkaround.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A0DD62371A70B00B83C29 /* UITextViewWorkaround.swift */; };
 		FA0AF8DC21B5297E000B571B /* NextGrowingInternalTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8DA21B5297D000B571B /* NextGrowingInternalTextView.swift */; };
 		FA0AF8DD21B5297E000B571B /* NextGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8DB21B5297D000B571B /* NextGrowingTextView.swift */; };
 		FA0AF8E521B534EF000B571B /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0AF8DF21B534EF000B571B /* UIImageViewExtension.swift */; };
@@ -411,6 +413,10 @@
 		FA79F60720D06D3D007876ED /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA79F60520CBE9A7007876ED /* String+Email.swift */; };
 		FA7A9BF820BED28900E3CCDA /* SentPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */; };
 		FA7A9BFA20BED61000E3CCDA /* SentPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */; };
+		FA7D02D8236B537D00BB7479 /* SendViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D02D7236B537D00BB7479 /* SendViewModelProtocol.swift */; };
+		FA7D02D9236B537D00BB7479 /* SendViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D02D7236B537D00BB7479 /* SendViewModelProtocol.swift */; };
+		FA7D02DB236C6BDA00BB7479 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA7D02DA236C6BD900BB7479 /* GoogleService-Info.plist */; };
+		FA7D02E0236C6C4200BB7479 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA7D02DF236C6C4200BB7479 /* GoogleService-Info.plist */; };
 		FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */; };
 		FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */; };
 		FA7DB947230C8B2500C75A7A /* Session+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB946230C8B2500C75A7A /* Session+.swift */; };
@@ -501,6 +507,8 @@
 		FAB865F320C57007002568A4 /* PopupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB865F220C57007002568A4 /* PopupRouter.swift */; };
 		FAB865FF20C7D0B3002568A4 /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB865FD20C7D0B3002568A4 /* TextViewTableViewCell.swift */; };
 		FAB8660020C7D0B3002568A4 /* TextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB865FE20C7D0B3002568A4 /* TextViewTableViewCell.xib */; };
+		FAC1A74D2368A22F0018399D /* RawTransactionViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1A74C2368A22F0018399D /* RawTransactionViewModelProtocol.swift */; };
+		FAC1A74E2368A22F0018399D /* RawTransactionViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1A74C2368A22F0018399D /* RawTransactionViewModelProtocol.swift */; };
 		FAC1E1C52074C4810083333F /* BaseTableSectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */; };
 		FAC1E1C72074C4A20083333F /* BaseCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C62074C4A20083333F /* BaseCellItem.swift */; };
 		FAC1E1C92074CEC90083333F /* Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1E1C82074CEC90083333F /* Sugar.swift */; };
@@ -641,6 +649,7 @@
 		FA04028E20FDD6B900F1689F /* ConvertCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029020FDD6C600F1689F /* SpendCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendCoinsViewModel.swift; sourceTree = "<group>"; };
 		FA04029220FDD6E000F1689F /* GetCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCoinsViewModel.swift; sourceTree = "<group>"; };
+		FA0A0DD62371A70B00B83C29 /* UITextViewWorkaround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewWorkaround.swift; sourceTree = "<group>"; };
 		FA0AF8DA21B5297D000B571B /* NextGrowingInternalTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingInternalTextView.swift; sourceTree = "<group>"; };
 		FA0AF8DB21B5297D000B571B /* NextGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextGrowingTextView.swift; sourceTree = "<group>"; };
 		FA0AF8DF21B534EF000B571B /* UIImageViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
@@ -766,6 +775,9 @@
 		FA79F60520CBE9A7007876ED /* String+Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
 		FA7A9BF720BED28900E3CCDA /* SentPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentPopupViewController.swift; sourceTree = "<group>"; };
 		FA7A9BF920BED61000E3CCDA /* SentPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentPopupViewModel.swift; sourceTree = "<group>"; };
+		FA7D02D7236B537D00BB7479 /* SendViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewModelProtocol.swift; sourceTree = "<group>"; };
+		FA7D02DA236C6BD900BB7479 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FA7D02DF236C6C4200BB7479 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FA7D98EF207CBB4B00193B8A /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonTableViewCell.xib; sourceTree = "<group>"; };
 		FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewController.swift; sourceTree = "<group>"; };
@@ -844,6 +856,7 @@
 		FAB865F220C57007002568A4 /* PopupRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupRouter.swift; sourceTree = "<group>"; };
 		FAB865FD20C7D0B3002568A4 /* TextViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewTableViewCell.swift; sourceTree = "<group>"; };
 		FAB865FE20C7D0B3002568A4 /* TextViewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextViewTableViewCell.xib; sourceTree = "<group>"; };
+		FAC1A74C2368A22F0018399D /* RawTransactionViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionViewModelProtocol.swift; sourceTree = "<group>"; };
 		FAC1E1C42074C4810083333F /* BaseTableSectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableSectionItem.swift; sourceTree = "<group>"; };
 		FAC1E1C62074C4A20083333F /* BaseCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellItem.swift; sourceTree = "<group>"; };
 		FAC1E1C82074CEC90083333F /* Sugar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sugar.swift; sourceTree = "<group>"; };
@@ -953,6 +966,7 @@
 			isa = PBXGroup;
 			children = (
 				B3CD518694233BEED9B6EE2B /* SendViewModel.swift */,
+				FA7D02D7236B537D00BB7479 /* SendViewModelProtocol.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1547,6 +1561,7 @@
 			isa = PBXGroup;
 			children = (
 				FAC6DDF6233A146000A7E650 /* RawTransactionViewModel.swift */,
+				FAC1A74C2368A22F0018399D /* RawTransactionViewModelProtocol.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1743,6 +1758,7 @@
 		FA669B67207239F200AD110A /* MinterWallet */ = {
 			isa = PBXGroup;
 			children = (
+				FA7D02DC236C6C1B00BB7479 /* Fabric */,
 				FA0E32AC232FCCC9004D755C /* RawTransaction */,
 				FAC5393A22C37BEB0077E181 /* PIN */,
 				FADD8F1D2193098A00463F66 /* Sounds */,
@@ -1893,6 +1909,7 @@
 				FAA2AAE92296E42300581D47 /* TransactionAddressButton.swift */,
 				FAA2AAEE2297DB4C00581D47 /* Tabbar.swift */,
 				FAA0B2A6232A443B001C5C72 /* AddressTextView.swift */,
+				FA0A0DD62371A70B00B83C29 /* UITextViewWorkaround.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1948,6 +1965,31 @@
 				FAE5548D2118472800D4872C /* ReceiveRouter.swift */,
 			);
 			path = Router;
+			sourceTree = "<group>";
+		};
+		FA7D02DC236C6C1B00BB7479 /* Fabric */ = {
+			isa = PBXGroup;
+			children = (
+				FA7D02DE236C6C2D00BB7479 /* Mainnet */,
+				FA7D02DD236C6C2500BB7479 /* Testnet */,
+			);
+			path = Fabric;
+			sourceTree = "<group>";
+		};
+		FA7D02DD236C6C2500BB7479 /* Testnet */ = {
+			isa = PBXGroup;
+			children = (
+				FA7D02DF236C6C4200BB7479 /* GoogleService-Info.plist */,
+			);
+			path = Testnet;
+			sourceTree = "<group>";
+		};
+		FA7D02DE236C6C2D00BB7479 /* Mainnet */ = {
+			isa = PBXGroup;
+			children = (
+				FA7D02DA236C6BD900BB7479 /* GoogleService-Info.plist */,
+			);
+			path = Mainnet;
 			sourceTree = "<group>";
 		};
 		FA7D98F9207F584700193B8A /* Third Party */ = {
@@ -2332,6 +2374,7 @@
 				FA333068224A4B3C003B4763 /* pop_zap.wav in Resources */,
 				FA333069224A4B3C003B4763 /* Ubuntu-R.ttf in Resources */,
 				FA33306A224A4B3C003B4763 /* CoinTableViewCell.xib in Resources */,
+				FA7D02DB236C6BDA00BB7479 /* GoogleService-Info.plist in Resources */,
 				FA33306B224A4B3C003B4763 /* Ubuntu-C.ttf in Resources */,
 				FA33306C224A4B3C003B4763 /* Ubuntu-L.ttf in Resources */,
 				FA33306E224A4B3C003B4763 /* AmountTextFieldTableViewCell.xib in Resources */,
@@ -2435,6 +2478,7 @@
 				FAE794542089F5170006CB0B /* DisclosureTableViewCell.xib in Resources */,
 				9C6DD4F4A99B7274AF32C13A /* Receive.storyboard in Resources */,
 				DF95C2FD52E1D7EB13A9336F /* Settings.storyboard in Resources */,
+				FA7D02E0236C6C4200BB7479 /* GoogleService-Info.plist in Resources */,
 				FA11EA64214ABFD300C8DFB0 /* CoinAutocompleteCell.xib in Resources */,
 				7E3C7A1AC5554EB64E0510A3 /* Address.storyboard in Resources */,
 				FAA0B2AE232A44E7001C5C72 /* SendPayloadTableViewCell.xib in Resources */,
@@ -2631,7 +2675,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\n# Adjust path to \"natalie\" binary\n# NATALIE_PATH=\"$PROJECT_DIR/natalie\"\nNATALIE_PATH=\"/usr/local/bin/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\nBASE_PATH=\"$PROJECT_DIR/$PROJECT_NAME\"\nOUTPUT_PATH=\"$BASE_PATH/Classes/Common/Helper/Storyboards.swift\"\n\nif [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\necho \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n/usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n\"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n/usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\necho \"Natalie Generator: Done.\"\nelse\necho \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\nfi\nfi";
+			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\n# Adjust path to \"natalie\" binary\n# NATALIE_PATH=\"$PROJECT_DIR/natalie\"\nNATALIE_PATH=\"/usr/local/bin/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\nBASE_PATH=\"$PROJECT_DIR/$PROJECT_NAME\"\nOUTPUT_PATH=\"$BASE_PATH/Classes/Common/Helper/Storyboards.swift\"\n\nif [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\necho \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n/usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n\"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n/usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\necho \"Natalie Generator: Done.\"\nelse\necho \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\nfi\nfi\n";
 		};
 		FA33308E224A4B3C003B4763 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2813,6 +2857,7 @@
 				FA332FB4224A4B3C003B4763 /* DroppableView.swift in Sources */,
 				FA332FB5224A4B3C003B4763 /* GenerateAddressViewController.swift in Sources */,
 				FA332FB6224A4B3C003B4763 /* SettingsAvatarTableViewCell.swift in Sources */,
+				FA7D02D8236B537D00BB7479 /* SendViewModelProtocol.swift in Sources */,
 				FA332FB7224A4B3C003B4763 /* Decimal+.swift in Sources */,
 				FA332FB8224A4B3C003B4763 /* AppDelegate.swift in Sources */,
 				FA332FB9224A4B3C003B4763 /* BaseCell.swift in Sources */,
@@ -2942,6 +2987,7 @@
 				FA333026224A4B3C003B4763 /* SessionAddressSyncer.swift in Sources */,
 				FA704EB22306B45E00A1A459 /* AdvancedGateManager+Rx.swift in Sources */,
 				FA333027224A4B3C003B4763 /* SettingsSwitchTableViewCell.swift in Sources */,
+				FA0A0DD72371A70B00B83C29 /* UITextViewWorkaround.swift in Sources */,
 				FA333028224A4B3C003B4763 /* SendViewController.swift in Sources */,
 				FAA2AAE12296C5BE00581D47 /* TransactionTitleHelper.swift in Sources */,
 				FA333029224A4B3C003B4763 /* SendViewModel.swift in Sources */,
@@ -2956,6 +3002,7 @@
 				FA333032224A4B3C003B4763 /* PopupViewController.swift in Sources */,
 				FA333033224A4B3C003B4763 /* APIClient+Auth.swift in Sources */,
 				FA333034224A4B3C003B4763 /* RootConvertViewController.swift in Sources */,
+				FAC1A74D2368A22F0018399D /* RawTransactionViewModelProtocol.swift in Sources */,
 				FA333035224A4B3C003B4763 /* PopupViewModel.swift in Sources */,
 				FAC5394422C37C8A0077E181 /* PINViewModel.swift in Sources */,
 				FA333036224A4B3C003B4763 /* McPickerPopoverViewController.swift in Sources */,
@@ -3033,6 +3080,7 @@
 				FAA2605E209209DE009FF3DE /* DroppableView.swift in Sources */,
 				FAA2607A20935201009FF3DE /* GenerateAddressViewController.swift in Sources */,
 				FAE794522088DC010006CB0B /* SettingsAvatarTableViewCell.swift in Sources */,
+				FA7D02D9236B537D00BB7479 /* SendViewModelProtocol.swift in Sources */,
 				FAB61CFA213D341F002762A7 /* Decimal+.swift in Sources */,
 				FA669B69207239F200AD110A /* AppDelegate.swift in Sources */,
 				FAC1E1CB2074D9840083333F /* BaseCell.swift in Sources */,
@@ -3162,6 +3210,7 @@
 				FA7935FB20D30B710012642E /* SessionAddressSyncer.swift in Sources */,
 				FA704EB32306B45E00A1A459 /* AdvancedGateManager+Rx.swift in Sources */,
 				FAE79456208DC30D0006CB0B /* SettingsSwitchTableViewCell.swift in Sources */,
+				FA0A0DD82371A70B00B83C29 /* UITextViewWorkaround.swift in Sources */,
 				D124A0B3D452A1612EA7194E /* SendViewController.swift in Sources */,
 				FAA2AAE22296C5BE00581D47 /* TransactionTitleHelper.swift in Sources */,
 				EFCE6415FD145CE2E62EF813 /* SendViewModel.swift in Sources */,
@@ -3176,6 +3225,7 @@
 				886A872ED336AA40162E4C11 /* PopupViewController.swift in Sources */,
 				FAC4BA1020D9445F005A1B90 /* APIClient+Auth.swift in Sources */,
 				FAD0F6C220FCAFB2009A5936 /* RootConvertViewController.swift in Sources */,
+				FAC1A74E2368A22F0018399D /* RawTransactionViewModelProtocol.swift in Sources */,
 				4CAD2C40F3ECF43BAE855D20 /* PopupViewModel.swift in Sources */,
 				FAC5394522C37C8A0077E181 /* PINViewModel.swift in Sources */,
 				FA0F297B21B179BB00E10F5E /* McPickerPopoverViewController.swift in Sources */,
@@ -3285,7 +3335,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 226;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3299,7 +3349,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/MinterWallet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.20;
+				MARKETING_VERSION = 1.0.21;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3319,7 +3369,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 226;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3333,7 +3383,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/MinterWallet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.20;
+				MARKETING_VERSION = 1.0.21;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3459,7 +3509,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 226;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3473,7 +3523,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.20;
+				MARKETING_VERSION = 1.0.21;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3493,7 +3543,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 226;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3507,7 +3557,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWalletTestnet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.20;
+				MARKETING_VERSION = 1.0.21;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWalletTestnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

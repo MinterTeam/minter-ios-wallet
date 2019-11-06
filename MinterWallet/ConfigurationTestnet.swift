@@ -27,8 +27,8 @@ struct Configuration {
 
 enum Environment: String {
 
-	case staging = "staging"
-	case production = "production"
+	case staging
+	case production
 
 	var nodeBaseURL: String {
 		switch self {

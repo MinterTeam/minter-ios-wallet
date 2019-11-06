@@ -67,8 +67,8 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 	private var canLoadMore = true
 
 	var noTransactionsObservable: Observable<Bool> {
-		return Observable.combineLatest(self.isLoading.asObservable(),
-																		sections.asObservable()).map({ (val) -> Bool in
+		return Observable.combineLatest(isLoading.asObservable(),
+																		sections.asObservable()).map({ (_) -> Bool in
 			return !self.isLoading.value
 				&& self.canLoadMore == false
 				&& self.transactions.count == 0
@@ -77,7 +77,7 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 
 	func createSections(with transactions: [TransactionItem]?) {
 		var newSections = [BaseTableSectionItem]()
-		var items = [String : [BaseCellItem]]()
+		var items = [String: [BaseCellItem]]()
 
 		transactions?.forEach({ (item) in
 			guard let transaction = item.transaction else {

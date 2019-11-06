@@ -95,10 +95,10 @@ class ConfirmPopupViewController: PopupViewController, ControllerType {
 	// MARK: -
 
 	private func updateUI() {
-		guard let vm = viewModel as? ConfirmPopupViewModel else {
+		guard let viewModel = viewModel else {
 			return
 		}
-		self.actionButton.setTitle(vm.buttonTitle, for: .normal)
-		self.secondButton.setTitle(vm.cancelTitle, for: .normal)
+		self.actionButton.setTitle(viewModel.buttonTitle, for: .normal)
+		self.secondButton.setTitle(viewModel.cancelTitle, for: .normal)
 	}
 }

@@ -27,24 +27,18 @@ class PasswordEditViewModel: BaseViewModel {
 
 	override init() {
 		super.init()
-		
 		createSection()
 	}
 
 	// MARK: -
 
 	var title: String {
-		get {
-			return "Change Password".localized()
-		}
+		return "Change Password".localized()
 	}
 
 	var errorNotification = Variable<NotifiableError?>(nil)
-
 	var successMessage = Variable<NotifiableSuccess?>(nil)
-	
 	private var isLoading = Variable(false)
-
 	var password = Variable<String?>(nil)
 	var confirmPassword = Variable<String?>(nil)
 
