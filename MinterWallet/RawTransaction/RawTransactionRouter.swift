@@ -23,14 +23,11 @@ class RawTransactionRouter: BaseRouter {
 
 		if let tx = param["d"] as? String {
 			var nonce: BigUInt?
-			var chainId: BigUInt?
 			var gasPrice: BigUInt?
 			var gasCoin: String = Coin.baseCoin().symbol!
 			var type: RawTransactionType = .sendCoin
 			var txData: Data?
 			var payload: String?
-			var serviceData: Data?
-			var signatureType: Data?
 			var userData: [String: Any]? = [:]
 
 			guard
@@ -43,39 +40,7 @@ class RawTransactionRouter: BaseRouter {
 				return nil
 
 			case .list(let items, _, _):
-				//Full tx version
-				if items.count == 9 || items.count == 10 {
-					guard
-						let nonceData = items[safe: 0]?.data,
-						let chainIdData = items[safe: 1]?.data,
-						let gasPriceData = items[safe: 2]?.data,
-						let gasCoinData = items[safe: 3]?.data,
-						let typeData = items[safe: 4]?.data,
-						let txDataData = RLP.decode(items[safe: 5]?.data ?? Data())?.data,
-						let payloadData = items[safe: 6]?.data,
-						let serviceDataData = items[safe: 7]?.data,
-						let signatureTypeData = items[safe: 8]?.data
-					else { return nil }
-
-					nonce = BigUInt(nonceData)
-					chainId = BigUInt(chainIdData)
-					gasPrice = BigUInt(gasPriceData)
-					if let newGasCoin = String(coinData: gasCoinData) {
-						guard newGasCoin.isValidCoin() else {
-							return nil
-						}
-						gasCoin = newGasCoin
-					}
-					let typeBigInt = BigUInt(typeData)
-					guard let txType = RawTransactionType.type(with: typeBigInt) else {
-						return nil
-					}
-					type = txType
-					txData = txDataData
-					payload = String(data: payloadData, encoding: .utf8)
-					serviceData = serviceDataData
-					signatureType = signatureTypeData
-				} else if items.count >= 3 {//shortened version
+				if items.count >= 3 {//shortened version
 					guard
 						let typeData = items[safe: 0]?.data,
 						let txDataData = RLP.decode(items[safe: 1]?.data ?? Data())?.data,
@@ -126,8 +91,9 @@ class RawTransactionRouter: BaseRouter {
 					type: type,
 					data: txData,
 					payload: payload,
-					serviceData: serviceData,
-					signatureType: signatureType, userData: userData)
+					serviceData: nil,
+					signatureType: nil,
+					userData: userData)
 			} catch {
 				return nil
 			}

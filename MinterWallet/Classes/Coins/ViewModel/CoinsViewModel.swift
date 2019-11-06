@@ -225,9 +225,6 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 					url.host == "tx" || url.path.contains("tx") {
 						self?.showViewControllerSubject.onNext((controller: rawViewController, isModal: true))
 					return
-				} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ("d=" + (val ?? "")).getKeyVals() ?? [:]) {
-					self?.showViewControllerSubject.onNext((controller: rawViewController, isModal: true))
-					return
 				}
 				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
 			}).disposed(by: disposeBag)
