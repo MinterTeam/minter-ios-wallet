@@ -17,6 +17,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 	// MARK: -
 
 	enum RawTransactionViewModelError: Error {
+		case authRequired
 		case noPrivateKey
 		case incorrectTxData
 	}
@@ -101,6 +102,10 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 		signatureType: Data?,
 		userData: [String: Any]? = [:]
 	) throws {
+		guard Session.shared.isLoggedIn.value || Session.shared.accounts.value.count > 0 else {
+			throw RawTransactionViewModelError.authRequired
+		}
+
 		self.dependency = dependency
 
 		self.type = type

@@ -17,9 +17,6 @@ class RawTransactionRouter: BaseRouter {
 	}
 
 	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
-		guard Session.shared.isLoggedIn.value || Session.shared.accounts.value.count > 0 else {
-			return nil
-		}
 
 		if let tx = param["d"] as? String {
 			var nonce: BigUInt?
