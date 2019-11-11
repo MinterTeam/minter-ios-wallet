@@ -213,6 +213,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		didScanQRSubject
 			.asObservable()
 			.subscribe(onNext: { [weak self] (val) in
+				let url = URL(string: val ?? "")
 				if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
 					self?.showSendTabSubject.onNext(())
 					NotificationCenter.default.post(name: sendViewControllerAddressNotification,
@@ -220,10 +221,9 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 																					userInfo: ["address": val ?? ""])
 					return
 				} else if
-					let url = URL(string: val ?? ""),
-					let rawViewController = RawTransactionRouter.viewController(path: [url.host ?? ""], param: url.params()),
-					url.host == "tx" || url.path.contains("tx") {
-						self?.showViewControllerSubject.onNext((controller: rawViewController, isModal: true))
+					let url = url,
+					let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
+					self?.showViewControllerSubject.onNext((controller: rawViewController, isModal: true))
 					return
 				}
 				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))

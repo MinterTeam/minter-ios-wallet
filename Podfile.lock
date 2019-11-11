@@ -99,7 +99,7 @@ DEPENDENCIES:
   - YandexMobileMetrica/Dynamic (= 3.2.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFDateHelper
     - Alamofire
     - AlamofireImage
@@ -204,6 +204,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 6de0376ecf5f2a61878c299eade9d381f1a79e74
+PODFILE CHECKSUM: 9b21d08849fb73bbc692e8783398cde13a4b5df4
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4

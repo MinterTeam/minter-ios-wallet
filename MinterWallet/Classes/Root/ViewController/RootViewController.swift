@@ -159,15 +159,20 @@ class RootViewController: UIViewController, ControllerType {
 				let pinVC = PINRouter.defaultPINViewController() {
 
 				func removePopupViewController(in viewController: UIViewController) {
-					if let vc = viewController.presentedViewController {
-						vc.dismiss(animated: false, completion: nil)
-					}
-
-					viewController.childViewControllers.forEach { (vc) in
-						if vc != viewController {
-							removePopupViewController(in: vc)
-						}
-					}
+					UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: {
+						
+					})
+					UIApplication.shared.windows.first?.subviews.filter({ (view) -> Bool in
+						return view as? McPicker != nil
+					}).forEach({ (view) in
+						(view as? McPicker)?.cancel()
+					})
+//
+//					viewController.childViewControllers.forEach { (vc) in
+//						if vc != viewController {
+//							removePopupViewController(in: vc)
+//						}
+//					}
 				}
 
 				removePopupViewController(in: self)

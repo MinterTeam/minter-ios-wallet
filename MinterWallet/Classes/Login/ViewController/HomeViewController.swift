@@ -73,32 +73,32 @@ class HomeViewController: BaseViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
+
 		self.navigationController?.setNavigationBarHidden(true, animated: animated)
 	}
-	
+
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
-		
+
 		self.navigationController?.setNavigationBarHidden(false, animated: animated)
 	}
-	
+
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
-	
+
 	@IBAction func didTapHelpButton(_ sender: Any) {
 		//TODO: Move somewhere
 		let url = URL(string: "https://help.minter.network")!
 		let vc = SFSafariViewController(url: url)
 		self.present(vc, animated: true, completion: nil)
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		super.prepare(for: segue, sender: sender)
-		
+
 		if segue.identifier == "showAdvanced" {
 			if let advanced = segue.destination as? AdvancedModeViewController {
 				advanced.delegate = self
@@ -106,7 +106,6 @@ class HomeViewController: BaseViewController {
 		}
 	}
 }
-
 
 extension HomeViewController: AdvancedModeViewControllerDelegate {
 

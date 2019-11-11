@@ -10,9 +10,7 @@ import Foundation
 import MinterCore
 
 class MockAPIClient {
-	
-	
-	
+
 }
 
 extension MockAPIClient : HTTPClient {

@@ -102,4 +102,11 @@ class RawTransactionRouter: BaseRouter {
 		}
 		return nil
 	}
+
+	static func rawTransactionViewController(with url: URL) -> UIViewController? {
+		if url.path.contains("tx") {
+			return RawTransactionRouter.viewController(path: ["tx"], param: url.params())
+		}
+		return nil
+	}
 }

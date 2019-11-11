@@ -248,11 +248,9 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 					self?.recipientSubject.accept(val)
 				} else if
 					let url = url,
-					url.host == "tx" || url.path.contains("tx") {
-					if let rawViewController = RawTransactionRouter.viewController(path: [url.host ?? ""], param: url.params()) {
+					let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
 						self?.showViewControllerSubject.onNext(rawViewController)
 						return
-					}
 				}
 				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
 			}).disposed(by: disposeBag)

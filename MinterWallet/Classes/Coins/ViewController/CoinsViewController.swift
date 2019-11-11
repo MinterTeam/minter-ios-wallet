@@ -71,7 +71,6 @@ class CoinsViewController:
 			.asDriver(onErrorJustReturn: "")
 			.drive(onNext: { [weak self] (val) in
 				let defaultTopConstraint = CGFloat(63.0)
-
 				var shouldLayout = false
 				if val == nil {
 					if self?.delegatedHeaderTopConstraint.constant == -defaultTopConstraint {
@@ -158,9 +157,8 @@ class CoinsViewController:
 				banner.show()
 			}).disposed(by: disposeBag)
 
-		self.headerViewBalanceLabel
-			.rx
-			.tapGesture()
+		Observable.of(self.headerViewTitleLabel.rx.tapGesture(),
+			self.headerViewBalanceLabel.rx.tapGesture()).merge()
 			.map({ (_) -> Void in
 				return ()
 			}).subscribe(viewModel.input.didTapBalance)

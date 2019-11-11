@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let conf = Configuration()
 
 		if ProcessInfo.processInfo.arguments.contains("UITesting") {
-			MinterGateBaseURLString = "https://tst.gate.minter.network"
+			MinterGateBaseURLString = "https://qa.gate-api.minter.network"
 			MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
 			MinterExplorerSDK.initialize(APIURLString: conf.environment.testExplorerAPIBaseURL,
 																	 WEBURLString: conf.environment.testExplorerWebURL,

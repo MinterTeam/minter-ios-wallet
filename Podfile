@@ -39,10 +39,13 @@ end
 
 target 'MinterWalletTestnet' do
 	shared_pods
+	inherit! :search_paths
 end
 
 target 'MinterWalletTests' do
 	pod 'CryptoSwift', '~> 1.0'
+	shared_pods
+	inherit! :search_paths
 end
 
 post_install do |installer|

@@ -52,14 +52,14 @@ class MinterWalletUITests: XCTestCase {
 		expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: label, handler: nil)
 		waitForExpectations(timeout: 15, handler: nil)
 	}
-        
+
 	override func setUp() {
 		super.setUp()
 	
 		continueAfterFailure = false
-		
+
 		app = XCUIApplication()
-		app.launchArguments = ["UITesting"] 
+		app.launchArguments = ["UITesting"]
 		app.launch()
 		
 		logout()

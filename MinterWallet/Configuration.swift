@@ -33,7 +33,7 @@ enum Environment: String {
 	var nodeBaseURL: String {
 		switch self {
 		case .staging: return "https://minter-node-1.mainnet.minter.network"
-		case .production: return "https://minter-node-1.mainnet.minter.network"
+		case .production: return "https://minter-node-2.mainnet.minter.network"
 		}
 	}
 
