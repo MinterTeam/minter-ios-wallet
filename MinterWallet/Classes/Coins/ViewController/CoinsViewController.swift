@@ -157,8 +157,10 @@ class CoinsViewController:
 				banner.show()
 			}).disposed(by: disposeBag)
 
-		Observable.of(self.headerViewTitleLabel.rx.tapGesture(),
+		Observable.of(
+			self.headerViewTitleLabel.rx.tapGesture(),
 			self.headerViewBalanceLabel.rx.tapGesture()).merge()
+			.skip(2)
 			.map({ (_) -> Void in
 				return ()
 			}).subscribe(viewModel.input.didTapBalance)
