@@ -40,7 +40,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eAa-Tz-z26">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
                                         <connections>
-                                            <segue destination="zmW-K7-mw2" kind="show" id="Vcd-tf-koW"/>
+                                            <segue destination="zmW-K7-mw2" kind="show" identifier="showDelegated" id="Vcd-tf-koW"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hIi-V4-VMg">
@@ -269,7 +269,7 @@
                 <viewControllerPlaceholder storyboardName="Transactions" id="EEO-nY-xhf" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="clf-9F-tRN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1852" y="144"/>
+            <point key="canvasLocation" x="1852" y="211"/>
         </scene>
         <!--Convert-->
         <scene sceneID="dnw-OR-PcY">
@@ -277,7 +277,7 @@
                 <viewControllerPlaceholder storyboardName="Convert" id="Bnl-uG-dmT" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Nc-hj-1vh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1828" y="245"/>
+            <point key="canvasLocation" x="1823" y="288"/>
         </scene>
         <!--Delegated-->
         <scene sceneID="ek4-m5-Nhg">
@@ -285,7 +285,7 @@
                 <viewControllerPlaceholder storyboardName="Delegated" id="zmW-K7-mw2" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rC1-7J-QPs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1839" y="344"/>
+            <point key="canvasLocation" x="1851" y="151"/>
         </scene>
         <!--Coins-->
         <scene sceneID="6HV-PS-vXh">

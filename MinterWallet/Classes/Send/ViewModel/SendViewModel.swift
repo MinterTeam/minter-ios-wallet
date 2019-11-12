@@ -13,6 +13,8 @@ import MinterMy
 import BigInt
 import SwiftValidator
 import RxAppState
+import RxBiBinding
+import RxRelay
 
 struct AccountPickerItem {
 	var title: String?
@@ -21,84 +23,76 @@ struct AccountPickerItem {
 	var coin: String?
 }
 
-class SendViewModel: BaseViewModel, ViewModelProtocol {
+class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this type_body_length
+
+	enum SendViewModelError: Error {
+		case noPrivateKey
+		case insufficientFunds
+	}
 
 	// MARK: - ViewModelProtocol
 
 	var input: SendViewModel.Input!
 	var output: SendViewModel.Output!
-
+	var dependency: SendViewModel.Dependency!
 	struct Input {
 		var payload: AnyObserver<String?>
 		var txScanButtonDidTap: AnyObserver<Void>
 		var didScanQR: AnyObserver<String?>
 	}
-
 	struct Output {
 		var errorNotification: Observable<NotifiableError?>
 		var txErrorNotification: Observable<NotifiableError?>
+		var popup: Observable<PopupViewController?>
 		var showViewController: Observable<UIViewController?>
-		var setAddressField: Observable<String?>
 	}
-
-	// MARK: -
-
-	enum cellIdentifierPrefix: String {
-		case address = "UsernameTableViewCell_Address"
-		case coin = "PickerTableViewCell_Coin"
-		case amount = "AmountTextFieldTableViewCell_Amount"
-		case fee = "TwoTitleTableViewCell_TransactionFee"
-		case separator = "SeparatorTableViewCell"
-		case blank = "BlankTableViewCell"
-		case swtch = "SwitchTableViewCell"
-		case button = "ButtonTableViewCell"
+	struct Dependency {
+//		var gate: SendViewModelGateProtocol
+//		var info: SendViewModelInfoProtocol
 	}
 
 	// MARK: -
 
 	var title: String {
-		get {
-			return "Send".localized()
-		}
+		return "Send".localized()
 	}
 
-	private var toField: String? {
-		didSet {
-			self.getAddress()
-			self.forceUpdateFee.onNext(())
-		}
-	}
-
-	private var amountField: String? {
-		didSet {
-			self.amount.value = Decimal(string: amountField ?? "0.0")
-			
-			if isAmountValid(amount: self.amount.value ?? 0) {
-				amountStateObservable.value = .default
-			}
-		}
+	typealias FormChangedObservable = (String?, String?, String?, String?)
+	private let coinSubject = BehaviorRelay<String?>(value: "")
+	private let recipientSubject = BehaviorRelay<String?>(value: "")
+	private let addressSubject = BehaviorRelay<String?>(value: "")
+	private var recipientAddress = BehaviorRelay<String?>(value: nil)
+	private let amountSubject = BehaviorRelay<String?>(value: "")
+	private var formChangedObservable: Observable<FormChangedObservable> {
+		return Observable.combineLatest(coinSubject.asObservable(),
+																		addressSubject.asObservable(),
+																		amountSubject.map({ (str) -> String? in
+																			return str?.replacingOccurrences(of: ",", with: ".")
+																		}).asObservable(),
+																		payloadSubject.asObservable())
 	}
 
 	let fakePK = Data(hex: "678b3252ce9b013cef922687152fb71d45361b32f8f9a57b0d11cc340881c999").toHexString()
 
 	// MARK: -
 
+	private var showViewControllerSubject = PublishSubject<UIViewController?>()
+
 	var sections = Variable([BaseTableSectionItem]())
 	private var _sections = Variable([BaseTableSectionItem]())
 
 	//Formatters
 	private let formatter = CurrencyNumberFormatter.decimalFormatter
-	private let shortDecimalFormatter = CurrencyNumberFormatter.decimalShortFormatter
-	private let decimalsNoMantissaFormatter = CurrencyNumberFormatter.decimalShortNoMantissaFormatter
 	private let coinFormatter = CurrencyNumberFormatter.coinFormatter
 
 	//Loading observables
-	private var isLoadingAddress = Variable(false)
-	private var isLoadingNonce = Variable(false)
+	private var isLoadingAddressSubject = PublishSubject<Bool>()
+	private var isLoadingNonceSubject = PublishSubject<Bool>()
 
 	//State obervables
-	private var addressStateObservable = Variable(TextViewTableViewCell.State.default)
-	private var amountStateObservable = Variable(TextFieldTableViewCell.State.default)
+	private var didScanQRSubject = PublishSubject<String?>()
+	private var addressStateSubject = PublishSubject<TextViewTableViewCell.State>()
+	private var amountStateSubject = PublishSubject<TextFieldTableViewCell.State>()
 	private var payloadStateObservable = PublishSubject<TextViewTableViewCell.State>()
 	private var selectedAddress: String?
 	private var selectedAddressBalance: Decimal? {
@@ -107,23 +101,22 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		}
 		let balance = Session.shared.allBalances.value.filter { (val) -> Bool in
 			if selectedAddress != val.key { return false }
-			
 			return (nil != val.value[selectedCoin.value!])
 		}
 		return balance[selectedAddress!]?[selectedCoin.value!]
 	}
 
 	var selectedBalanceText: String? {
-		return CurrencyNumberFormatter.formattedDecimal(with: selectedAddressBalance ?? 0,
-																										formatter: formatter)
+		return formatter.formattedDecimal(with: selectedAddressBalance ?? 0)
 	}
 
 	var baseCoinBalance: Decimal {
 		let balances = Session.shared.allBalances.value
-		if let ads = selectedAddress,
-			let cn = Coin.baseCoin().symbol,
+		if
+			let ads = selectedAddress,
+			let coin = Coin.baseCoin().symbol,
 			let smt = balances[ads],
-			let blnc = smt[cn] {
+			let blnc = smt[coin] {
 				return blnc
 		}
 		return 0
@@ -136,21 +129,22 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		return selectedCoin.value == Coin.baseCoin().symbol!
 	}
 
-	private func canPayCommissionWithBaseCoin() -> Bool {
+	private func canPayCommissionWithBaseCoin(isDelegate: Bool = false) -> Bool {
 		let balance = self.baseCoinBalance
-		if balance >= currentCommission {
+		if balance >= commission(isDelegate: isDelegate) {
 			return true
 		}
 		return false
 	}
 
-	private var currentCommission: Decimal {
+	private func commission(isDelegate: Bool = false) -> Decimal {
 		let payloadCom = payloadComission().decimalFromPIP()
-		if (toField ?? "").isValidPublicKey() {
-			let val = (payloadCom + RawTransactionType.delegate.commission()).PIPToDecimal()
-			return Decimal(Session.shared.currentGasPrice.value) * val
+		let val: Decimal
+		if isDelegate {
+			val = (payloadCom + RawTransactionType.delegate.commission()).PIPToDecimal()
+		} else {
+			val = (payloadCom + RawTransactionType.sendCoin.commission()).PIPToDecimal()
 		}
-		let val = (payloadCom + RawTransactionType.sendCoin.commission()).PIPToDecimal()
 		return Decimal(Session.shared.currentGasPrice.value) * val
 	}
 
@@ -158,18 +152,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		return Decimal((try? clearPayloadSubject.value() ?? "")?.count ?? 0) * RawTransaction.payloadByteComissionPrice
 	}
 
-	private func payload() -> String {
-		return (try? clearPayloadSubject.value() ?? "") ?? ""
-	}
-
 	private var lastSentTransactionHash: String?
 	private var selectedCoin = Variable<String?>(nil)
-	private var to = Variable<String?>(nil)
-	private var toAddress = Variable<String?>(nil)
-	private var amount = Variable<Decimal?>(nil)
-	private var nonce = Variable<Int?>(nil)
-	private var currentGas = Variable<Int>(RawTransactionDefaultGasPrice)
-	private var forceUpdateFee = PublishSubject<Void>()
 	private let accountManager = AccountManager()
 	private let infoManager = InfoManager.default
 	private let payloadSubject = BehaviorSubject<String?>(value: "")
@@ -177,57 +161,37 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 	private let errorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txErrorNotificationSubject = PublishSubject<NotifiableError?>()
 	private let txScanButtonDidTap = PublishSubject<Void>()
-	private var didScanQRSubject = PublishSubject<String?>()
-	private var showViewControllerSubject = PublishSubject<UIViewController?>()
-	private var setAddressFieldSubject = PublishSubject<String?>()
-
-	var showPopup = Variable<PopupViewController?>(nil)
-
-	var isPrepearingObservable: Observable<Bool> {
-		return isLoadingNonce.asObservable()
-	}
-
-	var forceRefreshSubmitButtonState = Variable(false)
-
-	var isSubmitButtonEnabledObservable: Observable<Bool> {
-		return Observable.combineLatest(self.toAddress.asObservable(),
-																		self.amount.asObservable(),
-																		self.selectedCoin.asObservable(),
-																		forceRefreshSubmitButtonState.asObservable())
-			.map({ (val) -> Bool in
-
-			let toValue = val.0 ?? ""
-			let amountValue = val.1 ?? 0.0
-			return (toValue.isValidAddress() || toValue.isValidPublicKey()) && self.isAmountValid(amount: amountValue)
-		})
-	}
-
+	private let popupSubject = PublishSubject<PopupViewController?>()
+	private var currentGas = BehaviorSubject<Int>(value: RawTransactionDefaultGasPrice)
 	var gasObservable: Observable<String> {
-		return Observable.combineLatest(forceUpdateFee.asObservable(),
+		return Observable.combineLatest(
 																		currentGas.asObservable(),
 																		clearPayloadSubject.asObservable(),
-																		payloadSubject.asObservable())
+																		formChangedObservable)
 			.map({ [weak self] (obj) -> String in
-				let payloadData = obj.2?.data(using: .utf8)
-				return self?.comissionText(for: obj.1, payloadData: payloadData) ?? ""
+				let payloadData = obj.2.3?.data(using: .utf8)
+				let recipient = obj.2.1
+				return self?.comissionText(recipient: recipient ?? "",
+																	 for: obj.0,
+																	 payloadData: payloadData) ?? ""
 		})
 	}
 
 	// MARK: -
 
-	override init() {
-		super.init()
-
+	init(dependency: Dependency) { // swiftlint:disable:this function_body_length cyclomatic_complexity
 		self.input = Input(payload: payloadSubject.asObserver(),
 											 txScanButtonDidTap: txScanButtonDidTap.asObserver(),
 											 didScanQR: didScanQRSubject.asObserver())
 		self.output = Output(errorNotification: errorNotificationSubject.asObservable(),
 												 txErrorNotification: txErrorNotificationSubject.asObservable(),
-												 showViewController: showViewControllerSubject.asObservable(),
-												 setAddressField: setAddressFieldSubject.asObservable())
+												 popup: popupSubject.asObservable(),
+												 showViewController: showViewControllerSubject.asObservable())
+		self.dependency = dependency
+
+		super.init()
 
 		payloadSubject.asObservable().subscribe(onNext: { (payld) in
-			self.forceUpdateFee.onNext(())
 			let data = (payld ?? "").data(using: .utf8) ?? Data()
 			if data.count > RawTransaction.maxPayloadSize {
 				self.payloadStateObservable.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
@@ -242,59 +206,145 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 				newVal?.removeLast()
 			}
 			return newVal
-		}).subscribe(onNext: { (val) in
-			self.clearPayloadSubject.onNext(val)
+		}).subscribe(onNext: { [weak self] (val) in
+			self?.clearPayloadSubject.onNext(val)
 		}).disposed(by: disposeBag)
 
-		Session.shared.allBalances.asObservable().distinctUntilChanged()
+		Session.shared
+			.allBalances
+			.asObservable()
+			.distinctUntilChanged()
 			.subscribe(onNext: { [weak self] (val) in
-			if let addr = self?.selectedAddress,
-				let selCoin = self?.selectedCoin.value,
-				nil == val[addr]?[selCoin] {
-					self?.selectedAddress = nil
-					self?.selectedCoin.value = nil
-			}
-			self?.sections.value = self?.createSections() ?? []
-		}).disposed(by: disposeBag)
-
-		sections.asObservable().subscribe(onNext: { [weak self] (items) in
-			self?._sections.value = items
-		}).disposed(by: disposeBag)
-
-		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
-			self?.clear()
-			self?.sections.value = self?.createSections() ?? []
-		}).disposed(by: disposeBag)
-
-		didScanQRSubject.asObservable().subscribe(onNext: { [weak self] (val) in
-			if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
-				self?.setAddressFieldSubject.onNext(val)
-			} else if
-				let url = URL(string: val ?? ""),
-				url.host == "tx" || url.path.contains("tx") {
-
-				if let rawViewController = RawTransactionRouter.viewController(path: [url.host ?? ""], param: url.params()) {
-					self?.showViewControllerSubject.onNext(rawViewController)
-				} else {
-					//show error
-					self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
+				if
+					let addr = self?.selectedAddress,
+					let selCoin = self?.selectedCoin.value, nil == val[addr]?[selCoin] {
+						self?.selectedAddress = nil
+						self?.selectedCoin.value = nil
+						self?.coinSubject.accept(nil)
 				}
-			} else if let rawViewController = RawTransactionRouter.viewController(path: ["tx"], param: ["d": val ?? ""]) {
-					self?.showViewControllerSubject.onNext(rawViewController)
-			} else {
-				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transcation data".localized(), text: nil))
-			}
-		}).disposed(by: disposeBag)
-		
+				self?.sections.value = self?.createSections() ?? []
+			}).disposed(by: disposeBag)
+
+		sections
+			.asObservable()
+			.subscribe(onNext: { [weak self] (items) in
+				self?._sections.value = items
+			}).disposed(by: disposeBag)
+
+		Session
+			.shared
+			.accounts
+			.asDriver()
+			.drive(onNext: { [weak self] (_) in
+				self?.clear()
+				self?.sections.value = self?.createSections() ?? []
+			}).disposed(by: disposeBag)
+
+		didScanQRSubject
+			.asObservable()
+			.subscribe(onNext: { [weak self] (val) in
+				let url = URL(string: val ?? "")
+				if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
+					self?.recipientSubject.accept(val)
+				} else if
+					let url = url,
+					let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {
+						self?.showViewControllerSubject.onNext(rawViewController)
+						return
+				}
+				self?.errorNotificationSubject.onNext(NotifiableError(title: "Invalid transaction data".localized(), text: nil))
+			}).disposed(by: disposeBag)
+
 		NotificationCenter
 			.default
 			.rx
-			.notification(SendViewControllerAddressNotification)
+			.notification(sendViewControllerAddressNotification)
+			.debounce(.seconds(1), scheduler: MainScheduler.instance)
 			.subscribe(onNext: { [weak self] (not) in
 				if let recipient = not.userInfo?["address"] as? String {
 					if recipient.isValidAddress() || recipient.isValidPublicKey() {
-						self?.setAddressFieldSubject.onNext(recipient)
+						self?.recipientSubject.accept(recipient)
 					}
+				}
+			}).disposed(by: disposeBag)
+
+		formChangedObservable.subscribe(onNext: { [weak self] (val) in
+			let amount = val.2
+
+			if self?.recipientSubject.value == nil || self?.recipientSubject.value == "" {
+				self?.addressStateSubject.onNext(.default)
+			}
+
+			if amount == nil || amount == "" {
+				self?.amountStateSubject.onNext(.default)
+			} else {
+				let amnt = amount ?? ""
+				if let dec = Decimal(string: amnt), dec >= 0 {
+					self?.amountStateSubject.onNext(.default)
+				} else {
+					self?.amountStateSubject.onNext(.invalid(error: "AMOUNT IS INCORRECT".localized()))
+				}
+			}
+		}).disposed(by: disposeBag)
+
+		recipientSubject
+			.do(onNext: { [weak self] (rec) in
+				if self?.isValidMinterRecipient(recipient: rec ?? "") ?? false {
+					self?.addressSubject.accept(rec)
+					self?.addressStateSubject.onNext(.default)
+				} else {
+					self?.addressSubject.accept(nil)
+				}
+			})
+			.filter { [weak self] in
+				return !(self?.isValidMinterRecipient(recipient: $0 ?? "") ?? false)
+			}
+			.throttle(2.0, scheduler: MainScheduler.instance)
+			.distinctUntilChanged()
+			.do(onNext: { [weak self] (rec) in
+				if !(self?.isToValid(to: rec ?? "") ?? false) && (rec ?? "").count >= 5 {
+					if (rec?.count ?? 0) > 66 {
+						self?.addressStateSubject.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
+					} else {
+						self?.addressStateSubject.onNext(.invalid(error: "INVALID VALUE".localized()))
+					}
+				} else {
+					self?.addressStateSubject.onNext(.default)
+				}
+				if self?.isValidMinterRecipient(recipient: rec ?? "") ?? false {
+					self?.addressSubject.accept(rec)
+				}
+			})
+			.filter({ [weak self] (rec) -> Bool in
+				return self?.isToValid(to: rec ?? "") ?? false
+			})
+			.flatMap { (rec) -> Observable<Event<String>> in
+				var term = (rec ?? "")
+				if term.isValidUsername() {
+					term = term.replacingOccurrences(of: "@", with: "")
+				}
+				return InfoManager.default.address(term: term).materialize()
+			}.do(onNext: { [weak self] (_) in
+				self?.isLoadingAddressSubject.onNext(false)
+			}, onError: { [weak self] (_) in
+				self?.isLoadingAddressSubject.onNext(false)
+			}, onCompleted: { [weak self] in
+				self?.isLoadingAddressSubject.onNext(false)
+			}, onSubscribe: { [weak self] in
+				self?.isLoadingAddressSubject.onNext(true)
+			}).subscribe(onNext: { [weak self] (event) in
+				switch event {
+				case .completed:
+					break
+				case .next(let addr):
+					if addr.isValidAddress() || addr.isValidPublicKey() {
+						self?.addressSubject.accept(addr)
+						self?.addressStateSubject.onNext(.default)
+					}
+					break
+				case .error(_):
+					self?.addressStateSubject.onNext(.invalid(error: "USERNAME CAN NOT BE FOUND".localized()))
+					break
 				}
 			}).disposed(by: disposeBag)
 	}
@@ -303,20 +353,18 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	func createSections() -> [BaseTableSectionItem] {
 		let username = UsernameTableViewCellItem(reuseIdentifier: "UsernameTableViewCell",
-																						 identifier: cellIdentifierPrefix.address.rawValue)
+																						 identifier: CellIdentifierPrefix.address.rawValue)
 		username.title = "TO (MX ADDRESS OR PUBLIC KEY)".localized()
-		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy,
-			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate,
-			appDele.isTestnet {
+		if let appDele = UIApplication.realAppDelegate(), appDele.isTestnet {
 			username.title = "TO (@USERNAME, EMAIL, MX ADDRESS OR PUBLIC KEY)".localized()
 		}
-		username.isLoadingObservable = isLoadingAddress.asObservable()
-		username.stateObservable = addressStateObservable.asObservable()
-		username.value = toField ?? ""
+		username.isLoadingObservable = isLoadingAddressSubject.asObservable()
+		username.stateObservable = addressStateSubject.asObservable()
 		username.keybordType = .emailAddress
+		(username.text <-> recipientSubject).disposed(by: disposeBag)
 
 		let coin = PickerTableViewCellItem(reuseIdentifier: "PickerTableViewCell",
-																			 identifier: cellIdentifierPrefix.coin.rawValue + (selectedBalanceText ?? ""))
+																			 identifier: CellIdentifierPrefix.coin.rawValue + (selectedBalanceText ?? ""))
 		coin.title = "COIN".localized()
 		if nil != self.selectedAddress && nil != self.selectedCoin.value {
 			let item = accountPickerItems().filter { (item) -> Bool in
@@ -333,16 +381,25 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			if let object = item.object as? AccountPickerItem {
 				selectedAddress = object.address
 				selectedCoin.value = object.coin
+				coinSubject.accept(object.coin)
 			}
 		}
 
 		let amount = AmountTextFieldTableViewCellItem(reuseIdentifier: "AmountTextFieldTableViewCell",
-																									identifier: cellIdentifierPrefix.amount.rawValue)
+																									identifier: CellIdentifierPrefix.amount.rawValue)
 		amount.title = "AMOUNT".localized()
-		amount.rules = [FloatRule(message: "INCORRECT AMOUNT".localized())]
-		amount.value = self.amountField ?? ""
-		amount.stateObservable = amountStateObservable.asObservable()
+		amount.stateObservable = amountStateSubject.asObservable()
 		amount.keyboardType = .decimalPad
+		(amount.text <-> amountSubject).disposed(by: disposeBag)
+		amount
+			.output?
+			.didTapUseMax
+			.asDriver(onErrorJustReturn: ())
+			.drive(onNext: { [weak self] (_) in
+				guard let _self = self else { return } //swiftlint:disable:this identifier_name
+				let selectedAmount = _self.formatter.formattedDecimal(with: _self.selectedAddressBalance ?? 0.0)
+				self?.amountSubject.accept(selectedAmount)
+			}).disposed(by: disposeBag)
 
 		let payload = TextViewTableViewCellItem(reuseIdentifier: "SendPayloadTableViewCell",
 																						identifier: "SendPayloadTableViewCell_Payload")
@@ -352,25 +409,36 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		payload.titleObservable = clearPayloadSubject.asObservable()
 
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell",
-																				identifier: cellIdentifierPrefix.fee.rawValue)
+																				identifier: CellIdentifierPrefix.fee.rawValue)
 		fee.title = "Transaction Fee".localized()
 		let payloadData = (try? clearPayloadSubject.value() ?? "")?.data(using: .utf8)
-		fee.subtitle = self.comissionText(for: 1, payloadData: payloadData)
+		fee.subtitle = self.comissionText(recipient: recipientSubject.value ?? "", for: 1, payloadData: payloadData)
 		fee.subtitleObservable = self.gasObservable
 
 		let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-																							 identifier: cellIdentifierPrefix.separator.rawValue)
+																							 identifier: CellIdentifierPrefix.separator.rawValue)
 
 		let blank = BlankTableViewCellItem(reuseIdentifier: "BlankTableViewCell",
-																			 identifier: cellIdentifierPrefix.blank.rawValue)
+																			 identifier: CellIdentifierPrefix.blank.rawValue)
 
 		let button = ButtonTableViewCellItem(reuseIdentifier: "ButtonTableViewCell",
-																				 identifier: cellIdentifierPrefix.button.rawValue)
+																				 identifier: CellIdentifierPrefix.button.rawValue)
 		button.title = "SEND".localized()
 		button.buttonPattern = "purple"
-		button.isButtonEnabled = validate().count == 0
-		button.isLoadingObserver = isPrepearingObservable
-		button.isButtonEnabledObservable = isSubmitButtonEnabledObservable.asObservable()
+		button.isButtonEnabledObservable = formChangedObservable.map({ (val) -> Bool in
+			let coin = val.0
+			let recipient = val.1
+			let amount = val.2
+			return !(recipient ?? "").isEmpty && !(amount ?? "").isEmpty && !(coin ?? "").isEmpty
+		})
+
+		button
+			.output?
+			.didTapButton
+			.asDriver(onErrorJustReturn: ())
+			.drive(onNext: { [weak self] (_) in
+				self?.sendButtonTaped()
+			}).disposed(by: self.disposeBag)
 
 		var section = BaseTableSectionItem(header: "")
 		section.items = [coin, username, amount, payload, fee, separator, blank, button]
@@ -379,52 +447,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	// MARK: - Validation
 
-	func validate() -> [String: String] {
-		var errs = [String: String]()
-
-		if let toFld = toField, toFld != "" &&
-			((self.toAddress.value?.isValidAddress() ?? false)
-				|| (self.toAddress.value?.isValidPublicKey() ?? false)
-			) {
-		} else {
-			errs[cellIdentifierPrefix.address.rawValue] = "ADDRESS OR USERNAME IS INCORRECT".localized()
-		}
-
-		if nil == self.amount.value {
-			errs[cellIdentifierPrefix.address.rawValue] = "AMOUNT IS INCORRECT".localized()
-		}
-		return errs
-	}
-
-	func validateField(item: BaseCellItem, value: String) -> Bool {
-
-		defer {
-			self._sections.value = self.createSections()
-		}
-
-		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
-			self.amountField = value.replacingOccurrences(of: ",", with: ".")
-			return isAmountValid(amount: Decimal(string: value) ?? 0)
-		} else if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) && value.count >= 5 {
-			self.toField = value
-			return isToValid(to: value)
-		}
-		assert(true)
-		return false
-	}
-
 	func submitField(item: BaseCellItem, value: String) {
-		if item.identifier.hasPrefix(cellIdentifierPrefix.amount.rawValue) {
-			self.amountField = value.replacingOccurrences(of: ",", with: ".")
-
-			if isAmountValid(amount: self.amount.value ?? 0) || self.amountField == "" {
-				amountStateObservable.value = .default
-			} else {
-				amountStateObservable.value = .invalid(error: "AMOUNT IS INCORRECT".localized())
-			}
-		} else if item.identifier.hasPrefix(cellIdentifierPrefix.address.rawValue) {
-			self.toField = value
-		}
 		self._sections.value = self.createSections()
 	}
 
@@ -432,90 +455,19 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		if to.count > 66 {
 			return false
 		}
-		//username and address
-		return to.isValidUsername() || to.isValidAddress() || to.isValidPublicKey() || to.isValidEmail()
+		return to.isValidUsername() || self.isValidMinterRecipient(recipient: to) || to.isValidEmail()
+	}
+
+	func shouldShowRecipientError(for recipient: String) -> Bool {
+		return recipient.isEmpty || recipient.count < 6
+	}
+
+	func isValidMinterRecipient(recipient: String) -> Bool {
+		return recipient.isValidAddress() || recipient.isValidPublicKey()
 	}
 
 	func isAmountValid(amount: Decimal) -> Bool {
 		return AmountValidator.isValid(amount: amount)
-	}
-
-	func getAddress() {
-
-		self.toAddress.value = nil
-		let to = (toField ?? "")
-
-		guard isToValid(to: to) else {
-			if to.count > 66 {
-				self.addressStateObservable.value = .invalid(error: "TOO MANY SYMBOLS".localized())
-			} else if to == "" || to.count < 6 {
-				self.addressStateObservable.value = .default
-			} else {
-				self.addressStateObservable.value = .invalid(error: "INVALID VALUE".localized())
-			}
-			return
-		}
-
-		if to.isValidAddress() {
-			toAddress.value = toField
-			addressStateObservable.value = .default
-		} else if to.isValidEmail() {
-			//get by email
-
-			isLoadingAddress.value = true
-			infoManager.address(email: to) { [weak self] (address, user, error) in
-				self?.isLoadingAddress.value = false
-				self?.forceRefreshSubmitButtonState.value = true
-
-				guard nil == error, let address = address else {
-					//show field error
-					self?.addressStateObservable.value = .invalid(error: "EMAIL CAN NOT BE FOUND".localized())
-					return
-				}
-				if address.isValidAddress(),
-					let toFld = self?.toField?.lowercased(),
-					let usr = user?.email?.lowercased(),
-					toFld == usr {
-						self?.toAddress.value = address
-						self?.addressStateObservable.value = .default
-				} else {
-					self?.addressStateObservable.value = .invalid(error: "EMAIL CAN NOT BE FOUND".localized())
-				}
-			}
-		} else if to.isValidPublicKey() {
-			self.addressStateObservable.value = .default
-			self.toAddress.value = to
-			self.forceRefreshSubmitButtonState.value = true
-		} else {
-			//get by username
-			var val = to
-			if val.hasPrefix("@") {
-				val.removeFirst()
-			}
-			isLoadingAddress.value = true
-			infoManager.address(username: val) { [weak self] (address, user, error) in
-				self?.isLoadingAddress.value = false
-				self?.forceRefreshSubmitButtonState.value = true
-
-				guard nil == error, let address = address else {
-					self?.addressStateObservable.value = .invalid(error: "USERNAME CAN NOT BE FOUND".localized())
-					return
-				}
-
-				var toFld = self?.toField?.lowercased()
-				if toFld?.hasPrefix("@") == true {
-					toFld?.removeFirst()
-				}
-
-				if address.isValidAddress(), let usr = user?.username?.lowercased(), toFld == usr {
-					self?.toAddress.value = address
-					self?.addressStateObservable.value = .default
-				} else {
-					self?.addressStateObservable.value = .invalid(error: "USERNAME CAN NOT BE FOUND".localized())
-					//Show address error
-				}
-			}
-		}
 	}
 
 	// MARK: - Rows
@@ -532,7 +484,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 
 	func accountPickerItems() -> [PickerTableViewCellPickerItem] {
 		var ret = [AccountPickerItem]()
-
 		let balances = Session.shared.allBalances.value
 		balances.keys.forEach { (address) in
 			var blns = balances[address]?.keys.filter({ (coin) -> Bool in
@@ -543,8 +494,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			blns?.insert((Coin.baseCoin().symbol ?? ""), at: 0)
 			blns?.forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
-				let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance,
-																																		 formatter: coinFormatter)
+				let balanceString = coinFormatter.formattedDecimal(with: balance)
 				let title = coin + " (" + balanceString + ")"
 				let item = AccountPickerItem(title: title,
 																		 address: address,
@@ -553,7 +503,6 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 				ret.append(item)
 			})
 		}
-
 		return ret.map({ (account) -> PickerTableViewCellPickerItem in
 			return PickerTableViewCellPickerItem(title: account.title, object: account)
 		})
@@ -564,14 +513,11 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 			let coin = selectedCoin.value else {
 				return nil
 		}
-
 		guard let balances = Session.shared.allBalances.value[adrs],
 			let balance = balances[coin] else {
 				return nil
 		}
-
-		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: balance,
-																																 formatter: coinFormatter)
+		let balanceString = coinFormatter.formattedDecimal(with: balance)
 		let title = coin + " (" + balanceString + ")"
 		let item = AccountPickerItem(title: title,
 																 address: adrs,
@@ -592,350 +538,223 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {
 		}
 		selectedAddress = balance?.key
 		selectedCoin.value = item.coin
+		coinSubject.accept(item.coin)
 	}
 
 	// MARK: -
 
+	func send() {
+		Observable
+			.combineLatest(
+				GateManager.shared.nonce(address: "Mx" + selectedAddress!),
+				GateManager.shared.minGas()
+			).do(onError: { [weak self] (error) in
+				self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't get nonce"))
+			}, onCompleted: { [weak self] in
+				self?.isLoadingNonceSubject.onNext(false)
+			}, onSubscribe: { [weak self] in
+				self?.isLoadingNonceSubject.onNext(true)
+			}).map({ (val) -> (Int, Int) in
+				return (val.0+1, val.1)
+			}).flatMapLatest({ (val) -> Observable<((Int, Int), FormChangedObservable)> in
+				return Observable.zip(
+					Observable.just(val),
+					self.formChangedObservable.asObservable())
+			}).flatMapLatest({ (val) -> Observable<String?> in
+				let nonce = BigUInt(val.0.0)
+				let amount = (Decimal(string: val.1.2 ?? "") ?? Decimal(0))
+				let coin = val.1.0 ?? Coin.baseCoin().symbol!
+				let recipient = val.1.1 ?? ""
+				let payload = val.1.3 ?? ""
+				return self.prepareTx(nonce: nonce,
+												 amount: amount,
+												 selectedCoinBalance: self.selectedAddressBalance ?? 0.0,
+												 recipient: recipient,
+												 coin: coin,
+												 payload: payload)
+			}).flatMapLatest({ (signedTx) -> Observable<String?> in
+				return GateManager.shared.send(rawTx: signedTx)
+			}).subscribe(onNext: { [weak self] (val) in
+				self?.lastSentTransactionHash = val
+
+				self?.sections.value = self?.createSections() ?? []
+				let rec = self?.recipientSubject.value ?? ""
+				let address = self?.addressSubject.value ?? ""
+
+				if let sentViewModel = self?.sentViewModel(to: rec, address: address) {
+					let popup = PopupRouter.sentPopupViewCointroller(viewModel: sentViewModel)
+					self?.popupSubject.onNext(popup)
+				}
+
+				DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(2), execute: {
+					Session.shared.loadTransactions()
+					Session.shared.loadBalances()
+					Session.shared.loadDelegatedBalance()
+				})
+				self?.clear()
+			}, onError: { [weak self] (error) in
+				self?.handle(error: error)
+			}, onCompleted: { [weak self] in
+				self?.isLoadingNonceSubject.onNext(false)
+			}).disposed(by: disposeBag)
+	}
+
 	func clear() {
-		self.toField = nil
-		self.to.value = nil
-		self.amount.value = nil
-		self.amountField = nil
-		self.nonce.value = nil
-		self.toAddress.value = nil
 		self.clearPayloadSubject.onNext(nil)
+		self.recipientSubject.accept(nil)
+		self.amountSubject.accept(nil)
+		self.payloadSubject.onNext(nil)
 	}
 
 	func sendButtonTaped() {
-		if nil == self.selectedAddress || isLoadingNonce.value == true {
-			return
-		}
-
-		Observable.combineLatest(GateManager.shared.nonce(address: "Mx" + selectedAddress!),
-														 GateManager.shared.minGas())
-			.do(onNext: { [weak self] (result) in
-				let (nonce, gas) = result
-
-				if (self?.currentGas.value ?? 1) != gas {
-					let payloadData = (try? self?.clearPayloadSubject.value() ?? "")?.data(using: .utf8)
-					let comissionText = self!.comissionText(for: gas, payloadData: payloadData)
-					self?.errorNotificationSubject.onNext(NotifiableError(title: "Transaction fee changed".localized(),
-																																text: "Current fee is: " + comissionText))
-				}
-				self?.nonce.value = nonce + 1
-				self?.currentGas.value = gas
-
-				let amount = self?.amount.value ?? 0.0
-				guard let address = self?.toAddress.value else {
-					//Show error?
-					return
-				}
-
-				let vm = self?.sendPopupViewModel(to: self!.toField ?? address,
-																					address: address,
-																					amount: amount)
-				let vc = Storyboards.Popup.instantiateInitialViewController()
-				vc.viewModel = vm
-				self?.showPopup.value = vc
-		}, onError: { [weak self] (error) in
-			self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't get nonce"))
-			self?.isLoadingNonce.value = false
-		}, onCompleted: { [weak self] in
-			self?.isLoadingNonce.value = false
-		}, onSubscribe: { [weak self] in
-			self?.isLoadingNonce.value = true
-		}).subscribe().disposed(by: disposeBag)
+		let recipient = recipientSubject.value ?? ""
+		let amount = Decimal(string: amountSubject.value?.replacingOccurrences(of: ",", with: ".") ?? "") ?? 0
+		let address = addressSubject.value ?? ""
+		let sendVM = self.sendPopupViewModel(to: recipient,
+																				 address: address,
+																				 amount: amount)
+		let sendPopup = Storyboards.Popup.instantiateInitialViewController()
+		sendPopup.viewModel = sendVM
+		self.popupSubject.onNext(sendPopup)
 	}
 
 	func submitSendButtonTaped() {
-		sendTX()
+		send()
 	}
 
-	func sendCancelButtonTapped() {
-		forceRefreshSubmitButtonState.value = true
-	}
+	func sendCancelButtonTapped() {}
 
 	func viewDidAppear() {
-		GateManager.shared.minGasPrice().subscribe(onNext: { [weak self] (gas) in
-			self?.currentGas.value = gas
+		GateManager
+			.shared
+			.minGas()
+			.subscribe(onNext: { [weak self] (gas) in
+				self?.currentGas.onNext(gas)
 		}).disposed(by: disposeBag)
 	}
 
 	// MARK: -
 
-	func sendTX() {
-		let amount = self.amount.value ?? 0.0
-		guard let to = self.toAddress.value,
-			let selectedCoin = self.selectedCoin.value,
-			let nonce = self.nonce.value else {
-			self.errorNotificationSubject.onNext(NotifiableError(title: "Transaction can't be sent".localized()))
-			return
-		}
-
-		let isMax = (Decimal.PIPComparableBalance(from: amount)
-			== Decimal.PIPComparableBalance(from: (self.selectedAddressBalance ?? 0.0)))
-
-		let isBaseCoin = selectedCoin == Coin.baseCoin().symbol!
-		let payload = self.payload()
-
-		DispatchQueue.global().async { [weak self] in
-			guard let mnemonic = self?.accountManager.mnemonic(for: self!.selectedAddress!),
-				let seed = self?.accountManager.seed(mnemonic: mnemonic) else {
-				//Error no Private key found
-				assert(true)
-				DispatchQueue.main.async {
-					self?.errorNotificationSubject.onNext(NotifiableError(title: "No private key found".localized()))
-				}
-				return
-			}
-
-			guard let selectedCoin = self?.selectedCoin.value else {
-				DispatchQueue.main.async {
-					self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't get nonce".localized()))
-				}
-				return
-			}
-
-			let toFld = self?.toField
-			var newAmount = amount.decimalFromPIP()
-			if isMax {
-				//if we want to send all coins at first we check if can pay comission with the base coin
-				//if so we subtract commission amount from the requested amount
-				if isBaseCoin {
-					//In case of base coin just subtract static commission
-					/// - SeeAlso: https://minter-go-node.readthedocs.io/en/docs/commissions.html
-					let amountWithCommission = max(0, amount - (self?.currentCommission ?? 0))
-					guard (self?.selectedAddressBalance ?? 0) >= amountWithCommission else {
-						let needs = self?.formatter.string(from: amountWithCommission as NSNumber) ?? ""
-						self?.errorNotificationSubject.onNext(NotifiableError(title: "Not enough coins.",
-																																	text: "Needs " + needs))
-						self?.showPopup.value = nil
-						return
-					}
-
-					newAmount = amountWithCommission.decimalFromPIP()
-					self?.proceedSend(seed: seed,
-														nonce: nonce,
-														to: to,
-														toFld: toFld,
-														commissionCoin: Coin.baseCoin().symbol!,
-														amount: newAmount,
-														payload: payload)
-				} else if !(self?.canPayCommissionWithBaseCoin() ?? true) {
-					/// In case if we send not a base coin (e.g. BELTCOIN) we try to pay commission with base coin
-					let tx: RawTransaction?
-					if to.isValidPublicKey() {
-						tx = self?.delegateRawTransaction(nonce: BigUInt(nonce),
-																							gasCoin: self!.selectedCoin.value!,
-																							to: to,
-																							value: BigUInt(decimal: newAmount)!,
-																							coin: self!.selectedCoin.value!,
-																							payload: payload)
-					} else {
-						tx = self?.sendRawTransaction(nonce: BigUInt(nonce),
-																					gasCoin: self!.selectedCoin.value!,
-																					to: to,
-																					value: BigUInt(decimal: newAmount)!,
-																					coin: self!.selectedCoin.value!,
-																					payload: payload)
-					}
-
-					//we make fake tx to get it's commission
-					guard let fakeTx = tx,
-						let signedTx = RawTransactionSigner.sign(rawTx: fakeTx,
-																										 privateKey: self?.fakePK ?? "") else {
-
-						DispatchQueue.main.async {
-							self?.errorNotificationSubject.onNext(NotifiableError(title: "Can't check tx".localized()))
-							self?.showPopup.value = nil
-						}
-						return
-					}
-
-					/// Checking commission for the following tx
-					GateManager.shared.estimateTXCommission(for: signedTx,
-																									completion: { [weak self] (commission, error) in
-						guard error == nil, nil != commission else {
-							return
-						}
-						let normalizedCommission = commission!.PIPToDecimal()
-						let normalizedAmount = amount - normalizedCommission
-						//if new amount less than 0 - show error
-						if normalizedAmount < 0 {
-							//error
-							let needs = self?.formatter.string(from: (amount + normalizedCommission) as NSNumber) ?? ""
-							self?.errorNotificationSubject.onNext(NotifiableError(title: "Not enough coins.".localized(),
-																																		text: "Needs ".localized() + needs))
-							self?.showPopup.value = nil
-							return
-						}
-
-						self?.proceedSend(seed: seed,
-															nonce: nonce,
-															to: to,
-															toFld: toFld,
-															commissionCoin: selectedCoin,
-															amount: normalizedAmount.decimalFromPIP(),
-															payload: payload)
-					})
-				} else {
-					newAmount = (self?.selectedAddressBalance ?? 0).decimalFromPIP()
-					self?.proceedSend(seed: seed,
-														nonce: nonce,
-														to: to,
-														toFld: toFld,
-														commissionCoin: Coin.baseCoin().symbol!,
-														amount: newAmount,
-														payload: payload)
-				}
-			} else {
-				let commissionCoin = (self?.canPayCommissionWithBaseCoin() ?? false) ? Coin.baseCoin().symbol! : selectedCoin
-				self?.proceedSend(seed: seed,
-													nonce: nonce,
-													to: to,
-													toFld: toFld,
-													commissionCoin: commissionCoin,
-													amount: newAmount,
-													payload: payload)
-			}
-		}
-	}
-
-	private func proceedSend(seed: Data,
-													 nonce: Int,
-													 to: String,
-													 toFld: String?,
-													 commissionCoin: String,
-													 amount: Decimal,
-													 payload: String) {
-
-		self.sendTx(seed: seed,
-								nonce: nonce,
-								to: to,
-								coin: selectedCoin.value!,
-								commissionCoin: commissionCoin,
-								amount: amount,
-								payload: payload) { [weak self, toFld] res in
-
-			guard res == true else { return }
-
-			self?.clear()
-			self?.sections.value = self?.createSections() ?? []
-
-			DispatchQueue.main.async {
-				if let sentViewModel = self?.sentViewModel(to: toFld ?? to, address: to) {
-					self?.showPopup.value = PopupRouter.sentPopupViewCointroller(viewModel: sentViewModel)
-				}
-			}
-
-			DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(2), execute: {
-				Session.shared.loadTransactions()
-				Session.shared.loadBalances()
-				Session.shared.loadDelegatedBalance()
-			})
-		}
-	}
-
-	private func sendTx(seed: Data,
-											nonce: Int,
-											to: String,
+	func rawTransaction(nonce: BigUInt,
+											gasCoin: String,
+											recipient: String,
+											value: BigUInt,
 											coin: String,
-											commissionCoin: String,
-											amount: Decimal,
-											payload: String,
-											completion: ((Bool?) -> ())? = nil) {
-
-		let nonce = BigUInt(nonce)
-		guard
-			let newPk = try? self.accountManager.privateKey(from: seed),
-			let value = BigUInt(decimal: amount) else {
-			completion?(false)
-			return
-		}
-
-		let tx: RawTransaction
-		if to.isValidPublicKey() {
-			tx = self.delegateRawTransaction(nonce: nonce,
-																			 gasCoin: commissionCoin,
-																			 to: to,
-																			 value: value,
-																			 coin: coin,
-																			 payload: payload)
+											payload: String) -> RawTransaction {
+		let rawTx: RawTransaction
+		let gasPrice = (try? currentGas.value()) ?? 1
+		if recipient.isValidPublicKey() {
+			rawTx = DelegateRawTransaction(nonce: nonce,
+																		 gasPrice: gasPrice,
+																		 gasCoin: gasCoin,
+																		 publicKey: recipient,
+																		 coin: coin,
+																		 value: value)
 		} else {
-			tx = self.sendRawTransaction(nonce: nonce,
-																	 gasCoin: commissionCoin,
-																	 to: to,
-																	 value: value,
-																	 coin: coin,
-																	 payload: payload)
+			rawTx = SendCoinRawTransaction(nonce: nonce,
+																		 gasPrice: gasPrice,
+																		 gasCoin: gasCoin,
+																		 to: recipient,
+																		 value: value,
+																		 coin: coin.uppercased())
 		}
-
-		let pkString = newPk.raw.toHexString()
-		guard let signedTx = RawTransactionSigner.sign(rawTx: tx,
-																									 privateKey: pkString) else {
-			completion?(false)
-			return
-		}
-
-		self.nonce.value = nil
-		GateManager.shared.send(rawTx: signedTx).do(onNext: { [weak self] (hash) in
-
-			guard let hash = hash else {
-				completion?(false)
-				return
-			}
-
-			self?.lastSentTransactionHash = hash
-			completion?(true)
-		}, onError: { [weak self] (error) in
-			self?.handle(error: error)
-		}).subscribe(onNext: { (val) in
-//			completion?(true)
-		}).disposed(by: disposeBag)
+		rawTx.payload = payload.data(using: .utf8) ?? Data()
+		return rawTx
 	}
 
-	private func comissionText(for gas: Int, payloadData: Data? = nil) -> String {
+	func prepareTx(
+		nonce: BigUInt,
+		amount: Decimal,
+		selectedCoinBalance: Decimal,
+		recipient: String,
+		coin: String,
+		payload: String) -> Observable<String?> {
+			return Observable.create { (observer) -> Disposable in
+				let isMax = (Decimal.PIPComparableBalance(from: amount)
+					== Decimal.PIPComparableBalance(from: selectedCoinBalance))
+				let isBaseCoin = coin == Coin.baseCoin().symbol!
+				let preparedAmount = amount.decimalFromPIP()
+				let commission = self.commission(isDelegate: recipient.isValidPublicKey())
+				if
+					let mnemonic = self.accountManager.mnemonic(for: self.selectedAddress!),
+					let seed = self.accountManager.seed(mnemonic: mnemonic),
+					let newPk = try? self.accountManager.privateKey(from: seed) {
+
+					let isPublicKey = recipient.isValidPublicKey()
+					var gasCoin: String = Coin.baseCoin().symbol!
+					var value: BigUInt = BigUInt(0)
+
+					if isMax {
+						if isBaseCoin {
+							let amountWithCommission = max(0, amount - commission)
+							if selectedCoinBalance < amountWithCommission {
+								observer.onError(SendViewModelError.insufficientFunds)
+							} else {
+								value = BigUInt(decimal: amountWithCommission.decimalFromPIP()) ?? BigUInt(0)
+							}
+						} else if !self.canPayCommissionWithBaseCoin(isDelegate: isPublicKey) {
+							let preparedAmountBigInt = BigUInt(decimal: preparedAmount)!
+							let fakeTx: RawTransaction = self.rawTransaction(nonce: nonce,
+																													 gasCoin: coin,
+																													 recipient: recipient,
+																													 value: preparedAmountBigInt,
+																													 coin: coin,
+																													 payload: payload)
+							let fakeSignedTx = RawTransactionSigner.sign(rawTx: fakeTx, privateKey: self.fakePK)
+							GateManager.shared.estimateTXCommission(for: fakeSignedTx!) { (commission, error) in
+								guard error == nil else {
+									observer.onError(error!)
+									observer.onCompleted()
+									return
+								}
+								let normalizedCommission = commission!.PIPToDecimal()
+								let normalizedAmount = BigUInt(decimal: (amount - normalizedCommission).decimalFromPIP()) ?? BigUInt(0)
+								let rawTx: RawTransaction = self.rawTransaction(nonce: nonce,
+																																gasCoin: coin,
+																																recipient: recipient,
+																																value: normalizedAmount,
+																																coin: coin,
+																																payload: payload)
+								let signedTx = RawTransactionSigner.sign(rawTx: rawTx, privateKey: newPk.raw.toHexString())
+								observer.onNext(signedTx)
+								observer.onCompleted()
+							}
+							return Disposables.create()
+						} else {
+							gasCoin = (self.canPayCommissionWithBaseCoin(isDelegate: isPublicKey)) ? Coin.baseCoin().symbol! : coin
+							value = BigUInt(decimal: amount.decimalFromPIP()) ?? BigUInt(0)
+						}
+					} else {
+						gasCoin = (self.canPayCommissionWithBaseCoin(isDelegate: isPublicKey)) ? Coin.baseCoin().symbol! : coin
+						value = BigUInt(decimal: amount.decimalFromPIP()) ?? BigUInt(0)
+					}
+					let rawTx: RawTransaction = self.rawTransaction(nonce: nonce,
+																													gasCoin: gasCoin,
+																													recipient: recipient,
+																													value: value,
+																													coin: coin,
+																													payload: payload)
+
+					let pkString = newPk.raw.toHexString()
+					let signedTx = RawTransactionSigner.sign(rawTx: rawTx, privateKey: pkString)
+					observer.onNext(signedTx)
+					observer.onCompleted()
+				} else {
+					observer.onError(SendViewModelError.noPrivateKey)
+					observer.onCompleted()
+				}
+				return Disposables.create()
+			}
+	}
+
+	private func comissionText(recipient: String, for gas: Int, payloadData: Data? = nil) -> String {
 		let payloadCom = Decimal((payloadData ?? Data()).count) * RawTransaction.payloadByteComissionPrice.decimalFromPIP()
 		var commission = (RawTransactionType.sendCoin.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
-		if (toField ?? "").isValidPublicKey() {
+		if recipient.isValidPublicKey() {
 			commission = (RawTransactionType.delegate.commission() + payloadCom).PIPToDecimal() * Decimal(gas)
 		}
-
-		let balanceString = CurrencyNumberFormatter.formattedDecimal(with: commission,
-																																 formatter: self.coinFormatter)
+		let balanceString = coinFormatter.formattedDecimal(with: commission)
 		return balanceString + " " + (Coin.baseCoin().symbol ?? "")
-	}
-
-	private func sendRawTransaction(nonce: BigUInt,
-																	gasCoin: String,
-																	to: String,
-																	value: BigUInt,
-																	coin: String,
-																	payload: String) -> RawTransaction {
-
-		let tx = SendCoinRawTransaction(nonce: nonce,
-																		gasPrice: currentGas.value,
-																		gasCoin: gasCoin,
-																		to: to,
-																		value: value,
-																		coin: coin.uppercased())
-		tx.payload = payload.data(using: .utf8) ?? Data()
-		return tx
-	}
-
-	private func delegateRawTransaction(nonce: BigUInt,
-																			gasCoin: String,
-																			to: String,
-																			value: BigUInt,
-																			coin: String,
-																			payload: String) -> RawTransaction {
-		let tx = DelegateRawTransaction(nonce: nonce,
-																		gasCoin: gasCoin,
-																		publicKey: to,
-																		coin: coin,
-																		value: value)
-		tx.payload = payload.data(using: .utf8) ?? Data()
-		return tx
 	}
 
 	// MARK: -
@@ -972,32 +791,45 @@ extension SendViewModel {
 	// MARK: - ViewModels
 
 	func sendPopupViewModel(to: String, address: String, amount: Decimal) -> SendPopupViewModel {
-		let vm = SendPopupViewModel()
-		vm.amount = amount
-		vm.coin = selectedCoin.value
-		vm.username = to
+		let viewModel = SendPopupViewModel()
+		viewModel.amount = amount
+		viewModel.coin = selectedCoin.value
+		viewModel.username = to
 		if to.isValidPublicKey() {
-			vm.avatarImage = UIImage(named: "delegateImage")
+			viewModel.avatarImage = UIImage(named: "delegateImage")
 		} else {
-			vm.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
+			viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
 		}
-		vm.popupTitle = "You're Sending"
-		vm.buttonTitle = "SEND".localized()
-		vm.cancelTitle = "CANCEL".localized()
-		return vm
+		viewModel.popupTitle = "You're Sending".localized()
+		viewModel.buttonTitle = "SEND".localized()
+		viewModel.cancelTitle = "CANCEL".localized()
+		return viewModel
 	}
 
 	func sentViewModel(to: String, address: String) -> SentPopupViewModel {
-		let vm = SentPopupViewModel()
-		vm.actionButtonTitle = "VIEW TRANSACTION".localized()
+		let viewModel = SentPopupViewModel()
+		viewModel.actionButtonTitle = "VIEW TRANSACTION".localized()
 		if to.isValidPublicKey() {
-			vm.avatarImage = UIImage(named: "delegateImage")
+			viewModel.avatarImage = UIImage(named: "delegateImage")
 		} else {
-			vm.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
+			viewModel.avatarImageURL = MinterMyAPIURL.avatarAddress(address: address).url()
 		}
-		vm.secondButtonTitle = "CLOSE".localized()
-		vm.username = to
-		vm.title = "Success!".localized()
-		return vm
+		viewModel.secondButtonTitle = "CLOSE".localized()
+		viewModel.username = to
+		viewModel.title = "Success!".localized()
+		return viewModel
 	}
 }
+
+extension SendViewModel {
+	enum CellIdentifierPrefix: String {
+		case address = "UsernameTableViewCell_Address"
+		case coin = "PickerTableViewCell_Coin"
+		case amount = "AmountTextFieldTableViewCell_Amount"
+		case fee = "TwoTitleTableViewCell_TransactionFee"
+		case separator = "SeparatorTableViewCell"
+		case blank = "BlankTableViewCell"
+		case swtch = "SwitchTableViewCell"
+		case button = "ButtonTableViewCell"
+	}
+} // swiftlint:disable:this file_length

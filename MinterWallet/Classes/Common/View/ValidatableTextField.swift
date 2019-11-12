@@ -152,9 +152,9 @@ class ValidatableTextField: UITextField {
 	}
 
 	override func resignFirstResponder() -> Bool {
-		let r = super.resignFirstResponder()
+		let resign = super.resignFirstResponder()
 		self.layoutIfNeeded()
-		return r
+		return resign
 	}
 }
 

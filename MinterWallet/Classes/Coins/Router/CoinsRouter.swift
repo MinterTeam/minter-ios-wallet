@@ -8,20 +8,30 @@
 
 import Foundation
 
-class CoinsRouter : BaseRouter {
-	
+class CoinsRouter: BaseRouter {
+
 	static var patterns: [String] {
 		return ["coins", "home", "balance"]
 	}
-	
-	static func viewController(path: [String], param: [String : Any]) -> UIViewController? {
+
+	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
 		return Storyboards.Coins.instantiateInitialViewController()
 	}
-	
-	//MARK: -
-	
+
 	static func explorerViewController(url: URL) -> UIViewController {
 		return BaseSafariViewController(url: url)
 	}
-	
+
+	static func coinsViewController(viewModel: CoinsViewModel) -> UIViewController? {
+		let coinsVC = Storyboards.Coins.instantiateCoinsViewController()
+		coinsVC.viewModel = viewModel
+		coinsVC.tabBarItem = Self.coinsTabbarItem()
+		return UINavigationController(rootViewController: coinsVC)
+	}
+
+	static func coinsTabbarItem() -> UITabBarItem {
+		return UITabBarItem(title: "Coins".localized(),
+												image: UIImage(named: "circle"),
+												selectedImage: UIImage(named: "circle"))
+	}
 }

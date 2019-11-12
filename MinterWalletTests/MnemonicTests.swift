@@ -8,7 +8,6 @@
 
 import XCTest
 import CryptoSwift
-//@testable import MinterCore
 @testable import MinterWallet
 
 class MnemonicTests: XCTestCase {

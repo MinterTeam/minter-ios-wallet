@@ -45,7 +45,6 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 			imageView.frame = CGRect(x: 0.0, y: 22.0, width: 10.0, height: 5.0)
 			rightView.addSubview(imageView)
 			rightView.isUserInteractionEnabled = false
-			
 			selectField.layer.cornerRadius = 8.0
 			selectField.layer.borderWidth = 2
 			selectField.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
@@ -89,8 +88,7 @@ class PickerTableViewCell: BaseCell, UITextFieldDelegate {
 	// MARK: -
 
 	func showPicker() {
-
-		guard nil != delegate as? UIViewController else {
+		guard nil != delegate else {
 			return
 		}
 

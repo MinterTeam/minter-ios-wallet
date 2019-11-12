@@ -13,17 +13,10 @@ import NotificationBannerSwift
 import TPKeyboardAvoiding
 
 class SpendCoinsViewController: ConvertCoinsViewController,
-ControllerType,
 IndicatorInfoProvider,
 UITextFieldDelegate {
 
-	typealias ViewModelType = SpendCoinsViewModel
-
 	// MARK: -
-
-	var vm: SpendCoinsViewModel {
-		return viewModel as! SpendCoinsViewModel
-	}
 
 	private var formatter = CurrencyNumberFormatter.coinFormatter
 
@@ -34,7 +27,6 @@ UITextFieldDelegate {
 	@IBOutlet weak var spendCoinTextField: ValidatableTextField! {
 		didSet {
 			setAppearance(for: spendCoinTextField)
-
 			let imageView = UIImageView(image: UIImage(named: "textFieldSelectIcon"))
 			let rightView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 10.0, height: 5.0))
 			imageView.frame = CGRect(x: 0.0, y: 22.0, width: 10.0, height: 5.0)
@@ -49,29 +41,23 @@ UITextFieldDelegate {
 			setAppearance(for: spendAmountTextField)
 		}
 	}
-
 	@IBOutlet weak var getCoinActivityIndicator: UIActivityIndicatorView!
-
 	@IBAction func didTapExchange(_ sender: Any) {
 		SoundHelper.playSoundIfAllowed(type: .bip)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendExchangeButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .convertSpendExchangeButton)
 	}
-
 	@IBOutlet weak var amountErrorLabel: UILabel!
 	@IBOutlet weak var getCoinErrorLabel: UILabel!
-
 	@IBAction func didTapUseMax(_ sender: Any) {
-		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendUseMaxButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .convertSpendUseMaxButton)
 	}
 
 	// MARK: -
 
-	func configure(with viewModel: ViewModelType) {
-
+	func configure(with viewModel: SpendCoinsViewModel) {
 		//Input
-
 		self.spendAmountTextField.rx.text.asObservable()
 			.subscribe(viewModel.input.spendAmount)
 			.disposed(by: self.disposableBag)
@@ -93,7 +79,6 @@ UITextFieldDelegate {
 			.disposed(by: self.disposableBag)
 
 		//Output
-
 		viewModel.output.approximately.asObservable()
 			.distinctUntilChanged().subscribe(onNext: { [weak self] (val) in
 				self?.approximately.text = val
@@ -167,8 +152,10 @@ UITextFieldDelegate {
 			banner.show()
 		}).disposed(by: disposableBag)
 
-		viewModel.output.spendAmount.asDriver(onErrorJustReturn: nil)
-			.drive(spendAmountTextField.rx.text).disposed(by: disposableBag)
+		viewModel.output.spendAmount.asDriver(onErrorJustReturn: nil).map({ (str) -> String? in
+			str?.replacingOccurrences(of: ",", with: ".")
+		})
+		.drive(spendAmountTextField.rx.text).disposed(by: disposableBag)
 
 		self.viewModel = viewModel
 	}
@@ -178,16 +165,16 @@ UITextFieldDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		// TODO: Вынести в Router!!!
-		let vm = SpendCoinsViewModel()
-		self.configure(with: vm)
+		if let viewModel = viewModel as? SpendCoinsViewModel {
+			self.configure(with: viewModel)
+		}
 
 		self.spendAmountTextField.rightPadding = useMaxButton.bounds.width
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		AnalyticsHelper.defaultAnalytics.track(event: .ConvertSpendScreen)
+		AnalyticsHelper.defaultAnalytics.track(event: .convertSpendScreen)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -213,7 +200,7 @@ UITextFieldDelegate {
 	}
 
 	private func shouldShowPicker() -> Bool {
-		return (vm.pickerItems().count) > 1
+		return (viewModel.pickerItems().count) > 1
 	}
 
 	// MARK: -
@@ -224,7 +211,7 @@ UITextFieldDelegate {
 	}
 
 	func showPicker() {
-		let items = vm.spendCoinPickerItems
+		let items = viewModel.spendCoinPickerItems
 
 		guard items.count > 0 else {
 			return

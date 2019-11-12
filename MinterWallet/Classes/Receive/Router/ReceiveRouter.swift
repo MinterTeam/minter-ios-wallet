@@ -8,23 +8,32 @@
 
 import UIKit
 
-
-class ReceiveRouter : BaseRouter {
+class ReceiveRouter: BaseRouter {
 
 	static var patterns: [String] {
 		return ["receive"]
 	}
 
-	static func viewController(path: [String], param: [String : Any]) -> UIViewController? {
+	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
 		return Storyboards.Receive.instantiateInitialViewController()
 	}
-	
-	// MARK: -
-	
-	static func activityViewController(activities: [Any], sourceView: UIView) -> UIViewController {
-		let vc = UIActivityViewController(activityItems: activities, applicationActivities: [])
-		vc.popoverPresentationController?.sourceView = sourceView
-		return vc
+
+	static func receiveViewController(viewModel: ReceiveViewModel) -> UIViewController? {
+		let receiveVC = Storyboards.Receive.instantiateReceiveViewController()
+		receiveVC.viewModel = viewModel
+		receiveVC.tabBarItem = Self.receiveTabbarItem()
+		return UINavigationController(rootViewController: receiveVC)
 	}
 
+	static func activityViewController(activities: [Any], sourceView: UIView) -> UIViewController {
+		let activityVC = UIActivityViewController(activityItems: activities, applicationActivities: [])
+		activityVC.popoverPresentationController?.sourceView = sourceView
+		return activityVC
+	}
+
+	static func receiveTabbarItem() -> UITabBarItem {
+		return UITabBarItem(title: "Receive".localized(),
+												image: UIImage(named: "tabbarReceiveIcon"),
+												selectedImage: UIImage(named: "tabbarReceiveIcon"))
+	}
 }

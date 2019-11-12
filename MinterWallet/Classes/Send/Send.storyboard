@@ -10,7 +10,7 @@
         <!--Send Coins-->
         <scene sceneID="ut7-iY-7fL">
             <objects>
-                <viewController id="G7S-Ax-D3H" customClass="SendViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SendViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="G7S-Ax-D3H" customClass="SendViewController" customModule="MinterWallet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="psE-mh-9l1"/>
                         <viewControllerLayoutGuide type="bottom" id="xgc-eM-9AQ"/>

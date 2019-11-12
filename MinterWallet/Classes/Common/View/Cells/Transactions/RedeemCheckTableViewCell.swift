@@ -78,7 +78,7 @@ class RedeemCheckTableViewCell: BaseTransactionCell {
 		if let transaction = item as? RedeemCheckTableViewCellItem {
 			identifier = item.identifier
 			title.text = TransactionTitleHelper.title(from: transaction.title ?? "")
-			coinImage.image = UIImage(named: "AvatarPlaceholderImage")
+			coinImage.image = UIImage(named: "redeemCheckImage")
 			if let url = transaction.imageURL {
 				coinImage.af_setImage(withURL: url, filter: RoundedCornersFilter(radius: 17.0))
 			} else if let image = transaction.image {

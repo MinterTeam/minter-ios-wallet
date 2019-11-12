@@ -9,8 +9,8 @@
 import UIKit
 import RxSwift
 
-protocol GenerateAddressViewControllerDelegate : class {
-	func GenerateAddressViewControllerDelegateDidAddAccount()
+protocol GenerateAddressViewControllerDelegate: class {
+	func generateAddressViewControllerDelegateDidAddAccount()
 }
 
 class GenerateAddressViewController: BaseViewController,
@@ -113,17 +113,17 @@ SwitchTableViewCellDelegate {
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
+		guard viewModel.cellItem(section: indexPath.section, row: indexPath.row) != nil else {
 			return
 		}
 	}
 
 	// MARK: - ButtonTableViewCellDelegate
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		SoundHelper.playSoundIfAllowed(type: .click)
 		viewModel.activate()
-		delegate?.GenerateAddressViewControllerDelegateDidAddAccount()
+		delegate?.generateAddressViewControllerDelegateDidAddAccount()
 	}
 
 	// MARK: - SwitchTableViewCellDelegate

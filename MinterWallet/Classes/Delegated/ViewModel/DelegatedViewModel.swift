@@ -16,11 +16,13 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 
 	// MARK: -
 
-	private var datasource = [String: [[String: Decimal]]]()
+	private var datasource = [String: [AddressDelegation]]()
 	private var validators = [String: [String: Any?]]()
 	private var source: [String] {
 		let src = datasource.keys.sorted(by: { (del1, del2) -> Bool in
-			return del1 > del2
+			let leftSum = (datasource[del1] ?? []).reduce(0) { $0 + ($1.bipValue ?? 0.0) }
+			let rightSum = (datasource[del2] ?? []).reduce(0) { $0 + ($1.bipValue ?? 0.0) }
+			return leftSum > rightSum
 		})
 		return src
 	}
@@ -36,8 +38,10 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 	struct Output {
 		var sections: Observable<[BaseTableSectionItem]>
 	}
+	struct Dependency {}
 	var input: DelegatedViewModel.Input!
 	var output: DelegatedViewModel.Output!
+	var dependency: DelegatedViewModel.Dependency!
 
 	// MARK: -
 
@@ -55,6 +59,7 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 		self.input = Input(viewDidLoad: viewDidLoad.asObserver(),
 											 willDisplayCell: willDisplayCell.asObserver())
 		self.output = Output(sections: sections.asObservable())
+		self.dependency = Dependency()
 
 		viewDidLoad.subscribe(onNext: { [weak self] (_) in
 			self?.createSections()
@@ -71,7 +76,7 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 					//should reload now?
 					self?.loadDelegatedBalance()
 				}
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 	}
 
 	func createSections() {
@@ -80,12 +85,12 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 		balances.sorted(by: { (del1, del2) -> Bool in
 			return (del1.publicKey ?? "") > (del2.publicKey ?? "")
 		}).forEach { (del) in
-			let newVal = [del.coin ?? "": del.value ?? 0]
+//			let newVal = [del.coin ?? "": del.value ?? 0]
 			let publicKey = del.publicKey ?? ""
 			if nil != datasource[publicKey] {
-				datasource[publicKey]?.append(newVal)
+				datasource[publicKey]?.append(del)
 			} else {
-				datasource[publicKey] = [newVal]
+				datasource[publicKey] = [del]
 			}
 			validators[publicKey] = ["name": del.validatorName,
 															 "desc": del.validatorDesc,
@@ -103,19 +108,21 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 			nodeCell.publicKey = publicKey
 			cells.append(nodeCell)
 
-			(datasource[publicKey] ?? []).forEach({ (del) in
-				del.keys.forEach({ (key) in
+			(datasource[publicKey])?.sorted(by: { (del1, del2) -> Bool in
+				return (del1.bipValue ?? 0.0) > (del2.bipValue ?? 0.0)
+			}).forEach({ (del) in
+//				del.keys.forEach({ (key) in
 					let separator = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
-																										 identifier: "SeparatorTableViewCell_" + publicKey + key + String.random())
+																										 identifier: "SeparatorTableViewCell_" + publicKey + (del.coin ?? "") + String.random())
 					cells.append(separator)
 
-					let bal = del[key]
+				let bal = del.value ?? 0.0
 					let cell = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell",
-																							 identifier: "TwoTitleTableViewCell_" + publicKey + key)
-					cell.title = key
+																							 identifier: "TwoTitleTableViewCell_" + publicKey + (del.coin ?? ""))
+					cell.title = del.coin ?? ""
 					cell.subtitle = coinFormatter.string(from: (bal ?? 0.0) as NSNumber)
 					cells.append(cell)
-				})
+//				})
 			})
 
 			let separator1 = SeparatorTableViewCellItem(reuseIdentifier: "SeparatorTableViewCell",
@@ -138,9 +145,9 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 
 		ExplorerAddressManager.default
 			.delegations(address: addresses.first!, page: page)
-			.do(onNext: { [weak self] (val) in
+			.do(onNext: { [weak self] (_) in
 				self?.isLoading = false
-			}, onError: { [weak self] (error) in
+			}, onError: { [weak self] (_) in
 				self?.isLoading = false
 			}, onSubscribe: {
 
@@ -160,11 +167,9 @@ class DelegatedViewModel: BaseViewModel, ViewModelProtocol {
 
 	public func publicKey(for section: Int) -> String? {
 		var ii = 0
-		for i in source.sorted(by: { (del1, del2) -> Bool in
-			return del1 > del2
-		}) {
+		for index in source {
 			if section == ii {
-				return i
+				return index
 			}
 			ii += 1
 		}

@@ -16,19 +16,16 @@ protocol PINViewControllerDelegate: class {
 
 class PINViewController: BaseViewController, ControllerType {
 
+	typealias ViewModelType = PINViewModel
+	var viewModel: PINViewModel!
+
 	var disposeBag = DisposeBag()
 
 	weak var delegate: PINViewControllerDelegate?
 
 	// MARK: -
 
-	var viewModel: ViewModelType!
-
-	typealias ViewModelType = PINViewModel
-
 	func configure(with viewModel: PINViewModel) {
-		self.viewModel = viewModel
-
 		viewModel.output.title.asDriver(onErrorJustReturn: "")
 			.drive(onNext: { [weak self] (title) in
 				self?.title = title
@@ -84,7 +81,7 @@ class PINViewController: BaseViewController, ControllerType {
 			if #available(iOS 11.0, *) {
 				pinView.textField.deleteBackward()
 			} else {
-				var txt = (pinView.textField.text ?? "")
+				let txt = (pinView.textField.text ?? "")
 				pinView.textField.text = String(txt.dropLast())
 				pinView.textField.sendActions(for: .editingChanged)
 			}
@@ -92,6 +89,10 @@ class PINViewController: BaseViewController, ControllerType {
 	}
 
 	// MARK: -
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -105,7 +106,7 @@ class PINViewController: BaseViewController, ControllerType {
 		pinView.becomeFirstResponder()
 		pinView.textField.inputView = button0
 	}
-	
+
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 	}

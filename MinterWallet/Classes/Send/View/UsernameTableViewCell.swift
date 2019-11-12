@@ -10,26 +10,13 @@ import UIKit
 
 class UsernameTableViewCellItem: TextViewTableViewCellItem {}
 
-protocol UsernameTableViewCellDelegate: class {
-	func didTapScanButton(cell: UsernameTableViewCell?)
-}
-
 class UsernameTableViewCell: TextViewTableViewCell {
 
 	var borderLayer: CAShapeLayer?
 
-	// MARK: - IBOutlets
-
-	@IBOutlet weak var scanButton: UIButton!
-	@IBAction func scanButtonDidTap(_ sender: Any) {
-		addressDelegate?.didTapScanButton(cell: self)
-	}
-
 	// MARK: -
 
 	var maxLength = 110
-
-	weak var addressDelegate: UsernameTableViewCellDelegate?
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
@@ -38,27 +25,9 @@ class UsernameTableViewCell: TextViewTableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 
+		setDefault()
 		activityIndicator?.backgroundColor = .clear
 		textView.font = UIFont.mediumFont(of: 16.0)
-	}
-
-	override func setSelected(_ selected: Bool, animated: Bool) {
-		super.setSelected(selected, animated: animated)
-	}
-
-	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-		if text != "" && text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
-			return false
-		}
-		var txtAfterUpdate = textView.text ?? ""
-		txtAfterUpdate = (txtAfterUpdate as NSString)
-			.replacingCharacters(in: range, with: text)
-			.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-		return true
-	}
-
-	override func textViewDidEndEditing(_ textView: UITextView) {
-		validateDelegate?.didValidateField(field: self)
 	}
 
 	@objc

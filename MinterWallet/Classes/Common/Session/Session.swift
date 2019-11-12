@@ -12,17 +12,18 @@ import MinterCore
 import MinterMy
 import MinterExplorer
 import RxAppState
+import RxRelay
 
-fileprivate let SessionAccessTokenKey = "AccessToken"
-fileprivate let SessionRefreshTokenKey = "RefreshToken"
-fileprivate let SessionUserKey = "User"
-fileprivate let SessionPINAttemptNumberKey = "SessionPINAttemptNumberKey"
+private let sessionAccessTokenKey = "AccessToken"
+private let sessionRefreshTokenKey = "RefreshToken"
+private let sessionUserKey = "User"
+private let sessionPINAttemptNumberKey = "SessionPINAttemptNumberKey"
 
 class Session {
 
 	static let shared = Session()
 
-	var isLoggedIn = Variable(false)
+	var isLoggedIn = BehaviorRelay<Bool>(value: false)
 
 	private let accountManager = AccountManager()
 	private let gateManager = GateManager.shared
@@ -42,9 +43,9 @@ class Session {
 
 	// MARK: -
 
-	var isLoading = Variable(true)
-	var accounts = Variable([Account]())
-	var transactions = Variable([TransactionItem]())
+	var isLoading = BehaviorRelay<Bool>(value: true)
+	var accounts = BehaviorRelay<[Account]>(value: [])
+	var transactions = BehaviorRelay<[TransactionItem]>(value: [])
 	var baseCoinBalances = Variable([String: Decimal]())
 	var allBalances = Variable([String: [String: Decimal]]())
 	var balances = Variable([String: Decimal]())
@@ -55,42 +56,41 @@ class Session {
 	var allDelegatedBalance = BehaviorSubject<[AddressDelegation]>(value: [AddressDelegation]())
 	var accessToken = Variable<String?>(nil)
 	var isPINRequired = BehaviorSubject<Bool>(value: PINManager.shared.isPINset)
-
 	private var refreshToken = Variable<String?>(nil)
-
 	var user = Variable<User?>(nil)
-
 	var currentGasPrice = Variable<Int>(1)
+
+	var allCoins = BehaviorRelay<[Coin]>(value: [])
 
 	// MARK: -
 
 	private init() {
-
-		_ = self.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
-			var newBalance = [String : Decimal]()
-
-			val.values.forEach { (adr) in
-				adr.keys.forEach({ (key) in
-					if nil == newBalance[key] {
-						newBalance[key] = 0.0
-					}
-					newBalance[key]! += (adr[key] ?? 0.0)
-				})
-			}
-			self?.balances.value = newBalance
-		}).disposed(by: disposeBag)
+		allBalances
+			.asObservable()
+			.subscribe(onNext: { [weak self] (val) in
+				var newBalance = [String: Decimal]()
+				val.values.forEach { (adr) in
+					adr.keys.forEach({ (key) in
+						if nil == newBalance[key] {
+							newBalance[key] = 0.0
+						}
+						newBalance[key]! += (adr[key] ?? 0.0)
+					})
+				}
+				self?.balances.value = newBalance
+			}).disposed(by: disposeBag)
 
 		Observable.combineLatest(self.accessToken.asObservable(),
 														 self.refreshToken.asObservable())
-		.distinctUntilChanged({ (a, b) -> Bool in
-			return (a.0 ?? "" == b.0 ?? "") && (a.1 ?? "" == b.1 ?? "")
-		}).subscribe(onNext: { [weak self] (at, rt) in
-			self?.isLoggedIn.value = at != nil && rt != nil
+		.distinctUntilChanged({ (accToken, refreshToken) -> Bool in
+			return (accToken.0 ?? "" == refreshToken.0 ?? "") && (accToken.1 ?? "" == refreshToken.1 ?? "")
+		}).subscribe(onNext: { [weak self] (accToken, refreshToken) in
+			self?.isLoggedIn.accept(accToken != nil && refreshToken != nil)
 		}).disposed(by: disposeBag)
 
 		accounts.asObservable().distinctUntilChanged().filter({ (accs) -> Bool in
 			return accs.count > 0
-		}).subscribe(onNext: { [weak self] (accounts) in
+		}).subscribe(onNext: { [weak self] (_) in
 			self?.loadTransactions()
 			self?.loadBalances()
 			self?.loadDelegatedBalance()
@@ -108,10 +108,10 @@ class Session {
 				self?.loadTransactions()
 				self?.loadBalances()
 				self?.loadDelegatedBalance()
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		UIApplication.shared.rx.applicationDidEnterBackground
-			.subscribe(onNext: { [weak self] (state) in
+			.subscribe(onNext: { [weak self] (_) in
 				self?.lastBackgroundDate = Date()
 			}).disposed(by: disposeBag)
 
@@ -119,22 +119,22 @@ class Session {
 	}
 
 	func setAccessToken(_ token: String) {
-		secureStorage.set(token as NSString, forKey: SessionAccessTokenKey)
+		secureStorage.set(token as NSString, forKey: sessionAccessTokenKey)
 		self.accessToken.value = token
 	}
 
 	func setRefreshToken(_ token: String) {
-		secureStorage.set(token as NSString, forKey: SessionRefreshTokenKey)
+		secureStorage.set(token as NSString, forKey: sessionRefreshTokenKey)
 		self.refreshToken.value = token
 	}
 
 	func setPINAttempts(attempts: Int) {
 		secureStorage.set(String(attempts).data(using: .utf8) ?? Data(),
-											forKey: SessionPINAttemptNumberKey)
+											forKey: sessionPINAttemptNumberKey)
 	}
 
 	func getPINAttempts() -> Int {
-		let attempts = secureStorage.object(forKey: SessionPINAttemptNumberKey) as? Data
+		let attempts = secureStorage.object(forKey: sessionPINAttemptNumberKey) as? Data
 		let str = String(data: attempts ?? Data(), encoding: .utf8) ?? ""
 		return Int(str) ?? 0
 	}
@@ -148,7 +148,6 @@ class Session {
 		guard let res = dataBaseStorage.objects(class: UserDataBaseModel.self)?.first as? UserDataBaseModel else {
 			let dbObject = UserDataBaseModel()
 			dbObject.substitute(with: user)
-
 			dataBaseStorage.add(object: dbObject)
 			return
 		}
@@ -161,63 +160,66 @@ class Session {
 	}
 
 	func restore() {
-		if let accessToken = secureStorage.object(forKey: SessionAccessTokenKey) as? String {
+		if let accessToken = secureStorage.object(forKey: sessionAccessTokenKey) as? String {
 			self.accessToken.value = accessToken
 		}
 
-		if let refreshToken = secureStorage.object(forKey: SessionRefreshTokenKey) as? String {
+		if let refreshToken = secureStorage.object(forKey: sessionRefreshTokenKey) as? String {
 			self.refreshToken.value = refreshToken
 		}
 
 		if let user = dataBaseStorage.objects(class: UserDataBaseModel.self)?.first as? UserDataBaseModel {
 			self.user.value = User(dbModel: user)
-		} else {
-			//retrive user if doesn't exist?
 		}
 
 		AppSettingsManager.shared.restore()
 	}
 
 	func logout() {
-
 		accessToken.value = nil
 		refreshToken.value = nil
-
 		secureStorage.removeAll()
 		localStorage.removeAll()
 		dataBaseStorage.removeAll()
-		
 		delegatedBalance.onNext(0.0)
 		totalMainCoinBalance.onNext(0.0)
 		totalUSDBalance.onNext(0.0)
-
 		baseCoinBalances.value = [:]
-		accounts.value = []
-		transactions.value = []
+		accounts.accept([])
+		transactions.accept([])
 		allBalances.value = [:]
 		balances.value = [:]
 		mainCoinBalance.value = 0.0
 		user.value = nil
-
 		isPINRequired.onNext(false)
 	}
 
 	// MARK: -
 
+	func loadCoins() {
+		ExplorerCoinManager.default.coins(term: "").map { (coins) -> [Coin] in
+			return coins ?? []
+		}.filter({ (coins) -> Bool in
+			return coins.count > 0
+		}).subscribe(onNext: { (coins) in
+			self.allCoins.accept(coins)
+		}).disposed(by: disposeBag)
+	}
+
 	func loadAccounts() {
-		self.isLoading.value = true
+		self.isLoading.accept(true)
 		syncer.isSyncing.asObservable().skip(1).filter({ (val) -> Bool in
 			return val == false
-		}).subscribe(onNext: { [weak self] (val) in
-
-			self?.isLoading.value = false
+		}).subscribe(onNext: { [weak self] (_) in
+			self?.isLoading.accept(false)
 
 			var accs = [Account]()
 			accs = self?.accountManager.loadLocalAccounts() ?? []
 
-			self?.accounts.value = accs.sorted(by: { (acc1, acc2) -> Bool in
+			let accounts = accs.sorted(by: { (acc1, acc2) -> Bool in
 				return (acc1.isMain && !acc2.isMain)
 			})
+			self?.accounts.accept(accounts)
 		}).disposed(by: disposeBag)
 
 		syncer.startSync()
@@ -226,7 +228,6 @@ class Session {
 	var isLoadingTransaction = false
 
 	func loadTransactions() {
-
 		if isLoadingTransaction {
 			return
 		}
@@ -241,13 +242,11 @@ class Session {
 			return
 		}
 
-		//TODO: move to helper
-
-		self.isLoading.value = true
+		self.isLoading.accept(true)
 
 		transactionManger.transactions { [weak self] (transactions, users, error) in
 			self?.isLoadingTransaction = false
-			self?.isLoading.value = false
+			self?.isLoading.accept(false)
 
 			guard (self?.isLoggedIn.value ?? false) || (self?.accounts.value ?? []).count > 0 else {
 				return
@@ -257,7 +256,7 @@ class Session {
 				return
 			}
 
-			self?.transactions.value = transactions?.map({ (transaction) -> TransactionItem in
+			let txs = transactions?.map({ (transaction) -> TransactionItem in
 				let item = TransactionItem()
 				item.transaction = transaction
 
@@ -273,7 +272,7 @@ class Session {
 				}
 				return item
 			}) ?? []
-
+			self?.transactions.accept(txs)
 		}
 	}
 
@@ -319,7 +318,7 @@ class Session {
 
 			let address = response ?? [:]
 			guard let ads = (address["address"] as? String)?.stripMinterHexPrefix(),
-				let coins = address["balances"] as? [[String : Any]] else {
+				let coins = address["balances"] as? [[String: Any]] else {
 				return
 			}
 
@@ -345,7 +344,7 @@ class Session {
 
 			var newAllBalances = self?.allBalances.value
 
-			var blncs = [String : Decimal]()
+			var blncs = [String: Decimal]()
 			if let defaultCoin = Coin.baseCoin().symbol {
 				blncs[defaultCoin] = 0.0
 			}
@@ -363,7 +362,7 @@ class Session {
 	}
 
 	func updateGas() {
-		gateManager.minGasPrice { (gas, err) in
+		gateManager.minGasPrice { (gas, _) in
 			if let gas = gas {
 				self.currentGasPrice.value = gas
 			}
@@ -371,7 +370,6 @@ class Session {
 	}
 
 	func loadUser() {
-
 		guard let client = APIClient.withAuthentication() else {
 			return
 		}

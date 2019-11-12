@@ -14,9 +14,10 @@ import SafariServices
 import AlamofireImage
 import NotificationBannerSwift
 
-class CoinsViewController: BaseTableViewController,
-ScreenHeaderProtocol,
-ControllerType {
+class CoinsViewController:
+	BaseTableViewController,
+	ScreenHeaderProtocol,
+	ControllerType {
 
 	private var disposeBag = DisposeBag()
 
@@ -31,19 +32,25 @@ ControllerType {
 
 	// MARK: - ControllerType
 
+	var viewModel: CoinsViewModel!
 	typealias ViewModelType = CoinsViewModel
 
-	func configure(with viewModel: CoinsViewModel) {
-
+	func configure(with viewModel: CoinsViewModel) { // swiftlint:disable:this function_body_length
 		// Input
-		refreshControl.rx.controlEvent([.valueChanged])
-			.subscribe(viewModel.input.didRefresh).disposed(by: disposeBag)
+		refreshControl
+			.rx
+			.controlEvent([.valueChanged])
+			.subscribe(viewModel.input.didRefresh)
+			.disposed(by: disposeBag)
 
-		txScanButton.rx.tap.asDriver()
-			.drive(viewModel.input.txScanButtonDidTap).disposed(by: disposeBag)
+		txScanButton
+			.rx
+			.tap
+			.asDriver()
+			.drive(viewModel.input.txScanButtonDidTap)
+			.disposed(by: disposeBag)
 
 		txScanButton.rx.tap.subscribe({ [weak self] (_) in
-//			self?.readerVC.delegate = self
 			self?.present(self!.readerVC, animated: true, completion: nil)
 			}).disposed(by: disposeBag)
 
@@ -58,11 +65,12 @@ ControllerType {
 		}
 
 		// Output
-		viewModel.output
+		viewModel
+			.output
 			.totalDelegatedBalance
-			.asDriver(onErrorJustReturn: "").drive(onNext: { [weak self] (val) in
+			.asDriver(onErrorJustReturn: "")
+			.drive(onNext: { [weak self] (val) in
 				let defaultTopConstraint = CGFloat(63.0)
-
 				var shouldLayout = false
 				if val == nil {
 					if self?.delegatedHeaderTopConstraint.constant == -defaultTopConstraint {
@@ -86,13 +94,13 @@ ControllerType {
 				if val == nil {
 					let top = 60 + additionalTop
 					if self?.tableView.contentInset.top != top {
-						self?.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0)
+						self?.tableView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
 						shouldLayout = true
 					}
 				} else {
 					let top = 100 + additionalTop
 					if self?.tableView.contentInset.top != top {
-						self?.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0)
+						self?.tableView.contentInset = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
 						shouldLayout = true
 					}
 				}
@@ -102,23 +110,30 @@ ControllerType {
 						self?.view.layoutIfNeeded()
 					}
 				})
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
-		viewModel.output.balanceText.subscribe(onNext: { [weak self] (balanceItem) in
-			if balanceItem.animated {
-				self?.headerViewTitleLabel.pushTransition(0.55)
-			}
-			self?.headerViewTitleLabel.text = balanceItem.title
-			self?.headerViewBalanceLabel.attributedText = balanceItem.text
-		}).disposed(by: disposeBag)
+		viewModel
+			.output
+			.balanceText
+			.subscribe(onNext: { [weak self] (balanceItem) in
+				if balanceItem.animated {
+					self?.headerViewTitleLabel.pushTransition(0.55)
+				}
+				self?.headerViewTitleLabel.text = balanceItem.title
+				self?.headerViewBalanceLabel.attributedText = balanceItem.text
+			}).disposed(by: disposeBag)
 
 		viewModel
 			.output
 			.showViewController
-			.asDriver(onErrorJustReturn: nil)
-			.drive(onNext: { [weak self] (viewController) in
-				guard let viewController = viewController else { return }
-				self?.tabBarController?.present(viewController, animated: true, completion: nil)
+			.asDriver(onErrorJustReturn: (controller: nil, isModal: false))
+			.drive(onNext: { [weak self] (val) in
+				guard let viewController = val.0 else { return }
+				if val.1 {
+					self?.tabBarController?.present(viewController, animated: true, completion: nil)
+				} else {
+					self?.navigationController?.pushViewController(viewController, animated: true)
+				}
 			}).disposed(by: disposeBag)
 
 		viewModel
@@ -142,9 +157,14 @@ ControllerType {
 				banner.show()
 			}).disposed(by: disposeBag)
 
-		self.headerViewBalanceLabel.rx.tapGesture().map({ (_) -> () in
-			return ()
-		}).subscribe(viewModel.input.didTapBalance).disposed(by: disposeBag)
+		Observable.of(
+			self.headerViewTitleLabel.rx.tapGesture(),
+			self.headerViewBalanceLabel.rx.tapGesture()).merge()
+			.skip(2)
+			.map({ (_) -> Void in
+				return ()
+			}).subscribe(viewModel.input.didTapBalance)
+			.disposed(by: disposeBag)
 	}
 
 	// MARK: -
@@ -175,7 +195,7 @@ ControllerType {
 	@IBOutlet weak var headerViewTitleLabel: UILabel!
 	@IBOutlet override weak var tableView: UITableView! {
 		didSet {
-			tableView.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
+			tableView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
 			tableView.estimatedRowHeight = 50.0
 		}
 	}
@@ -188,9 +208,6 @@ ControllerType {
 	@IBOutlet var tableHeaderTopConstraint: NSLayoutConstraint?
 	@IBOutlet weak var txScanButton: UIBarButtonItem!
 
-	var qrCodeReader: QRCodeReaderViewController?
-	func processQR(result: String) {}
-
 	// MARK: -
 
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
@@ -201,10 +218,6 @@ ControllerType {
 		}
 		return -72
 	}
-
-	// MARK: -
-
-	var viewModel = CoinsViewModel()
 
 	// MARK: Life cycle
 
@@ -270,16 +283,18 @@ ControllerType {
 
 		hidesBottomBarWhenPushed = false
 
-		viewModel.errorObservable.distinctUntilChanged()
+		viewModel
+			.errorObservable
+			.distinctUntilChanged()
 			.subscribe(onNext: { [weak self] (val) in
-				UIView.animate(withDuration: 0.25,animations: {
+				UIView.animate(withDuration: 0.25, animations: {
 					if val {
 						self?.showPlaceholderView()
 					} else {
 						self?.hidePlaceholderView()
 					}
 				})
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		if self.shouldShowTestnetToolbar {
 			headerViewHeightConstraint.constant = 73.0 + 56.0
@@ -292,15 +307,10 @@ ControllerType {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
-		AnalyticsHelper.defaultAnalytics.track(event: .CoinsScreen)
+		AnalyticsHelper.defaultAnalytics.track(event: .coinsScreen)
 	}
 
 	// MARK: -
-
-	func updateUsernameView() {
-		usernameView.set(username: viewModel.rightButtonTitle,
-										 imageURL: viewModel.rightButtonImage)
-	}
 
 	func hidePlaceholderView() {
 		self.tableView.backgroundColor = .white
@@ -322,7 +332,7 @@ ControllerType {
 
 	@objc func didTapUsernameView() {
 		self.tabBarController?.selectedIndex = 3
-		AnalyticsHelper.defaultAnalytics.track(event: .CoinsUsernameButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .coinsUsernameButton)
 	}
 
 	// MARK: -
@@ -349,7 +359,7 @@ ControllerType {
 		guard let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) else {
 			return
 		}
-		performSegue(for: item.identifier)
+		didTap(identifier: item.identifier)
 	}
 
 	func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
@@ -365,7 +375,6 @@ ControllerType {
 																				row: indexPath.row) else {
 			return 0.1
 		}
-
 		if item.reuseIdentifier == "BlankTableViewCell" {
 			return 8.0
 		} else if item.reuseIdentifier == "SeparatorTableViewCell" {
@@ -386,26 +395,6 @@ ControllerType {
 		headerView?.updateHeaderViewFromScrollEvent(scrollView)
 	}
 
-	// MARK: - Segues
-
-	func performSegue(for cellIdentifier: String) {
-		let vm = type(of: self.viewModel)
-
-		//Move to router?
-		switch cellIdentifier {
-		case vm.cellIdentifierPrefix.convert.rawValue:
-			perform(segue: CoinsViewController.Segue.showConvert)
-			break
-
-		case vm.cellIdentifierPrefix.transactions.rawValue:
-			perform(segue: CoinsViewController.Segue.showTransactions)
-			break
-
-		default:
-			break
-		}
-	}
-
 	func presentExplorerController(with url: URL) {
 		self.present(CoinsRouter.explorerViewController(url: url), animated: true) {}
 	}
@@ -413,12 +402,24 @@ ControllerType {
 
 extension CoinsViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		guard let indexPath = tableView.indexPath(for: cell),
 			let item = viewModel.cellItem(section: indexPath.section,
 																		row: indexPath.row) else { return }
+		didTap(identifier: item.identifier)
+	}
 
-		self.performSegue(for: item.identifier)
+	func didTap(identifier: String) {
+		switch identifier {
+		case CoinsViewModel.CellIdentifierPrefix.convert.rawValue:
+			viewModel.input.didTapConvert.onNext(())
+
+		case CoinsViewModel.CellIdentifierPrefix.transactions.rawValue:
+			viewModel.input.didTapTransaction.onNext(())
+
+		default:
+			break
+		}
 	}
 }
 
@@ -426,8 +427,7 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 
 	func didTapExplorerButton(cell: ExpandableCell) {
 		performLightImpact()
-
-		AnalyticsHelper.defaultAnalytics.track(event: .TransactionExplorerButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .transactionExplorerButton)
 
 		if let indexPath = tableView.indexPath(for: cell),
 			let url = viewModel.explorerURL(section: indexPath.section,
@@ -463,6 +463,18 @@ extension CoinsViewController: ExpandedTransactionTableViewCellDelegate {
 
 extension CoinsViewController {
 
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		super.prepare(for: segue, sender: sender)
+
+		if segue.identifier == Segue.showDelegated.identifier,
+			let delegatedVC = segue.destination as? DelegatedViewController {
+			delegatedVC.viewModel = viewModel.output.delegatedViewModel()
+		}
+	}
+}
+
+extension CoinsViewController {
+
 	func registerCells() {
 		tableView.register(UINib(nibName: "CoinsTableViewHeaderView", bundle: nil),
 											 forHeaderFooterViewReuseIdentifier: "CoinsTableViewHeaderView")
@@ -490,12 +502,6 @@ extension CoinsViewController {
 }
 
 extension CoinsViewController: QRCodeReaderViewControllerDelegate {
-
-	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
-		
-	}
-
-	func readerDidCancel(_ reader: QRCodeReaderViewController) {
-		
-	}
+	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {}
+	func readerDidCancel(_ reader: QRCodeReaderViewController) {}
 }

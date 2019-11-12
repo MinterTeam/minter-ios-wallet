@@ -21,39 +21,39 @@ class GetCoinsViewModel: ConvertCoinsViewModel {
 
 		let val = pickerItems().first
 		let ads = val?.address
-		let cn = val?.coin
+		let con = val?.coin
 
-		self.spendCoin.value = cn
-		self.selectedCoin = cn
+		self.spendCoin.value = con
+		self.selectedCoin = con
 		self.selectedAddress = ads
 
 		Observable.combineLatest(getCoin.asObservable(),
 														 getAmount.asObservable(),
-														 spendCoin.asObservable()).filter { (val) -> Bool in
+														 spendCoin.asObservable()
+		).filter { (_) -> Bool in
 			return true
-		}.subscribe(onNext: { [weak self] (val) in
+		}.subscribe(onNext: { [weak self] (_) in
 			self?.approximatelySum.value = nil
 			self?.approximately.value = ""
 			self?.calculateApproximately()
 			self?.checkAmountValue()
 		}).disposed(by: disposeBag)
 
-		shouldClearForm.asObservable().subscribe(onNext: { [weak self] (val) in
+		shouldClearForm.asObservable().subscribe(onNext: { [weak self] (_) in
 			self?.getAmount.value = nil
 			self?.getCoin.onNext("")
 			self?.validateErrors()
 		}).disposed(by: disposeBag)
 
-		getCoin.asObservable().subscribe(onNext: { [weak self] (val) in
+		getCoin.asObservable().subscribe(onNext: { [weak self] (_) in
 			self?.loadCoin()
 		}).disposed(by: disposeBag)
 
-		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (val) in
+		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (_) in
 			self?.shouldClearForm.value = true
 		}).disposed(by: disposeBag)
 
 		Session.shared.loadBalances()
-
 	}
 
 	// MARK: -
@@ -64,7 +64,6 @@ class GetCoinsViewModel: ConvertCoinsViewModel {
 	var approximately = Variable<String?>(nil)
 	var approximatelySum = Variable<Decimal?>(nil)
 	var approximatelyReady = Variable<Bool>(false)
-
 	var isButtonEnabled: Observable<Bool> {
 		return Observable.combineLatest(getCoin.asObservable(),
 																		approximatelySum.asObservable(),
@@ -73,7 +72,6 @@ class GetCoinsViewModel: ConvertCoinsViewModel {
 			if (self.selectedCoin ?? "") == (val.0 ?? "") {
 				return false
 			}
-
 			let amnt = (val.1 ?? 0)
 			return amnt > 0 && self.hasCoin.value
 		})
@@ -115,10 +113,10 @@ class GetCoinsViewModel: ConvertCoinsViewModel {
 	}
 
 	func calculateApproximately() {
-		
+
 		approximatelyReady.value = false
 		self.approximatelySum.value = nil
-		
+
 		guard let from = selectedCoin?.uppercased(),
 			let to = try? self.getCoin.value()?.uppercased() ?? "",
 			let amountString = self.getAmount.value,
@@ -194,7 +192,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel {
 		DispatchQueue.global(qos: .userInitiated).async {
 			guard let mnemonic = self.accountManager.mnemonic(for: selectedAddress),
 				let seed = self.accountManager.seed(mnemonic: mnemonic),
-				let pk = try? self.accountManager.privateKey(from: seed).raw.toHexString() else {
+				let privateKey = try? self.accountManager.privateKey(from: seed).raw.toHexString() else {
 				self.isLoading.onNext(false)
 				//Error no Private key found
 				assert(true)
@@ -204,7 +202,7 @@ class GetCoinsViewModel: ConvertCoinsViewModel {
 
 			GateManager.shared.nonce(for: "Mx" + selectedAddress, completion: { [weak self] (count, err) in
 
-				GateManager.shared.minGasPrice(completion: { (gasPrice, gasError) in
+				GateManager.shared.minGasPrice(completion: { (gasPrice, _) in
 
 					guard err == nil, let nnce = count else {
 						self?.isLoading.onNext(false)
@@ -221,16 +219,16 @@ class GetCoinsViewModel: ConvertCoinsViewModel {
 					//TODO: remove after https://github.com/MinterTeam/minter-go-node/issues/224
 					let maxValueToSell = BigUInt(decimal: (self?.selectedBalance ?? 0) * TransactionCoinFactorDecimal) ?? BigUInt(0)//maximumValueToSell
 
-					let tx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!,
-																				 gasPrice: gas,
-																				 gasCoin: coinData,
-																				 coinFrom: coinFrom,
-																				 coinTo: coinTo,
-																				 value: value,
-																				 maximumValueToSell: maxValueToSell)
-					let signedTx = RawTransactionSigner.sign(rawTx: tx, privateKey: pk)
+					let rawTx = BuyCoinRawTransaction(nonce: BigUInt(decimal: nonce)!,
+																						gasPrice: gas,
+																						gasCoin: coinData,
+																						coinFrom: coinFrom,
+																						coinTo: coinTo,
+																						value: value,
+																						maximumValueToSell: maxValueToSell)
+					let signedTx = RawTransactionSigner.sign(rawTx: rawTx, privateKey: privateKey)
 
-					GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (hash, err) in
+					GateManager.shared.sendRawTransaction(rawTransaction: signedTx!, completion: { (_, err) in
 
 						self?.isLoading.onNext(false)
 
@@ -261,21 +259,19 @@ class GetCoinsViewModel: ConvertCoinsViewModel {
 	}
 
 	private func handleError(_ err: Error?) {
-		if let apiError = err as? HTTPClientError,
+		if
+			let apiError = err as? HTTPClientError,
 			let errorCode = apiError.userData?["code"] as? Int {
 			if errorCode == 107 {
 				self.errorNotification
 					.onNext(NotifiableError(title: "Not enough coins to spend".localized(), text: nil))
-			}
-			else if errorCode == 103 {
+			} else if errorCode == 103 {
 				self.errorNotification
 					.onNext(NotifiableError(title: "Coin reserve balance is not sufficient for transaction".localized(), text: nil))
-			}
-			else {
+			} else {
 				if let msg = apiError.userData?["log"] as? String {
 					self.errorNotification.onNext(NotifiableError(title: msg, text: nil))
-				}
-				else {
+				} else {
 					self.errorNotification
 						.onNext(NotifiableError(title: "An error occured".localized(), text: nil))
 				}

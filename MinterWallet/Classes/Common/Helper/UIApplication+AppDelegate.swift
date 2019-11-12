@@ -12,11 +12,6 @@ import RxAppState
 
 extension UIApplication {
 	static func realAppDelegate() -> AppDelegate? {
-		guard
-			let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy,
-			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate else {
-			return nil
-		}
-		return appDele
+		return UIApplication.shared.delegate as? AppDelegate
 	}
 }

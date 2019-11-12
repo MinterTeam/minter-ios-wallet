@@ -56,8 +56,7 @@ UITableViewDataSource {
 			if let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell {
 				if err != nil {
 					cell.setInvalid(message: err)
-				}
-				else {
+				} else {
 					cell.setDefault()
 				}
 			}
@@ -71,9 +70,9 @@ UITableViewDataSource {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
+
 		showKeyboard()
-		AnalyticsHelper.defaultAnalytics.track(event: .EmailEditScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .emailEditScreen, params: nil)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -98,21 +97,21 @@ UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row), let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
+		guard let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row),
+			let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier, for: indexPath) as? BaseCell else {
 			return UITableViewCell()
 		}
 
 		cell.configure(item: item)
 
-		var validationCell = cell as? ValidatableCellProtocol
+		let validationCell = cell as? ValidatableCellProtocol
 		validationCell?.validateDelegate = self
 
 		if let textFieldCell = cell as? TextFieldTableViewCell {
 			textFieldCell.textField.rx.text.orEmpty.bind(to: viewModel.email).disposed(by: disposeBag)
 		}
 
-		var buttonCell = cell as? ButtonTableViewCell
+		let buttonCell = cell as? ButtonTableViewCell
 		buttonCell?.delegate = self
 
 		buttonCell?.button.rx.tap.asObservable().subscribe(viewModel.saveInDidTap).disposed(by: disposeBag)
@@ -130,7 +129,7 @@ UITableViewDataSource {
 
 extension EmailEditViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 
 		SoundHelper.playSoundIfAllowed(type: .click)
 
@@ -139,18 +138,16 @@ extension EmailEditViewController: ButtonTableViewCellDelegate {
 
 		tableView.endEditing(true)
 	}
-
 }
 
 extension EmailEditViewController: ValidatableCellDelegate {
 
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
-//		self.viewModel.email.value = field?.validationText
 		completion?()
 	}
 
 	func didValidateField(field: ValidatableCellProtocol?) {
-		
+
 	}
 
 }

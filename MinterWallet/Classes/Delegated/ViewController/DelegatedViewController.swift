@@ -14,8 +14,6 @@ class DelegatedViewController: BaseViewController, ControllerType {
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
-
-		configure(with: viewModel)
 	}
 
 	// MARK: -
@@ -24,6 +22,7 @@ class DelegatedViewController: BaseViewController, ControllerType {
 
 	// MARK: - ControllerType
 
+	var viewModel: DelegatedViewModel!
 	typealias ViewModelType = DelegatedViewModel
 
 	func configure(with viewModel: DelegatedViewModel) {
@@ -33,19 +32,21 @@ class DelegatedViewController: BaseViewController, ControllerType {
 
 	// MARK: -
 
-	var viewModel = DelegatedViewModel()
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 	var disposeBag = DisposeBag()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		configure(with: viewModel)
+
 		registerCells()
 
 		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
 			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
 
-				guard let item = try! dataSource.model(at: indexPath) as? BaseCellItem,
+				guard
+					let item = try! dataSource.model(at: indexPath) as? BaseCellItem, // swiftlint:disable:this force_try
 					let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
 						return UITableViewCell()
 				}
@@ -56,7 +57,7 @@ class DelegatedViewController: BaseViewController, ControllerType {
 					delegatedCell.delegate = self
 				}
 				return cell
-		})
+			})
 
 		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .top,
 																																	reloadAnimation: .automatic,
@@ -65,6 +66,8 @@ class DelegatedViewController: BaseViewController, ControllerType {
 		viewModel.output.sections.bind(to: tableView.rx.items(dataSource: rxDataSource!)).disposed(by: disposeBag)
 		tableView.rx.setDelegate(self).disposed(by: disposeBag)
 		tableView.rx.willDisplayCell.subscribe(viewModel.input.willDisplayCell).disposed(by: disposeBag)
+
+		viewModel.input.viewDidLoad.onNext(())
 	}
 
 	func registerCells() {
@@ -75,7 +78,7 @@ class DelegatedViewController: BaseViewController, ControllerType {
 
 extension DelegatedViewController: DelegatedTableViewCellDelegate, UITableViewDelegate {
 
-	func DelegatedTableViewCellDidTapCopy(cell: DelegatedTableViewCell) {
+	func delegatedTableViewCellDidTapCopy(cell: DelegatedTableViewCell) {
 		guard let indexPath = tableView.indexPath(for: cell),
 			let key = viewModel.publicKey(for: indexPath.section) else {
 			return
@@ -95,5 +98,4 @@ extension DelegatedViewController: DelegatedTableViewCellDelegate, UITableViewDe
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 		return 0.1
 	}
-
 }

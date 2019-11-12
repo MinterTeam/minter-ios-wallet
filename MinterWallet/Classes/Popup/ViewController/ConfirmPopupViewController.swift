@@ -11,7 +11,7 @@ import AlamofireImage
 import RxSwift
 import RxCocoa
 
-protocol ConfirmPopupViewControllerDelegate : class {
+protocol ConfirmPopupViewControllerDelegate: class {
 	func didTapActionButton(viewController: ConfirmPopupViewController)
 	func didTapSecondButton(viewController: ConfirmPopupViewController)
 }
@@ -20,6 +20,7 @@ class ConfirmPopupViewController: PopupViewController, ControllerType {
 
 	// MARK: -
 
+	var viewModel: ConfirmPopupViewModel!
 	typealias ViewModelType = ConfirmPopupViewModel
 
 	func configure(with viewModel: ConfirmPopupViewModel) {
@@ -37,7 +38,7 @@ class ConfirmPopupViewController: PopupViewController, ControllerType {
 				} else {
 					self?.actionButtonActivityIndicator.stopAnimating()
 				}
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		// Input
 		actionButton
@@ -53,7 +54,6 @@ class ConfirmPopupViewController: PopupViewController, ControllerType {
 			.asDriver(onErrorJustReturn: ())
 			.drive(viewModel.input.didTapCancel)
 			.disposed(by: disposeBag)
-
 	}
 
 	weak var delegate: ConfirmPopupViewControllerDelegate?
@@ -81,8 +81,9 @@ class ConfirmPopupViewController: PopupViewController, ControllerType {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		configure(with: viewModel as! ConfirmPopupViewModel)
+		if let confirmViewModel = viewModel as? ConfirmPopupViewModel {
+			configure(with: confirmViewModel)
+		}
 
 		updateUI()
 	}
@@ -94,10 +95,10 @@ class ConfirmPopupViewController: PopupViewController, ControllerType {
 	// MARK: -
 
 	private func updateUI() {
-		guard let vm = viewModel as? ConfirmPopupViewModel else {
+		guard let viewModel = viewModel else {
 			return
 		}
-		self.actionButton.setTitle(vm.buttonTitle, for: .normal)
-		self.secondButton.setTitle(vm.cancelTitle, for: .normal)
+		self.actionButton.setTitle(viewModel.buttonTitle, for: .normal)
+		self.secondButton.setTitle(viewModel.cancelTitle, for: .normal)
 	}
 }

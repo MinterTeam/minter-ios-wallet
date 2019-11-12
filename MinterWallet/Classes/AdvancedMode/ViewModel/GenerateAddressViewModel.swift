@@ -17,9 +17,7 @@ class GenerateAddressViewModel: AccountantBaseViewModel {
 	// MARK: -
 
 	var title: String {
-		get {
-			return "Generate Address".localized()
-		}
+		return "Generate Address".localized()
 	}
 
 	private var mnemonic: String?

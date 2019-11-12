@@ -32,7 +32,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 		SoundHelper.playSoundIfAllowed(type: .bip)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .ConvertGetExchangeButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .convertGetExchangeButton, params: nil)
 		//TODO: Move to input
 		vm.exchange()
 	}
@@ -43,7 +43,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 	// MARK: -
 
 	var vm: GetCoinsViewModel {
-		return viewModel as! GetCoinsViewModel
+		return viewModel as! GetCoinsViewModel // swiftlint:disable:this force_cast
 	}
 
 	override func viewDidLoad() {
@@ -62,7 +62,7 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 		scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
 
 		vm.spendCoin.asObservable().distinctUntilChanged()
-			.subscribe(onNext: { [weak self] (coin) in
+			.subscribe(onNext: { [weak self] (_) in
 				self?.spendCoinTextField.text = self?.vm.spendCoinText
 		}).disposed(by: disposableBag)
 
@@ -119,11 +119,11 @@ class GetCoinsViewController: ConvertCoinsViewController, IndicatorInfoProvider,
 
 		vm.shouldClearForm.asObservable().filter({ (val) -> Bool in
 			return val
-		}).subscribe(onNext: { [weak self] (val) in
+		}).subscribe(onNext: { [weak self] (_) in
 			self?.clearForm()
 		}).disposed(by: disposableBag)
 
-		Session.shared.allBalances.asObservable().subscribe(onNext: { [weak self] (val) in
+		Session.shared.allBalances.asObservable().subscribe(onNext: { [weak self] (_) in
 			self?.spendCoinTextField.text = self?.vm.spendCoinText
 			if self?.vm.hasMultipleCoins ?? false {
 				self?.spendCoinTextField?.rightViewMode = .always

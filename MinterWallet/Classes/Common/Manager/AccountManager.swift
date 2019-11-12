@@ -73,7 +73,6 @@ class AccountManager {
 	}
 
 	//save hash of password
-	//TODO: rename to encryption key
 	func save(password: String) {
 		let hash = password.bytes.sha256()
 		let data = Data(bytes: hash)
@@ -164,7 +163,7 @@ class AccountManager {
 				return nil
 		}
 		do {
-			return try? self.privateKey(from: seed)
+			return try self.privateKey(from: seed)
 		} catch {
 			return nil
 		}
@@ -183,9 +182,7 @@ class AccountManager {
 	}
 
 	func decryptMnemonic(encrypted: Data, password: Data) -> String? {
-		let key = password
 		let aes = try? AES(key: password.bytes, blockMode: CBC(iv: self.iv!.bytes))
-	
 		guard let decrypted = try? aes?.decrypt(encrypted.bytes) else {
 			return nil
 		}
@@ -261,5 +258,4 @@ class AccountManager {
 			res.substitute(with: account)
 		}
 	}
-
 }

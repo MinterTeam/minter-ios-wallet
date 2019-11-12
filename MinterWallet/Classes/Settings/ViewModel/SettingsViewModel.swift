@@ -17,35 +17,29 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 	struct Input {
 		var pin: AnyObserver<String>
 	}
-
 	struct Output {
 		var showPINController: Observable<(String, String)>
 		var hidePINController: Observable<Void>
 		var showConfirmPINController: Observable<(String, String)>
 		var shakePINError: Observable<Void>
 	}
-
+	struct Dependency {}
 	var input: SettingsViewModel.Input!
 	var output: SettingsViewModel.Output!
+	var dependency: SettingsViewModel.Dependency!
 
 	// MARK: -
 
 	var title: String {
-		get {
-			return "Settings".localized()
-		}
+		return "Settings".localized()
 	}
 
 	private var sections: [BaseTableSectionItem] = []
 
 	var showLoginScreen = Variable(false)
-
 	var shouldReloadTable = Variable(false)
-
 	private var profileManager: ProfileManager?
-
 	private var selectedImage: UIImage?
-
 	var errorNotification = Variable<NotifiableError?>(nil)
 	var successMessage = Variable<NotifiableSuccess?>(nil)
 
@@ -57,12 +51,8 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 			}
 		}
 	}
-	
-	var isCheckingPIN = PINManager.shared.isPINset {
-		didSet {
-			
-		}
-	}
+
+	var isCheckingPIN = PINManager.shared.isPINset
 
 	var storage = SecureStorage()
 
@@ -98,7 +88,7 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 										hidePINController: hidePINControllerSubject.asObservable(),
 										showConfirmPINController: showConfirmPINControllerSubject.asObservable(),
 										shakePINError: shakePINErrorSubject.asObservable())
-
+		dependency = Dependency()
 		pinSubject.subscribe(onNext: { [weak self] (pin) in
 			let isChecking = self?.isCheckingPIN ?? false
 			if isChecking {
@@ -140,14 +130,13 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 		createSections()
 	}
 
-	var rightButtonTitle : String {
+	var rightButtonTitle: String {
 		return "Log Out".localized()
 	}
 
 	// MARK: - Sections
 
 	func createSections() {
-
 		let user = Session.shared.user.value
 
 		var sctns = [BaseTableSectionItem]()
@@ -166,8 +155,8 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 				let avatarURL = URL(string: avatarURLString) {
 				avatar.avatarURL = avatarURL
 			} else {
-				if let id = user?.id {
-					avatar.avatarURL = MinterMyAPIURL.avatarUserId(id: id).url()
+				if let ident = user?.id {
+					avatar.avatarURL = MinterMyAPIURL.avatarUserId(id: ident).url()
 				}
 			}
 
@@ -332,7 +321,7 @@ class SettingsViewModel: BaseViewModel, ViewModelProtocol {
 			let base64 = data.base64EncodedString()
 
 			profileManager?.uploadAvatar(imageBase64: base64,
-																	 completion: { (succeed, url, error) in
+																	 completion: { (_, url, error) in
 
 				guard nil == error else {
 					return
@@ -380,4 +369,10 @@ extension SettingsViewModel {
 		return PINManager.shared.checkPIN(code: code)
 	}
 
+	func pinViewModel() -> PINViewModel {
+		let viewModel = PINViewModel()
+		viewModel.title = self.isCheckingPIN ? "Current PIN-code".localized() : "Set PIN-code".localized()
+		viewModel.desc = "Please enter a 4-digit PIN".localized()
+		return viewModel
+	}
 }

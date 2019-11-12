@@ -5,16 +5,16 @@ PODS:
     - Alamofire (~> 4.7)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
-  - Crashlytics (3.12.0):
-    - Fabric (~> 1.9.0)
-  - CryptoSwift (1.0.0)
-  - Differentiator (3.1.0)
-  - Fabric (1.9.0)
+  - Crashlytics (3.14.0):
+    - Fabric (~> 1.10.2)
+  - CryptoSwift (1.1.2)
+  - Differentiator (4.0.1)
+  - Fabric (1.10.2)
   - GoldenKeystore (1.0.3):
     - TrezorCrypto (= 0.0.9)
   - GrowingTextView (0.7.1)
   - KeychainSwift (12.0.0)
-  - MarqueeLabel/Swift (3.2.0)
+  - MarqueeLabel/Swift (3.2.1)
   - MinterCore (0.1.26):
     - Alamofire (= 4.7.3)
     - BigInt (~> 3.0)
@@ -28,44 +28,51 @@ PODS:
   - NotificationBannerSwift (1.8.0):
     - MarqueeLabel/Swift (~> 3.2.0)
     - SnapKit (~> 4.0.1)
-  - ObjectMapper (3.4.2)
-  - ReachabilitySwift (4.3.0)
-  - Realm (3.17.3):
-    - Realm/Headers (= 3.17.3)
-  - Realm/Headers (3.17.3)
-  - RealmSwift (3.17.3):
-    - Realm (= 3.17.3)
-  - RxAppState (1.2.0):
-    - RxCocoa (~> 4.3)
-    - RxSwift (~> 4.3)
-  - RxCocoa (4.4.1):
-    - RxSwift (~> 4.0)
-  - RxDataSources (3.1.0):
-    - Differentiator (~> 3.0)
-    - RxCocoa (~> 4.0)
-    - RxSwift (~> 4.0)
-  - RxGesture (1.2.1):
-    - RxCocoa (~> 4.0)
-    - RxSwift (~> 4.0)
-  - RxSwift (4.3.1)
+  - ObjectMapper (3.5.1)
+  - ReachabilitySwift (4.3.1)
+  - Realm (3.19.0):
+    - Realm/Headers (= 3.19.0)
+  - Realm/Headers (3.19.0)
+  - RealmSwift (3.19.0):
+    - Realm (= 3.19.0)
+  - RxAppState (1.6.0):
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
+  - RxBiBinding (0.2.5):
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
+  - RxCocoa (5.0.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxDataSources (4.0.1):
+    - Differentiator (~> 4.0)
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
+  - RxGesture (3.0.1):
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
+  - RxRelay (5.0.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.0)
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
-  - Starscream (3.0.6)
+  - Starscream (3.1.1)
   - SwiftCentrifuge (0.0.2):
     - Starscream
     - SwiftProtobuf
-  - SwiftProtobuf (1.3.1)
+  - SwiftLint (0.35.0)
+  - SwiftProtobuf (1.7.0)
   - SwiftValidator (4.0.0)
-  - TPKeyboardAvoiding (1.3.2)
+  - TPKeyboardAvoiding (1.3.3)
   - TrezorCrypto (0.0.9)
   - XLPagerTabStrip (8.1.1)
   - YandexMobileMetrica/Dynamic (3.2.0)
 
 DEPENDENCIES:
   - AFDateHelper (~> 4.2.2)
-  - Alamofire (= 4.7.3)
-  - AlamofireImage (= 3.4.1)
+  - Alamofire
+  - AlamofireImage
   - Crashlytics (~> 3.10)
   - CryptoSwift (~> 1.0)
   - Fabric (~> 1.7)
@@ -79,18 +86,20 @@ DEPENDENCIES:
   - ObjectMapper (~> 3.3)
   - ReachabilitySwift (~> 4.3)
   - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
-  - RxAppState (= 1.2.0)
-  - RxDataSources (~> 3.0)
+  - RxAppState
+  - RxBiBinding
+  - RxDataSources
   - RxGesture
-  - RxSwift (= 4.3.1)
+  - RxSwift
   - SwiftCentrifuge
+  - SwiftLint
   - SwiftValidator (from `https://github.com/jpotts18/SwiftValidator.git`, branch `master`)
   - TPKeyboardAvoiding (~> 1.3)
   - XLPagerTabStrip (~> 8.0)
   - YandexMobileMetrica/Dynamic (= 3.2.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFDateHelper
     - Alamofire
     - AlamofireImage
@@ -107,15 +116,18 @@ SPEC REPOS:
     - ReachabilitySwift
     - Realm
     - RxAppState
+    - RxBiBinding
     - RxCocoa
     - RxDataSources
     - RxGesture
+    - RxRelay
     - RxSwift
     - secp256k1.swift
     - SipHash
     - SnapKit
     - Starscream
     - SwiftCentrifuge
+    - SwiftLint
     - SwiftProtobuf
     - TPKeyboardAvoiding
     - TrezorCrypto
@@ -144,11 +156,11 @@ CHECKOUT OPTIONS:
     :commit: 2f58a6eb405561bec305d5a197bcaa1514eed77e
     :git: https://github.com/sidorov-panda/GoldenKeystore
   RealmSwift:
-    :commit: 8ed9590320d52c539d35e2e5fe191af3a1ceb781
+    :commit: 6d52751b9c9aa7e6e6b8413721543133a05ad79e
     :git: https://github.com/realm/realm-cocoa.git
     :submodules: true
   SwiftValidator:
-    :commit: c0ee801a2d107eca5f748d07932b449666d8effd
+    :commit: d370353b7a0ce758a53b189c81e485dcd53c99a4
     :git: https://github.com/jpotts18/SwiftValidator.git
 
 SPEC CHECKSUMS:
@@ -156,39 +168,42 @@ SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireImage: 78d67ccbb763d87ba44b21583d2153500a195630
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
-  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
-  CryptoSwift: d81eeaa59dc5a8d03720fe919a6fd07b51f7439f
-  Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
-  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
+  Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
+  CryptoSwift: 31dacd1f13427439ddae5b5cbaae4c8dbc43047e
+  Differentiator: 886080237d9f87f322641dedbc5be257061b0602
+  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   GoldenKeystore: 6d176bbb332a4abb99024ebce06a3e3067c73a8a
   GrowingTextView: 6dff7eedf2fc93f8378d20d456782afd0267b0cc
   KeychainSwift: d5e776578587ee5958ce36601df22f168f65138a
-  MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
+  MarqueeLabel: 2daf039bf916937c8a4c9adfc13577cc5e51b4ce
   MinterCore: 524460f52445065280ee8b4d365216b3772670f9
   MinterExplorer: 27c5ba3bef42457fab572b8102b71c582f3f3c6a
   MinterMy: 4198c68f2dbdcced3cb6cbe86a6d300b81433288
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
-  ObjectMapper: 0d4402610f4e468903ae64629eec4784531e5c51
-  ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
-  Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
-  RealmSwift: b7fdc2d18616621c31df5c7a398a45a2163f8eb0
-  RxAppState: abff6ddb6cf6e0d7c3d7fec65e5892d5e856ba9b
-  RxCocoa: 2f35a76bf8887872e28a1914112395b11b8e0e64
-  RxDataSources: a843bad90c29817f5923ec8163f4af2de084ceb3
-  RxGesture: c278eb05b187abd47e11e65464ae4de53ab71d95
-  RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
+  ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
+  ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
+  Realm: 995d585bcf699aaff226715886c849a29dd3d07f
+  RealmSwift: 35f284a537989f2187b413e5917091948cb87a3f
+  RxAppState: b633d7370970ecb80081912ea08a7bf3eb644b4e
+  RxBiBinding: 6cc627d9e0dfa0b2ce8470cd7e539f3cb100f782
+  RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
+  RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
+  RxGesture: a3f8dd6adf078110ed5e1c9c30d09d705a09852e
+  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
+  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
-  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SwiftCentrifuge: fa745a1fad5ace1c592eb8ceb21e06d28a080ae6
-  SwiftProtobuf: 84cd6b8f4fd2fc3d9fbd80a0aaf2e957d52824ec
-  SwiftValidator: 25ded5ca1f10c05adf57f6ac82a72d28ac8d91af
-  TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
+  SwiftLint: 5553187048b900c91aa03552807681bb6b027846
+  SwiftProtobuf: 4fd9645e69b72cbae6ec8da5be0cdd20ca6565dd
+  SwiftValidator: 249b6b3ae3b294266c5b9de134d94f18f2d5aa47
+  TPKeyboardAvoiding: 6dd3fe3268b8f2627beb7ff3d82a3cacbdf66a36
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 862fa6b3de91f26cdb3fa73f01cfcd299c320cd2
+PODFILE CHECKSUM: 9b21d08849fb73bbc692e8783398cde13a4b5df4
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4

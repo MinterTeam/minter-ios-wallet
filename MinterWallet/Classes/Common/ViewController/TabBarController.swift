@@ -10,18 +10,18 @@ import UIKit
 import RxSwift
 
 class TabBarController: UITabBarController {
-	
+
 	// MARK: -
-	
+
 	let disposeBag = DisposeBag()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+
 		Session.shared.accounts.asObservable().distinctUntilChanged().filter({ (val) -> Bool in
 			return val.count == 0
 		}).subscribe(onNext: { [weak self] _ in
-			
+
 			self?.viewControllers?.forEach({ (vc) in
 				if let nav = vc as? UINavigationController {
 					nav.popToRootViewController(animated: false)
@@ -29,7 +29,7 @@ class TabBarController: UITabBarController {
 			})
 		}).disposed(by: disposeBag)
 	}
-	
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.tabBar.invalidateIntrinsicContentSize()
@@ -38,23 +38,23 @@ class TabBarController: UITabBarController {
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 	}
-	
-	//MARK: -
-	
+
+	// MARK: -
+
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
-	
+
 	override var childViewControllerForStatusBarStyle: UIViewController? {
 		let vc = self.viewControllers?[safe: self.selectedIndex]
 		let navVC = vc as? UINavigationController
 		guard nil == navVC else {
 			return navVC?.visibleViewController
 		}
-		
+
 		return vc
 	}
-	
+
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 	}

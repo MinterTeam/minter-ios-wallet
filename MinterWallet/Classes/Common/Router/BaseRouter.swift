@@ -37,7 +37,7 @@ class Router {
 
 	static func viewController(by url: URL) -> UIViewController? {
 
-		let routers = Router.shared.getClassesImplementingProtocol(p: BaseRouter.self) as! [BaseRouter.Type]
+		let routers = Router.shared.getClassesImplementingProtocol(prot: BaseRouter.self) as! [BaseRouter.Type] // swiftlint:disable:this force_cast
 
 		var viewController: UIViewController?
 
@@ -62,8 +62,8 @@ class Router {
 			return matches
 		}.first
 
-		url.params().forEach { (k, v) in
-			params[k] = v
+		url.params().forEach { (key, value) in
+			params[key] = value
 		}
 
 		viewController = router?.self.viewController(path: path, param: params)
@@ -74,12 +74,12 @@ class Router {
 		return nil
 	}
 
-	private func getClassesImplementingProtocol(p: Protocol) -> [AnyClass] {
+	private func getClassesImplementingProtocol(prot: Protocol) -> [AnyClass] {
 		let classes = objc_getClassList()
 		var ret = [AnyClass]()
 
 		for cls in classes {
-			if class_conformsToProtocol(cls, p) {
+			if class_conformsToProtocol(cls, prot) {
 				ret.append(cls)
 			}
 		}
@@ -93,8 +93,8 @@ class Router {
 		let actualClassCount:Int32 = ObjectiveC.objc_getClassList(autoreleasingAllClasses, Int32(expectedClassCount))
 
 		var classes = [AnyClass]()
-		for i in 0 ..< actualClassCount {
-			if let currentClass: AnyClass = allClasses[Int(i)] {
+		for idx in 0 ..< actualClassCount {
+			if let currentClass: AnyClass = allClasses[Int(idx)] {
 				classes.append(currentClass)
 			}
 		}
@@ -171,11 +171,11 @@ class Router {
 
 @objc protocol URLInitializable: class {
 	static var pattern: String { get }
-	static func viewController(params: [String : Any]) -> BaseViewController?
+	static func viewController(params: [String: Any]) -> BaseViewController?
 }
 
 extension BaseViewModel {
-	static func viewModel(params: [String : Any]) -> BaseViewModel? {
+	static func viewModel(params: [String: Any]) -> BaseViewModel? {
 		assert(true, "Should be overriden")
 		return nil
 	}

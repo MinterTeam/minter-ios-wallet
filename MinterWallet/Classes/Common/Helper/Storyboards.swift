@@ -43,6 +43,10 @@ struct Storyboards {
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
         }
+
+        static func instantiateSettingsViewController() -> SettingsViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        }
     }
 
     struct Popup: Storyboard {
@@ -97,6 +101,10 @@ struct Storyboards {
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
         }
+
+        static func instantiatePINViewController() -> PINViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "PINViewController") as! PINViewController
+        }
     }
 
     struct CreateWallet: Storyboard {
@@ -138,6 +146,10 @@ struct Storyboards {
 
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
+        }
+
+        static func instantiateDelegatedViewController() -> DelegatedViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "DelegatedViewController") as! DelegatedViewController
         }
     }
 
@@ -185,6 +197,10 @@ struct Storyboards {
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
         }
+
+        static func instantiateReceiveViewController() -> ReceiveViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "ReceiveViewController") as! ReceiveViewController
+        }
     }
 
     struct Transactions: Storyboard {
@@ -205,6 +221,10 @@ struct Storyboards {
 
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
+        }
+
+        static func instantiateTransactionsViewController() -> TransactionsViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "TransactionsViewController") as! TransactionsViewController
         }
     }
 
@@ -290,6 +310,10 @@ struct Storyboards {
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
         }
+
+        static func instantiateSendViewController() -> SendViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "SendViewController") as! SendViewController
+        }
     }
 
     struct Login: Storyboard {
@@ -325,8 +349,8 @@ struct Storyboards {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
 
-        static func instantiateInitialViewController() -> NewConvertViewController {
-            return self.storyboard.instantiateInitialViewController() as! NewConvertViewController
+        static func instantiateInitialViewController() -> RootConvertViewController {
+            return self.storyboard.instantiateInitialViewController() as! RootConvertViewController
         }
 
         static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
@@ -337,8 +361,8 @@ struct Storyboards {
             return self.storyboard.instantiateViewController(ofType: type)
         }
 
-        static func instantiateConvertViewController() -> UIViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: "ConvertViewController")
+        static func instantiateRootConvertViewController() -> RootConvertViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "RootConvertViewController") as! RootConvertViewController
         }
 
         static func instantiateSpendCoinsViewController() -> SpendCoinsViewController {
@@ -579,12 +603,19 @@ extension UIStoryboardSegue {
         return nil
     }
 }
+protocol SettingsViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension SettingsViewController: SettingsViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: SettingsViewController {
+    var storyboardIdentifier: String? { return "SettingsViewController" }
+    static var storyboardIdentifier: String? { return "SettingsViewController" }
+}
 extension SettingsViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
         case showAddress
         case showUsername
-        case showMobile
         case showEmail
         case showPassword
         case showPIN
@@ -594,8 +625,6 @@ extension SettingsViewController {
             case .showAddress:
                 return SegueKind(rawValue: "show")
             case .showUsername:
-                return SegueKind(rawValue: "show")
-            case .showMobile:
                 return SegueKind(rawValue: "show")
             case .showEmail:
                 return SegueKind(rawValue: "show")
@@ -610,8 +639,6 @@ extension SettingsViewController {
             switch self {
             case .showUsername:
                 return UsernameEditViewController.self
-            case .showMobile:
-                return MobileEditViewController.self
             case .showEmail:
                 return EmailEditViewController.self
             case .showPassword:
@@ -691,10 +718,26 @@ extension IdentifiableProtocol where Self: ConfirmPopupViewController {
 }
 
 // MARK: - PINViewController
+protocol PINViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension PINViewController: PINViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: PINViewController {
+    var storyboardIdentifier: String? { return "PINViewController" }
+    static var storyboardIdentifier: String? { return "PINViewController" }
+}
 
 // MARK: - CreateWalletViewController
 
 // MARK: - DelegatedViewController
+protocol DelegatedViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension DelegatedViewController: DelegatedViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: DelegatedViewController {
+    var storyboardIdentifier: String? { return "DelegatedViewController" }
+    static var storyboardIdentifier: String? { return "DelegatedViewController" }
+}
 extension DelegatedViewController {
 
     enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
@@ -745,11 +788,14 @@ extension IdentifiableProtocol where Self: CoinsViewController {
 extension CoinsViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
+        case showDelegated
         case showTransactions
         case showConvert
 
         var kind: SegueKind? {
             switch self {
+            case .showDelegated:
+                return SegueKind(rawValue: "show")
             case .showTransactions:
                 return SegueKind(rawValue: "show")
             case .showConvert:
@@ -772,6 +818,14 @@ extension CoinsViewController {
 }
 
 // MARK: - ReceiveViewController
+protocol ReceiveViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension ReceiveViewController: ReceiveViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: ReceiveViewController {
+    var storyboardIdentifier: String? { return "ReceiveViewController" }
+    static var storyboardIdentifier: String? { return "ReceiveViewController" }
+}
 extension ReceiveViewController {
 
     enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
@@ -803,6 +857,14 @@ extension ReceiveViewController {
 }
 
 // MARK: - TransactionsViewController
+protocol TransactionsViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension TransactionsViewController: TransactionsViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: TransactionsViewController {
+    var storyboardIdentifier: String? { return "TransactionsViewController" }
+    static var storyboardIdentifier: String? { return "TransactionsViewController" }
+}
 
 // MARK: - AddressViewController
 extension UIStoryboardSegue {
@@ -902,6 +964,14 @@ extension AdvancedModeViewController {
 // MARK: - RootViewController
 
 // MARK: - SendViewController
+protocol SendViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension SendViewController: SendViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: SendViewController {
+    var storyboardIdentifier: String? { return "SendViewController" }
+    static var storyboardIdentifier: String? { return "SendViewController" }
+}
 
 // MARK: - HomeViewController
 extension UIStoryboardSegue {
@@ -948,7 +1018,15 @@ extension HomeViewController {
 
 // MARK: - LoginViewController
 
-// MARK: - NewConvertViewController
+// MARK: - RootConvertViewController
+protocol RootConvertViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension RootConvertViewController: RootConvertViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: RootConvertViewController {
+    var storyboardIdentifier: String? { return "RootConvertViewController" }
+    static var storyboardIdentifier: String? { return "RootConvertViewController" }
+}
 
 // MARK: - SpendCoinsViewController
 protocol SpendCoinsViewControllerIdentifiableProtocol: IdentifiableProtocol { }

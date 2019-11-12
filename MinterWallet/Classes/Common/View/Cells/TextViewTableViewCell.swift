@@ -9,6 +9,9 @@
 import UIKit
 import SwiftValidator
 import RxSwift
+import RxCocoa
+import RxRelay
+import RxBiBinding
 
 protocol TextViewTableViewCellDelegate: class {
 	func heightDidChange(cell: TextViewTableViewCell)
@@ -23,6 +26,8 @@ class TextViewTableViewCellItem: BaseCellItem {
 	var value: String?
 	var keybordType: UIKeyboardType?
 	var titleObservable: Observable<String?>?
+
+	var text = BehaviorRelay<String?>(value: nil)
 }
 
 class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
@@ -69,6 +74,8 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 		super.configure(item: item)
 
 		if let item = item as? TextViewTableViewCellItem {
+			(textView.rx.text <-> item.text).disposed(by: disposeBag)
+
 			self.title.text = item.title
 
 			if let val = item.value {
@@ -78,33 +85,42 @@ class TextViewTableViewCell: BaseCell, AutoGrowingTextViewDelegate {
 				self.textView?.keyboardType = keyboard
 			}
 
-			item.isLoadingObservable?.subscribe(onNext: { [weak self] (val) in
-				if val {
-					self?.activityIndicator?.startAnimating()
-				} else {
-					self?.activityIndicator?.stopAnimating()
-				}
-			}).disposed(by: disposeBag)
+			item
+				.isLoadingObservable?
+				.subscribe(onNext: { [weak self] (val) in
+					if val {
+						self?.activityIndicator?.startAnimating()
+					} else {
+						self?.activityIndicator?.stopAnimating()
+					}
+				}).disposed(by: disposeBag)
 
-			item.stateObservable?.subscribe(onNext: { [weak self] (stt) in
-				switch stt {
-				case .default:
-					self?.setDefault()
-					break
+			item
+				.stateObservable?
+				.subscribe(onNext: { [weak self] (stt) in
+					switch stt {
+					case .default:
+						self?.setDefault()
+						break
 
-				case .invalid(let err):
-					self?.setInvalid(message: err)
-					break
+					case .invalid(let err):
+						self?.setInvalid(message: err)
+						break
 
-				case .valid:
-					self?.setValid()
-					break
-				}
-			}).disposed(by: disposeBag)
+					case .valid:
+						self?.setValid()
+						break
+					}
+				}).disposed(by: disposeBag)
 
-			textView?.rx.text.orEmpty.asObservable().subscribe(onNext: { [weak self] (val) in
-				self?.validateDelegate?.validate(field: self!, completion: {})
-			}).disposed(by: disposeBag)
+			textView?
+				.rx
+				.text
+				.orEmpty
+				.asObservable()
+				.subscribe(onNext: { [weak self] (val) in
+					self?.validateDelegate?.validate(field: self!, completion: {})
+				}).disposed(by: disposeBag)
 
 			if let textView = textView {
 				item.titleObservable?.asDriver(onErrorJustReturn: "")

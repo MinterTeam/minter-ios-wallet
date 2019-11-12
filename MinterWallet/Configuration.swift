@@ -27,13 +27,13 @@ struct Configuration {
 
 enum Environment: String {
 
-	case staging = "staging"
-	case production = "production"
+	case staging
+	case production
 
 	var nodeBaseURL: String {
 		switch self {
 		case .staging: return "https://minter-node-1.mainnet.minter.network"
-		case .production: return "https://minter-node-1.mainnet.minter.network"
+		case .production: return "https://minter-node-2.mainnet.minter.network"
 		}
 	}
 
@@ -80,7 +80,6 @@ enum Environment: String {
 	}
 
 	// MY Minter
-
 	var myAPIBaseURL: String {
 		switch self {
 		case .staging: return "https://my.beta.minter.network"

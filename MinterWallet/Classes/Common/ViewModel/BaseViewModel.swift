@@ -15,9 +15,11 @@ import RxSwift
 protocol ViewModelProtocol {
 	associatedtype Input
 	associatedtype Output
+	associatedtype Dependency
 
 	var input: Input! { get }
 	var output: Output! { get }
+//	var dependency: Dependency! { get }
 }
 
 class BaseViewModel {
@@ -217,8 +219,8 @@ extension TransactionViewableViewModel {
 		let transactionCellItem = RedeemCheckTableViewCellItem(reuseIdentifier: "RedeemCheckTableViewCell",
 																													 identifier: "RedeemCheckTableViewCell\(sectionId)")
 		transactionCellItem.txHash = transaction.hash
-		transactionCellItem.title = title
-		transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: transaction.from ?? "").url()
+		transactionCellItem.title = (transactionItem.transaction?.hash ?? title)
+		transactionCellItem.image = UIImage(named: "redeemCheckImage")
 		transactionCellItem.date = transaction.date
 		transactionCellItem.to = toAddress
 		transactionCellItem.payload = transaction.payload?.base64Decoded()
@@ -228,10 +230,6 @@ extension TransactionViewableViewModel {
 			if !hasAddress {
 				signMultiplier = -1.0
 			}
-			let avatarAddress = ((signMultiplier > 0 ? data.sender : transaction.from) ?? "")
-			transactionCellItem.imageURL = MinterMyAPIURL.avatarAddress(address: avatarAddress).url()
-			transactionCellItem.title = TransactionTitleHelper.title(from: avatarAddress)
-
 			transactionCellItem.coin = data.coin
 			transactionCellItem.amount = (data.value ?? 0) * Decimal(signMultiplier)
 			transactionCellItem.from = data.sender

@@ -29,8 +29,7 @@ extension ExplorerCoinManager {
 					return coin.symbol?.lowercased() == term.lowercased()
 				}).first {
 					observer.onNext(coin)
-				}
-				else {
+				} else {
 					observer.onNext(nil)
 				}
 				observer.onCompleted()
@@ -42,17 +41,16 @@ extension ExplorerCoinManager {
 	func coins(term: String) -> Observable<[Coin]?> {
 		return Observable.create { (observer) -> Disposable in
 			self.coins(term: term) { (coins, error) in
-				
+
 				guard error == nil else {
 					observer.onError(error!)
 					return
 				}
-				
+
 				observer.onNext(coins)
 				observer.onCompleted()
 			}
 			return Disposables.create()
 		}
 	}
-
 }

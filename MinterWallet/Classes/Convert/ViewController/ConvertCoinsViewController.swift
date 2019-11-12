@@ -14,13 +14,6 @@ class ConvertCoinsViewController: BaseViewController {
 
 	// MARK: -
 
-	var viewModel: ConvertCoinsViewModel? {
-		didSet {
-			viewModel?.feeObservable.asDriver(onErrorJustReturn: "")
-				.drive(feeLabel.rx.text).disposed(by: self.disposableBag)
-		}
-	}
-
 	let coinFormatter = CurrencyNumberFormatter.coinFormatter
 
 	// MARK: -
@@ -52,8 +45,16 @@ class ConvertCoinsViewController: BaseViewController {
 
 	// MARK: -
 
+	var viewModel: ConvertCoinsViewModel!
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
+		viewModel
+			.feeObservable
+			.asDriver(onErrorJustReturn: "")
+			.drive(feeLabel.rx.text)
+			.disposed(by: self.disposableBag)
 
 		autocompleteView.textField = getCoinTextField
 		getCoinTextField.rx.text.subscribe(onNext: { (str) in

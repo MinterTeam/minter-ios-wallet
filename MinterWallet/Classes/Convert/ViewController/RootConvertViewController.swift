@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import XLPagerTabStrip
 
-class NewConvertViewController: ButtonBarPagerTabStripViewController {
+class RootConvertViewController: ButtonBarPagerTabStripViewController {
 
 	// MARK: -
 
@@ -41,11 +41,11 @@ class NewConvertViewController: ButtonBarPagerTabStripViewController {
 		}
 
 		super.viewDidLoad()
-		
+
 		let separatorView = UIView(frame: CGRect(x: 0, y: 47, width: view.bounds.width, height: 1.0))
 		separatorView.backgroundColor = UIColor(hex: 0xE1E1E1)
 		separatorView.translatesAutoresizingMaskIntoConstraints = false
-		
+
 		self.view.addSubview(separatorView)
 
 		if self.shouldShowTestnetToolbar {
@@ -60,18 +60,18 @@ class NewConvertViewController: ButtonBarPagerTabStripViewController {
 			self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-104-[separator(1)]",
 																															options: [],
 																															metrics: nil,
-																															views: ["separator" : separatorView]))
+																															views: ["separator": separatorView]))
 		} else {
 			self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-47-[separator(1)]",
 																															options: [],
 																															metrics: nil,
-																															views: ["separator" : separatorView]))
+																															views: ["separator": separatorView]))
 		}
 
 		self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[separator]-0-|",
 																														options: [],
 																														metrics: nil,
-																														views: ["separator" : separatorView]))
+																														views: ["separator": separatorView]))
 	}
 
 	override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -81,7 +81,13 @@ class NewConvertViewController: ButtonBarPagerTabStripViewController {
 	// MARK: -
 
 	override public func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
-		return [Storyboards.Convert.instantiateSpendCoinsViewController(), Storyboards.Convert.instantiateGetCoinsViewController()]
-	}
+		let spendVM = SpendCoinsViewModel()
+		let spendVC = Storyboards.Convert.instantiateSpendCoinsViewController()
+		spendVC.viewModel = spendVM
 
+		let getVM = GetCoinsViewModel()
+		let getVC = Storyboards.Convert.instantiateGetCoinsViewController()
+		getVC.viewModel = getVM
+		return [spendVC, getVC]
+	}
 }

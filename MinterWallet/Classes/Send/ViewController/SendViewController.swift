@@ -13,7 +13,7 @@ import SafariServices
 import SwiftValidator
 import AVFoundation
 
-let SendViewControllerAddressNotification = NSNotification.Name(rawValue: "SendViewControllerAddressNotification")
+let sendViewControllerAddressNotification = NSNotification.Name(rawValue: "SendViewControllerAddressNotification")
 
 class SendViewController:
 	BaseViewController,
@@ -22,17 +22,16 @@ class SendViewController:
 	UITableViewDataSource,
 	SendPopupViewControllerDelegate,
 	SentPopupViewControllerDelegate,
-	TextViewTableViewCellDelegate,
-	UsernameTableViewCellDelegate {
+	TextViewTableViewCellDelegate {
 
 	// MARK: - ControllerType
 
-	@IBOutlet weak var scanQRButton: UIBarButtonItem!
-	
+	var viewModel: SendViewModel!
 	typealias ViewModelType = SendViewModel
 
 	// MARK: - IBOutlet
 
+	@IBOutlet weak var scanQRButton: UIBarButtonItem!
 	@IBOutlet weak var txScanButton: UIBarButtonItem!
 	@IBOutlet weak var tableView: UITableView! {
 		didSet {
@@ -48,7 +47,7 @@ class SendViewController:
 	// MARK: -
 
 	var popupViewController: PopupViewController?
-	var viewModel = SendViewModel()
+
 	private var disposeBag = DisposeBag()
 
 	lazy var readerVC: QRCodeReaderViewController = {
@@ -74,7 +73,7 @@ class SendViewController:
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		viewModel.viewDidAppear()
-		AnalyticsHelper.defaultAnalytics.track(event: .SendScreen)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendScreen)
 	}
 
 	// MARK: -
@@ -122,15 +121,9 @@ class SendViewController:
 			textField.amountDelegate = self
 		}
 
-		if let addressCell = cell as? UsernameTableViewCell {
-			addressCell.addressDelegate = self
-		}
-
 		if let switchCell = cell as? SwitchTableViewCell {
 			switchCell.delegate = self
 		}
-		var validatableCell = cell as? ValidatableCellProtocol
-		validatableCell?.validateDelegate = self
 		return cell
 	}
 }
@@ -138,21 +131,27 @@ class SendViewController:
 extension SendViewController {
 
 	func configure(with viewModel: SendViewModel) {
-		txScanButton.rx.tap.asDriver()
-			.drive(viewModel.input.txScanButtonDidTap).disposed(by: disposeBag)
+		txScanButton
+			.rx
+			.tap
+			.asDriver()
+			.drive(viewModel.input.txScanButtonDidTap)
+			.disposed(by: disposeBag)
 
 		viewModel.output.errorNotification
 			.asDriver(onErrorJustReturn: nil)
 			.filter({ (notification) -> Bool in
 				return nil != notification
-		}).drive(onNext: { (notification) in
-			let banner = NotificationBanner(title: notification?.title ?? "",
-																			subtitle: notification?.text,
-																			style: .danger)
-			banner.show()
-		}).disposed(by: disposeBag)
+			}).drive(onNext: { (notification) in
+				let banner = NotificationBanner(title: notification?.title ?? "",
+																				subtitle: notification?.text,
+																				style: .danger)
+				banner.show()
+			}).disposed(by: disposeBag)
 
-		viewModel.output.txErrorNotification
+		viewModel
+			.output
+			.txErrorNotification
 			.asDriver(onErrorJustReturn: nil)
 			.drive(onNext: { [weak self] (notification) in
 				guard nil != notification else {
@@ -163,33 +162,13 @@ extension SendViewController {
 																				subtitle: notification?.text,
 																				style: .danger)
 				banner.show()
-		}).disposed(by: disposeBag)
-
-		viewModel
-			.output
-			.showViewController
-			.asDriver(onErrorJustReturn: nil)
-			.drive(onNext: { [weak self] (viewController) in
-				guard let viewController = viewController else { return }
-				self?.tabBarController?.present(viewController, animated: true, completion: nil)
 			}).disposed(by: disposeBag)
 
 		viewModel
 			.output
-			.setAddressField
+			.popup
 			.asDriver(onErrorJustReturn: nil)
-			.drive(onNext: { (val) in
-				let indexPath = IndexPath(row: 1, section: 0)
-				if
-					let cell = self.tableView.cellForRow(at: indexPath) as? UsernameTableViewCell,
-					let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-					cell.textView.text = val
-					_ = self.viewModel.validateField(item: item, value: val ?? "")
-				}
-			}).disposed(by: disposeBag)
-
-		viewModel.showPopup.asObservable()
-			.subscribe(onNext: { [weak self] (popup) in
+			.drive(onNext: { [weak self] (popup) in
 				if popup == nil {
 					self?.popupViewController?.dismiss(animated: true, completion: nil)
 					return
@@ -211,19 +190,22 @@ extension SendViewController {
 					self?.showPopup(viewController: popup!,
 													inPopupViewController: self!.popupViewController)
 				}
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
-		viewModel.sections.asObservable().subscribe(onNext: { [weak self] (_) in
-			self?.tableView.reloadData()
-			guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
-				return
-			}
-			//Move to cell
-			if let balanceCell = self?.tableView
-				.cellForRow(at: IndexPath(item: 0, section: 0)) as? PickerTableViewCell {
-				balanceCell.selectField.text = selectedPickerItem.title
-			}
-		}).disposed(by: disposeBag)
+		viewModel
+			.sections
+			.asObservable()
+			.subscribe(onNext: { [weak self] (_) in
+				self?.tableView.reloadData()
+				guard let selectedPickerItem = self?.viewModel.selectedPickerItem() else {
+					return
+				}
+				//Move to cell
+				if let balanceCell = self?.tableView
+					.cellForRow(at: IndexPath(item: 0, section: 0)) as? PickerTableViewCell {
+					balanceCell.selectField.text = selectedPickerItem.title
+				}
+			}).disposed(by: disposeBag)
 
 		if #available(iOS 11.0, *) {
 			self.tableView.contentInset = UIEdgeInsets(top: self.shouldShowTestnetToolbar ? 70.0 : 10.0,
@@ -233,7 +215,7 @@ extension SendViewController {
 		} else {
 			NotificationCenter.default.rx
 				.notification(NSNotification.Name.UIKeyboardWillHide)
-				.subscribe(onNext: { (not) in
+				.subscribe(onNext: { (_) in
 					self.tableView.contentInset = UIEdgeInsets(top: self.shouldShowTestnetToolbar ? 70.0 : 10.0,
 																										 left: 0.0,
 																										 bottom: 50.0,
@@ -241,21 +223,37 @@ extension SendViewController {
 			}).disposed(by: disposeBag)
 		}
 
-		txScanButton.rx.tap.subscribe(onNext: { [weak self] (_) in
-			guard let _self = self else { return }
-			let reader = _self.readerVC
-			reader.delegate = self
-			reader.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
-				reader.stopScanning()
-				reader.dismiss(animated: true) {
-					if let res = result?.value {
-						self?.viewModel.input.didScanQR.onNext(res)
-					}
+		viewModel
+			.output
+			.showViewController
+			.asDriver(onErrorJustReturn: nil)
+			.drive(onNext: { [weak self] (viewController) in
+				guard let viewController = viewController else { return }
+				self?.tabBarController?.present(viewController, animated: true, completion: nil)
+			}).disposed(by: disposeBag)
+
+		txScanButton
+			.rx
+			.tap
+			.asDriver()
+			.drive(viewModel.input.txScanButtonDidTap)
+			.disposed(by: disposeBag)
+
+		txScanButton
+			.rx
+			.tap
+			.subscribe({ [weak self] (_) in
+				self?.present(self!.readerVC, animated: true, completion: nil)
+			}).disposed(by: disposeBag)
+
+		readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
+			self?.readerVC.stopScanning()
+			self?.readerVC.dismiss(animated: true) {
+				if let res = result?.value {
+					self?.viewModel.input.didScanQR.onNext(res)
 				}
 			}
-			_self.readerVC.modalPresentationStyle = .formSheet
-			_self.present(_self.readerVC, animated: true, completion: nil)
-		}).disposed(by: disposeBag)
+		}
 	}
 }
 
@@ -269,7 +267,7 @@ extension SendViewController: PickerTableViewCellDelegate {
 
 	func willShowPicker() {
 		tableView.endEditing(true)
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsChooseCoinButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsChooseCoinButton)
 	}
 }
 
@@ -281,45 +279,17 @@ extension SendViewController: PickerTableViewCellDataSource {
 
 extension SendViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		SoundHelper.playSoundIfAllowed(type: .bip)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsSendButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsSendButton)
 		tableView.endEditing(true)
-		viewModel.sendButtonTaped()
 	}
 
 	// MARK: - Validation
 
-	func validate(cell: ValidatableCellProtocol) {
-		//HACK: Some trouble with protocol?
-
-		var validator: Validator?
-		if let fieldCell = cell as? TextFieldTableViewCell {
-			validator = fieldCell.validator
-			validator?.validate { [fieldCell] (result) in
-				guard result.count == 0 else {
-					result.forEach({ (validation) in
-						fieldCell.setInvalid(message: validation.1.errorMessage)
-					})
-					return
-				}
-				fieldCell.setDefault()
-			}
-		} else if let viewCell = cell as? TextViewTableViewCell {
-			validator = viewCell.validator
-			validator?.validate { [viewCell] (result) in
-				guard result.count == 0 else {
-					result.forEach({ (validation) in
-						viewCell.setInvalid(message: validation.1.errorMessage)
-					})
-					return
-				}
-				viewCell.setDefault()
-			}
-		}
-	}
+	func validate(cell: ValidatableCellProtocol) {}
 }
 
 extension SendViewController {
@@ -330,15 +300,14 @@ extension SendViewController {
 		SoundHelper.playSoundIfAllowed(type: .bip)
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupSendButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinPopupSendButton)
 		viewModel.submitSendButtonTaped()
 	}
 
 	func didCancel(viewController: SendPopupViewController) {
 		SoundHelper.playSoundIfAllowed(type: .cancel)
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinPopupCancelButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinPopupCancelButton)
 		viewController.dismiss(animated: true, completion: nil)
-		viewModel.sendCancelButtonTapped()
 	}
 
 	// MARK: - SentPopupViewControllerDelegate
@@ -347,7 +316,7 @@ extension SendViewController {
 		SoundHelper.playSoundIfAllowed(type: .click)
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupViewTransactionButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupViewTransactionButton)
 		viewController.dismiss(animated: true) { [weak self] in
 			if let url = self?.viewModel.lastTransactionExplorerURL() {
 				let vc = BaseSafariViewController(url: url)
@@ -360,7 +329,7 @@ extension SendViewController {
 		SoundHelper.playSoundIfAllowed(type: .click)
 		lightImpactFeedbackGenerator.prepare()
 		lightImpactFeedbackGenerator.impactOccurred()
-		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupShareTransactionButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupShareTransactionButton)
 		viewController.dismiss(animated: true) { [weak self] in
 			if let url = self?.viewModel.lastTransactionExplorerURL() {
 				let vc = ActivityRouter.activityViewController(activities: [url], sourceView: self!.view)
@@ -372,7 +341,7 @@ extension SendViewController {
 	func didTapSecondButton(viewController: SentPopupViewController) {
 		SoundHelper.playSoundIfAllowed(type: .cancel)
 		lightImpactFeedbackGenerator.prepare()
-		AnalyticsHelper.defaultAnalytics.track(event: .SentCoinPopupCloseButton)
+		AnalyticsHelper.defaultAnalytics.track(event: .sentCoinPopupCloseButton)
 		viewController.dismiss(animated: true, completion: nil)
 	}
 
@@ -407,22 +376,18 @@ extension SendViewController {
 	func heightWillChange(cell: TextViewTableViewCell) {}
 
 	func didTapScanButton(cell: UsernameTableViewCell?) {
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsQRButton)
-		let reader = readerVC
-		reader.delegate = self
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsQRButton)
+		readerVC.delegate = self
 		cell?.textView.becomeFirstResponder()
-		reader.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
-			reader.dismiss(animated: true) {
-				self?.viewModel.input.didScanQR.onNext(result?.value)
+		readerVC.completionBlock = { (result: QRCodeReaderResult?) in
+			if let indexPath = self.tableView.indexPath(for: cell!),
+				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
+				cell?.textView.text = result?.value
 			}
-//			if let indexPath = self.tableView.indexPath(for: cell!),
-//				let item = self.viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-//				cell?.textView.text = result?.value
-//				_ = self.viewModel.validateField(item: item, value: result?.value ?? "")
-//			}
 		}
-		reader.modalPresentationStyle = .formSheet
-		present(reader, animated: true, completion: nil)
+		// Presents the readerVC as modal form sheet
+		readerVC.modalPresentationStyle = .formSheet
+		present(readerVC, animated: true, completion: nil)
 	}
 }
 
@@ -432,29 +397,16 @@ extension SendViewController: SwitchTableViewCellDelegate {
 
 extension SendViewController: ValidatableCellDelegate {
 
-	func didValidateField(field: ValidatableCellProtocol?) {
-		if let indexPath = tableView.indexPath(for: field as UITableViewCell!),
-			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-			viewModel.submitField(item: item, value: field?.validationText ?? "")
-		}
-	}
+	func didValidateField(field: ValidatableCellProtocol?) {}
 
-	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
-		if let indexPath = tableView.indexPath(for: field as UITableViewCell!),
-			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-			if viewModel.validateField(item: item, value: field?.validationText ?? "") {}
-		}
-	}
+	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {}
 }
 
 extension SendViewController: QRCodeReaderViewControllerDelegate {
 
 	// MARK: - QRCodeReaderViewController Delegate Methods
 
-	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
-//		reader.stopScanning()
-//		dismiss(animated: true, completion: nil)
-	}
+	func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {}
 
 	func reader(_ reader: QRCodeReaderViewController, didSwitchCamera newCaptureDevice: AVCaptureDeviceInput) {}
 
@@ -469,15 +421,7 @@ extension SendViewController: AmountTextFieldTableViewCellDelegate {
 
 	func didTapUseMax() {
 		self.view.endEditing(true)
-		AnalyticsHelper.defaultAnalytics.track(event: .SendCoinsUseMaxButton)
-		let indexPath = IndexPath(row: 2, section: 0)
-		guard let amountCell = tableView.cellForRow(at: indexPath) as? TextFieldTableViewCell else {
-				return
-		}
-		if let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-			amountCell.textField.text = viewModel.selectedBalanceText
-			_ = viewModel.validateField(item: item, value: amountCell.textField.text ?? "")
-		}
+		AnalyticsHelper.defaultAnalytics.track(event: .sendCoinsUseMaxButton)
 	}
 }
 

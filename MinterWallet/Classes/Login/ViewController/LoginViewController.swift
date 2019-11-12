@@ -87,17 +87,16 @@ class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewD
 											 forCellReuseIdentifier: "TextFieldTableViewCell")
 	}
 
-	func didValidateField(field: ValidatableCellProtocol?) {
-
-	}
+	func didValidateField(field: ValidatableCellProtocol?) {}
 
 	func validate(field: ValidatableCellProtocol?, completion: (() -> ())?) {
 
-		if let cell = field as? UITableViewCell,
-			let ip = tableView.indexPath(for: cell) {
-			if ip.row == 0 {
+		if
+			let cell = field,
+			let indexPath = tableView.indexPath(for: cell) {
+			if indexPath.row == 0 {
 				viewModel.username.value = field?.validationText
-			} else if ip.row == 1 {
+			} else if indexPath.row == 1 {
 				viewModel.password.value = field?.validationText
 			}
 		}
@@ -122,7 +121,7 @@ class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
 		cell.configure(item: item)
 
-		if var textFieldCell = cell as? ValidatableCellProtocol {
+		if let textFieldCell = cell as? ValidatableCellProtocol {
 			textFieldCell.validateDelegate = self
 		}
 
@@ -136,7 +135,7 @@ class LoginViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
 extension LoginViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 
 		let usernameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell
 		let passwordCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextFieldTableViewCell

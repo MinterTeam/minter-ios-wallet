@@ -16,20 +16,30 @@ class RootViewController: UIViewController, ControllerType {
 
 	// MARK: - ControllerType
 
+	var viewModel: RootViewModel! {
+		didSet {
+			tabbarVC.setViewControllers(viewModel.output.viewControllers(), animated: false)
+		}
+	}
+
 	typealias ViewModelType = RootViewModel
 
 	func configure(with viewModel: RootViewController.ViewModelType) {
 
-		viewModel.output.shouldPresentPIN.asDriver(onErrorJustReturn: false)
+		viewModel
+			.output
+			.shouldPresentPIN
+			.asDriver(onErrorJustReturn: false)
 			.drive(onNext: { [weak self] (present) in
-			self?.shouldPresentPIN = present
-		}).disposed(by: disposeBag)
+				self?.shouldPresentPIN = present
+			}).disposed(by: disposeBag)
 
 		Observable.combineLatest(Session.shared.accounts.asObservable(),
 														 Session.shared.isLoggedIn.asObservable(),
 														 viewModel.output.shouldPresentPIN.asObservable()
 			).skip(1)
-			.asDriver(onErrorJustReturn: ([], false, false)).drive(onNext: { [weak self] (val) in
+			.asDriver(onErrorJustReturn: ([], false, false))
+			.drive(onNext: { [weak self] (val) in
 				self?.shouldPresentPIN = val.2
 				if val.0.count == 0 {
 					self?.nextStep(isLoggedIn: val.1)
@@ -38,13 +48,15 @@ class RootViewController: UIViewController, ControllerType {
 				}
 			}).disposed(by: disposeBag)
 
-		viewModel.output.shouldGoNextStep
+		viewModel
+			.output
+			.shouldGoNextStep
 			.withLatestFrom(Observable.combineLatest(Session.shared.isLoggedIn.asObservable(),
 																							 Session.shared.accounts.asObservable()))
 			.asDriver(onErrorJustReturn: (false, []))
 			.drive(onNext: { [weak self] (val) in
 				self?.nextStep(accounts: val.1, isLoggedIn: val.0)
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 
 		viewModel
 			.output
@@ -63,8 +75,14 @@ class RootViewController: UIViewController, ControllerType {
 					} else {
 						self?.show(vc, sender: self)
 					}
+				} else {
+					if url.host == "tx" || url.path.contains("tx") {
+						BannerHelper.performErrorNotification(title: "Invalid transaction data".localized(), subtitle: nil)
+					} else {
+						BannerHelper.performErrorNotification(title: "Invalid deeplink".localized(), subtitle: nil)
+					}
 				}
-		}).disposed(by: disposeBag)
+			}).disposed(by: disposeBag)
 	}
 
 	// MARK: -
@@ -82,8 +100,6 @@ class RootViewController: UIViewController, ControllerType {
 	// MARK: -
 
 	var shouldPresentPIN = false
-
-	var viewModel = RootViewModel()
 
 	let reachability = Reachability()!
 
@@ -112,7 +128,9 @@ class RootViewController: UIViewController, ControllerType {
 	}
 
 	@objc func reachabilityChanged(_ note: Notification) {
-		let reachability = note.object as! Reachability
+		guard let reachability = note.object as? Reachability else {
+			return
+		}
 
 		switch reachability.connection {
 		case .wifi:
@@ -127,7 +145,7 @@ class RootViewController: UIViewController, ControllerType {
 		}
 	}
 
-	private let tabbarVC = Storyboards.Main.instantiateInitialViewController()
+	private var tabbarVC = Storyboards.Main.instantiateInitialViewController()
 
 	func nextStep(accounts: [Account] = [], isLoggedIn: Bool) {
 
@@ -141,15 +159,20 @@ class RootViewController: UIViewController, ControllerType {
 				let pinVC = PINRouter.defaultPINViewController() {
 
 				func removePopupViewController(in viewController: UIViewController) {
-					if let vc = viewController.presentedViewController {
-						vc.dismiss(animated: false, completion: nil)
-					}
-
-					viewController.childViewControllers.forEach { (vc) in
-						if vc != viewController {
-							removePopupViewController(in: vc)
-						}
-					}
+					UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: {
+						
+					})
+					UIApplication.shared.windows.first?.subviews.filter({ (view) -> Bool in
+						return view as? McPicker != nil
+					}).forEach({ (view) in
+						(view as? McPicker)?.cancel()
+					})
+//
+//					viewController.childViewControllers.forEach { (vc) in
+//						if vc != viewController {
+//							removePopupViewController(in: vc)
+//						}
+//					}
 				}
 
 				removePopupViewController(in: self)
@@ -202,8 +225,8 @@ class RootViewController: UIViewController, ControllerType {
 		let width = self.view.frame.size.width
 		let height = self.view.frame.size.height
 
-		var previousFrame:CGRect?
-		var nextFrame:CGRect?
+		var previousFrame: CGRect?
+		var nextFrame: CGRect?
 		let initCurrentViewFrame = self.view.frame
 
 		switch animationType {

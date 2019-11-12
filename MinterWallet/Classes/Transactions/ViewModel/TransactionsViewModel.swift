@@ -67,8 +67,8 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 	private var canLoadMore = true
 
 	var noTransactionsObservable: Observable<Bool> {
-		return Observable.combineLatest(self.isLoading.asObservable(),
-																		sections.asObservable()).map({ (val) -> Bool in
+		return Observable.combineLatest(isLoading.asObservable(),
+																		sections.asObservable()).map({ (_) -> Bool in
 			return !self.isLoading.value
 				&& self.canLoadMore == false
 				&& self.transactions.count == 0
@@ -77,7 +77,7 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 
 	func createSections(with transactions: [TransactionItem]?) {
 		var newSections = [BaseTableSectionItem]()
-		var items = [String : [BaseCellItem]]()
+		var items = [String: [BaseCellItem]]()
 
 		transactions?.forEach({ (item) in
 			guard let transaction = item.transaction else {
@@ -154,7 +154,7 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 		}) {
 			let loadingSection = self.sections.value[safe: loadingIndex]
 			self.sections.value.remove(at: loadingIndex)
-			self.sections.value = self.sections.value + sctns
+			self.sections.value += sctns
 			if nil != loadingSection {
 				self.sections.value.append(loadingSection!)
 			}
@@ -228,8 +228,8 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 		var itemsCountFromPrevSections = 0
 		let endSection = indexPath.section - 1
 		if endSection >= 0 {
-			for i in 0...endSection {
-				itemsCountFromPrevSections = itemsCountFromPrevSections + rowsCount(for: i)
+			for index in 0...endSection {
+				itemsCountFromPrevSections += rowsCount(for: index)
 			}
 		}
 		let cellTotalIndex = (indexPath.row + 1) + itemsCountFromPrevSections

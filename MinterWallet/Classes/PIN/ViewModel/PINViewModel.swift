@@ -30,14 +30,14 @@ class PINViewModel: BaseViewModel, ViewModelProtocol {
 		var viewDidLoad: AnyObserver<Void>
 		var viewDidAppear: AnyObserver<Bool>
 	}
-
 	struct Output {
 		var title: Observable<String>
 		var desc: Observable<String>
 	}
-
+	struct Dependency {}
 	var input: PINViewModel.Input!
 	var output: PINViewModel.Output!
+	var dependency: PINViewModel.Dependency!
 
 	// MARK: -
 
@@ -47,8 +47,8 @@ class PINViewModel: BaseViewModel, ViewModelProtocol {
 		input = Input(viewDidLoad: viewDidLoadSubject.asObserver(),
 									viewDidAppear: viewDidAppearSubject.asObserver())
 		output = Output(title: titleSubject.asObservable(),
-										desc: descSubject.asObservable()
-		)
+										desc: descSubject.asObservable())
+		dependency = Dependency()
 
 		viewDidLoadSubject.subscribe(onNext: { [weak self] (_) in
 			self?.titleSubject.onNext(self?.title ?? "")

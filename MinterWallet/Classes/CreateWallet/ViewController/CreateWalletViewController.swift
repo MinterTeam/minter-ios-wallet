@@ -117,19 +117,15 @@ class CreateWalletViewController: BaseViewController, ControllerType, UITableVie
 	func initializeTableView() {
 		registerCells()
 
-		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(configureCell: { [weak self] (dataSource, tableView, IndexPath, itm) -> UITableViewCell in
-			guard let item = self?.viewModel.cellItem(section: IndexPath.section, row: IndexPath.row),
+		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(configureCell: { [weak self] (dataSource, tableView, indexPath, _) -> UITableViewCell in
+			guard let item = self?.viewModel.cellItem(section: indexPath.section, row: indexPath.row),
 				let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
 				return UITableViewCell()
 			}
 
 			cell.configure(item: item)
 
-			if let textFieldCell = cell as? TextFieldTableViewCell {
-				textFieldCell.textField.rx.text.asObservable()
-			}
-
-			var validatableCell = cell as? ValidatableCellProtocol
+			let validatableCell = cell as? ValidatableCellProtocol
 			validatableCell?.validateDelegate = self
 
 			return cell
@@ -186,9 +182,6 @@ extension CreateWalletViewController: ValidatableCellDelegate {
 		}
 	}
 
-	func didValidateField(field: ValidatableCellProtocol?) {
-//		if let cell = field as? TextFieldTableViewCell, let indexPath = tableView.indexPath(for: cell), let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row) {
-//		}
-	}
+	func didValidateField(field: ValidatableCellProtocol?) {}
 
 }

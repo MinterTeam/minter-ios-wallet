@@ -10,7 +10,7 @@ import Foundation
 
 public struct Account {
 
-	public enum EncryptedBy : String {
+	public enum EncryptedBy: String {
 		case me = "me"
 		case bipWallet = "bipWallet"
 	}
@@ -18,12 +18,9 @@ public struct Account {
 	// MARK: -
 
 	public var encryptedBy: EncryptedBy
-
 	public var address: String
-
 	public var isMain: Bool
-
-	public var lastBalance: [String : Double] = [:]
+	public var lastBalance: [String: Double] = [:]
 
 	// MARK: -
 
@@ -40,5 +37,4 @@ public struct Account {
 		self.address = account.address
 		self.isMain = account.isMain
 	}
-
 }

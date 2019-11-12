@@ -20,7 +20,7 @@ extension InfoManager {
 		return Observable.create { (observer) -> Disposable in
 
 			func completion(address: String?, user: User?, error: Error?) {
-				guard error == nil && address != nil else {
+				guard error == nil && address != nil && (address ?? "").isValidAddress() else {
 					observer.onError(error ?? InfoManagerErrorRx.noAddress)
 					return
 				}

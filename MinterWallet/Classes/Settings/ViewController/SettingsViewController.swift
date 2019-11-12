@@ -30,13 +30,13 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 
 	// MARK: - ControllerType
 
-	var viewModel = SettingsViewModel()
-
 	private var disposeBag = DisposeBag()
 
 	private var shouldPresentSetPIN = false
 
 	// MARK: -
+
+	var viewModel: SettingsViewModel!
 
 	typealias ViewModelType = SettingsViewModel
 
@@ -69,7 +69,6 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 					return nil != vc as? PINViewController
 				}) as? PINViewController)?.shakeError()
 		}).disposed(by: disposeBag)
-
 	}
 
 	// MARK: Life cycle
@@ -118,13 +117,11 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		}).disposed(by: disposeBag)
 		tableView.tableFooterView = bottomView
 
-		if let delegateProxy = UIApplication.shared.delegate as? RxApplicationDelegateProxy,
-			let appDele = delegateProxy.forwardToDelegate() as? AppDelegate,
-			appDele.isTestnet {
-
-			let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-			let build = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
-			infoLabel.text = "Version: \(version) (\(build))"
+		if let appDele = UIApplication.realAppDelegate(), appDele.isTestnet {
+			if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
+				let build = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String {
+				infoLabel.text = "Version: \(version) (\(build))"
+			}
 		}
 
 		if self.shouldShowTestnetToolbar {
@@ -141,7 +138,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		super.viewWillAppear(animated)
 
 		viewModel.viewWillAppear()
-		AnalyticsHelper.defaultAnalytics.track(event: .SettingsScreen, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .settingsScreen)
 	}
 
 	private func registerCells() {
@@ -215,7 +212,7 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 		}
 		return 52
 	}
-	
+
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 		return 0.1
 	}
@@ -230,8 +227,6 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showAddress.rawValue, sender: self)
 		} else if item.identifier == "DisclosureTableViewCell_Username" {
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showUsername.rawValue, sender: self)
-		} else if item.identifier == "DisclosureTableViewCell_Mobile" {
-			self.performSegue(withIdentifier: SettingsViewController.Segue.showMobile.rawValue, sender: self)
 		} else if item.identifier == "DisclosureTableViewCell_Email" {
 			self.performSegue(withIdentifier: SettingsViewController.Segue.showEmail.rawValue, sender: self)
 		} else if item.identifier == "DisclosureTableViewCell_Password" {
@@ -276,28 +271,24 @@ class SettingsViewController: BaseViewController, UITableViewDelegate, UITableVi
 extension SettingsViewController: SettingsAvatarTableViewCellDelegate {
 
 	func didTapChangeAvatar(cell: SettingsAvatarTableViewCell) {
-		AnalyticsHelper.defaultAnalytics.track(event: .SettingsChangeUserpicButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .settingsChangeUserpicButton)
 		showImagePicker(sender: cell)
 	}
 }
 
 extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
 		let mediaType = info["UIImagePickerControllerMediaType"] as? String ?? ""
 		switch mediaType {
 		case "public.movie":
-			// TODO: Load video
 			picker.dismiss(animated: true, completion: nil)
-			break
 
 		case "public.image":
 			if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
 				self.viewModel.updateAvatar(image)
 			}
-
 			picker.dismiss(animated: true, completion: nil)
-			break
 
 		default:
 			picker.dismiss(animated: true, completion: nil)
@@ -312,19 +303,11 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
 
 extension SettingsViewController: ButtonTableViewCellDelegate {
 
-	func ButtonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
-
+	func buttonTableViewCellDidTap(_ cell: ButtonTableViewCell) {
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
 
-		if let indexPath = tableView.indexPath(for: cell),
-			let item = viewModel.cellItem(section: indexPath.section, row: indexPath.row),
-			item.identifier == "ButtonTableViewCell_Get100" {
-			SoundHelper.playSoundIfAllowed(type: .bip)
-			return
-		}
-
-		AnalyticsHelper.defaultAnalytics.track(event: .SettingsLogoutButton, params: nil)
+		AnalyticsHelper.defaultAnalytics.track(event: .settingsLogoutButton)
 
 		SoundHelper.playSoundIfAllowed(type: .cancel)
 		viewModel.rightButtonTapped()
@@ -344,7 +327,7 @@ extension SettingsViewController: SwitchTableViewCellDelegate {
 			} else if item.identifier == "SwitchTableViewCell_Pin" {
 				shouldPresentSetPIN = isOn
 				performSegue(withIdentifier: SettingsViewController.Segue.showPIN.rawValue, sender: nil)
-			} else/* if item.identifier == "SwitchTableViewCell_Sound"*/ {
+			} else {
 				viewModel.didSwitchSound(isOn: isOn)
 			}
 		}
@@ -357,15 +340,13 @@ extension SettingsViewController {
 		super.prepare(for: segue, sender: sender)
 
 		if let pinVC = segue.destination as? PINViewController {
+			pinVC.viewModel = viewModel.pinViewModel()
 			pinVC.delegate = self
 		}
 
 		if segue.identifier == SettingsViewController.Segue.showPIN.identifier,
 			let pinVC = segue.destination as? PINViewController {
-			let vm = PINViewModel()
-			vm.title = viewModel.isCheckingPIN ? "Current PIN-code".localized() : "Set PIN-code".localized()
-			vm.desc = "Please enter a 4-digit PIN".localized()
-			pinVC.viewModel = vm
+			pinVC.viewModel = viewModel.pinViewModel()
 			pinVC.delegate = self
 		}
 	}
@@ -382,12 +363,11 @@ extension SettingsViewController: PINViewControllerDelegate {
 	// MARK: -
 
 	func PINViewController(title: String, desc: String) -> PINViewController? {
-		let vm = PINViewModel()
-		vm.title = title//viewModel.isCheckingPIN ? "Current PIN-code".localized() : "Set PIN-code".localized()
-		vm.desc = desc//
-		let pinVC = PINRouter.PINViewController(with: vm)
+		let viewModel = PINViewModel()
+		viewModel.title = title
+		viewModel.desc = desc
+		let pinVC = PINRouter.PINViewController(with: viewModel)
 		pinVC?.delegate = self
 		return pinVC
 	}
-
 }
