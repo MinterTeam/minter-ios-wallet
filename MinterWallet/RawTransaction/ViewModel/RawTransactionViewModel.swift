@@ -321,7 +321,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 extension RawTransactionViewModel {
 
 	func makeFields(data: Data?) throws { // swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
-		if let data = data,
+		if
+			let data = data,
 			let txData = RLP.decode(data),
 			let content = txData[0]?.content {
 					switch content {

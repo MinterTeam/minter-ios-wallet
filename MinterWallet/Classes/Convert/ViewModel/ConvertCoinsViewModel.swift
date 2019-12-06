@@ -152,7 +152,6 @@ class ConvertCoinsViewModel: BaseViewModel {
 
 			coins?.forEach({ (coin) in
 				let balance = (balances[address]?[coin] ?? 0.0)
-
 				let item = ConvertPickerItem(coin: coin, address: address, balance: balance)
 				ret.append(item)
 			})
@@ -185,9 +184,15 @@ class ConvertCoinsViewModel: BaseViewModel {
 	}
 
 	func coinNames(by term: String, completion: (([String]) -> Void)?) {
+		let term = term.lowercased()
 		let coins = Session.shared.allCoins.value.filter { (con) -> Bool in
-			return (con.symbol ?? "").starts(with: term)
+			return (con.symbol ?? "").lowercased().starts(with: term)
 		}.sorted(by: { (coin1, coin2) -> Bool in
+			if term == (coin1.symbol ?? "").lowercased() {
+				return true
+			} else if (coin2.symbol ?? "").lowercased() == term {
+				return false
+			}
 			return (coin1.reserveBalance ?? 0) > (coin2.reserveBalance ?? 0)
 		}).map { (coin) -> String in
 			return coin.symbol ?? ""

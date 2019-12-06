@@ -202,7 +202,12 @@ class Session {
 		}.filter({ (coins) -> Bool in
 			return coins.count > 0
 		}).subscribe(onNext: { (coins) in
-			self.allCoins.accept(coins)
+			self.allCoins.accept(coins.map({ (coin) -> Coin in
+				if (coin.symbol ?? "") == Coin.baseCoin().symbol! {
+					coin.reserveBalance = Decimal.greatestFiniteMagnitude
+				}
+				return coin
+			}))
 		}).disposed(by: disposeBag)
 	}
 

@@ -246,6 +246,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 				let url = URL(string: val ?? "")
 				if true == val?.isValidPublicKey() || true == val?.isValidAddress() {
 					self?.recipientSubject.accept(val)
+					return
 				} else if
 					let url = url,
 					let rawViewController = RawTransactionRouter.rawTransactionViewController(with: url) {

@@ -180,9 +180,7 @@ extension UIViewController: TestnetToolbarProtocol {
 	@objc func didTapTestnetToolbar() {
 		let conf = Configuration()
 		if let url = URL(string: conf.environment.appstoreURLString) {
-			UIApplication.shared.open(url, options: [:]) { (res) in
-				
-			}
+			UIApplication.shared.open(url, options: [:]) { (res) in}
 		}
 	}
 }

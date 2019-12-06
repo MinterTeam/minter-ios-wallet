@@ -94,7 +94,6 @@
 		FA3114BF2146899800A17907 /* UIImage+AlamofireCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */; };
 		FA3154AA20B5ABD1005D9F21 /* TransactionDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */; };
 		FA319B8820AACB5300751A48 /* AccountDataBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */; };
-		FA332F5A22439F61003B4763 /* ConfigurationTestnet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA332F5922439F61003B4763 /* ConfigurationTestnet.swift */; };
 		FA332FA0224A4B3C003B4763 /* CoinsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE5548B2118442800D4872C /* CoinsRouter.swift */; };
 		FA332FA1224A4B3C003B4763 /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669BD5207265D800AD110A /* Storyboards.swift */; };
 		FA332FA2224A4B3C003B4763 /* UsernameEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2606320930B8A009FF3DE /* UsernameEditViewController.swift */; };
@@ -435,6 +434,7 @@
 		FA8AE85820AAD3E900F26E11 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85720AAD3E900F26E11 /* Session.swift */; };
 		FA8AE85B20AC196800F26E11 /* SessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85A20AC196800F26E11 /* SessionHelper.swift */; };
 		FA8AE85D20AC638900F26E11 /* String+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85C20AC638900F26E11 /* String+Random.swift */; };
+		FA97F9E8237AFDB300A4828B /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA333095224A4F1D003B4763 /* Configuration.swift */; };
 		FA9A6E51209B1D5D0012AC96 /* SHA3+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */; };
 		FA9BBCC822A9512B0030E92E /* AddressManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */; };
 		FA9BBCC922A9512B0030E92E /* AddressManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */; };
@@ -563,6 +563,7 @@
 		FAF5FDB2214949CB00911619 /* LUAutocompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5FDAE214949CB00911619 /* LUAutocompleteViewDataSource.swift */; };
 		FAF70FF820E791390067B5E0 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */; };
 		FAF70FF920E791390067B5E0 /* LoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */; };
+		FAF87B76238563D60048E82B /* ConvertCoinsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF87B75238563D60048E82B /* ConvertCoinsViewModel.swift */; };
 		FAF9C50722AA697A000BF80A /* Delegated.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAF9C50622AA697A000BF80A /* Delegated.storyboard */; };
 		FAF9C50822AA697A000BF80A /* Delegated.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAF9C50622AA697A000BF80A /* Delegated.storyboard */; };
 		FAF9C50A22AA69C1000BF80A /* DelegatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF9C50922AA69C1000BF80A /* DelegatedViewController.swift */; };
@@ -690,7 +691,6 @@
 		FA3114BE2146899800A17907 /* UIImage+AlamofireCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AlamofireCache.swift"; sourceTree = "<group>"; };
 		FA3154A920B5ABD1005D9F21 /* TransactionDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDateFormatter.swift; sourceTree = "<group>"; };
 		FA319B8720AACB5300751A48 /* AccountDataBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDataBaseModel.swift; sourceTree = "<group>"; };
-		FA332F5922439F61003B4763 /* ConfigurationTestnet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationTestnet.swift; sourceTree = "<group>"; };
 		FA333093224A4B3C003B4763 /* MinterWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MinterWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA333094224A4B3C003B4763 /* MinterWalletTestnet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MinterWalletTestnet-Info.plist"; path = "/Users/alex/Documents/minter-ios-wallet/MinterWallet/MinterWalletTestnet-Info.plist"; sourceTree = "<absolute>"; };
 		FA333095224A4F1D003B4763 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -904,6 +904,7 @@
 		FAF5FDAE214949CB00911619 /* LUAutocompleteViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LUAutocompleteViewDataSource.swift; sourceTree = "<group>"; };
 		FAF70FF620E791390067B5E0 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		FAF70FF720E791390067B5E0 /* LoadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingTableViewCell.xib; sourceTree = "<group>"; };
+		FAF87B75238563D60048E82B /* ConvertCoinsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertCoinsViewModel.swift; sourceTree = "<group>"; };
 		FAF9C50622AA697A000BF80A /* Delegated.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Delegated.storyboard; sourceTree = "<group>"; };
 		FAF9C50922AA69C1000BF80A /* DelegatedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedViewController.swift; sourceTree = "<group>"; };
 		FAF9C50C22AA69E4000BF80A /* DelegatedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedViewModel.swift; sourceTree = "<group>"; };
@@ -1534,6 +1535,7 @@
 			children = (
 				FA0A0DDA23732D9D00B83C29 /* RawTransactionRouterTests.swift */,
 				FA3E1B8C2376FBF6008C4717 /* RawTransactionViewModelTests.swift */,
+				FAF87B75238563D60048E82B /* ConvertCoinsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1793,7 +1795,6 @@
 				1EA2C3288A484F349AFE2E04 /* Convert */,
 				FA669B68207239F200AD110A /* AppDelegate.swift */,
 				FA333095224A4F1D003B4763 /* Configuration.swift */,
-				FA332F5922439F61003B4763 /* ConfigurationTestnet.swift */,
 				FA669B6E207239F200AD110A /* Main.storyboard */,
 				FA669B71207239F200AD110A /* Assets.xcassets */,
 				FA669B73207239F200AD110A /* LaunchScreen.storyboard */,
@@ -3172,6 +3173,7 @@
 				FA9BE30D214006A5002160F3 /* AnalyticsHelper.swift in Sources */,
 				FA0AF8E721B534EF000B571B /* CIColorExtension.swift in Sources */,
 				FA6760AA20A9E90900F970E7 /* DatabaseStorage.swift in Sources */,
+				FA97F9E8237AFDB300A4828B /* Configuration.swift in Sources */,
 				FA04029120FDD6C600F1689F /* SpendCoinsViewModel.swift in Sources */,
 				FAA0B2A8232A443B001C5C72 /* AddressTextView.swift in Sources */,
 				FA17817B21F733D800FECDED /* TransactionManager+Rx.swift in Sources */,
@@ -3179,7 +3181,6 @@
 				FA669BA12072461700AD110A /* String+Localized.swift in Sources */,
 				FA04028B20FDD5CA00F1689F /* SpendCoinsViewController.swift in Sources */,
 				FAE7228323434C1800895E07 /* RawTransactionFieldTableViewCell.swift in Sources */,
-				FA332F5A22439F61003B4763 /* ConfigurationTestnet.swift in Sources */,
 				FA557E56207BA7490095459B /* DefaultHeader.swift in Sources */,
 				FA0F296421B1740800E10F5E /* QRCodeReader.swift in Sources */,
 				FA669BD32072601300AD110A /* UIColor+HEX.swift in Sources */,
@@ -3358,6 +3359,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAF87B76238563D60048E82B /* ConvertCoinsViewModel.swift in Sources */,
 				FA3E1B8D2376FBF6008C4717 /* RawTransactionViewModelTests.swift in Sources */,
 				FA669B80207239F200AD110A /* MinterWalletTests.swift in Sources */,
 				FACA694620D7C717006F173F /* MnemonicTests.swift in Sources */,
@@ -3421,7 +3423,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 232;
+				CURRENT_PROJECT_VERSION = 238;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3455,7 +3457,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 232;
+				CURRENT_PROJECT_VERSION = 238;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3595,7 +3597,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 232;
+				CURRENT_PROJECT_VERSION = 238;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3629,7 +3631,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 232;
+				CURRENT_PROJECT_VERSION = 238;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3661,7 +3663,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65V4NDES7Y;
+				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = MinterWalletTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.MinterWalletTests;
@@ -3679,7 +3681,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65V4NDES7Y;
+				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = MinterWalletTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.MinterWalletTests;
@@ -3695,7 +3697,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65V4NDES7Y;
+				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = MinterWalletUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.MinterWalletUITests;
@@ -3711,7 +3713,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65V4NDES7Y;
+				DEVELOPMENT_TEAM = A26H28FPZU;
 				INFOPLIST_FILE = MinterWalletUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.MinterWalletUITests;

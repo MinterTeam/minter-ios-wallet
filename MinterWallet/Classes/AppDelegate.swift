@@ -23,27 +23,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
 		UITextViewWorkaround.executeWorkaround()
+		let isUITesting = ProcessInfo.processInfo.arguments.contains("UITesting")
 
 		let conf = Configuration()
-
-		if ProcessInfo.processInfo.arguments.contains("UITesting") {
+		if isUITesting {
 			MinterGateBaseURLString = "https://qa.gate-api.minter.network"
-			MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
-			MinterExplorerSDK.initialize(APIURLString: conf.environment.testExplorerAPIBaseURL,
-																	 WEBURLString: conf.environment.testExplorerWebURL,
-																	 websocketURLString: conf.environment.testExplorerWebsocketURL)
 		} else {
 			if !isTestnet {
 				MinterGateBaseURLString = "https://gate.apps.minter.network"
+			} else {
+				MinterGateBaseURLString = "https://texasnet.gate-api.minter.network"
 			}
-			MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
-			MinterExplorerSDK.initialize(APIURLString: conf.environment.explorerAPIBaseURL,
-																	 WEBURLString: conf.environment.explorerWebURL,
-																	 websocketURLString: conf.environment.explorerWebsocketURL)
 		}
+		MinterCoreSDK.initialize(urlString: conf.environment.nodeBaseURL, network: isTestnet ? .testnet : .mainnet)
+		MinterExplorerSDK.initialize(APIURLString: isUITesting ? conf.environment.testExplorerAPIBaseURL : conf.environment.explorerAPIBaseURL,
+																 WEBURLString: conf.environment.explorerWebURL,
+																 websocketURLString: conf.environment.explorerWebsocketURL)
 		MinterMySDK.initialize(network: isTestnet ? .testnet : .mainnet)
 		Fabric.with([Crashlytics.self])
-		
+
 		// this line is important
 		self.window = UIWindow(frame: UIScreen.main.bounds)
 

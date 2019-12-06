@@ -39,6 +39,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>Configuration</key>
+	<string>dev</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
