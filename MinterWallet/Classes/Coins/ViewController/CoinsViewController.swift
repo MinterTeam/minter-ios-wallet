@@ -165,6 +165,14 @@ class CoinsViewController:
 				return ()
 			}).subscribe(viewModel.input.didTapBalance)
 			.disposed(by: disposeBag)
+
+    viewModel
+      .output
+      .openAppSettings
+      .asDriver(onErrorJustReturn: ())
+      .drive(onNext: { [weak self] in
+        self?.openAppSpecificSettings()
+      }).disposed(by: disposeBag)
 	}
 
 	// MARK: -

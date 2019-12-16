@@ -514,8 +514,11 @@ extension RawTransactionViewModel {
 								fields.append(["key": "PROOF".localized(), "value": proofData.toHexString()])
 							} else if
 								let password = userData?["p"] as? String,
+                let decodedPassword = RLP.decode(password),
+                let passwordData = decodedPassword[0]?.data,
+                let passwordString = String(data: passwordData, encoding: .utf8),
 								let address = Session.shared.accounts.value.first?.address,
-								let proof = RawTransactionSigner.proof(address: address, passphrase: password) {
+								let proof = RawTransactionSigner.proof(address: address, passphrase: passwordString) {
 								self.data = MinterCore.RedeemCheckRawTransactionData(rawCheck: checkData, proof: proof).encode()
 								fields.append(["key": "PROOF".localized(), "value": proof.toHexString()])
 							} else {

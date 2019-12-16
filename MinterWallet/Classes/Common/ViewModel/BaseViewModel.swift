@@ -130,7 +130,6 @@ extension TransactionViewableViewModel {
 	}
 
 	func convertTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
-
 		let user = transactionItem.user
 		guard let transaction = transactionItem.transaction else {
 			return nil
@@ -172,7 +171,6 @@ extension TransactionViewableViewModel {
 			transactionCellItem.title = (data.fromCoin ?? "") + arrowSign + (data.toCoin ?? "")
 			transactionCellItem.toAmount = (data.valueToBuy ?? 0)
 			transactionCellItem.fromAmount = (data.valueToSell ?? 0)
-			
 		}
 		return transactionCellItem
 	}
@@ -239,7 +237,6 @@ extension TransactionViewableViewModel {
 	}
 
 	func systemTransactionItem(with transactionItem: TransactionItem) -> BaseCellItem? {
-
 		let dateFormatter = TransactionDateFormatter.transactionDateFormatter
 		let timeFormatter = TransactionDateFormatter.transactionTimeFormatter
 
@@ -254,16 +251,6 @@ extension TransactionViewableViewModel {
 		transactionCellItem.txHash = transaction.hash
 		transactionCellItem.date = dateFormatter.string(from: transaction.date ?? Date())
 		transactionCellItem.time = timeFormatter.string(from: transaction.date ?? Date())
-//		transactionCellItem.payload = transaction.payload?.base64Decoded()
-//		let signMultiplier = transaction.type == .unbond ? 1.0 : -1.0
-//		if let data = transaction.data as? SystemTransactionTable {
-////			transactionCellItem.coin = data.coin
-////			transactionCellItem.amount = Decimal(signMultiplier) * (data.value ?? 0)
-////			transactionCellItem.title = data.coin ?? ""
-////			transactionCellItem.to = data.pubKey ?? ""
-////			transactionCellItem.from = transaction.from ?? ""
-//
-//		}
 		guard let txType = transaction.type else { return nil }
 
 		switch txType {
@@ -299,5 +286,4 @@ extension TransactionViewableViewModel {
 		}
 		return nil
 	}
-
 }

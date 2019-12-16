@@ -79,6 +79,8 @@
 		FA0F297B21B179BB00E10F5E /* McPickerPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F297421B179BB00E10F5E /* McPickerPopoverViewController.swift */; };
 		FA11EA62214ABFB300C8DFB0 /* CoinAutocompleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */; };
 		FA11EA64214ABFD300C8DFB0 /* CoinAutocompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */; };
+		FA15D31723A77E3D005BE722 /* Ubuntu-M.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA15D31623A77E3D005BE722 /* Ubuntu-M.ttf */; };
+		FA15D31823A77E3D005BE722 /* Ubuntu-M.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA15D31623A77E3D005BE722 /* Ubuntu-M.ttf */; };
 		FA16100C221401DE009F9255 /* ConvertCoinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA16100B221401DD009F9255 /* ConvertCoinsViewController.swift */; };
 		FA17816F21EF455300FECDED /* AuthManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17816E21EF455300FECDED /* AuthManager+Rx.swift */; };
 		FA17817121EF7D1F00FECDED /* ProfileManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA17817021EF7D1F00FECDED /* ProfileManager+Rx.swift */; };
@@ -266,7 +268,6 @@
 		FA333054224A4B3C003B4763 /* UbuntuMono-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BB72072483100AD110A /* UbuntuMono-R.ttf */; };
 		FA333055224A4B3C003B4763 /* GenerateAddressSeedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAA2608220935E8B009FF3DE /* GenerateAddressSeedTableViewCell.xib */; };
 		FA333056224A4B3C003B4763 /* Ubuntu-BI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BAD2072483100AD110A /* Ubuntu-BI.ttf */; };
-		FA333057224A4B3C003B4763 /* Ubuntu-M.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BA82072483100AD110A /* Ubuntu-M.ttf */; };
 		FA333058224A4B3C003B4763 /* SettingsSwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE79457208DC7390006CB0B /* SettingsSwitchTableViewCell.xib */; };
 		FA333059224A4B3C003B4763 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA669B73207239F200AD110A /* LaunchScreen.storyboard */; };
 		FA33305A224A4B3C003B4763 /* Ubuntu-B.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BB32072483100AD110A /* Ubuntu-B.ttf */; };
@@ -367,7 +368,6 @@
 		FA669B9C207244E300AD110A /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B9B207244E300AD110A /* BaseViewModel.swift */; };
 		FA669B9E207244FF00AD110A /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669B9D207244FF00AD110A /* BaseViewController.swift */; };
 		FA669BA12072461700AD110A /* String+Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA669BA02072461700AD110A /* String+Localized.swift */; };
-		FA669BBC2072483100AD110A /* Ubuntu-M.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BA82072483100AD110A /* Ubuntu-M.ttf */; };
 		FA669BBF2072483100AD110A /* Ubuntu-L.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BAB2072483100AD110A /* Ubuntu-L.ttf */; };
 		FA669BC02072483100AD110A /* UbuntuMono-BI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BAC2072483100AD110A /* UbuntuMono-BI.ttf */; };
 		FA669BC12072483100AD110A /* Ubuntu-BI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA669BAD2072483100AD110A /* Ubuntu-BI.ttf */; };
@@ -679,6 +679,7 @@
 		FA0F297421B179BB00E10F5E /* McPickerPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = McPickerPopoverViewController.swift; sourceTree = "<group>"; };
 		FA11EA61214ABFB300C8DFB0 /* CoinAutocompleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinAutocompleteCell.swift; sourceTree = "<group>"; };
 		FA11EA63214ABFD300C8DFB0 /* CoinAutocompleteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoinAutocompleteCell.xib; sourceTree = "<group>"; };
+		FA15D31623A77E3D005BE722 /* Ubuntu-M.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-M.ttf"; sourceTree = "<group>"; };
 		FA16100B221401DD009F9255 /* ConvertCoinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvertCoinsViewController.swift; sourceTree = "<group>"; };
 		FA17816E21EF455300FECDED /* AuthManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthManager+Rx.swift"; sourceTree = "<group>"; };
 		FA17817021EF7D1F00FECDED /* ProfileManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileManager+Rx.swift"; sourceTree = "<group>"; };
@@ -738,7 +739,6 @@
 		FA669B9B207244E300AD110A /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		FA669B9D207244FF00AD110A /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		FA669BA02072461700AD110A /* String+Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localized.swift"; sourceTree = "<group>"; };
-		FA669BA82072483100AD110A /* Ubuntu-M.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-M.ttf"; sourceTree = "<group>"; };
 		FA669BAB2072483100AD110A /* Ubuntu-L.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-L.ttf"; sourceTree = "<group>"; };
 		FA669BAC2072483100AD110A /* UbuntuMono-BI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UbuntuMono-BI.ttf"; sourceTree = "<group>"; };
 		FA669BAD2072483100AD110A /* Ubuntu-BI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-BI.ttf"; sourceTree = "<group>"; };
@@ -1940,7 +1940,7 @@
 		FA669BA52072483100AD110A /* ubuntu-font-family-ttf */ = {
 			isa = PBXGroup;
 			children = (
-				FA669BA82072483100AD110A /* Ubuntu-M.ttf */,
+				FA15D31623A77E3D005BE722 /* Ubuntu-M.ttf */,
 				FA669BAB2072483100AD110A /* Ubuntu-L.ttf */,
 				FA669BAC2072483100AD110A /* UbuntuMono-BI.ttf */,
 				FA669BAD2072483100AD110A /* Ubuntu-BI.ttf */,
@@ -2368,8 +2368,8 @@
 				FA333054224A4B3C003B4763 /* UbuntuMono-R.ttf in Resources */,
 				FA333055224A4B3C003B4763 /* GenerateAddressSeedTableViewCell.xib in Resources */,
 				FA333056224A4B3C003B4763 /* Ubuntu-BI.ttf in Resources */,
-				FA333057224A4B3C003B4763 /* Ubuntu-M.ttf in Resources */,
 				FA333058224A4B3C003B4763 /* SettingsSwitchTableViewCell.xib in Resources */,
+				FA15D31723A77E3D005BE722 /* Ubuntu-M.ttf in Resources */,
 				FAE7228423434C1800895E07 /* RawTransactionFieldTableViewCell.xib in Resources */,
 				FA333059224A4B3C003B4763 /* LaunchScreen.storyboard in Resources */,
 				FA33305A224A4B3C003B4763 /* Ubuntu-B.ttf in Resources */,
@@ -2439,8 +2439,8 @@
 				FA669BCB2072483100AD110A /* UbuntuMono-R.ttf in Resources */,
 				FAA2608420935E8B009FF3DE /* GenerateAddressSeedTableViewCell.xib in Resources */,
 				FA669BC12072483100AD110A /* Ubuntu-BI.ttf in Resources */,
-				FA669BBC2072483100AD110A /* Ubuntu-M.ttf in Resources */,
 				FAE79458208DC73A0006CB0B /* SettingsSwitchTableViewCell.xib in Resources */,
+				FA15D31823A77E3D005BE722 /* Ubuntu-M.ttf in Resources */,
 				FAE7228523434C1800895E07 /* RawTransactionFieldTableViewCell.xib in Resources */,
 				FA669B75207239F200AD110A /* LaunchScreen.storyboard in Resources */,
 				FA669BC72072483100AD110A /* Ubuntu-B.ttf in Resources */,
@@ -3423,7 +3423,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 238;
+				CURRENT_PROJECT_VERSION = 240;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3457,7 +3457,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 238;
+				CURRENT_PROJECT_VERSION = 240;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3597,7 +3597,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 238;
+				CURRENT_PROJECT_VERSION = 240;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3631,7 +3631,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 238;
+				CURRENT_PROJECT_VERSION = 240;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (

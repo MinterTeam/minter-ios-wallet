@@ -15,6 +15,7 @@ import SwiftValidator
 import RxAppState
 import RxBiBinding
 import RxRelay
+import AVFoundation
 
 struct AccountPickerItem {
 	var title: String?
@@ -35,17 +36,21 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 	var input: SendViewModel.Input!
 	var output: SendViewModel.Output!
 	var dependency: SendViewModel.Dependency!
+
 	struct Input {
 		var payload: AnyObserver<String?>
 		var txScanButtonDidTap: AnyObserver<Void>
 		var didScanQR: AnyObserver<String?>
 	}
+
 	struct Output {
 		var errorNotification: Observable<NotifiableError?>
 		var txErrorNotification: Observable<NotifiableError?>
 		var popup: Observable<PopupViewController?>
 		var showViewController: Observable<UIViewController?>
+    var openAppSettings: Observable<Void>
 	}
+
 	struct Dependency {
 //		var gate: SendViewModelGateProtocol
 //		var info: SendViewModelInfoProtocol
@@ -71,6 +76,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 																		}).asObservable(),
 																		payloadSubject.asObservable())
 	}
+  private let openAppSettingsSubject = PublishSubject<Void>()
 
 	let fakePK = Data(hex: "678b3252ce9b013cef922687152fb71d45361b32f8f9a57b0d11cc340881c999").toHexString()
 
@@ -186,7 +192,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		self.output = Output(errorNotification: errorNotificationSubject.asObservable(),
 												 txErrorNotification: txErrorNotificationSubject.asObservable(),
 												 popup: popupSubject.asObservable(),
-												 showViewController: showViewControllerSubject.asObservable())
+												 showViewController: showViewControllerSubject.asObservable(),
+                         openAppSettings: openAppSettingsSubject.asObservable())
 		self.dependency = dependency
 
 		super.init()
@@ -348,6 +355,26 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 					break
 				}
 			}).disposed(by: disposeBag)
+
+      txScanButtonDidTap.asObservable().subscribe(onNext: { [weak self] (_) in
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+          case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+              if granted {} else {
+                self?.openAppSettingsSubject.onNext(())
+              }
+            }
+          case .denied:
+            self?.openAppSettingsSubject.onNext(())
+            return
+
+          case .restricted:
+            self?.openAppSettingsSubject.onNext(())
+            return
+        default:
+          return
+        }
+      })
 	}
 
 	// MARK: - Sections
@@ -404,7 +431,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 
 		let payload = TextViewTableViewCellItem(reuseIdentifier: "SendPayloadTableViewCell",
 																						identifier: "SendPayloadTableViewCell_Payload")
-		payload.title = "PAYLOAD MESSAGE (max 1024 symbols)".localized()
+		payload.title = "PAYLOAD MESSAGE (max 1024 bytes)".localized()
 		payload.keybordType = .default
 		payload.stateObservable = payloadStateObservable.asObservable()
 		payload.titleObservable = clearPayloadSubject.asObservable()

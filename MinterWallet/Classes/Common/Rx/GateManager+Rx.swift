@@ -24,12 +24,12 @@ extension GateManager {
 	func estimateComission(tx: String) -> Observable<Decimal> {
 		return Observable.create { (observer) -> Disposable in
 			self.estimateTXCommission(for: tx) { (commission, error) in
-				
+
 				guard let commission = commission, nil == error else {
 					observer.onError(error ?? GateManagerErrorRx.noCommission)
 					return
 				}
-				
+
 				observer.onNext(commission)
 				observer.onCompleted()
 			}

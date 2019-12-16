@@ -11,6 +11,5 @@ import UIKit
 class CoinsTableViewHeaderView: UITableViewHeaderFooterView {
 
 	@IBOutlet weak var titleLabel: UILabel!
-	
 
 }

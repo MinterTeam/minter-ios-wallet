@@ -158,5 +158,4 @@ class TransactionTableViewCell: BaseTransactionCell {
 	override func setExpanded(_ expanded: Bool, animated: Bool) {
 		super.setExpanded(expanded, animated: animated)
 	}
-
 }

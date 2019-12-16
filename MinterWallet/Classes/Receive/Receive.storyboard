@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="2sW-XW-a6e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="2sW-XW-a6e">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -129,9 +129,23 @@
                                 <action selector="shareButtonDidTap:" destination="AOA-uS-VHB" eventType="touchUpInside" id="tbW-aW-mRW"/>
                             </connections>
                         </button>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wP-w7-zNb" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
+                            <rect key="frame" x="65" y="80" width="280" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="280" id="GzN-tg-eP8"/>
+                                <constraint firstAttribute="height" constant="50" id="ZR0-Kw-qIi"/>
+                            </constraints>
+                            <state key="normal" title="ADD TO APPLE WALLET"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
+                            </userDefinedRuntimeAttributes>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="0wP-w7-zNb" firstAttribute="leading" secondItem="1hw-Re-ROG" secondAttribute="leading" id="TQb-Ra-qX3"/>
+                        <constraint firstItem="0wP-w7-zNb" firstAttribute="trailing" secondItem="1hw-Re-ROG" secondAttribute="trailing" id="UNR-5h-zlO"/>
+                        <constraint firstItem="0wP-w7-zNb" firstAttribute="top" secondItem="1hw-Re-ROG" secondAttribute="bottom" constant="10" id="nnk-cQ-6Fb"/>
                         <constraint firstItem="1hw-Re-ROG" firstAttribute="centerX" secondItem="7Rj-Ao-rz5" secondAttribute="centerX" id="oNw-P3-Nma"/>
                         <constraint firstItem="1hw-Re-ROG" firstAttribute="top" secondItem="7Rj-Ao-rz5" secondAttribute="top" constant="20" id="xlk-Wr-mfz"/>
                     </constraints>

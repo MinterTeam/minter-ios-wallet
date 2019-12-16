@@ -4,9 +4,9 @@ use_frameworks!
 platform :ios, '10.0'
 
 def shared_pods
-	pod 'MinterCore', :path => '../minter-ios-core'
-	pod 'MinterMy', :path => '../minter-ios-my'
-	pod 'MinterExplorer', :path => '../minter-ios-explorer'
+	pod 'MinterCore'#, :path => '../../minter-ios-core'
+	pod 'MinterMy'#, :path => '../../minter-ios-my'
+	pod 'MinterExplorer'#, :path => '../../minter-ios-explorer'
 	pod 'Alamofire'
 	pod 'AlamofireImage'
 	pod 'RxSwift'

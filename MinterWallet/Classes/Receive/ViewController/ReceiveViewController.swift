@@ -55,21 +55,23 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 
 		registerCells()
 
-		rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
-			configureCell: { [weak self] dataSource, tableView, indexPath, sm in
-				guard let item = self?.viewModel.cellItem(section: indexPath.section, row: indexPath.row),
-					let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? BaseCell else {
-					return UITableViewCell()
-				}
+    rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
+      configureCell: { dataSource, tableView, indexPath, sm in
+        guard
+          let datasourceItem = try? dataSource.model(at: indexPath) as? BaseCellItem,
+          let item = datasourceItem,
+          let cell = tableView.dequeueReusableCell(withIdentifier: item.reuseIdentifier) as? ConfigurableCell else {
+            return UITableViewCell()
+        }
+        cell.configure(item: item)
 
-				cell.configure(item: item)
+        if let qrCell = cell as? QRTableViewCell {
+          qrCell.delegate = self
+        }
 
-				if let qrCell = cell as? QRTableViewCell {
-					qrCell.delegate = self
-				}
+        return cell
+    })
 
-				return cell
-		})
 		rxDataSource?.animationConfiguration = AnimationConfiguration(insertAnimation: .automatic,
 																																	reloadAnimation: .automatic,
 																																	deleteAnimation: .automatic)

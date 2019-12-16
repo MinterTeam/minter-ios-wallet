@@ -10,6 +10,7 @@ import RxSwift
 import MinterExplorer
 import MinterCore
 import MinterMy
+import AVFoundation
 
 class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProtocol {
 
@@ -36,6 +37,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		var showSendTab: Observable<Void>
 		var error: Observable<NotifiableError?>
 		var delegatedViewModel: () -> (DelegatedViewModel)
+    var openAppSettings: Observable<Void>
 	}
 	struct Dependency {}
 
@@ -53,6 +55,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 	private let showSendTabSubject = PublishSubject<Void>()
 	private let didTapTransactionSubject = PublishSubject<Void>()
 	private let didTapConvertSubject = PublishSubject<Void>()
+  private let openAppSettingsSubject = PublishSubject<Void>()
 
 	// MARK: -
 
@@ -73,7 +76,7 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 		BehaviorSubject<BalanceType>(value: BalanceType(rawValue: AppSettingsManager.shared.balanceType ?? "") ?? .balanceBIP)
 
 	var basicCoinSymbol: String {
-		return Coin.baseCoin().symbol ?? "bip"
+		return Coin.baseCoin().symbol ?? "BIP"
 	}
 	private var sections = Variable([BaseTableSectionItem]())
 	var sectionsObservable: Observable<[BaseTableSectionItem]> {
@@ -111,7 +114,8 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 												 showViewController: showViewControllerSubject.asObservable(),
 												 showSendTab: showSendTabSubject.asObservable(),
 												 error: errorNotificationSubject.asObservable(),
-												 delegatedViewModel: { return DelegatedViewModel() })
+                         delegatedViewModel: { return DelegatedViewModel() },
+                         openAppSettings: openAppSettingsSubject.asObservable())
 
 		Observable.combineLatest(Session.shared.transactions.asObservable(),
 														 Session.shared.balances.asObservable(),
@@ -244,6 +248,26 @@ class CoinsViewModel: BaseViewModel, TransactionViewableViewModel, ViewModelProt
 				let convertVC = ConvertRouter.convertViewController()
 				self?.showViewControllerSubject.onNext((controller: convertVC, isModal: false))
 			}).disposed(by: disposeBag)
+
+    txScanButtonDidTap.asObservable().subscribe(onNext: { [weak self] (_) in
+      switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .notDetermined:
+          AVCaptureDevice.requestAccess(for: .video) { granted in
+            if granted {} else {
+              self?.openAppSettingsSubject.onNext(())
+            }
+          }
+        case .denied:
+          self?.openAppSettingsSubject.onNext(())
+          return
+
+        case .restricted:
+          self?.openAppSettingsSubject.onNext(())
+          return
+      default:
+        return
+      }
+    })
 	}
 
 	private func balanceHeaderItem(

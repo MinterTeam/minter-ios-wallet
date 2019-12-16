@@ -9,9 +9,9 @@
 import UIKit
 
 class QRTableViewCellItem : BaseCellItem {
-	
+
 	var string: String?
-	
+
 }
 
 protocol QRTableViewCellDelegate: class {

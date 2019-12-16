@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxAppState
 import NotificationBannerSwift
+import Photos
 
 class SettingsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, ControllerType {
 
@@ -272,7 +273,30 @@ extension SettingsViewController: SettingsAvatarTableViewCellDelegate {
 
 	func didTapChangeAvatar(cell: SettingsAvatarTableViewCell) {
 		AnalyticsHelper.defaultAnalytics.track(event: .settingsChangeUserpicButton)
-		showImagePicker(sender: cell)
+
+    guard PHPhotoLibrary.authorizationStatus() == .authorized else {
+      PHPhotoLibrary.requestAuthorization { (status) in
+        switch status {
+        case .authorized:
+          DispatchQueue.main.async {
+            self.showImagePicker(sender: cell)
+          }
+        case .denied:
+          DispatchQueue.main.async {
+            self.openAppSpecificSettings()
+          }
+        default:
+          DispatchQueue.main.async {
+            BannerHelper.performErrorNotification(title: "Can't access photo library", subtitle: nil)
+          }
+        }
+      }
+      return
+    }
+    
+    DispatchQueue.main.async {
+      self.showImagePicker(sender: cell)
+    }
 	}
 }
 

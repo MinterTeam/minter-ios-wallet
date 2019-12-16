@@ -66,7 +66,7 @@ class RawTransactionViewModelTests: XCTestCase {
 																								 signatureType: nil)
 		XCTAssert(viewModel != nil)
 	}
-	
+
 	func testShouldCreateSendWithFilledOptionalsParamsViewModel() {
 		let rawType = RawTransactionType.sendCoin
 		let sendData = SendCoinRawTransactionData(to: "Mx", value: BigUInt(1), coin: "BIP")
@@ -87,7 +87,6 @@ class RawTransactionViewModelTests: XCTestCase {
 		XCTAssert(viewModel != nil)
 	}
 
-	
 //	func testShouldCreateCheckViewModel() {
 //		let rawType = RawTransactionType.redeemCheck
 //		let sendData = RedeemCheckRawTransactionData(rawCheck: "", proof: "")
