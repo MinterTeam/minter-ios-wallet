@@ -106,6 +106,8 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Receive Coins" id="CcE-qa-Zc0"/>
                     <connections>
+                        <outlet property="addToWalletButton" destination="0wP-w7-zNb" id="FCU-dQ-QHv"/>
+                        <outlet property="addWalletActivityIndicator" destination="Tkt-UF-OoE" id="NBG-3G-tj7"/>
                         <outlet property="footerView" destination="7Rj-Ao-rz5" id="r1y-zo-IhT"/>
                         <outlet property="tableView" destination="1S2-k1-emM" id="Q9d-cX-bGO"/>
                     </connections>
@@ -129,24 +131,30 @@
                                 <action selector="shareButtonDidTap:" destination="AOA-uS-VHB" eventType="touchUpInside" id="tbW-aW-mRW"/>
                             </connections>
                         </button>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wP-w7-zNb" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wP-w7-zNb" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
                             <rect key="frame" x="65" y="80" width="280" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="280" id="GzN-tg-eP8"/>
                                 <constraint firstAttribute="height" constant="50" id="ZR0-Kw-qIi"/>
                             </constraints>
-                            <state key="normal" title="ADD TO APPLE WALLET"/>
+                            <state key="normal" image="addWalletButton"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="pattern" value="blank"/>
                             </userDefinedRuntimeAttributes>
                         </button>
+                        <activityIndicatorView opaque="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Tkt-UF-OoE">
+                            <rect key="frame" x="186.5" y="86.5" width="37" height="37"/>
+                            <color key="color" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="Tkt-UF-OoE" firstAttribute="centerX" secondItem="0wP-w7-zNb" secondAttribute="centerX" id="17y-vT-nuc"/>
                         <constraint firstItem="0wP-w7-zNb" firstAttribute="leading" secondItem="1hw-Re-ROG" secondAttribute="leading" id="TQb-Ra-qX3"/>
                         <constraint firstItem="0wP-w7-zNb" firstAttribute="trailing" secondItem="1hw-Re-ROG" secondAttribute="trailing" id="UNR-5h-zlO"/>
                         <constraint firstItem="0wP-w7-zNb" firstAttribute="top" secondItem="1hw-Re-ROG" secondAttribute="bottom" constant="10" id="nnk-cQ-6Fb"/>
                         <constraint firstItem="1hw-Re-ROG" firstAttribute="centerX" secondItem="7Rj-Ao-rz5" secondAttribute="centerX" id="oNw-P3-Nma"/>
+                        <constraint firstItem="Tkt-UF-OoE" firstAttribute="centerY" secondItem="0wP-w7-zNb" secondAttribute="centerY" id="w77-g8-eed"/>
                         <constraint firstItem="1hw-Re-ROG" firstAttribute="top" secondItem="7Rj-Ao-rz5" secondAttribute="top" constant="20" id="xlk-Wr-mfz"/>
                     </constraints>
                 </view>
@@ -174,6 +182,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="addWalletButton" width="280" height="50"/>
         <image name="tabbarReceiveIcon" width="30" height="26"/>
     </resources>
 </document>

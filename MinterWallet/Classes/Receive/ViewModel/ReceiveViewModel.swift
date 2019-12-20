@@ -7,8 +7,31 @@
 //
 
 import RxSwift
+import PassKit
+import MinterCore
 
-class ReceiveViewModel: BaseViewModel {
+class ReceiveViewModel: BaseViewModel, ViewModelProtocol {
+
+  // MARK: - ViewModelProtocol
+
+  struct Dependency {
+    
+  }
+
+  struct Input {
+    var didTapAddPass: AnyObserver<Void>
+  }
+
+  struct Output {
+    var showViewController: Observable<UIViewController?>
+    var errorNotification: Observable<NotifiableError?>
+    var isLoadingPass: Observable<Bool>
+  }
+
+  var input: ReceiveViewModel.Input!
+  var output: ReceiveViewModel.Output!
+
+  // MARK: -
 
 	var title: String {
     return "Receive Coins".localized()
@@ -17,6 +40,11 @@ class ReceiveViewModel: BaseViewModel {
 	private var disposableBag = DisposeBag()
 
 	var sections = Variable([BaseTableSectionItem]())
+
+  private var didTapAddPassSubject = PublishSubject<Void>()
+  private var showViewControllerSubject = PublishSubject<UIViewController?>()
+  private var isLoadingPassSubject = PublishSubject<Bool>()
+  private var errorNotificationSubject = PublishSubject<NotifiableError?>()
 
 	// MARK: -
 
@@ -27,10 +55,26 @@ class ReceiveViewModel: BaseViewModel {
 	override init() {
 		super.init()
 
-		Session.shared.accounts.asDriver().drive(onNext: { [weak self] (accounts) in
-			self?.createSections()
-		}).disposed(by: disposableBag)
+    input = Input(didTapAddPass: didTapAddPassSubject.asObserver())
+    output = Output(showViewController: showViewControllerSubject.asObservable(),
+                    errorNotification: errorNotificationSubject.asObservable(),
+                    isLoadingPass: isLoadingPassSubject.asObservable())
+
+    bind()
 	}
+
+  func bind() {
+
+    didTapAddPassSubject.asObservable().subscribe(onNext: { [weak self] (_) in
+      self?.getPass()
+    }).disposed(by: disposableBag)
+
+    Session.shared.accounts.asDriver().drive(onNext: { [weak self] (accounts) in
+      self?.createSections()
+    }).disposed(by: disposableBag)
+  }
+
+  // MARK: -
 
 	func createSections() {
 		guard let accounts = Session.shared.accounts.value.first else {
@@ -92,5 +136,26 @@ class ReceiveViewModel: BaseViewModel {
 	}
 
   // MARK: -
+  let passbookManager = PassbookManager()
 
+  func getPass() {
+    guard let account = Session.shared.accounts.value.first else {
+      return
+    }
+    let address = account.address
+    isLoadingPassSubject.onNext(true)
+    passbookManager.pass(with: "Mx" + address) { [weak self] (data, error) in
+      self?.isLoadingPassSubject.onNext(false)
+      guard let passData = data else {
+        //show error
+        return
+      }
+      var errorPointer: NSError?
+      let pass = PKPass(data: passData, error: &errorPointer)
+      if errorPointer == nil {
+        let controller = PKAddPassesViewController(pass: pass)
+        self?.showViewControllerSubject.onNext(controller)
+      }
+    }
+  }
 }

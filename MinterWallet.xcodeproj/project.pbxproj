@@ -324,6 +324,10 @@
 		FA39488523509124002AD8DE /* ConfirmPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA39488323509124002AD8DE /* ConfirmPopupViewController.swift */; };
 		FA3948872350924B002AD8DE /* ConfirmPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3948862350924B002AD8DE /* ConfirmPopupViewModel.swift */; };
 		FA3948882350924B002AD8DE /* ConfirmPopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3948862350924B002AD8DE /* ConfirmPopupViewModel.swift */; };
+		FA3CD61923ABBEFC004DDF29 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3CD61823ABBEFC004DDF29 /* PassKit.framework */; };
+		FA3CD61B23ABBF03004DDF29 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3CD61823ABBEFC004DDF29 /* PassKit.framework */; };
+		FA3CD61D23ABC138004DDF29 /* PassbookManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3CD61C23ABC138004DDF29 /* PassbookManager.swift */; };
+		FA3CD61E23ABC138004DDF29 /* PassbookManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3CD61C23ABC138004DDF29 /* PassbookManager.swift */; };
 		FA3E1B8D2376FBF6008C4717 /* RawTransactionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3E1B8C2376FBF6008C4717 /* RawTransactionViewModelTests.swift */; };
 		FA428C5520BD8D5F00EF662D /* String+RawTransactionAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */; };
 		FA4542782106103500DB6634 /* CoinsTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */; };
@@ -422,8 +426,6 @@
 		FA7D98F2207CBB4B00193B8A /* ButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7D98F0207CBB4B00193B8A /* ButtonTableViewCell.xib */; };
 		FA7DB947230C8B2500C75A7A /* Session+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB946230C8B2500C75A7A /* Session+.swift */; };
 		FA7DB948230C8B2500C75A7A /* Session+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB946230C8B2500C75A7A /* Session+.swift */; };
-		FA7DB94A230C8EBF00C75A7A /* BipDevManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB949230C8EBF00C75A7A /* BipDevManager.swift */; };
-		FA7DB94B230C8EBF00C75A7A /* BipDevManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7DB949230C8EBF00C75A7A /* BipDevManager.swift */; };
 		FA83186621F8C268007F268D /* GateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186521F8C268007F268D /* GateManager.swift */; };
 		FA83186821F9CDE0007F268D /* GateManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186721F9CDE0007F268D /* GateManager+Rx.swift */; };
 		FA83186A21FF003F007F268D /* CoinManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA83186921FF003F007F268D /* CoinManager+Rx.swift */; };
@@ -698,6 +700,10 @@
 		FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+AppDelegate.swift"; sourceTree = "<group>"; };
 		FA39488323509124002AD8DE /* ConfirmPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPopupViewController.swift; sourceTree = "<group>"; };
 		FA3948862350924B002AD8DE /* ConfirmPopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPopupViewModel.swift; sourceTree = "<group>"; };
+		FA3CD61723ABBEFC004DDF29 /* MinterWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MinterWallet.entitlements; sourceTree = "<group>"; };
+		FA3CD61823ABBEFC004DDF29 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
+		FA3CD61A23ABBF03004DDF29 /* MinterWalletTestnet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MinterWalletTestnet.entitlements; sourceTree = "<group>"; };
+		FA3CD61C23ABC138004DDF29 /* PassbookManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassbookManager.swift; sourceTree = "<group>"; };
 		FA3E1B8C2376FBF6008C4717 /* RawTransactionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawTransactionViewModelTests.swift; sourceTree = "<group>"; };
 		FA428C5420BD8D5F00EF662D /* String+RawTransactionAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RawTransactionAddress.swift"; sourceTree = "<group>"; };
 		FA4542772106103500DB6634 /* CoinsTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsTableViewHeaderView.swift; sourceTree = "<group>"; };
@@ -787,7 +793,6 @@
 		FA7D98FC207F588A00193B8A /* AccordionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewController.swift; sourceTree = "<group>"; };
 		FA7D98FE207F58BD00193B8A /* AccordionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccordionTableViewCell.swift; sourceTree = "<group>"; };
 		FA7DB946230C8B2500C75A7A /* Session+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+.swift"; sourceTree = "<group>"; };
-		FA7DB949230C8EBF00C75A7A /* BipDevManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BipDevManager.swift; sourceTree = "<group>"; };
 		FA83186521F8C268007F268D /* GateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GateManager.swift; sourceTree = "<group>"; };
 		FA83186721F9CDE0007F268D /* GateManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GateManager+Rx.swift"; sourceTree = "<group>"; };
 		FA83186921FF003F007F268D /* CoinManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoinManager+Rx.swift"; sourceTree = "<group>"; };
@@ -919,6 +924,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA3CD61923ABBEFC004DDF29 /* PassKit.framework in Frameworks */,
 				FA333052224A4B3C003B4763 /* Pods_MinterWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -927,6 +933,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA3CD61B23ABBF03004DDF29 /* PassKit.framework in Frameworks */,
 				FACC4A6FFE58CCF99D9B2115 /* Pods_MinterWalletTestnet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1482,6 +1489,7 @@
 		F1B9FBEAE725F311F68F278E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA3CD61823ABBEFC004DDF29 /* PassKit.framework */,
 				9EBD75282FB7FF99C075E9B1 /* Pods_MinterWallet.framework */,
 				E5F7398A88DFF31468C6E439 /* Pods_MinterWalletTests.framework */,
 				CA2C0C098C0F10B9E332BD33 /* Pods_MinterWalletTestnet.framework */,
@@ -1734,7 +1742,7 @@
 				FA531E2D219B1F1900A7AD9F /* AppSettingsManager.swift */,
 				FA83186521F8C268007F268D /* GateManager.swift */,
 				FAB0D35422CCA5A9002945E2 /* PINManager.swift */,
-				FA7DB949230C8EBF00C75A7A /* BipDevManager.swift */,
+				FA3CD61C23ABC138004DDF29 /* PassbookManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -1750,6 +1758,7 @@
 		FA669B5C207239F100AD110A = {
 			isa = PBXGroup;
 			children = (
+				FA3CD61A23ABBF03004DDF29 /* MinterWalletTestnet.entitlements */,
 				FA669B67207239F200AD110A /* MinterWallet */,
 				FA669B7E207239F200AD110A /* MinterWalletTests */,
 				FA669B89207239F200AD110A /* MinterWalletUITests */,
@@ -1773,6 +1782,7 @@
 		FA669B67207239F200AD110A /* MinterWallet */ = {
 			isa = PBXGroup;
 			children = (
+				FA3CD61723ABBEFC004DDF29 /* MinterWallet.entitlements */,
 				FA7D02DC236C6C1B00BB7479 /* Fabric */,
 				FA0E32AC232FCCC9004D755C /* RawTransaction */,
 				FAC5393A22C37BEB0077E181 /* PIN */,
@@ -2942,6 +2952,7 @@
 				FA332FB4224A4B3C003B4763 /* DroppableView.swift in Sources */,
 				FA332FB5224A4B3C003B4763 /* GenerateAddressViewController.swift in Sources */,
 				FA332FB6224A4B3C003B4763 /* SettingsAvatarTableViewCell.swift in Sources */,
+				FA3CD61D23ABC138004DDF29 /* PassbookManager.swift in Sources */,
 				FA7D02D8236B537D00BB7479 /* SendViewModelProtocol.swift in Sources */,
 				FA332FB7224A4B3C003B4763 /* Decimal+.swift in Sources */,
 				FA332FB8224A4B3C003B4763 /* AppDelegate.swift in Sources */,
@@ -3002,7 +3013,6 @@
 				FA332FEA224A4B3C003B4763 /* ButtonTableViewCell.swift in Sources */,
 				FA332FEB224A4B3C003B4763 /* LUAutocompleteTableViewCell.swift in Sources */,
 				FA332FEC224A4B3C003B4763 /* AutoGrowingTextView.swift in Sources */,
-				FA7DB94A230C8EBF00C75A7A /* BipDevManager.swift in Sources */,
 				FA332FEE224A4B3C003B4763 /* ReaderOverlayView.swift in Sources */,
 				FA332FEF224A4B3C003B4763 /* String+Email.swift in Sources */,
 				FA5DB8122361EA9F008A8E47 /* TransactionsRouter.swift in Sources */,
@@ -3165,6 +3175,7 @@
 				FAA2605E209209DE009FF3DE /* DroppableView.swift in Sources */,
 				FAA2607A20935201009FF3DE /* GenerateAddressViewController.swift in Sources */,
 				FAE794522088DC010006CB0B /* SettingsAvatarTableViewCell.swift in Sources */,
+				FA3CD61E23ABC138004DDF29 /* PassbookManager.swift in Sources */,
 				FA7D02D9236B537D00BB7479 /* SendViewModelProtocol.swift in Sources */,
 				FAB61CFA213D341F002762A7 /* Decimal+.swift in Sources */,
 				FA669B69207239F200AD110A /* AppDelegate.swift in Sources */,
@@ -3225,7 +3236,6 @@
 				FA669BDF207275DF00AD110A /* UIViewController+ShowViewController.swift in Sources */,
 				FA7D98F1207CBB4B00193B8A /* ButtonTableViewCell.swift in Sources */,
 				FAF5FDB0214949CB00911619 /* LUAutocompleteTableViewCell.swift in Sources */,
-				FA7DB94B230C8EBF00C75A7A /* BipDevManager.swift in Sources */,
 				FA5CE1F720C7FAB400437195 /* AutoGrowingTextView.swift in Sources */,
 				FA0F296121B1740800E10F5E /* ReaderOverlayView.swift in Sources */,
 				FA5DB8132361EA9F008A8E47 /* TransactionsRouter.swift in Sources */,
@@ -3421,9 +3431,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MinterWallet/MinterWallet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 241;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3455,9 +3466,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MinterWallet/MinterWallet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 241;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3595,9 +3607,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MinterWalletTestnet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 241;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3629,9 +3642,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconTestnet;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MinterWalletTestnet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 241;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (

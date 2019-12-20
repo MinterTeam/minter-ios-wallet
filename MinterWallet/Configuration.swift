@@ -96,4 +96,23 @@ enum Environment: String {
 			return "https://itunes.apple.com/us/app/bip-wallet/id1457843214?ls=1&mt=8"
 		}
 	}
+
+  var passbookAPIURLString: String {
+    switch self {
+    case .dev:
+      return "https://testnet.passbook-api.minter.network/v1/"
+    case .prod:
+      return "https://passbook-api.minter.network/v1/"
+    }
+  }
+
+  var passbookTypeString: String {
+    switch self {
+    case .dev:
+      return "pass.MNT.BipWallet.pass"
+    case .prod:
+      return "pass.MNT.BipWallet.storeCard"
+    }
+  }
+
 }

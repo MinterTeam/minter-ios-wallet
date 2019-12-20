@@ -9,20 +9,51 @@
 import UIKit
 import RxSwift
 import RxDataSources
+import RxCocoa
 import NotificationBannerSwift
 
-class ReceiveViewController: BaseViewController, UITableViewDelegate {
+class ReceiveViewController: BaseViewController, UITableViewDelegate, ControllerType {
+
+  // MARK: - ControllerType
+
+  typealias ViewModelType = ReceiveViewModel
+
+  var viewModel: ReceiveViewModel! = ReceiveViewModel()
+
+  func configure(with viewModel: ReceiveViewController.ViewModelType) {
+
+    addToWalletButton.rx.tap.asDriver().drive(viewModel.input.didTapAddPass).disposed(by: disposeBag)
+
+    viewModel
+      .output
+      .showViewController
+      .asDriver(onErrorJustReturn: nil)
+      .drive(onNext: { [weak self] (viewController) in
+        guard let viewController = viewController else { return }
+        self?.tabBarController?.present(viewController, animated: true, completion: nil)
+      }).disposed(by: disposeBag)
+
+    viewModel.output.isLoadingPass.asDriver(onErrorJustReturn: false).drive(onNext: { [weak self] (val) in
+      self?.addToWalletButton.isEnabled = !val
+      self?.addWalletActivityIndicator.alpha = val ? 1.0 : 0.0
+      if val {
+        self?.addWalletActivityIndicator.startAnimating()
+      } else {
+        self?.addWalletActivityIndicator.stopAnimating()
+      }
+      }).disposed(by: disposeBag)
+  }
 
 	// MARK: -
-
-	var viewModel = ReceiveViewModel()
 
 	let disposeBag = DisposeBag()
 	var rxDataSource: RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>?
 
 	// MARK: -
 
-	@IBAction func shareButtonDidTap(_ sender: UIButton) {
+  @IBOutlet weak var addWalletActivityIndicator: UIActivityIndicatorView!
+  @IBOutlet weak var addToWalletButton: DefaultButton!
+  @IBAction func shareButtonDidTap(_ sender: UIButton) {
 
 		hardImpactFeedbackGenerator.prepare()
 		hardImpactFeedbackGenerator.impactOccurred()
@@ -55,6 +86,8 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 
 		registerCells()
 
+    configure(with: viewModel)
+
     rxDataSource = RxTableViewSectionedAnimatedDataSource<BaseTableSectionItem>(
       configureCell: { dataSource, tableView, indexPath, sm in
         guard
@@ -68,7 +101,6 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
         if let qrCell = cell as? QRTableViewCell {
           qrCell.delegate = self
         }
-
         return cell
     })
 
@@ -92,6 +124,8 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
+
+    setNeedsStatusBarAppearanceUpdate()
 
 		AnalyticsHelper.defaultAnalytics.track(event: .receiveScreen, params: nil)
 	}

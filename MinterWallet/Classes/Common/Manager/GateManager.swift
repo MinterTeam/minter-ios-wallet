@@ -65,7 +65,7 @@ class GateManager: BaseManager {
 		let url = MinterGateAPIURL.minGasPrice.url()
 
 		self.httpClient.getRequest(url, parameters: nil) { (response, error) in
-			if let resp = response.data as? [String : Any],
+			if let resp = response.data as? [String: Any],
 				let gas = resp["gas"] as? String,
 				let gasInt = Int(gas) {
 				completion?(gasInt, nil)
@@ -98,7 +98,7 @@ class GateManager: BaseManager {
 				return
 			}
 
-			if let data = response.data as? [String : Any],
+			if let data = response.data as? [String: Any],
 				let cnt = data["nonce"] as? String {
 				count = Decimal(string: cnt)
 			} else {
