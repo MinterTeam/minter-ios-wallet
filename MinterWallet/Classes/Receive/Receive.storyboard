@@ -131,7 +131,7 @@
                                 <action selector="shareButtonDidTap:" destination="AOA-uS-VHB" eventType="touchUpInside" id="tbW-aW-mRW"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wP-w7-zNb" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
+                        <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wP-w7-zNb" customClass="DefaultButton" customModule="MinterWallet" customModuleProvider="target">
                             <rect key="frame" x="65" y="80" width="280" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="280" id="GzN-tg-eP8"/>

@@ -233,11 +233,11 @@ class MinterWalletUITests: XCTestCase {
 	
 	//Balance
 	
-	func testCheckBalance() {
-		loginAdvancedMode()
-		
-		XCTAssertTrue(app.staticTexts["Total Balance"].exists)
-	}
+//	func testCheckBalance() {
+//		loginAdvancedMode()
+//
+//		XCTAssertTrue(app.staticTexts["Total Balance"].exists)
+//	}
 	
 	//Login
 	
@@ -326,7 +326,7 @@ class MinterWalletUITests: XCTestCase {
 
 		let textField = elementsQuery1.scrollViews.children(matching: .textField).element(boundBy: 2)
 		textField.tap()
-		textField.typeText("USD")
+		textField.typeText("TESTCOIN02")
 		
 		textField.swipeDown()
 		textField.swipeUp()
@@ -357,7 +357,7 @@ class MinterWalletUITests: XCTestCase {
 		
 			let elem = XCUIApplication().scrollViews.otherElements.scrollViews.children(matching: .textField).element(boundBy: 0)
 		elem.tap()
-		elem.typeText("USD")
+		elem.typeText("TESTCOIN02")
 		
 		elem.swipeDown()
 		elem.swipeUp()

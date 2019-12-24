@@ -15,7 +15,7 @@ class ReceiveViewModel: BaseViewModel, ViewModelProtocol {
   // MARK: - ViewModelProtocol
 
   struct Dependency {
-    
+
   }
 
   struct Input {

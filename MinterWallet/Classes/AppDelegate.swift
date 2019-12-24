@@ -116,11 +116,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		UITabBarItem.appearance().setTitleTextAttributes([
 			NSAttributedStringKey.foregroundColor: UIColor(hex: 0x8A8A8F)!,
-			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
+			NSAttributedStringKey.font: UIFont.mediumFont(of: 11.0)
 		], for: .normal)
 		UITabBarItem.appearance().setTitleTextAttributes([
-			NSAttributedStringKey.foregroundColor : UIColor.mainColor(),
-			NSAttributedStringKey.font : UIFont.mediumFont(of: 11.0)
+			NSAttributedStringKey.foregroundColor: UIColor.mainColor(),
+			NSAttributedStringKey.font: UIFont.mediumFont(of: 11.0)
 		], for: .selected)
 	}
 }
