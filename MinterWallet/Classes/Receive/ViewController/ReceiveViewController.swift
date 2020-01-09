@@ -18,7 +18,7 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate, Controller
 
   typealias ViewModelType = ReceiveViewModel
 
-  var viewModel: ReceiveViewModel! = ReceiveViewModel()
+  var viewModel: ReceiveViewModel!
 
   func configure(with viewModel: ReceiveViewController.ViewModelType) {
 
@@ -41,7 +41,17 @@ class ReceiveViewController: BaseViewController, UITableViewDelegate, Controller
       } else {
         self?.addWalletActivityIndicator.stopAnimating()
       }
-      }).disposed(by: disposeBag)
+    }).disposed(by: disposeBag)
+
+    viewModel
+      .output
+      .shouldShowPass
+      .map({ (val) -> Bool in
+        return !val
+      })
+      .asDriver(onErrorJustReturn: false)
+      .drive(addToWalletButton.rx.isHidden)
+      .disposed(by: disposeBag)
   }
 
 	// MARK: -

@@ -7,15 +7,17 @@
 //
 
 import RxSwift
+import RxCocoa
 import PassKit
 import MinterCore
+import MinterMy
 
 class ReceiveViewModel: BaseViewModel, ViewModelProtocol {
 
   // MARK: - ViewModelProtocol
 
   struct Dependency {
-
+    var accounts: Observable<[Account]>
   }
 
   struct Input {
@@ -26,8 +28,10 @@ class ReceiveViewModel: BaseViewModel, ViewModelProtocol {
     var showViewController: Observable<UIViewController?>
     var errorNotification: Observable<NotifiableError?>
     var isLoadingPass: Observable<Bool>
+    var shouldShowPass: Observable<Bool>
   }
 
+  var dependencies: ReceiveViewModel.Dependency!
   var input: ReceiveViewModel.Input!
   var output: ReceiveViewModel.Output!
 
@@ -45,6 +49,7 @@ class ReceiveViewModel: BaseViewModel, ViewModelProtocol {
   private var showViewControllerSubject = PublishSubject<UIViewController?>()
   private var isLoadingPassSubject = PublishSubject<Bool>()
   private var errorNotificationSubject = PublishSubject<NotifiableError?>()
+  private var shouldShowPassSubject = BehaviorRelay(value: PKPassLibrary.isPassLibraryAvailable())
 
 	// MARK: -
 
@@ -52,16 +57,25 @@ class ReceiveViewModel: BaseViewModel, ViewModelProtocol {
 		return self.sections.asObservable()
 	}
 
-	override init() {
+  init(dependency: Dependency) {
 		super.init()
+
+    self.dependencies = dependency
 
     input = Input(didTapAddPass: didTapAddPassSubject.asObserver())
     output = Output(showViewController: showViewControllerSubject.asObservable(),
                     errorNotification: errorNotificationSubject.asObservable(),
-                    isLoadingPass: isLoadingPassSubject.asObservable())
+                    isLoadingPass: isLoadingPassSubject.asObservable(),
+                    shouldShowPass: shouldShowPassSubject.asObservable())
 
     bind()
 	}
+
+  var accounts: [Account] = [] {
+    didSet {
+      self.createSections()
+    }
+  }
 
   func bind() {
 
@@ -69,15 +83,17 @@ class ReceiveViewModel: BaseViewModel, ViewModelProtocol {
       self?.getPass()
     }).disposed(by: disposableBag)
 
-    Session.shared.accounts.asDriver().drive(onNext: { [weak self] (accounts) in
-      self?.createSections()
+    dependencies
+      .accounts.asObservable()
+      .subscribe(onNext: { [weak self] (accounts) in
+        self?.accounts = accounts
     }).disposed(by: disposableBag)
   }
 
   // MARK: -
 
 	func createSections() {
-		guard let accounts = Session.shared.accounts.value.first else {
+		guard let accounts = accounts.first else {
 			return
 		}
 
@@ -109,7 +125,7 @@ class ReceiveViewModel: BaseViewModel, ViewModelProtocol {
 	// MARK: - Share
 
 	func activities() -> [Any]? {
-		guard let account = Session.shared.accounts.value.first else {
+		guard let account = accounts.first else {
 			return nil
 		}
 
@@ -136,12 +152,14 @@ class ReceiveViewModel: BaseViewModel, ViewModelProtocol {
 	}
 
   // MARK: -
+
   let passbookManager = PassbookManager()
 
   func getPass() {
-    guard let account = Session.shared.accounts.value.first else {
+    guard let account = accounts.first else {
       return
     }
+
     let address = account.address
     isLoadingPassSubject.onNext(true)
     passbookManager.pass(with: "Mx" + address) { [weak self] (data, error) in

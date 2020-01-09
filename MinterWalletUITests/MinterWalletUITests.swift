@@ -84,7 +84,7 @@ class MinterWalletUITests: XCTestCase {
 	func testSendCoinAdvancedMode() {
 		loginAdvancedMode()
 		
-		isBalanceAvailable()
+//		isBalanceAvailable()
 		
 		if self.app.tabBars.buttons["Send"].exists {
 			self.app.tabBars.buttons["Send"].tap()
