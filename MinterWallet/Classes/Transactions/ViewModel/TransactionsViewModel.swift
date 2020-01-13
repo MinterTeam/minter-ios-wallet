@@ -28,7 +28,7 @@ class TransactionsViewModel: BaseViewModel, TransactionViewableViewModel {
 		super.init()
 
 		sectionTitleDateFormatter.dateFormat = "EEEE, dd MMM"
-		sectionTitleDateFullFormatter.dateFormat = "EEEE, dd MMM YYYY"
+		sectionTitleDateFullFormatter.dateFormat = "EEEE, dd MMM yyyy"
 
 		if nil == addresses {
 			self.addresses = Session.shared.accounts.value.map { (acc) -> String in
