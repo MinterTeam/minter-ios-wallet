@@ -36,7 +36,8 @@ class RawTransactionViewModelTests: XCTestCase {
 
 		let dependency = RawTransactionViewModel.Dependency(account: RawTransactionViewModelAccount(),
 																												gate: GateManager.shared)
-		let viewModel = try? RawTransactionViewModel(dependency: dependency,
+    let viewModel = try? RawTransactionViewModel(dependency: dependency,
+                                                 account: Session.shared.accounts.value.first,
 																								 nonce: BigUInt(1),
 																								 gasPrice: BigUInt(1),
 																								 gasCoin: "MNT",
@@ -55,7 +56,8 @@ class RawTransactionViewModelTests: XCTestCase {
 
 		let dependency = RawTransactionViewModel.Dependency(account: RawTransactionViewModelAccount(),
 																												gate: GateManager.shared)
-		let viewModel = try? RawTransactionViewModel(dependency: dependency,
+    let viewModel = try? RawTransactionViewModel(dependency: dependency,
+                                                 account: Session.shared.accounts.value.first,
 																								 nonce: BigUInt(1),
 																								 gasPrice: BigUInt(1),
 																								 gasCoin: "MNT",
@@ -74,7 +76,8 @@ class RawTransactionViewModelTests: XCTestCase {
 
 		let dependency = RawTransactionViewModel.Dependency(account: RawTransactionViewModelAccount(),
 																												gate: GateManager.shared)
-		let viewModel = try? RawTransactionViewModel(dependency: dependency,
+    let viewModel = try? RawTransactionViewModel(dependency: dependency,
+                                                 account: Session.shared.accounts.value.first,
 																								 nonce: BigUInt(1),
 																								 gasPrice: BigUInt(1),
 																								 gasCoin: "BIP",

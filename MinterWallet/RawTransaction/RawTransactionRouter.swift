@@ -81,7 +81,8 @@ class RawTransactionRouter: BaseRouter {
 				let dependency = RawTransactionViewModel.Dependency(account: RawTransactionViewModelAccount(),
 																														gate: GateManager.shared)
 				viewModel = try RawTransactionViewModel(
-					dependency: dependency,
+          dependency: dependency,
+          account: Session.shared.accounts.value.first,
 					nonce: nonce,
 					gasPrice: gasPrice,
 					gasCoin: gasCoin,

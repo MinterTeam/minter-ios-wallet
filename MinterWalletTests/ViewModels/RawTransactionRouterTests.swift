@@ -31,7 +31,7 @@ class RawTransactionRouterTests: XCTestCase {
 	}
 
 	func routerUrl(tx: String, password: String? = nil) -> URL {
-		return URL(string: "https://bip.to/tx?d=\(tx)" + (password == nil ? "" : "&p=\(password!)"))!
+		return URL(string: "https://testnet.bip.to/tx?d=\(tx)" + (password == nil ? "" : "&p=\(password!)"))!
 	}
 
 	func testRouterEmptyParam() {

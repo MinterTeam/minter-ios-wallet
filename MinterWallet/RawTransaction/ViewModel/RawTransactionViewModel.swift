@@ -9,6 +9,7 @@
 import Foundation
 import MinterCore
 import MinterExplorer
+import MinterMy
 import BigInt
 import RxSwift
 
@@ -64,6 +65,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 
 	// MARK: -
 
+  private var account: Account?
 	private var nonce: BigUInt?
 	private var payload: String?
 	private var type: RawTransactionType
@@ -92,6 +94,8 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 
 	init(// swiftlint:disable:this type_body_length cyclomatic_complexity function_body_length
 		dependency: Dependency,
+    isLoggedIn: Bool = false,
+    account: Account?,
 		nonce: BigUInt?,
 		gasPrice: BigUInt?,
 		gasCoin: String?,
@@ -102,7 +106,10 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 		signatureType: Data?,
 		userData: [String: Any]? = [:]
 	) throws {
-		guard Session.shared.isLoggedIn.value || Session.shared.accounts.value.count > 0 else {
+
+    self.account = account
+
+		guard isLoggedIn || account != nil else {
 			throw RawTransactionViewModelError.authRequired
 		}
 
@@ -169,7 +176,7 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 	}
 
 	private func sendTx() {
-		guard let address = Session.shared.accounts.value.first?.address else {
+    guard let address = self.account?.address else {
 			return
 		}
 
@@ -205,9 +212,11 @@ class RawTransactionViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:di
 					let sentViewController = PopupRouter.sentPopupViewCointroller(viewModel: sentViewModel)
 					self?.popupSubject.onNext(sentViewController)
 				}
+
 				Session.shared.loadTransactions()
 				Session.shared.loadBalances()
 				Session.shared.loadDelegatedBalance()
+
 				self?.sendingTxSubject.onNext(false)
 			}, onError: { [weak self] (error) in
 				self?.sendingTxSubject.onNext(false)
@@ -517,7 +526,7 @@ extension RawTransactionViewModel {
                 let decodedPassword = RLP.decode(password),
                 let passwordData = decodedPassword[0]?.data,
                 let passwordString = String(data: passwordData, encoding: .utf8),
-								let address = Session.shared.accounts.value.first?.address,
+                let address = self.account?.address,
 								let proof = RawTransactionSigner.proof(address: address, passphrase: passwordString) {
 								self.data = MinterCore.RedeemCheckRawTransactionData(rawCheck: checkData, proof: proof).encode()
 								fields.append(["key": "PROOF".localized(), "value": proof.toHexString()])
