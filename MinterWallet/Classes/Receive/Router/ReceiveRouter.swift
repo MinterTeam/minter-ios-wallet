@@ -15,7 +15,10 @@ class ReceiveRouter: BaseRouter {
 	}
 
 	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
-		return Storyboards.Receive.instantiateInitialViewController()
+    let viewModel = ReceiveViewModel(dependency: ReceiveViewModel.Dependency(accounts: Session.shared.accounts.asObservable()))
+    let receiveVC = Storyboards.Receive.instantiateReceiveViewController()
+    receiveVC.viewModel = viewModel
+		return receiveVC
 	}
 
 	static func receiveViewController(viewModel: ReceiveViewModel) -> UIViewController? {

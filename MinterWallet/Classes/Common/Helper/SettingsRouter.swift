@@ -15,7 +15,10 @@ class SettingsRouter: BaseRouter {
 	}
 
 	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
-		return Storyboards.Send.instantiateInitialViewController()
+    let viewModel = SettingsViewModel()
+    let settingsVC = Storyboards.Settings.instantiateSettingsViewController()
+    settingsVC.viewModel = viewModel
+    return settingsVC
 	}
 
 	static func settingsViewController(viewModel: SettingsViewModel) -> UIViewController? {

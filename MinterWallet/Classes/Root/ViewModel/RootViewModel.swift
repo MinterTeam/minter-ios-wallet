@@ -190,7 +190,7 @@ class RootViewModel: BaseViewModel, ViewModelProtocol {
 		if let sendVC = SendRouter.sendViewController(viewModel: sendVM) {
 			vcs.append(sendVC)
 		}
-    
+
     let receiveVM = ReceiveViewModel(dependency: ReceiveViewModel.Dependency(accounts: Session.shared.accounts.asObservable()))
 		if let receiveVC = ReceiveRouter.receiveViewController(viewModel: receiveVM) {
 			vcs.append(receiveVC)

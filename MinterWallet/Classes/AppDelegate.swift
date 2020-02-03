@@ -72,6 +72,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationWillTerminate(_ application: UIApplication) {
 	}
 
+  func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+    if let url = userActivity.webpageURL {
+      var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+      components?.host = ""
+
+      if let newURL = try? components?.asURL() {
+        applicationOpenWithURL.onNext(())
+        (window?.rootViewController as? RootViewController)?.viewModel.input.proceedURL.onNext(newURL)
+      }
+    }
+    return true
+  }
+
 	var applicationOpenWithURL = PublishSubject<Void>()
 	func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
 		applicationOpenWithURL.onNext(())

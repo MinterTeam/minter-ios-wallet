@@ -15,7 +15,10 @@ class SendRouter: BaseRouter {
 	}
 
 	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
-		return Storyboards.Send.instantiateInitialViewController()
+    let viewModel = SendViewModel(dependency: SendViewModel.Dependency())
+    let sendVC = Storyboards.Send.instantiateSendViewController()
+    sendVC.viewModel = viewModel
+		return sendVC
 	}
 
 	static func sendViewController(viewModel: SendViewModel) -> UIViewController? {

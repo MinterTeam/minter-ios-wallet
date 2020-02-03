@@ -7,14 +7,25 @@
 //
 
 import UIKit
+import RxSwift
 
-class SendPayloadTableViewCellItem: TextViewTableViewCellItem {}
+class SendPayloadTableViewCellItem: TextViewTableViewCellItem {
+  var didTapAddMessage = PublishSubject<Void>()
+}
 
 class SendPayloadTableViewCell: TextViewTableViewCell {
+
+  // MARK: -
 
 	var borderLayer: CAShapeLayer?
 
 	// MARK: - IBOutlets
+
+  @IBOutlet weak var addMessageButton: UIButton!
+  @IBOutlet weak var payloadView: UIView!
+  @IBOutlet weak var addMessageButtonBottomConstraint: NSLayoutConstraint!
+  @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+
 	// MARK: -
 
 	var maxLength = 110
@@ -25,8 +36,11 @@ class SendPayloadTableViewCell: TextViewTableViewCell {
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
+
 		activityIndicator?.backgroundColor = .clear
 		textView.font = UIFont.mediumFont(of: 16.0)
+    payloadView.alpha = 0.0
+    title.alpha = 0.0
 		setDefault()
 	}
 
@@ -68,4 +82,25 @@ class SendPayloadTableViewCell: TextViewTableViewCell {
 		self.textView?.superview?.layer.borderColor = UIColor.mainGreyColor(alpha: 0.4).cgColor
 		self.errorTitle.text = ""
 	}
+
+  // MARK: -
+
+  override func configure(item: BaseCellItem) {
+    super.configure(item: item)
+
+    if let item = item as? SendPayloadTableViewCellItem {
+      addMessageButton.rx.tap.subscribe(onNext: { (_) in
+        self.addMessageButton.alpha = 0.0
+        self.payloadView.alpha = 1.0
+        self.title.alpha = 1.0
+        self.addMessageButtonBottomConstraint.isActive = false
+        self.textViewHeightConstraint.isActive = false
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+      }).disposed(by: disposeBag)
+
+      addMessageButton.rx.tap.asDriver().drive(item.didTapAddMessage).disposed(by: disposeBag)
+    }
+  }
+
 }

@@ -44,7 +44,7 @@ class Router {
 		let urlPattern = (url.host ?? "").appending(url.path)
 
 		var matches = false
-		var params = [String : Any]()
+		var params = [String: Any]()
 		var path = [String]()
 
 		let router = routers.filter { (router) -> Bool in
@@ -105,7 +105,7 @@ class Router {
 
 	// MARK: -
 
-	private func matches(pattern: String, origin: String) -> (Bool, [String : Any], [String]) {
+	private func matches(pattern: String, origin: String) -> (Bool, [String: Any], [String]) {
 		let components1 = pattern.components(separatedBy: "/").filter { (str) -> Bool in
 			return str != ""
 		}
@@ -159,8 +159,7 @@ class Router {
 			} else {
 				if c2 != c1 {
 					return (false, [:], [])
-				}
-				else {
+				} else {
 					resPathDict.append(c2)
 				}
 			}

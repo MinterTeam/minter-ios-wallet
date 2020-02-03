@@ -8,6 +8,7 @@ PODS:
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - CryptoSwift (1.1.2)
+  - DeckTransition (2.2.0)
   - Differentiator (4.0.1)
   - Fabric (1.10.2)
   - GoldenKeystore (1.0.3):
@@ -75,13 +76,14 @@ DEPENDENCIES:
   - AlamofireImage
   - Crashlytics (~> 3.10)
   - CryptoSwift (~> 1.0)
+  - DeckTransition (~> 2.0)
   - Fabric (~> 1.7)
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - GrowingTextView
   - KeychainSwift (= 12.0.0)
-  - MinterCore (from `../../minter-ios-core`)
-  - MinterExplorer (from `../../minter-ios-explorer`)
-  - MinterMy (from `../../minter-ios-my`)
+  - MinterCore (from `https://github.com/MinterTeam/minter-ios-core.git`, branch `texas`)
+  - MinterExplorer
+  - MinterMy
   - NotificationBannerSwift (= 1.8.0)
   - ObjectMapper (~> 3.3)
   - ReachabilitySwift (~> 4.3)
@@ -106,11 +108,14 @@ SPEC REPOS:
     - BigInt
     - Crashlytics
     - CryptoSwift
+    - DeckTransition
     - Differentiator
     - Fabric
     - GrowingTextView
     - KeychainSwift
     - MarqueeLabel
+    - MinterExplorer
+    - MinterMy
     - NotificationBannerSwift
     - ObjectMapper
     - ReachabilitySwift
@@ -138,11 +143,8 @@ EXTERNAL SOURCES:
   GoldenKeystore:
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterCore:
-    :path: "../../minter-ios-core"
-  MinterExplorer:
-    :path: "../../minter-ios-explorer"
-  MinterMy:
-    :path: "../../minter-ios-my"
+    :branch: texas
+    :git: https://github.com/MinterTeam/minter-ios-core.git
   RealmSwift:
     :branch: master
     :git: https://github.com/realm/realm-cocoa.git
@@ -155,6 +157,9 @@ CHECKOUT OPTIONS:
   GoldenKeystore:
     :commit: 2f58a6eb405561bec305d5a197bcaa1514eed77e
     :git: https://github.com/sidorov-panda/GoldenKeystore
+  MinterCore:
+    :commit: c1bb1f9b5b64268ad55c806f13eb021d8e570f46
+    :git: https://github.com/MinterTeam/minter-ios-core.git
   RealmSwift:
     :commit: 6d52751b9c9aa7e6e6b8413721543133a05ad79e
     :git: https://github.com/realm/realm-cocoa.git
@@ -170,6 +175,7 @@ SPEC CHECKSUMS:
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   CryptoSwift: 31dacd1f13427439ddae5b5cbaae4c8dbc43047e
+  DeckTransition: c705e1f6bf8d63a3515a91d8a41be7038005bf35
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   GoldenKeystore: 6d176bbb332a4abb99024ebce06a3e3067c73a8a
@@ -204,6 +210,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: c5405af49ccbfd73e22affefec303c74126229ab
+PODFILE CHECKSUM: 7162d11c5f4ac3da447ca25bf068a9dbcf9cb9e0
 
 COCOAPODS: 1.8.4

@@ -49,6 +49,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		var popup: Observable<PopupViewController?>
 		var showViewController: Observable<UIViewController?>
     var openAppSettings: Observable<Void>
+    var updateTableHeight: Observable<Void>
 	}
 
 	struct Dependency {
@@ -64,6 +65,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 
 	typealias FormChangedObservable = (String?, String?, String?, String?)
 
+  private let updateTableHeight = PublishSubject<Void>()
 	private let coinSubject = BehaviorRelay<String?>(value: "")
 	private let recipientSubject = BehaviorRelay<String?>(value: "")
 	private let addressSubject = BehaviorRelay<String?>(value: "")
@@ -196,7 +198,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 												 txErrorNotification: txErrorNotificationSubject.asObservable(),
 												 popup: popupSubject.asObservable(),
 												 showViewController: showViewControllerSubject.asObservable(),
-                         openAppSettings: openAppSettingsSubject.asObservable())
+                         openAppSettings: openAppSettingsSubject.asObservable(),
+                         updateTableHeight: updateTableHeight.asObservable())
 		self.dependency = dependency
 
 		super.init()
@@ -446,12 +449,15 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 				self?.amountSubject.accept(selectedAmount)
 			}).disposed(by: disposeBag)
 
-		let payload = TextViewTableViewCellItem(reuseIdentifier: "SendPayloadTableViewCell",
-																						identifier: "SendPayloadTableViewCell_Payload")
-		payload.title = "PAYLOAD MESSAGE (max 1024 bytes)".localized()
+		let payload = SendPayloadTableViewCellItem(reuseIdentifier: "SendPayloadTableViewCell",
+                                               identifier: "SendPayloadTableViewCell_Payload")
+		payload.title = "MESSAGE (max 1024 bytes)".localized()
 		payload.keybordType = .default
 		payload.stateObservable = payloadStateObservable.asObservable()
 		payload.titleObservable = clearPayloadSubject.asObservable()
+    payload.didTapAddMessage.subscribe(onNext: { [weak self] _ in
+      self?.updateTableHeight.onNext(())
+      }).disposed(by: disposeBag)
 
 		let fee = TwoTitleTableViewCellItem(reuseIdentifier: "TwoTitleTableViewCell",
 																				identifier: CellIdentifierPrefix.fee.rawValue)

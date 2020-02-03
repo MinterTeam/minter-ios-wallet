@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,44 +32,62 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text=" " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aIa-Ld-0La">
-                        <rect key="frame" x="33" y="0.0" width="841" height="14"/>
+                        <rect key="frame" x="33" y="0.0" width="841" height="13.5"/>
                         <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="12"/>
                         <color key="textColor" red="0.93333333330000001" green="0.13725490200000001" blue="0.16862745100000001" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A3G-SP-IPM">
-                        <rect key="frame" x="10" y="24" width="864" height="259"/>
+                        <rect key="frame" x="10" y="24" width="864" height="33"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RoG-l2-n9c" customClass="AddressTextView" customModule="MinterWallet" customModuleProvider="target">
-                                <rect key="frame" x="10" y="6" width="804" height="246"/>
+                                <rect key="frame" x="10" y="6" width="804" height="20"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="RoG-l2-n9c" secondAttribute="bottom" constant="7" id="F79-mX-sQ6"/>
+                            <constraint firstAttribute="height" constant="10" id="Nf3-pW-732"/>
                             <constraint firstItem="RoG-l2-n9c" firstAttribute="leading" secondItem="A3G-SP-IPM" secondAttribute="leading" constant="10" id="OGp-0w-TQM"/>
                             <constraint firstItem="RoG-l2-n9c" firstAttribute="top" secondItem="A3G-SP-IPM" secondAttribute="top" constant="6" id="Uqf-Wa-vtz"/>
                             <constraint firstAttribute="trailing" secondItem="RoG-l2-n9c" secondAttribute="trailing" constant="50" id="dM7-Yt-ffv"/>
                         </constraints>
                     </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Stz-7B-9zT">
+                        <rect key="frame" x="20" y="13.5" width="99" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="E4y-Zz-L3a"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Ubuntu-Medium" family="Ubuntu" pointSize="16"/>
+                        <state key="normal" title="Add Message">
+                            <color key="titleColor" red="0.31372549020000001" green="0.18039215689999999" blue="0.76078431369999999" alpha="1" colorSpace="deviceRGB"/>
+                        </state>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="A3G-SP-IPM" firstAttribute="leading" secondItem="vxp-ii-Oly" secondAttribute="leading" constant="10" id="00H-9O-Oi3"/>
+                    <constraint firstItem="Stz-7B-9zT" firstAttribute="leading" secondItem="vxp-ii-Oly" secondAttribute="leading" constant="20" id="3eh-nO-RhJ"/>
                     <constraint firstItem="aIa-Ld-0La" firstAttribute="top" secondItem="vxp-ii-Oly" secondAttribute="top" id="Gxp-Fg-09P"/>
                     <constraint firstItem="aIa-Ld-0La" firstAttribute="trailing" secondItem="A3G-SP-IPM" secondAttribute="trailing" id="Hy5-hb-J3w"/>
                     <constraint firstItem="i9h-70-aC7" firstAttribute="top" secondItem="vxp-ii-Oly" secondAttribute="top" constant="2" id="Yky-bd-iVA"/>
                     <constraint firstAttribute="trailing" secondItem="A3G-SP-IPM" secondAttribute="trailing" constant="10" id="Yoc-lO-Lp3"/>
                     <constraint firstItem="A3G-SP-IPM" firstAttribute="top" secondItem="i9h-70-aC7" secondAttribute="bottom" constant="8" id="Zna-d6-tCg"/>
                     <constraint firstItem="i9h-70-aC7" firstAttribute="leading" secondItem="A3G-SP-IPM" secondAttribute="leading" constant="10" id="a1j-j2-YBG"/>
+                    <constraint firstItem="Stz-7B-9zT" firstAttribute="top" secondItem="aIa-Ld-0La" secondAttribute="bottom" id="dBz-uT-LvR"/>
                     <constraint firstAttribute="bottom" secondItem="A3G-SP-IPM" secondAttribute="bottom" priority="999" constant="10" id="jFZ-eE-hCR"/>
                     <constraint firstItem="aIa-Ld-0La" firstAttribute="leading" secondItem="i9h-70-aC7" secondAttribute="trailing" constant="10" id="rcD-Xo-9k9"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Stz-7B-9zT" secondAttribute="bottom" constant="20" id="utU-dP-F5B"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="z9o-S6-Z0w"/>
             <connections>
+                <outlet property="addMessageButton" destination="Stz-7B-9zT" id="kt4-4p-u3f"/>
+                <outlet property="addMessageButtonBottomConstraint" destination="utU-dP-F5B" id="rAf-qZ-sqR"/>
                 <outlet property="errorTitle" destination="aIa-Ld-0La" id="xgu-mq-L96"/>
+                <outlet property="payloadView" destination="A3G-SP-IPM" id="4NZ-eC-0Vb"/>
                 <outlet property="textView" destination="RoG-l2-n9c" id="ggm-kQ-KkT"/>
+                <outlet property="textViewHeightConstraint" destination="Nf3-pW-732" id="T9F-aq-ToS"/>
                 <outlet property="title" destination="i9h-70-aC7" id="77j-rL-Mr1"/>
             </connections>
             <point key="canvasLocation" x="282.60869565217394" y="-154.35267857142856"/>

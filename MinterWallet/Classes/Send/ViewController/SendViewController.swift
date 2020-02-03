@@ -68,6 +68,8 @@ class SendViewController:
 		configure(with: viewModel)
 		setUpTestnetToolbar()
 		automaticallyAdjustsScrollViewInsets = true
+    tableView.beginUpdates()
+    tableView.endUpdates()
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -252,6 +254,15 @@ extension SendViewController {
       .asDriver(onErrorJustReturn: ())
       .drive(onNext: { [weak self] in
         self?.openAppSpecificSettings()
+      }).disposed(by: disposeBag)
+
+    viewModel
+      .output
+      .updateTableHeight
+      .asDriver(onErrorJustReturn: ())
+      .drive(onNext: { [weak self] (_) in
+        self?.tableView.beginUpdates()
+        self?.tableView.endUpdates()
       }).disposed(by: disposeBag)
 
 		readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in

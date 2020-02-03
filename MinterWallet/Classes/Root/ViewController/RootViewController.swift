@@ -11,6 +11,7 @@ import RxSwift
 import Reachability
 import NotificationBannerSwift
 import MinterMy
+import DeckTransition
 
 class RootViewController: UIViewController, ControllerType {
 
@@ -67,13 +68,26 @@ class RootViewController: UIViewController, ControllerType {
 			.drive(onNext: { [weak self] (url) in
 				self?.viewModel.input.didOpenURL.onNext(url)
 				guard let url = url else { return }
-				if let vc = Router.viewController(by: url) {
-					if let oldVC = self?.presentedViewController {
+				if let viewController = Router.viewController(by: url) {
+          if (self?.presentedViewController) != nil {
 						UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: {
-							self?.show(vc, sender: self)
+							self?.show(viewController, sender: self)
 						})
 					} else {
-						self?.show(vc, sender: self)
+            if let index = self?.tabbarVC.viewControllers?.firstIndex(where: { (controller) -> Bool in
+              if let classForCoder = (controller as? UINavigationController)?.viewControllers.first?.classForCoder {
+                return classForCoder == viewController.classForCoder
+              }
+              return false
+            }) {
+              self?.tabbarVC.selectedIndex = index
+              return
+            }
+
+            let transitionDelegate = DeckTransitioningDelegate()
+            viewController.transitioningDelegate = transitionDelegate
+            viewController.modalPresentationStyle = .custom
+            self?.present(viewController, animated: true, completion: nil)
 					}
 				} else {
 					if url.host == "tx" || url.path.contains("tx") {

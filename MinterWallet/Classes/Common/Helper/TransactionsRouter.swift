@@ -15,7 +15,9 @@ class TransactionsRouter: BaseRouter {
 	}
 
 	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
-		return Storyboards.Coins.instantiateInitialViewController()
+    let coinsVC = Storyboards.Transactions.instantiateTransactionsViewController()
+    coinsVC.viewModel = TransactionsViewModel()
+    return coinsVC
 	}
 
 	static func transactionsViewController(viewModel: TransactionsViewModel) -> UIViewController? {
