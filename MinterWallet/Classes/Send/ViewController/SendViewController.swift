@@ -265,6 +265,18 @@ extension SendViewController {
         self?.tableView.endUpdates()
       }).disposed(by: disposeBag)
 
+    viewModel.output.shouldShowAlert
+      .asDriver(onErrorJustReturn: "")
+      .drive(onNext: { [weak self] (message) in
+        let alert = UIAlertController(title: "❗️❗️ ATTENTION:", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+          
+        }))
+        self?.present(alert, animated: true, completion: {
+          
+        })
+    }).disposed(by: disposeBag)
+
 		readerVC.completionBlock = { [weak self] (result: QRCodeReaderResult?) in
 			self?.readerVC.stopScanning()
 			self?.readerVC.dismiss(animated: true) {

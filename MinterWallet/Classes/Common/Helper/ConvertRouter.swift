@@ -15,7 +15,8 @@ class ConvertRouter: BaseRouter {
 	}
 
 	static func viewController(path: [String], param: [String: Any]) -> UIViewController? {
-		return Storyboards.Convert.instantiateRootConvertViewController()
+    let viewController = Storyboards.Convert.instantiateRootConvertViewController()
+		return UINavigationController(rootViewController: viewController)
 	}
 
 	static func convertViewController() -> UIViewController? {

@@ -25,7 +25,7 @@ class LocalStorage: Storage {
 
 	private var storage = UserDefaults.standard
 
-	func set<T : AnyObject>(_ object: T, forKey key: String) where T : NSCoding {
+	func set<T: AnyObject>(_ object: T, forKey key: String) where T: NSCoding {
 		//archive key
 		let data = NSKeyedArchiver.archivedData(withRootObject: object)
 		storage.set(data, forKey: key)
@@ -66,7 +66,7 @@ class LocalStorage: Storage {
 
 class SecureStorage: Storage {
 
-	//MARK: -
+	// MARK: -
 
 	init(namespace: String = "SecureStorage") {
 		self.namespace = namespace
@@ -77,7 +77,7 @@ class SecureStorage: Storage {
 
 	private let storage: KeychainSwift
 
-	//MARK: - Setters
+	// MARK: - Setters
 
 	func set(_ bool: Bool, forKey key: String) {
 		storage.set(bool, forKey: key)

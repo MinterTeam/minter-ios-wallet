@@ -83,11 +83,12 @@ class RootViewController: UIViewController, ControllerType {
               self?.tabbarVC.selectedIndex = index
               return
             }
-
-            let transitionDelegate = DeckTransitioningDelegate()
-            viewController.transitioningDelegate = transitionDelegate
-            viewController.modalPresentationStyle = .custom
-            self?.present(viewController, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+              let transitionDelegate = DeckTransitioningDelegate()
+              viewController.transitioningDelegate = transitionDelegate
+              viewController.modalPresentationStyle = .custom
+              self?.present(viewController, animated: true, completion: nil)
+            }
 					}
 				} else {
 					if url.host == "tx" || url.path.contains("tx") {
@@ -181,12 +182,6 @@ class RootViewController: UIViewController, ControllerType {
 					}).forEach({ (view) in
 						(view as? McPicker)?.cancel()
 					})
-//
-//					viewController.childViewControllers.forEach { (vc) in
-//						if vc != viewController {
-//							removePopupViewController(in: vc)
-//						}
-//					}
 				}
 
 				removePopupViewController(in: self)

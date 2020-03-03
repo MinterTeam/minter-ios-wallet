@@ -16,6 +16,7 @@ import RxAppState
 import RxBiBinding
 import RxRelay
 import AVFoundation
+import GoldenKeystore
 
 struct AccountPickerItem {
 	var title: String?
@@ -50,6 +51,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 		var showViewController: Observable<UIViewController?>
     var openAppSettings: Observable<Void>
     var updateTableHeight: Observable<Void>
+    var shouldShowAlert: Observable<String>
 	}
 
 	struct Dependency {
@@ -71,6 +73,7 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 	private let addressSubject = BehaviorRelay<String?>(value: "")
 	private var recipientAddress = BehaviorRelay<String?>(value: nil)
 	private let amountSubject = BehaviorRelay<String?>(value: "")
+  private let shouldShowAlertSubject = PublishSubject<String>()
   //used to update input amount value
   private let clearAmountBehavior = BehaviorRelay<String?>(value: "")
 	private var formChangedObservable: Observable<FormChangedObservable> {
@@ -199,7 +202,8 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
 												 popup: popupSubject.asObservable(),
 												 showViewController: showViewControllerSubject.asObservable(),
                          openAppSettings: openAppSettingsSubject.asObservable(),
-                         updateTableHeight: updateTableHeight.asObservable())
+                         updateTableHeight: updateTableHeight.asObservable(),
+                         shouldShowAlert: shouldShowAlertSubject.asObservable())
 		self.dependency = dependency
 
 		super.init()
@@ -209,14 +213,21 @@ class SendViewModel: BaseViewModel, ViewModelProtocol {// swiftlint:disable:this
       .distinctUntilChanged()
       .throttle(1.0, scheduler: MainScheduler.instance)
       .subscribe(onNext: { [weak self] (val) in
-        if (val ?? "") == "," || (val ?? "") == "." {
-          self?.amountSubject.accept("0.")
+        if (val ?? "").starts(with: ",") || (val ?? "").starts(with: ".") {
+          let newVal = (val ?? "").trimmingCharacters(in: CharacterSet(charactersIn: ".,"))
+          self?.amountSubject.accept("0." + newVal)
         } else {
           self?.amountSubject.accept(val)
         }
     }).disposed(by: disposeBag)
 
 		payloadSubject.asObservable().subscribe(onNext: { (payld) in
+      if GoldenKeystore.mnemonicIsValid(payld ?? "") {
+        self.shouldShowAlertSubject.onNext("""
+YOU ARE ABOUT TO SEND SEED PHRASE IN THE MESSAGE ATTACHED TO THIS TRANSACTION.\nIF YOU DO THIS, ANYONE WILL BE ABLE TO SEE IT AND ACCESS FUNDS!
+""")
+      }
+
 			let data = (payld ?? "").data(using: .utf8) ?? Data()
 			if data.count > RawTransaction.maxPayloadSize {
 				self.payloadStateObservable.onNext(.invalid(error: "TOO MANY SYMBOLS".localized()))
