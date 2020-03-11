@@ -81,7 +81,7 @@ DEPENDENCIES:
   - GoldenKeystore (from `https://github.com/sidorov-panda/GoldenKeystore`)
   - GrowingTextView
   - KeychainSwift (= 12.0.0)
-  - MinterCore (from `https://github.com/MinterTeam/minter-ios-core.git`, branch `master`)
+  - MinterCore (from `https://github.com/MinterTeam/minter-ios-core.git`, branch `texas`)
   - MinterExplorer (from `../../minter-ios-explorer`)
   - MinterMy (from `../../minter-ios-my`)
   - NotificationBannerSwift (= 1.8.0)
@@ -141,7 +141,7 @@ EXTERNAL SOURCES:
   GoldenKeystore:
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterCore:
-    :branch: master
+    :branch: texas
     :git: https://github.com/MinterTeam/minter-ios-core.git
   MinterExplorer:
     :path: "../../minter-ios-explorer"
@@ -160,7 +160,7 @@ CHECKOUT OPTIONS:
     :commit: 2f58a6eb405561bec305d5a197bcaa1514eed77e
     :git: https://github.com/sidorov-panda/GoldenKeystore
   MinterCore:
-    :commit: 7b27ee8195e7b657d661f5d212d31ab89f98c3cc
+    :commit: c1bb1f9b5b64268ad55c806f13eb021d8e570f46
     :git: https://github.com/MinterTeam/minter-ios-core.git
   RealmSwift:
     :commit: 6d52751b9c9aa7e6e6b8413721543133a05ad79e
@@ -212,6 +212,6 @@ SPEC CHECKSUMS:
   XLPagerTabStrip: 63166e21c9844fa30f2d95d30f335e73be5caf22
   YandexMobileMetrica: f18374ee6977a4cd1d0a86298a0df4ad7baf4135
 
-PODFILE CHECKSUM: 9fdc9847dc97feed1d0a17026b88e9bf4e72c11a
+PODFILE CHECKSUM: 7710ec18da42fd35db517405aa3b68aeeb34a9bf
 
 COCOAPODS: 1.8.4

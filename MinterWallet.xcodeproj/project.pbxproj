@@ -436,6 +436,8 @@
 		FA8AE85820AAD3E900F26E11 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85720AAD3E900F26E11 /* Session.swift */; };
 		FA8AE85B20AC196800F26E11 /* SessionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85A20AC196800F26E11 /* SessionHelper.swift */; };
 		FA8AE85D20AC638900F26E11 /* String+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8AE85C20AC638900F26E11 /* String+Random.swift */; };
+		FA9307742418F624003C2E24 /* Data+Base64URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9307732418F624003C2E24 /* Data+Base64URL.swift */; };
+		FA9307752418F624003C2E24 /* Data+Base64URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9307732418F624003C2E24 /* Data+Base64URL.swift */; };
 		FA97F9E8237AFDB300A4828B /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA333095224A4F1D003B4763 /* Configuration.swift */; };
 		FA9A6E51209B1D5D0012AC96 /* SHA3+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */; };
 		FA9BBCC822A9512B0030E92E /* AddressManager+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */; };
@@ -802,6 +804,7 @@
 		FA8AE85720AAD3E900F26E11 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		FA8AE85A20AC196800F26E11 /* SessionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHelper.swift; sourceTree = "<group>"; };
 		FA8AE85C20AC638900F26E11 /* String+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Random.swift"; sourceTree = "<group>"; };
+		FA9307732418F624003C2E24 /* Data+Base64URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Base64URL.swift"; sourceTree = "<group>"; };
 		FA9A6E50209B1D5D0012AC96 /* SHA3+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SHA3+String.swift"; sourceTree = "<group>"; };
 		FA9BBCC722A9512B0030E92E /* AddressManager+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressManager+Rx.swift"; sourceTree = "<group>"; };
 		FA9BE30A213FE7E0002160F3 /* AnalyticsEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEvents.swift; sourceTree = "<group>"; };
@@ -1912,6 +1915,7 @@
 				FA64E280234770EF00436BFE /* RawTransaction+RLPDecodable.swift */,
 				FA39488023507BB2002AD8DE /* UIApplication+AppDelegate.swift */,
 				FA5DB808236198C7008A8E47 /* ImpactProtocol.swift */,
+				FA9307732418F624003C2E24 /* Data+Base64URL.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -3078,6 +3082,7 @@
 				FA333020224A4B3C003B4763 /* TransactionsViewController.swift in Sources */,
 				FA333021224A4B3C003B4763 /* QRCodeReaderViewController.swift in Sources */,
 				FA333022224A4B3C003B4763 /* GenerateAddressSeedTableViewCell.swift in Sources */,
+				FA9307742418F624003C2E24 /* Data+Base64URL.swift in Sources */,
 				FA333023224A4B3C003B4763 /* AuthManager+Rx.swift in Sources */,
 				FA294E9A2294012D00382D82 /* ActivityRouter.swift in Sources */,
 				FAC6DDF7233A146000A7E650 /* RawTransactionViewModel.swift in Sources */,
@@ -3301,6 +3306,7 @@
 				833CF747F604B61E37401C11 /* TransactionsViewController.swift in Sources */,
 				FA0F296721B1740800E10F5E /* QRCodeReaderViewController.swift in Sources */,
 				FAA2608320935E8B009FF3DE /* GenerateAddressSeedTableViewCell.swift in Sources */,
+				FA9307752418F624003C2E24 /* Data+Base64URL.swift in Sources */,
 				FA17816F21EF455300FECDED /* AuthManager+Rx.swift in Sources */,
 				FA294E9B2294012D00382D82 /* ActivityRouter.swift in Sources */,
 				FAC6DDF8233A146000A7E650 /* RawTransactionViewModel.swift in Sources */,
@@ -3438,7 +3444,7 @@
 				CODE_SIGN_ENTITLEMENTS = MinterWallet/MinterWallet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 251;
+				CURRENT_PROJECT_VERSION = 252;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3452,7 +3458,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/MinterWallet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.24;
+				MARKETING_VERSION = 1.0.25;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3473,7 +3479,7 @@
 				CODE_SIGN_ENTITLEMENTS = MinterWallet/MinterWallet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 251;
+				CURRENT_PROJECT_VERSION = 252;
 				DEVELOPMENT_TEAM = A26H28FPZU;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3487,7 +3493,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/MinterWallet/MinterWallet-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.24;
+				MARKETING_VERSION = 1.0.25;
 				PRODUCT_BUNDLE_IDENTIFIER = MNT.BipWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

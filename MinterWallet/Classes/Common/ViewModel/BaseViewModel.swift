@@ -256,25 +256,25 @@ extension TransactionViewableViewModel {
 		switch txType {
 		case .create:
 			transactionCellItem.title = "Create Coin"
-			break
+
 		case .createMultisig:
 			transactionCellItem.title = "Create Multisig"
-			break
+
 		case .declare:
 			transactionCellItem.title = "Declare Candidate"
-			break
+
 		case .editCandidate:
 			transactionCellItem.title = "Edit Candidate"
-			break
+
 		case .setCandidateOffline:
 			transactionCellItem.title = "Set Candidate Offline"
-			break
+
 		case .setCandidateOnline:
 			transactionCellItem.title = "Set Candidate Online"
-			break
 		default:
 			break
 		}
+    transactionCellItem.payload = transaction.payload
 		transactionCellItem.type = ""
 		transactionCellItem.image = UIImage(named: "systemTransactionImage")
 		return transactionCellItem

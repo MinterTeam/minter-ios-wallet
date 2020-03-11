@@ -16,6 +16,7 @@ class SystemTransactionTableViewCellItem: TransactionCellItem {
 	var image: UIImage?
 	var date: String?
 	var time: String?
+  var amount: String?
 }
 
 class SystemTransactionTableViewCell: BaseTransactionCell {
@@ -45,6 +46,7 @@ class SystemTransactionTableViewCell: BaseTransactionCell {
 	@IBOutlet weak var timeLabel: UILabel!
 	@IBOutlet weak var dateLabel: UILabel!
 	@IBOutlet weak var explorerButton: DefaultButton!
+  @IBOutlet weak var amountLabel: UILabel!
 
 	// MARK: -
 
@@ -73,6 +75,7 @@ class SystemTransactionTableViewCell: BaseTransactionCell {
 			self.mainTitleLabel.text = item.title
 			self.dateLabel.text = item.date
 			self.timeLabel.text = item.time
+      self.amountLabel.text = item.amount
 		}
 	}
 
